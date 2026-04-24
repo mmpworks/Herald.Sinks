@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Trace</RootNamespace>
+    <AssemblyName>Herald.Sinks.Trace</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Trace</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Writes Herald log events to System.Diagnostics.Trace listeners — a drop-in for Serilog.Sinks.Trace and the Trace.WriteLine diagnostic path.</Description>
+    <PackageTags>herald;logging;sink;trace;diagnostics</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+
+    <!-- Trace.WriteLine is [Conditional("TRACE")]. The .NET SDK defines
+         TRACE by default in both Debug and Release configurations, so
+         no override is required here — but we keep the line explicit
+         for parity with Herald.Sinks.Debug and to document intent. -->
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Trace.Tests" />
+  </ItemGroup>
+</Project>

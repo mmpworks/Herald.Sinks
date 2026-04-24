@@ -1,0 +1,82 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Trace
+
+name: Herald.Sinks.Trace
+package_id: MMP.Herald.Sinks.Trace
+version: 1.0.0
+kind: sink
+category: diagnostics
+
+purpose: >
+  Writes Herald log events to System.Diagnostics.Trace listeners. Any
+  TraceListener registered on Trace.Listeners — the Windows Event Log
+  listener, a TextWriterTraceListener redirecting to a file, Azure
+  Monitor's listener — picks the events up. Intended for
+  Trace-ecosystem integration where diagnostic plumbing is already in
+  place.
+
+vendor:
+  name: Microsoft
+  url: https://learn.microsoft.com/dotnet/api/system.diagnostics.trace
+
+ships:
+  - TraceLogSink
+  - TraceLogSinkProvider
+  - TraceSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external: []
+
+config:
+  kind: trace
+  alias: "Optional category prefix forwarded to Trace.WriteLine(msg, category)."
+  notes: >
+    TRACE is defined by default in every .NET SDK build configuration,
+    so the sink works out of the box in both Debug and Release.
+
+dashboard_config:
+  - property: category
+    name: Category
+    help: >
+      Optional string passed to Trace.WriteLine as the category prefix.
+      Listeners that group by category — Event Log, categorized file
+      writers, the Azure Monitor listener — use it to filter Herald
+      output from other Trace chatter.
+    tooltip: Category prefix for Trace.WriteLine output.
+    width: m
+    control: text
+    required: false
+    default: ""
+    group: Output
+
+capabilities:
+  - Zero external dependencies — BCL only
+  - Integrates with any TraceListener in Trace.Listeners
+  - Optional category prefix for listener filtering
+  - Exception text appended after the formatted line
+
+limitations:
+  - Single fixed line format — no custom template surface
+  - No structured emission — properties are not rendered separately
+  - Output visibility depends on a registered TraceListener
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — Trace.WriteLine is internally synchronized.
+
+test_coverage: tests/Herald.Sinks.Trace.Tests/TraceLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.Trace equivalent).

@@ -15,6 +15,7 @@
     <Project Path="src/Herald.Sinks.Slack/Herald.Sinks.Slack.csproj" />
     <Project Path="src/Herald.Sinks.Splunk/Herald.Sinks.Splunk.csproj" />
     <Project Path="src/Herald.Sinks.TcpJsonLine/Herald.Sinks.TcpJsonLine.csproj" />
+    <Project Path="src/Herald.Sinks.Trace/Herald.Sinks.Trace.csproj" />
     <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
   </Folder>
   <Folder Name="/meta/">
@@ -37,6 +38,7 @@
     <Project Path="tests/Herald.Sinks.Slack.Tests/Herald.Sinks.Slack.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Splunk.Tests/Herald.Sinks.Splunk.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.TcpJsonLine.Tests/Herald.Sinks.TcpJsonLine.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Trace.Tests/Herald.Sinks.Trace.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.UdpJsonLine.Tests/Herald.Sinks.UdpJsonLine.Tests.csproj" />
   </Folder>
 </Solution>
