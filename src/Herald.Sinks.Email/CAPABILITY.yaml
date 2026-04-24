@@ -1,0 +1,54 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Email
+package_id: MMP.Herald.Sinks.Email
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Sends Herald log events as SMTP email via MailKit. Drop-in for
+  Serilog.Sinks.Email. Sized for high-severity alerts — pair with a
+  warn+ or error+ level filter, otherwise mailbox flooding becomes
+  the bug you're trying to solve.
+vendor:
+  name: MailKit / RFC 5321
+  url: https://github.com/jstedfast/MailKit
+ships:
+  - EmailLogSink
+  - EmailLogSinkProvider
+  - EmailSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - MailKit
+    - SMTP relay (host + port; TLS recommended)
+config:
+  kind: email
+  notes: >
+    EmailLogSink is code-first only. The SMTP credential and recipient
+    surface is too rich for a JSON one-liner. Register the sink in
+    your composition root via WithCustomSinkProvider.
+dashboard_config: []
+capabilities:
+  - LogBatch → one digest email containing every event in the batch
+  - Subject template with {level} placeholder resolves to highest severity
+  - MailKit STARTTLS / OAuth2 / implicit TLS supported via SecureSocketOptions
+  - Highest-severity level surfaces in the subject line
+  - Plain-text body with timestamp / level / category / message / properties
+limitations:
+  - Synchronous Send (one connect per send)
+  - No HTML body in 1.0
+  - Pair with a level filter — never use against info-level chatter
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — each Send call opens its own SmtpClient.
+test_coverage: tests/Herald.Sinks.Email.Tests/ (construction-contract; SMTP-backed tests are manual)
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 pack.

@@ -1,0 +1,58 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.ElmahIo
+package_id: MMP.Herald.Sinks.ElmahIo
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Ships Herald log events to elmah.io's error-tracking service via the
+  v3 bulk messages API. Drop-in for Serilog.Sinks.ElmahIo.
+vendor:
+  name: elmah.io
+  url: https://docs.elmah.io/
+ships:
+  - ElmahIoLogSink
+  - ElmahIoLogSinkProvider
+  - ElmahIoSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - elmah.io API key + log id
+config:
+  kind: elmahio
+  alias: "API key (required)."
+  host: "Log id (required)."
+dashboard_config:
+  - property: api_key
+    name: API key
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: log_id
+    name: Log id
+    width: l
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - Bulk POST per IBatchedLogSink
+  - Bearer-token auth
+  - Exception class + stack as type / detail
+  - Properties as data array (key/value pairs per elmah.io schema)
+limitations:
+  - Synchronous Send
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe.
+test_coverage: tests/Herald.Sinks.ElmahIo.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 pack.

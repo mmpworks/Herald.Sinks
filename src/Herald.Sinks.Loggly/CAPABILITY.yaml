@@ -1,0 +1,58 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Loggly
+package_id: MMP.Herald.Sinks.Loggly
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to Loggly via the bulk HTTP endpoint. NDJSON
+  body, token in URL.
+vendor:
+  name: Loggly (SolarWinds)
+  url: https://documentation.solarwinds.com/en/success_center/loggly/
+ships:
+  - LogglyLogSink
+  - LogglyLogSinkProvider
+  - LogglySinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Loggly customer token
+config:
+  kind: loggly
+  alias: "Customer token (required)."
+  host: "Optional tag. Default 'herald'."
+dashboard_config:
+  - property: customer_token
+    name: Customer token
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: tag
+    name: Tag
+    width: m
+    control: text
+    required: false
+    default: herald
+    group: Output
+capabilities:
+  - Bulk HTTP endpoint with NDJSON body
+  - Tag-driven routing in Loggly
+  - Pure HTTP — no Loggly SDK
+limitations:
+  - Synchronous Send
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe.
+test_coverage: tests/Herald.Sinks.Loggly.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 pack.

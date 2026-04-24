@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.AzureEventHub</RootNamespace>
+    <AssemblyName>Herald.Sinks.AzureEventHub</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.AzureEventHub</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Publishes Herald log events as messages to an Azure Event Hubs partition. Drop-in for Serilog.Sinks.AzureEventHub.</Description>
+    <PackageTags>herald;logging;sink;azure;event-hubs;streaming</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Messaging.EventHubs" />
+    <PackageReference Include="Azure.Identity" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.AzureEventHub.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,59 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.SumoLogic
+package_id: MMP.Herald.Sinks.SumoLogic
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Posts Herald log events to a Sumo Logic HTTP source endpoint.
+  Drop-in for SumoLogic.Logging.Serilog. Auth lives in the source URL
+  itself; optional X-Sumo-* headers tag events for search.
+vendor:
+  name: Sumo Logic
+  url: https://help.sumologic.com/docs/send-data/hosted-collectors/http-source/
+ships:
+  - SumoLogicLogSink
+  - SumoLogicLogSinkProvider
+  - SumoLogicSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Sumo Logic HTTP source URL
+config:
+  kind: sumologic
+  uri: "HTTP source URL (required)."
+  alias: "Optional X-Sumo-Category."
+  host: "Optional X-Sumo-Host."
+dashboard_config:
+  - property: source_url
+    name: HTTP source URL
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: source_category
+    name: Source category
+    width: m
+    control: text
+    required: false
+    group: Tags
+capabilities:
+  - HTTP source POST with NDJSON body
+  - X-Sumo-Category / -Name / -Host header tagging
+  - Pure HTTP — no Sumo Logic SDK
+limitations:
+  - Synchronous Send
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe.
+test_coverage: tests/Herald.Sinks.SumoLogic.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 pack.

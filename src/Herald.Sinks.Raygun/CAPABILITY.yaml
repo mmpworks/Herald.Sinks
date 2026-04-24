@@ -1,0 +1,62 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Raygun
+package_id: MMP.Herald.Sinks.Raygun
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Forwards Herald log events to the Raygun crash-reporting / error-
+  tracking service. Drop-in for Serilog.Sinks.Raygun. Pair with a
+  warn+ level filter — Raygun is sized for crash reports, not info
+  chatter.
+vendor:
+  name: Raygun
+  url: https://raygun.com/documentation/
+ships:
+  - RaygunLogSink
+  - RaygunLogSinkProvider
+  - RaygunSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Raygun API key
+config:
+  kind: raygun
+  alias: "API key (required)."
+  host: "App version string. Default '1.0.0'."
+dashboard_config:
+  - property: api_key
+    name: API key
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: app_version
+    name: App version
+    width: m
+    control: text
+    required: false
+    default: "1.0.0"
+    group: Identity
+capabilities:
+  - Maps log message → details.error.message and exception → className/stackTrace
+  - Custom data carries Herald properties + level/category
+  - Tags include level and category for Raygun filters
+  - Pure HTTP — no Raygun SDK dependency
+limitations:
+  - One event per request (Raygun's entries API is per-event)
+  - Synchronous Send — pair with async decorator + level filter
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient.
+test_coverage: tests/Herald.Sinks.Raygun.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 Alerting + Cloud Completion pack.

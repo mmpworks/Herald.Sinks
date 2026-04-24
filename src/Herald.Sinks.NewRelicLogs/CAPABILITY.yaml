@@ -1,0 +1,66 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.NewRelicLogs
+package_id: MMP.Herald.Sinks.NewRelicLogs
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to the New Relic Logs ingest API. Drop-in
+  for Serilog.Sinks.NewRelic.Logs. Pure HTTP — no New Relic SDK
+  dependency.
+vendor:
+  name: New Relic
+  url: https://docs.newrelic.com/docs/logs/log-api/introduction-log-api/
+ships:
+  - NewRelicLogsLogSink
+  - NewRelicLogsLogSinkProvider
+  - NewRelicLogsSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - New Relic license key
+config:
+  kind: newrelic_logs
+  alias: "License key (required)."
+  uri: "Endpoint. Default https://log-api.newrelic.com/log/v1 (US). Use log-api.eu.newrelic.com for EU."
+dashboard_config:
+  - property: license_key
+    name: License key
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: endpoint
+    name: Endpoint
+    width: l
+    control: select
+    required: false
+    default: https://log-api.newrelic.com/log/v1
+    values:
+      - value: https://log-api.newrelic.com/log/v1
+        text: "US (default)"
+      - value: https://log-api.eu.newrelic.com/log/v1
+        text: "EU"
+    group: Target
+capabilities:
+  - Batched POST per IBatchedLogSink
+  - Properties emitted as flat attributes for NRQL query
+  - Region-aware endpoint default with EU override
+  - Exception class + full text on attributes object
+limitations:
+  - 5 MB / 1 MB-per-record request ceiling enforced by New Relic
+  - Synchronous Send
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient.
+test_coverage: tests/Herald.Sinks.NewRelicLogs.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 Alerting + Cloud Completion pack.

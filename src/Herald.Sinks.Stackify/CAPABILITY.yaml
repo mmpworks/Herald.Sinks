@@ -1,0 +1,67 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Stackify
+package_id: MMP.Herald.Sinks.Stackify
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Forwards Herald log events to the Stackify Retrace logs API. Pure
+  HTTP — no Stackify SDK dependency.
+vendor:
+  name: Stackify (Netreo)
+  url: https://docs.stackify.com/
+ships:
+  - StackifyLogSink
+  - StackifyLogSinkProvider
+  - StackifySinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Stackify API key
+config:
+  kind: stackify
+  alias: "API key (required)."
+  host: "App name. Default 'herald'."
+  uri: "Environment name. Default 'production'."
+dashboard_config:
+  - property: api_key
+    name: API key
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: app_name
+    name: App name
+    width: m
+    control: text
+    required: false
+    default: herald
+    group: Identity
+  - property: environment
+    name: Environment
+    width: s
+    control: text
+    required: false
+    default: production
+    group: Identity
+capabilities:
+  - X-Stackify-Key auth header
+  - Multi-message batched body (Msgs array)
+  - Stackify level mapping (DEBUG/INFO/WARN/ERROR/FATAL)
+  - Exception details in nested Ex.Error block
+limitations:
+  - Synchronous Send
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe.
+test_coverage: tests/Herald.Sinks.Stackify.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.3 pack.

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Stackify</RootNamespace>
+    <AssemblyName>Herald.Sinks.Stackify</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Stackify</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Forwards Herald log events to Stackify Retrace logs API. Drop-in for Serilog.Sinks.Stackify.</Description>
+    <PackageTags>herald;logging;sink;stackify;retrace;apm</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Stackify.Tests" />
+  </ItemGroup>
+</Project>

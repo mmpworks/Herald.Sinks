@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.AzureBlobStorage</RootNamespace>
+    <AssemblyName>Herald.Sinks.AzureBlobStorage</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.AzureBlobStorage</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Uploads Herald log events as NDJSON blobs to Azure Blob Storage. Drop-in for Serilog.Sinks.AzureBlobStorage.</Description>
+    <PackageTags>herald;logging;sink;azure;blob-storage;archive</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" />
+    <PackageReference Include="Azure.Identity" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.AzureBlobStorage.Tests" />
+  </ItemGroup>
+</Project>
