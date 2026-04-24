@@ -1,0 +1,104 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Seq
+package_id: MMP.Herald.Sinks.Seq
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Posts Herald log events to a Seq server as newline-delimited CLEF
+  over HTTP. Matches the wire format Serilog.Sinks.Seq ships so teams
+  with an existing Seq deployment can switch to Herald without
+  touching their log store.
+
+vendor:
+  name: Datalust
+  url: https://datalust.co/seq
+
+ships:
+  - SeqLogSink
+  - SeqLogSinkProvider
+  - SeqSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Reachable Seq server (self-hosted or Seq Cloud)
+    - Optional Seq API key for write-authenticated instances
+
+config:
+  kind: seq
+  uri: "Seq server root URL (e.g. http://localhost:5341)."
+  host: null
+  alias: "Optional API key — sent as the X-Seq-ApiKey header."
+  notes: >
+    The sink appends /api/events/raw?clef to the server URL. Content
+    type is application/vnd.serilog.clef. Batches POST as one request
+    with one CLEF event per line.
+
+dashboard_config:
+  - property: server_url
+    name: Seq server URL
+    help: >
+      Root URL of the Seq server. The sink appends the CLEF ingest
+      path automatically. Seq Cloud URLs (https://{tenant}.seq.app)
+      work the same as self-hosted URLs.
+    tooltip: Seq server root URL.
+    width: l
+    control: url
+    required: true
+    placeholder: https://seq.internal
+    group: Endpoint
+    schemes: [http, https]
+    errors:
+      required: "A Seq server URL is required."
+      url-malformed: "Server URL must be a full URL including scheme."
+
+  - property: api_key
+    name: API key
+    help: >
+      Optional write-side API key configured in Seq's administration
+      UI. Required when Seq is running with authenticated ingest;
+      leave blank for open instances.
+    tooltip: Optional Seq API key — masked after save.
+    width: m
+    control: secret
+    required: false
+    group: Auth
+
+capabilities:
+  - Batched delivery via IBatchedLogSink — one HTTP request per batch
+  - CLEF wire format (@t, @m, @mt, @l, @x, @i, SourceContext)
+  - Level mapping to Seq's Serilog-style vocabulary (Verbose, Debug,
+    Warning, Error, Fatal; Information omitted by CLEF convention)
+  - Exception emission as @x (full ToString)
+  - Reserved-field collision guard (properties never overwrite @-fields
+    or SourceContext)
+
+limitations:
+  - No compression on the request body
+  - Synchronous Send path; pair with the async decorator for
+    high-throughput pipelines
+  - Single shared HttpClient — pool config is the caller's concern
+
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.Seq.Tests/SeqLogSinkTests.cs (10 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/Seq.

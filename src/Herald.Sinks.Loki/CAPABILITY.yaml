@@ -1,0 +1,104 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Loki
+package_id: MMP.Herald.Sinks.Loki
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Posts Herald log events to Grafana Loki's push endpoint. Groups
+  events into streams by label set so batches produce the minimum
+  number of Loki streams, and keeps high-cardinality properties out
+  of the label index so an operator misstep cannot explode it.
+
+vendor:
+  name: Grafana Labs
+  url: https://grafana.com/docs/loki/latest/reference/loki-http-api/
+
+ships:
+  - LokiLogSink
+  - LokiLogSinkProvider
+  - LokiSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Reachable Loki push endpoint (self-hosted or Grafana Cloud)
+    - Optional bearer token (Grafana Cloud) or basic-auth credentials
+
+config:
+  kind: loki
+  uri: "Loki push URL (e.g. https://logs-prod.grafana.net)."
+  host: null
+  alias: "Optional bearer token — used as Authorization: Bearer {token}."
+  notes: >
+    The sink appends /loki/api/v1/push when the URL omits it. Static
+    labels and basic-auth credentials are construction-only today —
+    they are not surfaced through JSON config to keep the
+    label-cardinality footgun far from config editing.
+
+dashboard_config:
+  - property: endpoint
+    name: Push endpoint
+    help: >
+      Loki push URL. Grafana Cloud format is
+      https://logs-prod.grafana.net/loki/api/v1/push; self-hosted Loki
+      typically lives at http://loki:3100. If the path is omitted the
+      sink appends /loki/api/v1/push automatically.
+    tooltip: Loki push URL.
+    width: l
+    control: url
+    required: true
+    placeholder: https://logs-prod.grafana.net
+    group: Endpoint
+    schemes: [http, https]
+    errors:
+      required: "A Loki push URL is required."
+
+  - property: bearer_token
+    name: Bearer token
+    help: >
+      Optional bearer token for Grafana Cloud. Sent as
+      Authorization: Bearer {token}. Leave blank when the endpoint
+      does not require bearer auth.
+    tooltip: Optional Grafana Cloud bearer token — masked after save.
+    width: m
+    control: secret
+    required: false
+    group: Auth
+
+capabilities:
+  - Batched delivery via IBatchedLogSink
+  - Streams grouped by label set — fewer streams per batch
+  - Nanosecond-precision timestamps (string to avoid JS i53 loss)
+  - Cardinality guard — properties never promoted to labels
+  - Auth: bearer token OR basic-auth credentials (mutually exclusive)
+  - Label-name sanitisation (operator typos land with underscores
+    rather than 400s)
+
+limitations:
+  - Static labels + basic-auth supplied at construction only
+  - Synchronous Send path; pair with async decorator for throughput
+  - No compression on the request body
+
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.Loki.Tests/LokiLogSinkTests.cs (9 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/Loki.

@@ -1,0 +1,118 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Datadog
+package_id: MMP.Herald.Sinks.Datadog
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Posts Herald log events to Datadog's HTTP log intake. Works against
+  both the public site intake and a local Datadog Agent, with per-event
+  error-triple emission that lights up Datadog's error-tracking
+  pipeline in addition to plain log search.
+
+vendor:
+  name: Datadog
+  url: https://docs.datadoghq.com/api/latest/logs/
+
+ships:
+  - DatadogLogSink
+  - DatadogLogSinkProvider
+  - DatadogSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Datadog API key (DD-API-KEY)
+    - Reachable HTTP endpoint (public intake or local Agent)
+
+config:
+  kind: datadog
+  uri: "Datadog intake URL, e.g. https://http-intake.logs.datadoghq.com"
+  host: "Service name (Datadog 'service' attribute)"
+  alias: "DD-API-KEY header value"
+  notes: >
+    Uri optional — defaults to the public US intake. Set to
+    http://localhost:8126 to route through a local Datadog Agent.
+
+dashboard_config:
+  - property: endpoint
+    name: Ingest endpoint
+    help: >
+      Public US intake is the default. Use https://http-intake.logs.datadoghq.eu
+      for the EU region, http://localhost:8126 to route through a local
+      Datadog Agent, or a site-specific intake (us3, us5) as needed.
+    tooltip: Datadog HTTP log intake URL or local Agent address.
+    width: l
+    control: url
+    required: false
+    default: https://http-intake.logs.datadoghq.com
+    placeholder: https://http-intake.logs.datadoghq.com
+    group: Endpoint
+    schemes: [http, https]
+    errors:
+      url-malformed: "Endpoint must be a full URL including scheme."
+
+  - property: api_key
+    name: API key
+    help: >
+      The Datadog DD-API-KEY header value. Stored encrypted by the
+      Dashboard; rotation clears the stored value.
+    tooltip: Datadog DD-API-KEY — masked after save.
+    width: m
+    control: secret
+    required: true
+    min_length: 32
+    group: Auth
+    errors:
+      required: "Datadog API key is required before events can be sent."
+      min-length: "API keys are at least 32 characters."
+
+  - property: service
+    name: Service name
+    help: >
+      Populates Datadog's "service" attribute on every event. Used for
+      routing in the Datadog UI and for correlating logs with traces.
+    tooltip: Datadog service tag for every event emitted here.
+    width: m
+    control: patterned-text
+    required: true
+    default: herald
+    pattern: "^(?<svc>[a-z0-9-]+)$"
+    group: Telemetry
+    errors:
+      pattern: "Lowercase letters, numbers, and hyphens only."
+
+capabilities:
+  - Batched delivery via IBatchedLogSink
+  - Level mapping to Datadog status (trace→debug, fatal→emergency)
+  - Exception triple (error.message / error.kind / error.stack)
+  - Static tags merge with per-event category into ddtags
+  - Works direct-to-Datadog or via a local Datadog Agent
+
+limitations:
+  - No compression today (gzip support is a future enhancement)
+  - Static tags only via construction; JSON config limited to URI / service / key
+  - Synchronous Send path; pair with the async decorator for throughput
+
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.Datadog.Tests/DatadogLogSinkTests.cs (9 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/Datadog.

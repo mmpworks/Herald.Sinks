@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Datadog</RootNamespace>
+    <AssemblyName>Herald.Sinks.Datadog</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Datadog</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Posts Herald log events to Datadog's HTTP log intake. Supports public site intakes and local Datadog Agent routing, with per-event error-triple emission for Datadog's error-tracking pipeline.</Description>
+    <PackageTags>herald;logging;sink;datadog;observability</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Datadog.Tests" />
+  </ItemGroup>
+</Project>

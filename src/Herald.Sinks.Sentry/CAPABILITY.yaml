@@ -1,0 +1,114 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Sentry
+package_id: MMP.Herald.Sinks.Sentry
+version: 1.0.0
+kind: sink
+category: alerting
+
+purpose: >
+  Forwards Herald log events to Sentry's store endpoint as structured
+  events. Parses the standard DSN format and emits exceptions, tags,
+  and extras in the shape Sentry's UI expects. Typical deployment
+  stacks this sink behind a Warn-or-above filter.
+
+vendor:
+  name: Sentry
+  url: https://docs.sentry.io/api/events/
+
+ships:
+  - SentryLogSink
+  - SentryLogSinkProvider
+  - SentrySinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Sentry DSN (Sentry.io or self-hosted)
+
+config:
+  kind: sentry
+  uri: "Sentry DSN — full URL including publicKey@host/projectId."
+  host: "Optional logger-name override (default 'herald')."
+  alias: "Optional platform override (default 'csharp')."
+  notes: >
+    Static tags are not surfaced through JSON config. Callers who want
+    them pass a pre-built SentryLogSink via WithCustomSinkProvider.
+
+dashboard_config:
+  - property: dsn
+    name: DSN
+    help: >
+      The Sentry DSN from your project settings. Format is
+      https://{publicKey}@o{orgId}.ingest.sentry.io/{projectId}. The
+      sink parses the DSN once — public key flows into the
+      X-Sentry-Auth header, host and project id compose the store URL.
+    tooltip: Full Sentry DSN — masked after save.
+    width: l
+    control: secret
+    required: true
+    group: Auth
+    errors:
+      required: "A Sentry DSN is required before events can be sent."
+
+  - property: logger
+    name: Logger name
+    help: >
+      Name shown in Sentry's event header. Defaults to "herald"; set
+      something per-service if multiple Herald pipelines share a
+      Sentry project.
+    tooltip: Logger name shown in Sentry — defaults to "herald".
+    width: m
+    control: text
+    required: false
+    default: herald
+    group: Identity
+
+  - property: platform
+    name: Platform tag
+    help: >
+      Sentry platform tag. Defaults to "csharp"; only change if you
+      need Sentry's UI to treat the events as something else (e.g.
+      "native" for a Godot build with symbols in a different format).
+    tooltip: Sentry platform tag — defaults to "csharp".
+    width: s
+    control: text
+    required: false
+    default: csharp
+    group: Identity
+
+capabilities:
+  - Parses DSN into store URL + auth header at construction
+  - Level mapping to Sentry vocabulary (debug / info / warning /
+    error / fatal)
+  - Exception emission in Sentry's values-array shape (type / value /
+    stacktrace)
+  - Properties flow into "extra"; static tags + category flow into
+    "tags" (cardinality-bounded)
+  - Single-event POST to the store endpoint
+
+limitations:
+  - No batching — Sentry's envelope endpoint would be needed
+  - Static tags configurable at construction only
+  - Single exception per event (no AggregateException fan-out)
+
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.Sentry.Tests/SentryLogSinkTests.cs (8 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/Sentry.

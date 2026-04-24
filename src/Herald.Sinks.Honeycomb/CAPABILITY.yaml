@@ -1,0 +1,113 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Honeycomb
+package_id: MMP.Herald.Sinks.Honeycomb
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Posts Herald log events to Honeycomb's batch ingest endpoint. Maps
+  each event onto Honeycomb's flat data-object shape with per-event
+  sample-rate support so aggregates stay correct when an upstream
+  sampler is in play.
+
+vendor:
+  name: Honeycomb
+  url: https://docs.honeycomb.io/api/tag/Events
+
+ships:
+  - HoneycombLogSink
+  - HoneycombLogSinkProvider
+  - HoneycombSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Honeycomb API key (classic team key or ingest-only key)
+    - Reachable Honeycomb ingest endpoint (public or Refinery)
+
+config:
+  kind: honeycomb
+  uri: "Optional endpoint override (Refinery / self-hosted)."
+  host: "Honeycomb dataset name."
+  alias: "Honeycomb API key — X-Honeycomb-Team."
+  notes: >
+    When the override URL omits the /1/batch/{dataset} path the sink
+    appends it. Sample rate is set at construction and not currently
+    surfaced through JSON config.
+
+dashboard_config:
+  - property: api_key
+    name: API key
+    help: >
+      Honeycomb API key used as the X-Honeycomb-Team header. Classic
+      keys scope to a team; ingest-only keys scope to a single dataset
+      and are the recommended choice for production log pipelines.
+    tooltip: Honeycomb API key — masked after save.
+    width: m
+    control: secret
+    required: true
+    min_length: 20
+    group: Auth
+
+  - property: dataset
+    name: Dataset
+    help: >
+      Target Honeycomb dataset name. Maps to the {dataset} segment of
+      the batch URL. Must already exist in the Honeycomb account.
+    tooltip: Honeycomb dataset receiving the events.
+    width: m
+    control: patterned-text
+    required: true
+    pattern: "^(?<ds>[A-Za-z0-9._-]+)$"
+    group: Endpoint
+    errors:
+      pattern: "Dataset names accept letters, numbers, dot, underscore, and hyphen."
+
+  - property: endpoint
+    name: Endpoint override
+    help: >
+      Optional full URL or host-root to point at a Refinery proxy or a
+      self-hosted Honeycomb Enterprise installation. Leave blank to
+      use api.honeycomb.io.
+    tooltip: Full URL or host; leave blank for api.honeycomb.io.
+    width: l
+    control: url
+    required: false
+    placeholder: https://refinery.example.com:8080
+    group: Endpoint
+    schemes: [http, https]
+
+capabilities:
+  - Batched delivery via IBatchedLogSink
+  - Per-event samplerate for upstream-sampled pipelines
+  - Full level / category / message / messageTemplate on every event
+  - Exception emission as exception + exception.type flat fields
+  - Reserved-field collision guard
+
+limitations:
+  - Flat data shape only — nested properties stringified
+  - Synchronous Send path; pair with async decorator for throughput
+  - Sample rate configurable at construction, not through JSON config
+
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.Honeycomb.Tests/HoneycombLogSinkTests.cs (8 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/Honeycomb.
