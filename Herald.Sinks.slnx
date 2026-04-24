@@ -1,2 +1,8 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Herald.Sinks.SignalFx/Herald.Sinks.SignalFx.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Herald.Sinks.SignalFx.Tests/Herald.Sinks.SignalFx.Tests.csproj" />
+  </Folder>
 </Solution>

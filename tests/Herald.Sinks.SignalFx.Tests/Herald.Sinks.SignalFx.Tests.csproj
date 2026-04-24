@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.SignalFx.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>HERALD004;xUnit1031</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Herald.Sinks.SignalFx\Herald.Sinks.SignalFx.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reuse the small test-helper set from Core's test project via
+         linked-compile rather than a test-project-to-test-project
+         reference. Same pattern Herald.Core.Aws / Herald.Core.Kafka
+         use. Helpers stay in one place; siblings pick up bug fixes
+         the next time they rebuild. -->
+    <Compile Include="..\..\..\Core\tests\Helpers\*.cs" LinkBase="_CoreTestHelpers" />
+  </ItemGroup>
+</Project>

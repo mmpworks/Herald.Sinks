@@ -1,0 +1,152 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.SignalFx
+#
+# This is the authoritative contract the Dashboard, the product-sheet
+# generator, and the release pipeline all read. The csproj version,
+# assembly name, and package id must line up with the values below.
+
+# ─── Identity ─────────────────────────────────────────────────────────
+name: Herald.Sinks.SignalFx
+package_id: MMP.Herald.Sinks.SignalFx
+version: 1.0.0
+kind: sink
+category: observability
+
+# ─── Human-readable ──────────────────────────────────────────────────
+purpose: >
+  Posts Herald log events to SignalFx / Splunk Observability Cloud's
+  HTTP log intake. Routes by realm or against a self-hosted Splunk
+  Observability endpoint, with optional low-cardinality dimensions
+  applied to every event for metric correlation.
+
+vendor:
+  name: Splunk
+  url: https://docs.splunk.com/observability/en/admin/logs/logs.html
+
+# ─── What ships ──────────────────────────────────────────────────────
+ships:
+  - SignalFxLogSink
+  - SignalFxLogSinkProvider
+  - SignalFxSinkRegistration
+
+# ─── Dependencies ────────────────────────────────────────────────────
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - SignalFx / Splunk Observability access token (X-SF-Token)
+    - Reachable HTTP endpoint (public realm intake or self-hosted URL)
+
+# ─── JSON-config surface (low-level runtime shape) ───────────────────
+config:
+  kind: signalfx
+  uri: "Full ingest URL — overrides realm when set."
+  host: "Realm name (e.g. us0, us1, eu0). Ignored when Uri is set."
+  alias: "SignalFx access token; used as the X-SF-Token header."
+  notes: >
+    When both Uri and Host are absent the sink defaults to the us0
+    realm. Dimensions are not surfaced through JSON config; callers
+    that need them construct SignalFxLogSink directly and register via
+    WithCustomSinkProvider.
+
+# ─── Dashboard-facing configuration ──────────────────────────────────
+dashboard_config:
+  - property: access_token
+    name: Access token
+    help: >
+      The SignalFx access token sent as the X-SF-Token header on every
+      request. Stored encrypted by the Dashboard; rotating the token
+      clears the stored value and forces the operator to re-enter.
+    tooltip: SignalFx / Splunk Observability access token — masked after save.
+    width: m
+    control: secret
+    required: true
+    min_length: 16
+    group: Auth
+    errors:
+      required: "SignalFx access token is required before events can be sent."
+      min-length: "Access tokens are at least 16 characters."
+
+  - property: realm
+    name: Realm
+    help: >
+      SignalFx realm identifies the ingest region. The public intake
+      hostname is https://ingest.<realm>.signalfx.com. Ignored when a
+      full endpoint URL is supplied below.
+    tooltip: SignalFx realm (us0, us1, eu0, ap0, ...).
+    width: s
+    control: select
+    required: false
+    default: us0
+    group: Endpoint
+    values:
+      - value: us0
+        text: "US0 (default)"
+      - value: us1
+        text: "US1"
+      - value: us2
+        text: "US2"
+      - value: eu0
+        text: "EU0"
+      - value: eu1
+        text: "EU1"
+      - value: ap0
+        text: "AP0 (Asia-Pacific)"
+      - value: jp0
+        text: "JP0 (Japan)"
+
+  - property: endpoint
+    name: Endpoint override
+    help: >
+      Full URL to override the realm-based default. Use this for
+      self-hosted Splunk Observability or a test intake. When a URL
+      without the /v2/log path is supplied the sink appends it
+      automatically.
+    tooltip: Full ingest URL; leave blank to use the selected realm.
+    width: l
+    control: url
+    required: false
+    placeholder: https://signalfx-onprem.example.com
+    group: Endpoint
+    schemes: [https, http]
+    errors:
+      url-malformed: "Endpoint must be a full URL including scheme."
+
+# ─── Capabilities (feature bullets) ──────────────────────────────────
+capabilities:
+  - Batched delivery via IBatchedLogSink
+  - Realm-based default endpoint with full-URL override for self-hosted
+  - Low-cardinality dimensions emitted on every event for metric correlation
+  - Per-event properties land at payload root; exceptions expand to exception / exception.type
+  - Reserved-field collision guard (seen-set prevents property-over-reserved overwrites)
+
+# ─── Limitations (what we do NOT do) ─────────────────────────────────
+limitations:
+  - No gzip compression on the request body
+  - Dimensions configured at construction only — not surfaced through JSON config
+  - Synchronous Send path; pair with the async decorator for high-throughput pipelines
+
+# ─── Compliance + operational ────────────────────────────────────────
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.SignalFx.Tests/SignalFxLogSinkTests.cs (7 tests)
+
+# ─── Metapackage membership ──────────────────────────────────────────
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+# ─── Maintenance status ──────────────────────────────────────────────
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-23
+
+# ─── Breaking changes ────────────────────────────────────────────────
+changelog:
+  - version: 1.0.0
+    date: 2026-04-23
+    summary: Initial release — migrated from Herald.Core Addons/SignalFx.
