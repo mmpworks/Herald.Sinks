@@ -1,0 +1,104 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.TcpJsonLine
+package_id: MMP.Herald.Sinks.TcpJsonLine
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Streams Herald log events as newline-delimited JSON lines over a
+  persistent TCP connection. Reconnects automatically on failure.
+  Plaintext transport — terminate TLS at a sidecar (stunnel, HAProxy,
+  envoy) for anything crossing an untrusted network.
+
+vendor:
+  name: Herald
+  url: https://github.com/smuchow1962/Herald.Sinks
+
+ships:
+  - TcpJsonLineLogSink
+  - TcpJsonLineSinkProvider
+  - TcpJsonLineSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Reachable TCP socket accepting newline-delimited JSON frames
+    - Trusted network path (plaintext; no built-in TLS)
+
+config:
+  kind: tcp_json_line
+  uri: null
+  host: "Destination host name or IP."
+  alias: null
+  notes: >
+    Port is supplied on the LoggingRuntimeSinkDefinition.Port field.
+    One event per line, persistent connection reused across calls.
+
+dashboard_config:
+  - property: host
+    name: Host
+    help: >
+      The TCP host the sink connects to. DNS hostnames and literal IPs
+      are both accepted. The sink resolves lazily — the name does not
+      have to resolve at construction time.
+    tooltip: Destination TCP host.
+    width: m
+    control: text
+    required: true
+    placeholder: logs.internal
+    group: Endpoint
+    errors:
+      required: "A TCP host is required."
+
+  - property: port
+    name: Port
+    help: >
+      TCP port on the destination host. Accepts 1 through 65535. Most
+      JSONL collectors listen on 5170, 5044, or a site-specific port.
+    tooltip: Destination TCP port (1-65535).
+    width: s
+    control: number
+    required: true
+    integer: true
+    min: 1
+    max: 65535
+    group: Endpoint
+    errors:
+      required: "A TCP port is required."
+      min: "Port must be at least 1."
+      max: "Port must be at most 65535."
+
+capabilities:
+  - Persistent connection with automatic reconnect on write failure
+  - Thread-safe — SemaphoreSlim coordinates sync Log + async LogAsync
+  - Async path (LogAsync / LogBatchAsync) for the AsyncLogger drain
+  - IsConnected probe for health checks
+  - IDisposable — double-dispose and dispose-then-log handled safely
+
+limitations:
+  - Plaintext only — no built-in TLS (use sidecar or VPN)
+  - One event per line — no framing negotiation
+  - Single-connection — no connection pooling across instances
+
+minimum_edition: Pro
+aot_compatible: true
+thread_safety: Thread-safe — SemaphoreSlim guards the shared stream for both sync and async paths.
+
+test_coverage: tests/Herald.Sinks.TcpJsonLine.Tests/TcpJsonLineLogSinkTests.cs (13 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/NetworkTransports.

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.TcpJsonLine</RootNamespace>
+    <AssemblyName>Herald.Sinks.TcpJsonLine</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.TcpJsonLine</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Streams Herald log events as newline-delimited JSON lines over a persistent TCP connection. Plaintext transport — terminate TLS at a sidecar for cross-network use.</Description>
+    <PackageTags>herald;logging;sink;tcp;json;streaming</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.TcpJsonLine.Tests" />
+  </ItemGroup>
+</Project>

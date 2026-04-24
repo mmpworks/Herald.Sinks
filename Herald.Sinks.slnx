@@ -1,8 +1,14 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
     <Project Path="src/Herald.Sinks.SignalFx/Herald.Sinks.SignalFx.csproj" />
+    <Project Path="src/Herald.Sinks.TcpJsonLine/Herald.Sinks.TcpJsonLine.csproj" />
+    <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.SignalFx.Tests/Herald.Sinks.SignalFx.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.TcpJsonLine.Tests/Herald.Sinks.TcpJsonLine.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.UdpJsonLine.Tests/Herald.Sinks.UdpJsonLine.Tests.csproj" />
   </Folder>
 </Solution>

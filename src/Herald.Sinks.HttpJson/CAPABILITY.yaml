@@ -1,0 +1,91 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.HttpJson
+package_id: MMP.Herald.Sinks.HttpJson
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Posts Herald log events as newline-delimited JSON (NDJSON) over HTTP.
+  One event per line, batched when the pipeline supplies multiple.
+  Pairs with any HTTP log-intake that accepts NDJSON — Elasticsearch
+  bulk, Loki push, generic aggregators, custom backends.
+
+vendor:
+  name: Herald
+  url: https://github.com/smuchow1962/Herald.Sinks
+
+ships:
+  - HttpJsonLogSink
+  - HttpJsonSinkProvider
+  - HttpJsonSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Reachable HTTP endpoint accepting application/x-ndjson POSTs
+
+config:
+  kind: http_json
+  uri: "Target endpoint URL. POST with Content-Type application/x-ndjson."
+  host: null
+  alias: null
+  notes: >
+    Minimal surface — point the URL at the receiver and the sink handles
+    single events and batches uniformly.
+
+dashboard_config:
+  - property: endpoint
+    name: Endpoint URL
+    help: >
+      The HTTP endpoint that receives the NDJSON payload. Events are
+      POSTed with Content-Type application/x-ndjson — one log event per
+      line, multiple events joined by newlines when the pipeline
+      batches.
+    tooltip: HTTP URL that receives the NDJSON payload.
+    width: l
+    control: url
+    required: true
+    placeholder: https://logs.example.com/ingest
+    group: Endpoint
+    schemes: [http, https]
+    errors:
+      required: "An endpoint URL is required before events can be sent."
+      url-malformed: "Endpoint must be a full URL including scheme."
+
+capabilities:
+  - Batched delivery via IBatchedLogSink
+  - Async path (LogAsync / LogBatchAsync) for the AsyncLogger drain
+  - Shared HttpClient pool via internal SocketsHttpHandler — reuses
+    TCP connections across requests
+  - 30-second default timeout on the owned HttpClient
+  - Caller-supplied HttpClient honored verbatim — timeout, handler,
+    and disposal stay with the caller
+
+limitations:
+  - No gzip compression on the request body
+  - No built-in retry — pair with the async decorator for retry policy
+  - Relies on the remote endpoint accepting NDJSON; no framing
+    negotiation
+
+minimum_edition: Pro
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, both sync Send and async SendAsync paths.
+
+test_coverage: tests/Herald.Sinks.HttpJson.Tests/HttpJsonLogSinkTests.cs (6 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/NetworkTransports.

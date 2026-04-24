@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.HttpJson</RootNamespace>
+    <AssemblyName>Herald.Sinks.HttpJson</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.HttpJson</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Posts Herald log events as newline-delimited JSON (NDJSON) over HTTP. One event per line, batched when the pipeline supplies multiple.</Description>
+    <PackageTags>herald;logging;sink;http;ndjson;json</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.HttpJson.Tests" />
+  </ItemGroup>
+</Project>

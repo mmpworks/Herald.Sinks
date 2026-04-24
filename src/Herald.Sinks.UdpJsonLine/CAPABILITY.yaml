@@ -1,0 +1,105 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.UdpJsonLine
+package_id: MMP.Herald.Sinks.UdpJsonLine
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Fires Herald log events as newline-delimited JSON datagrams over UDP.
+  One datagram per event, no acknowledgement, no retry. Fits syslog-style
+  collectors and lossy-tolerant pipelines where drop-tolerance is
+  acceptable and latency matters more than durability.
+
+vendor:
+  name: Herald
+  url: https://github.com/smuchow1962/Herald.Sinks
+
+ships:
+  - UdpJsonLineLogSink
+  - UdpJsonLineSinkProvider
+  - UdpJsonLineSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Reachable UDP endpoint accepting JSON-line datagrams
+    - Trusted network path (plaintext; no built-in DTLS)
+
+config:
+  kind: udp_json_line
+  uri: null
+  host: "Destination host name or IP."
+  alias: null
+  notes: >
+    Port is supplied on the LoggingRuntimeSinkDefinition.Port field.
+    Per-event payload capped at 65,000 bytes; oversized events throw
+    rather than fragment silently.
+
+dashboard_config:
+  - property: host
+    name: Host
+    help: >
+      UDP host the sink sends to. DNS hostnames and literal IPs both
+      accepted — the name is resolved lazily at first send and cached
+      for the lifetime of the sink.
+    tooltip: Destination UDP host.
+    width: m
+    control: text
+    required: true
+    placeholder: syslog.internal
+    group: Endpoint
+    errors:
+      required: "A UDP host is required."
+
+  - property: port
+    name: Port
+    help: >
+      UDP port on the destination host. Syslog commonly uses 514; other
+      collectors pick site-specific values.
+    tooltip: Destination UDP port (1-65535).
+    width: s
+    control: number
+    required: true
+    integer: true
+    min: 1
+    max: 65535
+    group: Endpoint
+    errors:
+      required: "A UDP port is required."
+      min: "Port must be at least 1."
+      max: "Port must be at most 65535."
+
+capabilities:
+  - Fire-and-forget datagram delivery — minimal per-event cost
+  - Async path (LogAsync / LogBatchAsync) for the AsyncLogger drain
+  - Lazy DNS resolution (doesn't block construction on unreachable host)
+  - Per-event 65,000-byte hard ceiling with helpful error on oversized events
+
+limitations:
+  - No delivery guarantee — events can be silently dropped by the network
+  - No retry, no acknowledgement, no ordering guarantee
+  - Plaintext only — no built-in DTLS
+  - Per-event size capped (not suited for large property bags or dumps)
+
+minimum_edition: Pro
+aot_compatible: true
+thread_safety: Thread-safe — UdpClient.Send / SendAsync are reentrant.
+
+test_coverage: tests/Herald.Sinks.UdpJsonLine.Tests/UdpJsonLineLogSinkTests.cs (10 tests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/NetworkTransports.
