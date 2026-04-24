@@ -1,0 +1,30 @@
+# .NET build output
+bin/
+obj/
+out/
+
+# IDE
+.idea/
+.vs/
+*.suo
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
+
+# NuGet
+*.nupkg
+*.snupkg
+
+# Test results
+tests/TestResults/
+TestResults/
+
+# Python (for tools/)
+__pycache__/
+*.pyc
+.venv/
+
+# Generated docs
+docs/product-sheet.md

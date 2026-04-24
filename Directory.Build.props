@@ -1,0 +1,33 @@
+<Project>
+  <!--
+    Repo-wide defaults for every sink csproj in Herald.Sinks. Overrides
+    per-sink lives in the individual csproj.
+  -->
+  <PropertyGroup>
+    <Authors>Steven Muchow</Authors>
+    <Company>MMP LLC</Company>
+    <Copyright>Copyright (c) 2026 MMP LLC</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/smuchow1962/Herald.Sinks</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/smuchow1962/Herald.Sinks</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Pack the LICENSE file into every produced NuGet so consumers
+       receive the terms alongside the code. -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE"
+          Pack="true"
+          PackagePath="\"
+          Visible="false" />
+  </ItemGroup>
+</Project>
