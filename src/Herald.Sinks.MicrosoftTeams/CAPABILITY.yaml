@@ -1,0 +1,62 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.MicrosoftTeams
+package_id: MMP.Herald.Sinks.MicrosoftTeams
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Posts Herald log events to a Microsoft Teams channel via an incoming
+  webhook. Drop-in for Serilog.Sinks.MicrosoftTeams.Alternative.
+  MessageCard format — compatible with both Office 365 Connectors and
+  the newer Workflows webhook.
+vendor:
+  name: Microsoft
+  url: https://learn.microsoft.com/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook
+ships:
+  - MicrosoftTeamsLogSink
+  - MicrosoftTeamsLogSinkProvider
+  - MicrosoftTeamsSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Incoming webhook URL from a Teams channel
+config:
+  kind: ms_teams
+  uri: "Incoming webhook URL (required)."
+  alias: "Optional title override. Default is '[level] category'."
+dashboard_config:
+  - property: webhook_url
+    name: Webhook URL
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: title
+    name: Title override
+    width: l
+    control: text
+    required: false
+    group: Card
+capabilities:
+  - MessageCard format with colour-coded themeColor
+  - Facts table auto-populated from properties
+  - Exception type surfaced as a fact
+  - Title override for branded alerts
+limitations:
+  - Teams rate limits at ~1 req/sec; pair with a warn+ level filter
+  - No batching — one event per webhook call (Teams cards are per-event)
+  - MessageCard format is officially "retired" but still works; Adaptive Card follow-up planned
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient.
+test_coverage: tests/Herald.Sinks.MicrosoftTeams.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

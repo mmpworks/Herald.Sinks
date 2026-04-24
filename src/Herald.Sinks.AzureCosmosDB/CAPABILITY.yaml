@@ -1,0 +1,78 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.AzureCosmosDB
+package_id: MMP.Herald.Sinks.AzureCosmosDB
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Writes Herald log events as documents in an Azure Cosmos DB
+  container via the modern Microsoft.Azure.Cosmos v3 SDK. Drop-in for
+  Serilog.Sinks.AzureCosmosDB. Partition-keyed on category by default
+  for query locality.
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/cosmos-db/
+ships:
+  - AzureCosmosDbLogSink
+  - AzureCosmosDbLogSinkProvider
+  - AzureCosmosDbSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Microsoft.Azure.Cosmos
+    - Cosmos account + database + container with partition key /category
+config:
+  kind: azure_cosmosdb
+  uri: "Cosmos account endpoint (required). e.g. https://acct.documents.azure.com"
+  alias: "Account key (primary or secondary) — required."
+  host: "database/container (required)."
+dashboard_config:
+  - property: endpoint
+    name: Endpoint
+    width: xl
+    control: url
+    required: true
+    group: Target
+  - property: account_key
+    name: Account key
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: database
+    name: Database
+    width: m
+    control: text
+    required: true
+    group: Target
+  - property: container
+    name: Container
+    width: m
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - Document insert via Container.CreateItemAsync
+  - GUID per-document id
+  - Partition key from event category (override via code-first ctor)
+  - Code-first overload accepts a pre-built CosmosClient
+  - Batching via per-event CreateItemAsync (enable Cosmos bulk mode on the client for higher throughput)
+limitations:
+  - No transactional batch in 1.0 — each event is its own write
+  - No per-item TTL in 1.0 — set container TTL at deploy time
+  - Synchronous Send path via .GetAwaiter().GetResult()
+  - AAD / Managed Identity auth not surfaced in 1.0; use code-first ctor with a preconfigured CosmosClient
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — CosmosClient is thread-safe per Azure SDK contract.
+test_coverage: tests/Herald.Sinks.AzureCosmosDB.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack (modern v3 SDK).

@@ -1,0 +1,68 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.LogzIo
+package_id: MMP.Herald.Sinks.LogzIo
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to Logz.io's bulk HTTP listener. Drop-in for
+  Serilog.Sinks.Logz.Io. NDJSON body, token carried in the URL.
+vendor:
+  name: Logz.io
+  url: https://docs.logz.io/docs/shipping/code/dotnet/serilog
+ships:
+  - LogzIoLogSink
+  - LogzIoLogSinkProvider
+  - LogzIoSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Logz.io account token
+config:
+  kind: logzio
+  alias: "Account token (required)."
+  host: "Log type. Default 'herald'."
+  uri: "Listener URL. Default https://listener.logz.io:8071/ (override for EU/AU)."
+dashboard_config:
+  - property: account_token
+    name: Account token
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: type
+    name: Type
+    width: s
+    control: text
+    required: false
+    default: herald
+    group: Output
+  - property: listener_url
+    name: Listener URL
+    width: l
+    control: url
+    required: false
+    default: https://listener.logz.io:8071/
+    group: Target
+capabilities:
+  - NDJSON payload (one event per line) per Logz.io spec
+  - Token travels in URL; no Authorization header needed
+  - Regional listener override via listenerUrl
+  - Batched POST per IBatchedLogSink
+limitations:
+  - Synchronous Send path
+  - Regional listeners (EU, AU) require manual URL override
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient.
+test_coverage: tests/Herald.Sinks.LogzIo.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

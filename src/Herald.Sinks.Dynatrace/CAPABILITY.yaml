@@ -1,0 +1,59 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Dynatrace
+package_id: MMP.Herald.Sinks.Dynatrace
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Posts Herald log events to Dynatrace Generic Log Ingest API via HTTP
+  with Api-Token authentication. Drop-in for Serilog.Sinks.Dynatrace.
+  No Dynatrace SDK dependency.
+vendor:
+  name: Dynatrace
+  url: https://docs.dynatrace.com/docs/discover-dynatrace/references/dynatrace-api/environment-api/log-monitoring/post-ingest-logs
+ships:
+  - DynatraceLogSink
+  - DynatraceLogSinkProvider
+  - DynatraceSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Dynatrace environment URL + API token with logs.ingest scope
+config:
+  kind: dynatrace
+  uri: "Environment URL (required). e.g. https://abc123.live.dynatrace.com"
+  alias: "API token with logs.ingest scope (required)."
+dashboard_config:
+  - property: environment_url
+    name: Environment URL
+    width: xl
+    control: url
+    required: true
+    group: Target
+  - property: api_token
+    name: API token
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+capabilities:
+  - Batched POST per IBatchedLogSink
+  - Severity mapping (DEBUG/INFO/WARN/ERROR/CRITICAL)
+  - Pure HTTP — no Dynatrace SDK
+limitations:
+  - 5 MB / 50,000-entry request ceiling enforced by Dynatrace
+  - Synchronous Send path — pair with async decorator
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient.
+test_coverage: tests/Herald.Sinks.Dynatrace.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

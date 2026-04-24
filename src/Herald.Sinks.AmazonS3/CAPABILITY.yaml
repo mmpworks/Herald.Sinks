@@ -1,0 +1,72 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.AmazonS3
+package_id: MMP.Herald.Sinks.AmazonS3
+version: 1.0.0
+kind: sink
+category: cloud
+purpose: >
+  Uploads Herald log events as NDJSON objects to an Amazon S3 bucket.
+  Drop-in for Serilog.Sinks.AmazonS3. One batch → one S3 object. Pairs
+  naturally with Herald.Sinks.AwsCloudWatch for archive vs live-query
+  separation.
+vendor:
+  name: Amazon Web Services
+  url: https://docs.aws.amazon.com/AmazonS3/
+ships:
+  - AmazonS3LogSink
+  - AmazonS3LogSinkProvider
+  - AmazonS3SinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - AWSSDK.S3
+    - IAM credentials with s3:PutObject on the target bucket
+config:
+  kind: aws_s3
+  uri: "Bucket name (required)."
+  alias: "Key prefix. Default 'logs'."
+  host: "AWS region system name. Optional."
+dashboard_config:
+  - property: bucket
+    name: Bucket
+    width: l
+    control: text
+    required: true
+    group: Target
+  - property: key_prefix
+    name: Key prefix
+    width: m
+    control: text
+    required: false
+    default: logs
+    group: Target
+  - property: region
+    name: Region
+    width: s
+    control: text
+    required: false
+    group: Target
+capabilities:
+  - Date-partitioned key layout (yyyy-MM-dd) for listable buckets
+  - NDJSON body — streams well into Athena / Redshift Spectrum / S3 Select
+  - Default AWS credential chain
+  - Code-first overload accepts a pre-built IAmazonS3
+limitations:
+  - One S3 object per batch — batch sizing drives object count
+  - No multipart upload in 1.0 — batches must fit in memory
+  - Synchronous Send via .GetAwaiter().GetResult()
+  - No SSE-C / KMS key parameters surfaced yet — follow-up feature
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — AWS SDK client is thread-safe.
+test_coverage: tests/Herald.Sinks.AmazonS3.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

@@ -1,0 +1,77 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.AzureLogAnalyticsDcr
+package_id: MMP.Herald.Sinks.AzureLogAnalyticsDcr
+version: 1.0.0
+kind: sink
+category: cloud
+purpose: >
+  Writes Herald log events to Azure Monitor via the modern Data
+  Collection Rule (DCR)-based Log Ingestion API. Microsoft's supported
+  successor to the legacy Data Collector API (Herald.Sinks.AzureAnalytics).
+  Use this for new workspaces.
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
+ships:
+  - AzureLogAnalyticsDcrLogSink
+  - AzureLogAnalyticsDcrLogSinkProvider
+  - AzureLogAnalyticsDcrSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Azure.Monitor.Ingestion
+    - Azure.Identity
+    - DCR + DCE + custom-table set up in the workspace
+    - Monitoring Metrics Publisher role on the DCR
+config:
+  kind: azure_log_analytics_dcr
+  uri: "DCE logs-ingestion endpoint (required)."
+  alias: "DCR immutable ID (required). dcr-XXXXXXXX."
+  host: "Stream name (required). Custom-HeraldLog, etc."
+  notes: >
+    Credential resolution via DefaultAzureCredential. Override with a
+    code-first ctor when explicit credentials or a pre-built
+    LogsIngestionClient is needed.
+dashboard_config:
+  - property: endpoint
+    name: DCE endpoint
+    width: xl
+    control: url
+    required: true
+    group: Target
+  - property: rule_id
+    name: DCR immutable ID
+    width: l
+    control: text
+    required: true
+    group: Target
+  - property: stream_name
+    name: Stream name
+    width: m
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - Modern DCR-based ingest (supported by Microsoft going forward)
+  - Single and batched Upload
+  - Uses LogsIngestionClient — built-in retry, auth, telemetry
+  - TimeGenerated column mapped from event timestamp
+  - DefaultAzureCredential chain (env, managed identity, CLI, etc.)
+limitations:
+  - Requires DCR + DCE + custom-table setup — see Azure docs
+  - Property names prefixed with Prop_ to avoid collisions with reserved columns
+  - Synchronous Upload (the SDK has async; sync wrapper here matches Herald.ILogger shape)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — LogsIngestionClient is thread-safe per Azure SDK contract.
+test_coverage: tests/Herald.Sinks.AzureLogAnalyticsDcr.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack (DCR successor to AzureAnalytics).

@@ -1,0 +1,72 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.OpenSearch
+package_id: MMP.Herald.Sinks.OpenSearch
+version: 1.0.0
+kind: sink
+category: search
+purpose: >
+  Indexes Herald log events into an OpenSearch cluster via the _bulk
+  HTTP API. Drop-in for Serilog.Sinks.OpenSearch. Pure HTTP — no
+  OpenSearch SDK dependency keeps the transitive footprint small.
+  Natural companion to Herald.Sinks.Elasticsearch for AWS shops after
+  the Elasticsearch/OpenSearch split.
+vendor:
+  name: OpenSearch Project / AWS
+  url: https://opensearch.org
+ships:
+  - OpenSearchLogSink
+  - OpenSearchLogSinkProvider
+  - OpenSearchSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - OpenSearch 1.x or 2.x cluster
+config:
+  kind: opensearch
+  uri: "Cluster endpoint (required). e.g. https://opensearch.example.com"
+  host: "Index-name template. Default 'herald-logs-{0:yyyy-MM-dd}'."
+  alias: "Basic-auth username (optional). Password via code-first ctor only."
+dashboard_config:
+  - property: endpoint
+    name: Endpoint
+    width: xl
+    control: url
+    required: true
+    group: Target
+  - property: index
+    name: Index template
+    width: l
+    control: text
+    required: false
+    default: herald-logs-{0:yyyy-MM-dd}
+    group: Target
+  - property: username
+    name: Username
+    width: m
+    control: text
+    required: false
+    group: Auth
+capabilities:
+  - _bulk API indexing with action + document NDJSON framing
+  - Date-token index rotation for time-series logs
+  - Optional basic-auth
+  - Pure HTTP — no OpenSearch SDK transitive dependencies
+  - Batched POST per IBatchedLogSink
+limitations:
+  - No SigV4 signing in 1.0 — supply a pre-signing HttpClient via code-first ctor for AWS OpenSearch Service
+  - No index-template / ILM management — operator concern
+  - Password through code-first ctor only (not surfaced in JSON config)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient.
+test_coverage: tests/Herald.Sinks.OpenSearch.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

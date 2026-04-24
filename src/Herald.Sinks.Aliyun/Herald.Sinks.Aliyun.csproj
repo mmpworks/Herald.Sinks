@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Aliyun</RootNamespace>
+    <AssemblyName>Herald.Sinks.Aliyun</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Aliyun</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Sends Herald log events to Alibaba Cloud Simple Log Service (SLS). Drop-in for the Aliyun Serilog sink ecosystem. HMAC-SHA1-signed HTTP PUT to the SLS REST API.</Description>
+    <PackageTags>herald;logging;sink;aliyun;alibaba-cloud;sls;china</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Aliyun.Tests" />
+  </ItemGroup>
+</Project>

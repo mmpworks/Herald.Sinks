@@ -1,0 +1,90 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Aliyun
+package_id: MMP.Herald.Sinks.Aliyun
+version: 1.0.0
+kind: sink
+category: cloud
+purpose: >
+  Sends Herald log events to Alibaba Cloud Simple Log Service (SLS)
+  via the REST PutLogs API. Primary target for China-region
+  deployments and any workload that reports into the Aliyun log
+  ecosystem. Pure HTTP with inline HMAC-SHA1 signing — no Aliyun SDK
+  dependency.
+vendor:
+  name: Alibaba Cloud
+  url: https://help.aliyun.com/product/28958.html
+ships:
+  - AliyunSlsLogSink
+  - AliyunSlsLogSinkProvider
+  - AliyunSlsSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - SLS project + logstore
+    - Access Key ID + Access Key Secret, or STS token via a custom HttpClient
+config:
+  kind: aliyun_sls
+  uri: "Endpoint host — e.g. https://cn-hangzhou.log.aliyuncs.com (required)."
+  host: "project/logstore (required)."
+  alias: "accessKeyId:accessKeySecret (required)."
+  notes: >
+    STS / role-based auth: construct AliyunSlsLogSink with empty
+    accessKeyId/accessKeySecret and supply a pre-signing HttpClient via
+    the code-first ctor. When both keys are empty the sink skips
+    inline signing and trusts the HttpClient.
+dashboard_config:
+  - property: endpoint
+    name: Endpoint
+    width: xl
+    control: url
+    required: true
+    group: Target
+  - property: project
+    name: Project
+    width: m
+    control: text
+    required: true
+    group: Target
+  - property: logstore
+    name: Logstore
+    width: m
+    control: text
+    required: true
+    group: Target
+  - property: access_key_id
+    name: Access key ID
+    width: l
+    control: text
+    required: true
+    group: Auth
+  - property: access_key_secret
+    name: Access key secret
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+capabilities:
+  - HMAC-SHA1 request signing per Aliyun SLS spec (API version 0.6.0)
+  - JSON body with __logs__ array and __time__ timestamp fields
+  - STS / role auth bypass via empty credentials + custom HttpClient
+  - Batched POST per IBatchedLogSink
+  - Pure HTTP — no Aliyun SDK transitive dependency
+limitations:
+  - No protobuf wire format in 1.0 (JSON only)
+  - No topic / source fields surfaced through JSON config
+  - Synchronous Send path
+  - Key rotation requires sink reconstruction
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient and stateless signing.
+test_coverage: tests/Herald.Sinks.Aliyun.Tests/ (signing + construction; account-backed tests are manual)
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

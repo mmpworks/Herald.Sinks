@@ -1,0 +1,73 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.MySQL
+package_id: MMP.Herald.Sinks.MySQL
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Writes Herald log events as rows in a MySQL or MariaDB table via
+  MySqlConnector (the modern, fully-async, open-source driver). Drop-in
+  for Serilog.Sinks.MySQL. Completes the relational-DB trio alongside
+  MSSqlServer and PostgreSQL.
+vendor:
+  name: Oracle / MariaDB Foundation
+  url: https://dev.mysql.com/doc/
+ships:
+  - MySQLLogSink
+  - MySQLLogSinkProvider
+  - MySQLSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - MySqlConnector
+    - MySQL 5.7+ or MariaDB 10.x
+config:
+  kind: mysql
+  uri: "Connection string (required)."
+  host: "Table name. Default 'logs'. Alphanumeric + underscore only."
+  alias: "'auto-create' to enable CREATE TABLE IF NOT EXISTS DDL on first write."
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: table
+    name: Table
+    width: s
+    control: text
+    required: false
+    default: logs
+    group: Target
+  - property: auto_create
+    name: Auto-create table
+    width: xs
+    control: checkbox
+    required: false
+    default: false
+    group: Target
+capabilities:
+  - Parameterized INSERT on single writes
+  - Transaction-wrapped batched INSERT (~10x faster than per-row commits)
+  - Works on MySQL 5.7+ and MariaDB 10.x
+  - Optional idempotent auto-create DDL
+  - utf8mb4 charset on auto-create
+limitations:
+  - Properties stored as TEXT JSON by default; switch to JSON type in the installer for MySQL 5.7+
+  - No batch-insert multi-row syntax in 1.0 (one INSERT per event under a single transaction)
+  - Synchronous Send
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — each call opens a pooled MySqlConnection.
+test_coverage: tests/Herald.Sinks.MySQL.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

@@ -1,0 +1,63 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.SQLite
+package_id: MMP.Herald.Sinks.SQLite
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Writes Herald log events to an embedded SQLite database. Drop-in for
+  Serilog.Sinks.SQLite. Single-file, no server, no background process.
+  Ideal for desktop apps, CLI tools, and edge deployments.
+vendor:
+  name: SQLite / Microsoft
+  url: https://learn.microsoft.com/dotnet/standard/data/sqlite/
+ships:
+  - SQLiteLogSink
+  - SQLiteLogSinkProvider
+  - SQLiteSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Microsoft.Data.Sqlite (native SQLite3 via e_sqlite3)
+config:
+  kind: sqlite
+  uri: "Sqlite connection string (required). e.g. 'Data Source=app.db'"
+  host: "Table name. Default 'logs'. Alphanumeric + underscore only."
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    width: xl
+    control: text
+    required: true
+    group: Target
+  - property: table
+    name: Table
+    width: s
+    control: text
+    required: false
+    default: logs
+    group: Target
+capabilities:
+  - Auto-creates table if missing (CREATE TABLE IF NOT EXISTS)
+  - Batched INSERT wrapped in a transaction (~10x faster than per-row commits)
+  - Per-sink lock serialises writes (SQLite semantics)
+  - Properties stored as JSON TEXT column
+  - Table-name identifier validation (letter/digit/underscore only)
+limitations:
+  - SQLite serialises writers — not suitable for high-concurrency services
+  - No WAL-mode setup helper in 1.0 — set via connection string / PRAGMA
+  - Synchronous Send (SQLite has no async path worth using)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe via per-sink lock. Single connection held for lifetime.
+test_coverage: tests/Herald.Sinks.SQLite.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.

@@ -1,0 +1,81 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Graylog
+package_id: MMP.Herald.Sinks.Graylog
+version: 1.0.0
+kind: sink
+category: infrastructure
+purpose: >
+  Sends Herald log events as GELF 1.1 messages to Graylog over HTTP or
+  TCP. Drop-in for Serilog.Sinks.Graylog / Graylog.Batching. Common
+  target for European enterprise shops and any Graylog-as-central-log-
+  aggregator deployment.
+vendor:
+  name: Graylog
+  url: https://docs.graylog.org/docs/gelf
+ships:
+  - GraylogLogSink
+  - GraylogLogSinkProvider
+  - GraylogSinkRegistration
+  - GraylogTransport (public enum)
+  - GraylogMessageBuilder (internal)
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Graylog input accepting GELF (HTTP or TCP)
+config:
+  kind: graylog
+  uri: "Endpoint — HTTP URL or host:port for TCP (required)."
+  alias: "'tcp' for TCP transport; default is HTTP."
+  host: "Source host override. Defaults to Environment.MachineName."
+dashboard_config:
+  - property: endpoint
+    name: Endpoint
+    width: xl
+    control: text
+    required: true
+    group: Target
+  - property: transport
+    name: Transport
+    width: s
+    control: select
+    required: false
+    default: http
+    values:
+      - value: http
+        text: "HTTP (default)"
+      - value: tcp
+        text: "TCP (null-terminated)"
+    group: Wire
+  - property: source_host
+    name: Source host
+    width: m
+    control: text
+    required: false
+    group: Identity
+capabilities:
+  - GELF 1.1 wire format (version, host, short_message, full_message, timestamp, level)
+  - HTTP and TCP transports (UDP chunking is a follow-up)
+  - Custom fields prefixed with underscore per GELF spec
+  - Syslog severity mapping (0-7) from Herald level
+  - Exception → full_message + _exception_type
+  - TCP reconnect-on-failure with single retry
+limitations:
+  - No UDP / chunking in 1.0
+  - No GZIP compression on the HTTP transport
+  - Synchronous Send — pair with async decorator for heavy volume
+minimum_edition: Community
+aot_compatible: true
+thread_safety: >
+  Thread-safe. HTTP is stateless on the client side; TCP serialises
+  through a per-sink lock.
+test_coverage: tests/Herald.Sinks.Graylog.Tests/ (GELF builder coverage)
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.2 Extended Pack.
