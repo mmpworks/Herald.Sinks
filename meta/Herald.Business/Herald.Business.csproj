@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Herald.Business — metapackage that pulls in every Herald.Sinks
+    package. No assembly output; the NuGet is pure dependency glue.
+    Consumers install this one package and get the complete
+    observability + alerting destination catalog.
+
+    The metapackage inherits the net8.0;net9.0;net10.0 multi-target
+    from Directory.Build.props so ProjectReference resolution against
+    the sink packages works per-TFM. IncludeBuildOutput=false means
+    no DLL ships for any of them — the nupkg is pure dependency glue
+    that declares the sink deps separately for each target framework
+    a consumer picks.
+  -->
+  <PropertyGroup>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+    <IsPackable>true</IsPackable>
+
+    <PackageId>MMP.Herald.Business</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Herald observability metapackage for business and enterprise deployments. Pulls in every Herald.Sinks destination — HTTP, TCP, UDP, every Enterprise HTTP sink (Seq, Splunk, Honeycomb, Datadog, Loki, SignalFx, Sentry, PagerDuty), community transports (Elasticsearch, Slack, GenericWebhook), and the OTLP trio. Depend on this one package and pick destinations at registration time.</Description>
+    <PackageTags>herald;logging;metapackage;observability;enterprise</PackageTags>
+
+    <!-- Per the monorepo's per-file header convention there is no C# -->
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    Each ProjectReference becomes a PackageReference on pack. Consumers
+    of MMP.Herald.Business get all 15 sink packages installed
+    transitively (plus Herald.Core, which every sink references).
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Herald.Sinks.Datadog\Herald.Sinks.Datadog.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Elasticsearch\Herald.Sinks.Elasticsearch.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.GenericWebhook\Herald.Sinks.GenericWebhook.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Honeycomb\Herald.Sinks.Honeycomb.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.HttpJson\Herald.Sinks.HttpJson.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Loki\Herald.Sinks.Loki.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Otlp\Herald.Sinks.Otlp.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.PagerDuty\Herald.Sinks.PagerDuty.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Sentry\Herald.Sinks.Sentry.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Seq\Herald.Sinks.Seq.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.SignalFx\Herald.Sinks.SignalFx.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Slack\Herald.Sinks.Slack.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Splunk\Herald.Sinks.Splunk.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.TcpJsonLine\Herald.Sinks.TcpJsonLine.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.UdpJsonLine\Herald.Sinks.UdpJsonLine.csproj" />
+  </ItemGroup>
+</Project>

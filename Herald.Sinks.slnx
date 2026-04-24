@@ -16,6 +16,10 @@
     <Project Path="src/Herald.Sinks.TcpJsonLine/Herald.Sinks.TcpJsonLine.csproj" />
     <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
   </Folder>
+  <Folder Name="/meta/">
+    <Project Path="meta/Herald.Business/Herald.Business.csproj" />
+    <Project Path="meta/Herald.Game.Pro/Herald.Game.Pro.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Elasticsearch.Tests/Herald.Sinks.Elasticsearch.Tests.csproj" />

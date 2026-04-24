@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Herald.Game.Pro — metapackage for paid-tier games that want
+    observability without dragging along enterprise-alerting sinks.
+    PagerDuty, Elasticsearch, and Slack are excluded — those are
+    business/on-call surfaces that a typical game doesn't need.
+  -->
+  <PropertyGroup>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+    <IsPackable>true</IsPackable>
+
+    <PackageId>MMP.Herald.Game.Pro</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Herald observability metapackage tuned for paid-tier games. Pulls in the network transports (HttpJson / TcpJsonLine / UdpJsonLine), the Enterprise HTTP observability sinks (Seq, Splunk, Honeycomb, Datadog, Loki, SignalFx), Sentry for crash tracking, the generic-webhook sink, and the OTLP trio. PagerDuty, Elasticsearch, and Slack are deliberately excluded — those are business/on-call surfaces rather than game-side.</Description>
+    <PackageTags>herald;logging;metapackage;game;observability</PackageTags>
+
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Herald.Sinks.Datadog\Herald.Sinks.Datadog.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.GenericWebhook\Herald.Sinks.GenericWebhook.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Honeycomb\Herald.Sinks.Honeycomb.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.HttpJson\Herald.Sinks.HttpJson.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Loki\Herald.Sinks.Loki.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Otlp\Herald.Sinks.Otlp.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Sentry\Herald.Sinks.Sentry.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Seq\Herald.Sinks.Seq.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.SignalFx\Herald.Sinks.SignalFx.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Splunk\Herald.Sinks.Splunk.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.TcpJsonLine\Herald.Sinks.TcpJsonLine.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.UdpJsonLine\Herald.Sinks.UdpJsonLine.csproj" />
+  </ItemGroup>
+</Project>
