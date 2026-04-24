@@ -3,6 +3,7 @@
     <Project Path="src/Herald.Sinks.Datadog/Herald.Sinks.Datadog.csproj" />
     <Project Path="src/Herald.Sinks.Debug/Herald.Sinks.Debug.csproj" />
     <Project Path="src/Herald.Sinks.Elasticsearch/Herald.Sinks.Elasticsearch.csproj" />
+    <Project Path="src/Herald.Sinks.EventLog/Herald.Sinks.EventLog.csproj" />
     <Project Path="src/Herald.Sinks.GenericWebhook/Herald.Sinks.GenericWebhook.csproj" />
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
@@ -15,10 +16,12 @@
     <Project Path="src/Herald.Sinks.SignalFx/Herald.Sinks.SignalFx.csproj" />
     <Project Path="src/Herald.Sinks.Slack/Herald.Sinks.Slack.csproj" />
     <Project Path="src/Herald.Sinks.Splunk/Herald.Sinks.Splunk.csproj" />
+    <Project Path="src/Herald.Sinks.Syslog/Herald.Sinks.Syslog.csproj" />
     <Project Path="src/Herald.Sinks.TcpJsonLine/Herald.Sinks.TcpJsonLine.csproj" />
     <Project Path="src/Herald.Sinks.TextWriter/Herald.Sinks.TextWriter.csproj" />
     <Project Path="src/Herald.Sinks.Trace/Herald.Sinks.Trace.csproj" />
     <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
+    <Project Path="src/Herald.Sinks.XUnit/Herald.Sinks.XUnit.csproj" />
   </Folder>
   <Folder Name="/meta/">
     <Project Path="meta/Herald.Business/Herald.Business.csproj" />
@@ -28,6 +31,7 @@
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Debug.Tests/Herald.Sinks.Debug.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Elasticsearch.Tests/Herald.Sinks.Elasticsearch.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.EventLog.Tests/Herald.Sinks.EventLog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
@@ -40,9 +44,11 @@
     <Project Path="tests/Herald.Sinks.SignalFx.Tests/Herald.Sinks.SignalFx.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Slack.Tests/Herald.Sinks.Slack.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Splunk.Tests/Herald.Sinks.Splunk.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Syslog.Tests/Herald.Sinks.Syslog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.TcpJsonLine.Tests/Herald.Sinks.TcpJsonLine.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.TextWriter.Tests/Herald.Sinks.TextWriter.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Trace.Tests/Herald.Sinks.Trace.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.UdpJsonLine.Tests/Herald.Sinks.UdpJsonLine.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.XUnit.Tests/Herald.Sinks.XUnit.Tests.csproj" />
   </Folder>
 </Solution>

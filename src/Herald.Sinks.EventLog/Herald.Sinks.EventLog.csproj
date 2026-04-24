@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.EventLog</RootNamespace>
+    <AssemblyName>Herald.Sinks.EventLog</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.EventLog</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Writes Herald log events to the Windows Event Log. Drop-in for Serilog.Sinks.EventLog. Windows-only — throws PlatformNotSupportedException elsewhere.</Description>
+    <PackageTags>herald;logging;sink;eventlog;windows</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- System.Diagnostics.EventLog ships cross-target but the BCL
+         implementation is Windows-only; consumers on other OSes get a
+         PlatformNotSupportedException at ctor. The sink is marked
+         [SupportedOSPlatform("windows")] so the compiler nags any
+         non-Windows use. -->
+    <PackageReference Include="System.Diagnostics.EventLog" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.EventLog.Tests" />
+  </ItemGroup>
+</Project>

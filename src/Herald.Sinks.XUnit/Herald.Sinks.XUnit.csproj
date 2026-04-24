@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.XUnit</RootNamespace>
+    <AssemblyName>Herald.Sinks.XUnit</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.XUnit</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Routes Herald log events to xUnit's ITestOutputHelper so logs show up in test output. Drop-in equivalent of Serilog.Sinks.XUnit.</Description>
+    <PackageTags>herald;logging;sink;xunit;testing</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- xunit.abstractions ships Xunit.Abstractions.ITestOutputHelper —
+         the single type this sink takes in its public constructor. Version
+         is pinned in the monorepo's Directory.Packages.props. -->
+    <PackageReference Include="xunit.abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.XUnit.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,121 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Syslog
+
+name: Herald.Sinks.Syslog
+package_id: MMP.Herald.Sinks.Syslog
+version: 1.0.0
+kind: sink
+category: infrastructure
+
+purpose: >
+  Emits Herald log events as RFC 5424 or RFC 3164 syslog messages over
+  UDP or TCP. Drop-in for Serilog.Sinks.SyslogMessages. Cross-platform
+  — works on Windows, Linux, and macOS. Typical targets: rsyslog,
+  syslog-ng, Graylog, Logstash, Fluentd with a syslog input.
+
+vendor:
+  name: IETF
+  url: https://www.rfc-editor.org/rfc/rfc5424
+
+ships:
+  - SyslogSink
+  - SyslogSinkProvider
+  - SyslogSinkRegistration
+  - SyslogFormat, SyslogTransport, SyslogFacility (public enums)
+  - SyslogMessageBuilder (internal wire formatter)
+
+requires:
+  core_version: ">=1.0.0"
+  external: []
+
+config:
+  kind: syslog
+  uri: "Target host (required)."
+  host: "Optional port as a string. Default 514."
+  alias: "Transport|format switch — 'udp|rfc5424' (default), 'tcp|rfc3164', etc."
+  notes: >
+    Facility, app name, process id, and source host fall back to
+    sensible defaults. Override them by constructing SyslogSink
+    directly and registering with WithCustomSinkProvider.
+
+dashboard_config:
+  - property: host
+    name: Host
+    help: Target syslog host or collector.
+    tooltip: Syslog target host.
+    width: m
+    control: text
+    required: true
+    group: Target
+  - property: port
+    name: Port
+    help: Destination port. Default 514.
+    tooltip: Destination port.
+    width: xs
+    control: number
+    required: false
+    default: 514
+    group: Target
+  - property: transport
+    name: Transport
+    help: UDP (lossy, default) or TCP (reliable, RFC 6587 framing).
+    tooltip: Wire transport.
+    width: s
+    control: select
+    required: false
+    default: udp
+    values:
+      - value: udp
+        text: "UDP (default)"
+      - value: tcp
+        text: "TCP"
+    group: Wire
+  - property: format
+    name: Format
+    help: RFC 5424 (modern) or RFC 3164 (BSD legacy).
+    tooltip: Wire format.
+    width: s
+    control: select
+    required: false
+    default: rfc5424
+    values:
+      - value: rfc5424
+        text: "RFC 5424 (modern)"
+      - value: rfc3164
+        text: "RFC 3164 (BSD)"
+    group: Wire
+
+capabilities:
+  - RFC 5424 and RFC 3164 wire formats
+  - UDP and TCP transports (TCP framing via RFC 6587 octet counting)
+  - Facility selector covering all 24 RFC 5424 slots
+  - Cross-platform — no native deps, pure BCL sockets
+  - Reconnect-on-failure for TCP with single retry per event
+
+limitations:
+  - No TLS transport in 1.0 — follow-up planned
+  - Structured-data field (RFC 5424) currently emitted as NILVALUE
+  - Synchronous Send — pair with async decorator for high volume
+  - No message batching on TCP — one frame per event
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: >
+  Thread-safe. UDP writes are stateless on the client side; TCP writes
+  serialize through a per-sink lock so frames don't interleave.
+
+test_coverage: tests/Herald.Sinks.Syslog.Tests/SyslogMessageBuilderTests.cs (wire-format coverage)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.SyslogMessages equivalent).

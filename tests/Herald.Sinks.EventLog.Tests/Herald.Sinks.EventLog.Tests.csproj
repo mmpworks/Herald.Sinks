@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.EventLog.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- CA1416 suppressed: tests exercise EventLogSink's ctor contract
+         including the non-Windows platform-guard path, so the call sites
+         are deliberately reachable on non-Windows. The tests use
+         RuntimeInformation.IsOSPlatform to branch at runtime. -->
+    <NoWarn>HERALD004;xUnit1031;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Herald.Sinks.EventLog\Herald.Sinks.EventLog.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Core\tests\Helpers\*.cs" LinkBase="_CoreTestHelpers" />
+  </ItemGroup>
+</Project>

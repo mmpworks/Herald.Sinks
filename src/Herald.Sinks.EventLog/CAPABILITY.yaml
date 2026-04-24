@@ -1,0 +1,106 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.EventLog
+
+name: Herald.Sinks.EventLog
+package_id: MMP.Herald.Sinks.EventLog
+version: 1.0.0
+kind: sink
+category: windows
+
+purpose: >
+  Writes Herald log events to the Windows Event Log. Drop-in for
+  Serilog.Sinks.EventLog — forwards level / category / message through
+  EventLog.WriteEntry with a mapped EventLogEntryType. Windows-only;
+  throws PlatformNotSupportedException on Linux and macOS.
+
+vendor:
+  name: Microsoft
+  url: https://learn.microsoft.com/dotnet/api/system.diagnostics.eventlog
+
+ships:
+  - EventLogSink
+  - EventLogSinkProvider
+  - EventLogSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - System.Diagnostics.EventLog NuGet
+    - Windows OS
+    - Pre-registered Event Source (or admin rights on first write)
+
+config:
+  kind: event_log
+  alias: "Event Source name (required)."
+  host: "Log name. Defaults to 'Application'."
+  uri: "Machine name. Defaults to '.' (local)."
+  notes: >
+    Source creation is not exposed through JSON — that operation
+    requires admin and belongs in your installer. Register sources
+    at deploy time, not at app startup.
+
+dashboard_config:
+  - property: source
+    name: Event source
+    help: >
+      The Event Source name used for EventLog.WriteEntry. Must be
+      registered on the target machine; registration typically
+      happens at install time.
+    tooltip: Registered Event Source name.
+    width: m
+    control: text
+    required: true
+    group: Target
+  - property: log_name
+    name: Log name
+    help: >
+      Event Log name — Application, System, Security, or a custom
+      log. Defaults to Application.
+    tooltip: Log name.
+    width: s
+    control: text
+    required: false
+    default: Application
+    group: Target
+  - property: machine_name
+    name: Machine name
+    help: >
+      Target machine. Defaults to the local machine (.).
+    tooltip: Target machine name.
+    width: s
+    control: text
+    required: false
+    default: "."
+    group: Target
+
+capabilities:
+  - Maps Herald level to EventLogEntryType (Info / Warning / Error)
+  - Truncates at Event Log's 31839-character message ceiling
+  - [SupportedOSPlatform("windows")] compiler-enforced platform marker
+  - Autocreate-on-first-write available via code-first ctor flag
+
+limitations:
+  - Windows-only — throws PlatformNotSupportedException elsewhere
+  - Source must be pre-registered (admin-only operation)
+  - Message ceiling is 31839 chars — longer events truncate silently
+  - Synchronous Send — wrap with async decorator for heavy volume
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — EventLog.WriteEntry is internally synchronized.
+
+test_coverage: tests/Herald.Sinks.EventLog.Tests/EventLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.EventLog equivalent).

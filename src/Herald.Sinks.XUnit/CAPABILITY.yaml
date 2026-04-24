@@ -1,0 +1,68 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.XUnit
+
+name: Herald.Sinks.XUnit
+package_id: MMP.Herald.Sinks.XUnit
+version: 1.0.0
+kind: sink
+category: testing
+
+purpose: >
+  Routes Herald log events to xUnit's ITestOutputHelper so diagnostic
+  output appears in the test report. Drop-in replacement for
+  Serilog.Sinks.XUnit. Register in the test ctor; the sink absorbs the
+  post-test InvalidOperationException so a late-firing background log
+  call never fails a passed test.
+
+vendor:
+  name: xUnit
+  url: https://xunit.net
+
+ships:
+  - XUnitLogSink
+  - XUnitLogSinkProvider
+  - XUnitSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - xunit.v3.extensibility.core (ITestOutputHelper contract)
+
+config:
+  kind: xunit
+  notes: >
+    XUnitLogSink is a per-test runtime sink — JSON config has no way
+    to express an ITestOutputHelper. The JSON-config path throws.
+    Register the sink in the test ctor via WithCustomSinkProvider.
+
+dashboard_config: []
+
+capabilities:
+  - Routes events to ITestOutputHelper so they appear in the test report
+  - Swallows post-test InvalidOperationException to keep passed tests green
+  - Same line format as Debug / Trace / TextWriter sinks in the parity pack
+
+limitations:
+  - No JSON-config construction path (per-test runtime value)
+  - No structured emission — xUnit's output is plain text
+  - Test-scope only — re-used across tests is misuse
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — ITestOutputHelper is internally synchronized.
+
+test_coverage: tests/Herald.Sinks.XUnit.Tests/XUnitLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.XUnit equivalent).
