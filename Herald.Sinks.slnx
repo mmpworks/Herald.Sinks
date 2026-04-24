@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Herald.Sinks.Datadog/Herald.Sinks.Datadog.csproj" />
+    <Project Path="src/Herald.Sinks.Elasticsearch/Herald.Sinks.Elasticsearch.csproj" />
+    <Project Path="src/Herald.Sinks.GenericWebhook/Herald.Sinks.GenericWebhook.csproj" />
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
     <Project Path="src/Herald.Sinks.Loki/Herald.Sinks.Loki.csproj" />
@@ -8,12 +10,15 @@
     <Project Path="src/Herald.Sinks.Sentry/Herald.Sinks.Sentry.csproj" />
     <Project Path="src/Herald.Sinks.Seq/Herald.Sinks.Seq.csproj" />
     <Project Path="src/Herald.Sinks.SignalFx/Herald.Sinks.SignalFx.csproj" />
+    <Project Path="src/Herald.Sinks.Slack/Herald.Sinks.Slack.csproj" />
     <Project Path="src/Herald.Sinks.Splunk/Herald.Sinks.Splunk.csproj" />
     <Project Path="src/Herald.Sinks.TcpJsonLine/Herald.Sinks.TcpJsonLine.csproj" />
     <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Elasticsearch.Tests/Herald.Sinks.Elasticsearch.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loki.Tests/Herald.Sinks.Loki.Tests.csproj" />
@@ -21,6 +26,7 @@
     <Project Path="tests/Herald.Sinks.Sentry.Tests/Herald.Sinks.Sentry.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Seq.Tests/Herald.Sinks.Seq.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.SignalFx.Tests/Herald.Sinks.SignalFx.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Slack.Tests/Herald.Sinks.Slack.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Splunk.Tests/Herald.Sinks.Splunk.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.TcpJsonLine.Tests/Herald.Sinks.TcpJsonLine.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.UdpJsonLine.Tests/Herald.Sinks.UdpJsonLine.Tests.csproj" />

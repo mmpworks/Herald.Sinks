@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Slack</RootNamespace>
+    <AssemblyName>Herald.Sinks.Slack</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Slack</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Sends Herald log events to a Slack webhook as formatted messages with per-level emoji. Best used for high-severity alerts behind a level filter.</Description>
+    <PackageTags>herald;logging;sink;slack;alerts</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Slack.Tests" />
+  </ItemGroup>
+</Project>

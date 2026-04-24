@@ -1,0 +1,84 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Slack
+package_id: MMP.Herald.Sinks.Slack
+version: 1.0.0
+kind: sink
+category: alerting
+
+purpose: >
+  Sends Herald log events to a Slack webhook URL as formatted messages
+  with per-level emoji. Intended for high-severity alerts — stack
+  behind a Warn-or-above filter so routine info events don't swamp
+  the channel.
+
+vendor:
+  name: Slack
+  url: https://api.slack.com/messaging/webhooks
+
+ships:
+  - SlackWebhookLogSink
+  - SlackWebhookSinkProvider
+  - SlackSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Slack incoming webhook URL
+
+config:
+  kind: slack
+  uri: "Slack incoming webhook URL."
+  host: null
+  alias: null
+  notes: >
+    Channel override is construction-only (defaults to #alerts).
+    Callers who need a different channel pass a SlackWebhookLogSink
+    directly via WithCustomSinkProvider.
+
+dashboard_config:
+  - property: webhook_url
+    name: Webhook URL
+    help: >
+      The Slack incoming webhook URL from the app's configuration.
+      Stored encrypted by the Dashboard; rotation clears the stored
+      value.
+    tooltip: Slack incoming webhook URL — masked after save.
+    width: l
+    control: secret
+    required: true
+    group: Endpoint
+    errors:
+      required: "A Slack webhook URL is required."
+
+capabilities:
+  - Per-level emoji mapping (trace → :mag:, warn → :warning:, etc.)
+  - Slack-markup-safe message escaping
+  - JSON-injection-safe body construction
+  - Single-event POST (one message per event)
+
+limitations:
+  - No batching — one message per event
+  - Channel and emoji table configurable only at construction
+  - Slack truncates long messages; caller should pair with a message
+    truncation decorator for noisy templates
+
+minimum_edition: Enterprise
+aot_compatible: true
+thread_safety: Thread-safe — shared HttpClient, synchronous Send.
+
+test_coverage: tests/Herald.Sinks.Slack.Tests/SlackWebhookLogSinkTests.cs (4 tests)
+
+product_pack:
+  - Herald.Business
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Migrated from Herald.Core Addons/CommunityTransports.

@@ -1,0 +1,99 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.GenericWebhook
+package_id: MMP.Herald.Sinks.GenericWebhook
+version: 1.0.0
+kind: sink
+category: alerting
+
+purpose: >
+  Generic HTTP webhook sink with optional rules engine. POSTs formatted
+  log events to any endpoint. The rules engine supports cooldown,
+  message-pattern matching, property/category conditions, and per-rule
+  payload templates — the feature set that PagerDuty, Opsgenie, and
+  Datadog use for incident routing.
+
+vendor:
+  name: Herald
+  url: https://github.com/smuchow1962/Herald.Sinks
+
+ships:
+  - GenericWebhookLogSink
+  - GenericWebhookSinkProvider
+  - GenericWebhookSinkRegistration
+  - WebhookRule
+  - WebhookRuleCondition
+  - WebhookConditionType
+  - WebhookRuleEngine
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Reachable HTTP endpoint accepting POSTs
+
+config:
+  kind: webhook
+  uri: "Target HTTP endpoint."
+  host: null
+  alias: null
+  notes: >
+    Rules / headers / custom formatters are construction-only. Callers
+    who need them call GenericWebhookSinkRegistration.RegisterWithRules
+    or construct the sink directly and pass via WithCustomSinkProvider.
+
+dashboard_config:
+  - property: url
+    name: Webhook URL
+    help: >
+      The HTTP endpoint that receives the POST. Content type defaults
+      to application/json; the sink accepts the endpoint returning any
+      2xx status code.
+    tooltip: Target HTTP endpoint for the webhook.
+    width: l
+    control: url
+    required: true
+    placeholder: https://alerts.example.com/ingest
+    group: Endpoint
+    schemes: [http, https]
+    errors:
+      required: "A webhook URL is required."
+
+capabilities:
+  - Batched delivery via IBatchedLogSink when rules are absent
+  - Rules engine (ordered, first-match-wins with continue-on-match)
+  - Per-rule cooldown (seconds) to prevent flooding
+  - "Conditions: MinLevel, CategoryEquals/Contains, MessageContains/Matches, PropertyExists, PropertyEquals"
+  - "Per-rule custom payload templates with placeholders ({level}, {category}, {message}, {timestamp}, {ruleName}, {prop:Name})"
+  - Regex-cache for MessageMatches patterns, 100ms pattern timeout
+  - Header-injection protection on caller-supplied headers
+
+limitations:
+  - Rules / headers / formatter configurable at construction only
+  - JSON config path does not surface the rules engine — use
+    GenericWebhookSinkRegistration.RegisterWithRules
+  - Content type configurable at construction only
+
+minimum_edition: Pro
+aot_compatible: true
+thread_safety: Thread-safe — HttpClient is reentrant; rule-engine cooldowns under ConcurrentDictionary.
+
+test_coverage: tests/Herald.Sinks.GenericWebhook.Tests/ (GenericWebhookLogSinkTests + WebhookRuleEngineTests + GenericWebhookRulesTests)
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: >
+      Migrated from Herald.Core Addons/CommunityTransports. QuickLogBuilder.
+      WithWebhookSink(url, rules) overload removed from Core in the same
+      pass — consumers use GenericWebhookSinkRegistration.RegisterWithRules
+      going forward.
