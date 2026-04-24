@@ -6,6 +6,7 @@
     <Project Path="src/Herald.Sinks.GenericWebhook/Herald.Sinks.GenericWebhook.csproj" />
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
+    <Project Path="src/Herald.Sinks.InMemory/Herald.Sinks.InMemory.csproj" />
     <Project Path="src/Herald.Sinks.Loki/Herald.Sinks.Loki.csproj" />
     <Project Path="src/Herald.Sinks.Otlp/Herald.Sinks.Otlp.csproj" />
     <Project Path="src/Herald.Sinks.PagerDuty/Herald.Sinks.PagerDuty.csproj" />
@@ -15,6 +16,7 @@
     <Project Path="src/Herald.Sinks.Slack/Herald.Sinks.Slack.csproj" />
     <Project Path="src/Herald.Sinks.Splunk/Herald.Sinks.Splunk.csproj" />
     <Project Path="src/Herald.Sinks.TcpJsonLine/Herald.Sinks.TcpJsonLine.csproj" />
+    <Project Path="src/Herald.Sinks.TextWriter/Herald.Sinks.TextWriter.csproj" />
     <Project Path="src/Herald.Sinks.Trace/Herald.Sinks.Trace.csproj" />
     <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
   </Folder>
@@ -29,6 +31,7 @@
     <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.InMemory.Tests/Herald.Sinks.InMemory.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loki.Tests/Herald.Sinks.Loki.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Otlp.Tests/Herald.Sinks.Otlp.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.PagerDuty.Tests/Herald.Sinks.PagerDuty.Tests.csproj" />
@@ -38,6 +41,7 @@
     <Project Path="tests/Herald.Sinks.Slack.Tests/Herald.Sinks.Slack.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Splunk.Tests/Herald.Sinks.Splunk.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.TcpJsonLine.Tests/Herald.Sinks.TcpJsonLine.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.TextWriter.Tests/Herald.Sinks.TextWriter.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Trace.Tests/Herald.Sinks.Trace.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.UdpJsonLine.Tests/Herald.Sinks.UdpJsonLine.Tests.csproj" />
   </Folder>

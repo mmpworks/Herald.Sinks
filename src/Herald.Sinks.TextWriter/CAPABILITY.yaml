@@ -1,0 +1,69 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.TextWriter
+
+name: Herald.Sinks.TextWriter
+package_id: MMP.Herald.Sinks.TextWriter
+version: 1.0.0
+kind: sink
+category: io
+
+purpose: >
+  Writes Herald log events to an arbitrary System.IO.TextWriter. Useful
+  for tests (redirecting into a StringWriter), for memory-stream
+  pipelines, and for custom writer shims that route output somewhere
+  Core's File sinks do not cover.
+
+vendor:
+  name: Microsoft
+  url: https://learn.microsoft.com/dotnet/api/system.io.textwriter
+
+ships:
+  - TextWriterLogSink
+  - TextWriterLogSinkProvider
+  - TextWriterSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external: []
+
+config:
+  kind: text_writer
+  notes: >
+    TextWriterLogSink is a runtime-configured sink. The JSON-config path
+    throws — callers construct the sink directly and register it via
+    WithCustomSinkProvider. Listing the kind in JSON registrations
+    surfaces the NotSupportedException early instead of letting the kind
+    look valid.
+
+dashboard_config: []
+
+capabilities:
+  - Zero external dependencies — BCL only
+  - Thread-safe via internal lock around Write+Flush
+  - Optional writer ownership — sink can dispose the writer on request
+  - Flushes after every event so tests observe output immediately
+
+limitations:
+  - No JSON-config construction path (TextWriter is a runtime value)
+  - Single fixed line format — no custom template surface
+  - Synchronous write path — pair with async decorator for high throughput
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe via per-sink lock.
+
+test_coverage: tests/Herald.Sinks.TextWriter.Tests/TextWriterLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.TextWriter equivalent).

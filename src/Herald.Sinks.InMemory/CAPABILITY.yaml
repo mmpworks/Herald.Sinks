@@ -1,0 +1,81 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.InMemory
+
+name: Herald.Sinks.InMemory
+package_id: MMP.Herald.Sinks.InMemory
+version: 1.0.0
+kind: sink
+category: testing
+
+purpose: >
+  Retains Herald log events in-memory so tests can assert against what
+  the pipeline produced. Not intended for production — a long-running
+  app using this sink will grow the event list unboundedly unless a
+  capacity is set.
+
+vendor:
+  name: Herald
+  url: https://github.com/smuchow1962/Herald
+
+ships:
+  - InMemoryLogSink
+  - InMemoryLogSinkProvider
+  - InMemorySinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external: []
+
+config:
+  kind: in_memory
+  alias: "Optional retention capacity as a positive integer string."
+  notes: >
+    Most tests construct InMemoryLogSink directly and register it via
+    WithCustomSinkProvider so they retain a reference for reading
+    Events after the pipeline runs. The JSON-config path is a
+    convenience for scripted / data-driven tests.
+
+dashboard_config:
+  - property: capacity
+    name: Capacity
+    help: >
+      Maximum number of events retained. When the buffer is full the
+      oldest event is dropped. Leaving this blank keeps the sink
+      unbounded — appropriate for test harnesses, never for production.
+    tooltip: Max retained events (blank = unlimited).
+    width: s
+    control: number
+    required: false
+    default: ""
+    group: Retention
+
+capabilities:
+  - Snapshot read via Events (safe to iterate while logging continues)
+  - Clear() for per-test isolation
+  - Optional FIFO cap via Capacity constructor argument
+  - Thread-safe via internal lock
+
+limitations:
+  - Unbounded by default — do not use in production without a cap
+  - Snapshot allocates an array on every Events read (test-scale N is fine)
+  - No persistence — events disappear when the process exits
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe via per-sink lock on Log / Events / Clear.
+
+test_coverage: tests/Herald.Sinks.InMemory.Tests/InMemoryLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.InMemory equivalent).
