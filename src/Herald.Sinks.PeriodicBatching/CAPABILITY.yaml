@@ -1,0 +1,29 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.PeriodicBatching (migration guide)
+
+name: Herald.Sinks.PeriodicBatching
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: delivery
+
+purpose: >
+  Shows Herald users how to replicate Serilog.Sinks.PeriodicBatching —
+  Serilog's base-class batching wrapper used by most network sinks —
+  with Herald's pipeline-level batching step. One config, applies to
+  every sink that supports IBatchedLogSink.
+
+serilog_equivalent: Serilog.Sinks.PeriodicBatching
+
+herald_api:
+  - QuickLogBuilder.WithBatching(maxBatchSize, maxBatchDelayMs)
+  - IBatchedLogSink
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
