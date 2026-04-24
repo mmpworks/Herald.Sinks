@@ -1,0 +1,110 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.PostgreSQL
+
+name: Herald.Sinks.PostgreSQL
+package_id: MMP.Herald.Sinks.PostgreSQL
+version: 1.0.0
+kind: sink
+category: database
+
+purpose: >
+  Writes Herald log events as rows in a PostgreSQL table. Drop-in for
+  Serilog.Sinks.PostgreSQL. Parameterized INSERT for single writes,
+  binary COPY for batches (~10x faster than prepared INSERTs),
+  optional auto-create DDL.
+
+vendor:
+  name: PostgreSQL
+  url: https://www.postgresql.org
+
+ships:
+  - PostgreSQLLogSink
+  - PostgreSQLLogSinkProvider
+  - PostgreSQLSinkRegistration
+  - PostgreSQLColumnOptions
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Npgsql
+    - PostgreSQL 12+ (JSONB support)
+
+config:
+  kind: postgresql
+  uri: "Connection string (required)."
+  host: "schema.table (default public.logs)."
+  alias: "'auto-create' to enable CREATE TABLE IF NOT EXISTS DDL."
+  notes: >
+    Custom column names require constructing PostgreSQLLogSink
+    directly and registering via WithCustomSinkProvider. Properties
+    are stored as JSONB for native JSON query support.
+
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    help: Npgsql connection string. Include Include Error Detail=true for debugging.
+    tooltip: PostgreSQL connection string.
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: schema
+    name: Schema
+    help: Table schema name. Default 'public'.
+    tooltip: Table schema.
+    width: s
+    control: text
+    required: false
+    default: public
+    group: Target
+  - property: table
+    name: Table
+    help: Table name. Default 'logs'.
+    tooltip: Table name.
+    width: s
+    control: text
+    required: false
+    default: logs
+    group: Target
+  - property: auto_create
+    name: Auto-create table
+    help: Issue CREATE TABLE IF NOT EXISTS DDL on first write. Dev only.
+    tooltip: Auto-create the logs table on startup.
+    width: xs
+    control: checkbox
+    required: false
+    default: false
+    group: Target
+
+capabilities:
+  - Parameterized INSERT for single-event Log calls
+  - Binary COPY via NpgsqlBinaryImporter for IBatchedLogSink batches
+  - Properties stored as JSONB for native JSON query (WHERE properties->>'TenantId' = 'acme')
+  - Custom column-name options via PostgreSQLColumnOptions
+  - Optional idempotent auto-create DDL
+  - Connection pooling via Npgsql
+
+limitations:
+  - Requires PostgreSQL 12+ for JSONB column type
+  - No schema migration — pre-existing tables with a narrower schema fail on first write
+  - No COPY CSV fallback — BinaryImporter only
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — each call opens a pooled Npgsql connection.
+
+test_coverage: tests/Herald.Sinks.PostgreSQL.Tests/ (construction coverage; DB-backed tests are manual)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.PostgreSQL equivalent).

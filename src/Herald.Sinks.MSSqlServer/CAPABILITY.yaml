@@ -1,0 +1,108 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.MSSqlServer
+
+name: Herald.Sinks.MSSqlServer
+package_id: MMP.Herald.Sinks.MSSqlServer
+version: 1.0.0
+kind: sink
+category: database
+
+purpose: >
+  Writes Herald log events as rows in a Microsoft SQL Server or Azure
+  SQL table. Drop-in for Serilog.Sinks.MSSqlServer. Parameterized
+  INSERT for single writes, SqlBulkCopy for batches, optional
+  auto-create DDL for dev loops.
+
+vendor:
+  name: Microsoft
+  url: https://learn.microsoft.com/sql
+
+ships:
+  - MSSqlServerLogSink
+  - MSSqlServerLogSinkProvider
+  - MSSqlServerSinkRegistration
+  - MSSqlServerColumnOptions
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Microsoft.Data.SqlClient
+    - SQL Server 2017+ or Azure SQL
+
+config:
+  kind: mssql
+  uri: "Connection string (required)."
+  host: "schema.table (default dbo.Logs)."
+  alias: "'auto-create' to enable CREATE TABLE IF NOT EXISTS DDL on first write."
+  notes: >
+    Custom column names require constructing MSSqlServerLogSink
+    directly and registering via WithCustomSinkProvider.
+
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    help: ADO.NET connection string. Consider Managed Identity for Azure SQL.
+    tooltip: SQL Server or Azure SQL connection string.
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: schema
+    name: Schema
+    help: Table schema name. Default 'dbo'.
+    tooltip: Table schema.
+    width: s
+    control: text
+    required: false
+    default: dbo
+    group: Target
+  - property: table
+    name: Table
+    help: Table name. Default 'Logs'.
+    tooltip: Table name.
+    width: s
+    control: text
+    required: false
+    default: Logs
+    group: Target
+  - property: auto_create
+    name: Auto-create table
+    help: Issue CREATE TABLE IF NOT EXISTS DDL on first write. Dev only.
+    tooltip: Auto-create the Logs table on startup.
+    width: xs
+    control: checkbox
+    required: false
+    default: false
+    group: Target
+
+capabilities:
+  - Parameterized INSERT for single-event Log calls
+  - SqlBulkCopy for IBatchedLogSink batches (~10x faster)
+  - Custom column-name options via MSSqlServerColumnOptions
+  - Optional idempotent auto-create DDL
+  - Connection pooling via Microsoft.Data.SqlClient
+
+limitations:
+  - Properties serialized as JSON NVARCHAR(MAX); no JSON-column type opt-in
+  - No schema migration — pre-existing tables with a narrower schema fail on first write
+  - No TVP (table-valued-parameter) path in 1.0 — SqlBulkCopy is the fast path
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — each call opens a pooled connection.
+
+test_coverage: tests/Herald.Sinks.MSSqlServer.Tests/ (construction + SQL-generation coverage; DB-backed tests are manual)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.MSSqlServer equivalent).
