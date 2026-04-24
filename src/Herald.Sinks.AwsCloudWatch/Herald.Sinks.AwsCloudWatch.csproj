@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.AwsCloudWatch</RootNamespace>
+    <AssemblyName>Herald.Sinks.AwsCloudWatch</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.AwsCloudWatch</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Writes Herald log events to an AWS CloudWatch Logs log group / log stream. Drop-in for Serilog.Sinks.AwsCloudWatch. Batched PutLogEvents, optional auto-create.</Description>
+    <PackageTags>herald;logging;sink;aws;cloudwatch</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.CloudWatchLogs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.AwsCloudWatch.Tests" />
+  </ItemGroup>
+</Project>

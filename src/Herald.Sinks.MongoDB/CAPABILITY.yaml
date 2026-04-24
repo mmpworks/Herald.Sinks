@@ -1,0 +1,97 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.MongoDB
+
+name: Herald.Sinks.MongoDB
+package_id: MMP.Herald.Sinks.MongoDB
+version: 1.0.0
+kind: sink
+category: database
+
+purpose: >
+  Writes Herald log events as BSON documents into a MongoDB
+  collection. Drop-in for Serilog.Sinks.MongoDB. Single InsertOne on
+  Log, unordered InsertMany for IBatchedLogSink batches. Works with
+  capped collections for bounded retention.
+
+vendor:
+  name: MongoDB
+  url: https://www.mongodb.com
+
+ships:
+  - MongoDBLogSink
+  - MongoDBLogSinkProvider
+  - MongoDBSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - MongoDB.Driver
+    - MongoDB 4.4+
+
+config:
+  kind: mongodb
+  uri: "MongoDB connection string (required)."
+  host: "database.collection (default herald.logs)."
+  notes: >
+    Code-first ctor accepts a pre-built IMongoCollection so apps can
+    share a MongoClient singleton with their repositories.
+
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    help: MongoDB connection URI. Use mongodb+srv:// for Atlas.
+    tooltip: MongoDB connection string.
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: database
+    name: Database
+    help: MongoDB database name. Default 'herald'.
+    tooltip: MongoDB database name.
+    width: s
+    control: text
+    required: false
+    default: herald
+    group: Target
+  - property: collection
+    name: Collection
+    help: MongoDB collection name. Default 'logs'.
+    tooltip: MongoDB collection name.
+    width: s
+    control: text
+    required: false
+    default: logs
+    group: Target
+
+capabilities:
+  - InsertOne per event on the Log path
+  - Unordered InsertMany for batches (bad doc does not block the rest)
+  - BSON primitive mapping for property values (string, bool, int, long, double, decimal, DateTime, Guid)
+  - Code-first overload accepts a pre-built IMongoCollection for shared MongoClient scenarios
+  - Works with capped collections for bounded retention
+
+limitations:
+  - No TLS / client-cert construction helpers — feed them through the connection string
+  - Property values of non-primitive types fall back to ToString()
+  - No retention or TTL index management — operator responsibility
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — the underlying MongoClient is thread-safe per driver contract.
+
+test_coverage: tests/Herald.Sinks.MongoDB.Tests/ (construction coverage; DB-backed tests are manual)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.MongoDB equivalent).

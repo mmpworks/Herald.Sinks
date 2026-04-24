@@ -1,0 +1,95 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.GoogleCloudLogging
+
+name: Herald.Sinks.GoogleCloudLogging
+package_id: MMP.Herald.Sinks.GoogleCloudLogging
+version: 1.0.0
+kind: sink
+category: cloud
+
+purpose: >
+  Writes Herald log events to Google Cloud Logging (formerly
+  Stackdriver) via LoggingServiceV2Client.WriteLogEntries. Drop-in for
+  Serilog.Sinks.GoogleCloudLogging. Maps Herald severity to Cloud
+  Logging's LogSeverity enum so the log viewer colour-codes events
+  consistently with other GCP services.
+
+vendor:
+  name: Google Cloud
+  url: https://cloud.google.com/logging/docs
+
+ships:
+  - GoogleCloudLoggingSink
+  - GoogleCloudLoggingSinkProvider
+  - GoogleCloudLoggingSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Google.Cloud.Logging.V2
+    - GCP project with Cloud Logging API enabled
+    - Credentials with logging.logEntries.create permission
+
+config:
+  kind: gcp_logging
+  uri: "GCP project id (required)."
+  host: "Log id, default 'herald'."
+  notes: >
+    Credential resolution is Google's Application Default Credentials
+    chain: GOOGLE_APPLICATION_CREDENTIALS env var, gcloud CLI auth,
+    attached service account on compute. MonitoredResource defaults
+    to 'global' — override via the code-first ctor with the runtime
+    resource (gce_instance, k8s_container, cloud_run_revision, ...).
+
+dashboard_config:
+  - property: project_id
+    name: GCP project id
+    help: Google Cloud project id to write to.
+    tooltip: GCP project id.
+    width: l
+    control: text
+    required: true
+    group: Target
+  - property: log_id
+    name: Log id
+    help: Log name under the project. Default 'herald'.
+    tooltip: Cloud Logging log id.
+    width: m
+    control: text
+    required: false
+    default: herald
+    group: Target
+
+capabilities:
+  - Single and batched WriteLogEntries
+  - Maps Herald level to Cloud Logging LogSeverity (Debug/Info/Notice/Warning/Error/Critical/Alert)
+  - Properties emitted as LogEntry labels (1024-char cap per value, auto-truncated)
+  - Exception details emitted as exception / exception_type labels
+  - Code-first overload accepts a pre-built LoggingServiceV2Client
+  - MonitoredResource override for GCE / GKE / Cloud Run workloads
+
+limitations:
+  - No JsonPayload path in 1.0 — all properties go on Labels
+  - MonitoredResource defaults to 'global' (override via code-first ctor)
+  - Synchronous Send path via .GetAwaiter().GetResult()
+  - Label values truncate at 1024 chars (Cloud Logging ceiling)
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — LoggingServiceV2Client is thread-safe per GCP SDK contract.
+
+test_coverage: tests/Herald.Sinks.GoogleCloudLogging.Tests/ (construction coverage; GCP-backed tests are manual)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.GoogleCloudLogging equivalent).

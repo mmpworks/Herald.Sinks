@@ -1,0 +1,109 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.RabbitMQ
+
+name: Herald.Sinks.RabbitMQ
+package_id: MMP.Herald.Sinks.RabbitMQ
+version: 1.0.0
+kind: sink
+category: queue
+
+purpose: >
+  Publishes Herald log events as JSON messages onto a RabbitMQ
+  exchange with a caller-supplied routing key. Downstream consumers
+  (Graylog, Logstash, custom pipelines) decide what to do with them.
+  Persistent messages by default for crash-safety on the broker side.
+
+vendor:
+  name: VMware (RabbitMQ)
+  url: https://www.rabbitmq.com
+
+ships:
+  - RabbitMQLogSink
+  - RabbitMQLogSinkProvider
+  - RabbitMQSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - RabbitMQ.Client 7.x
+    - RabbitMQ broker 3.13+
+    - Pre-declared exchange (the sink does not declare)
+
+config:
+  kind: rabbitmq
+  uri: "AMQP connection URI (required). amqp://user:pass@host:5672/vhost"
+  host: "exchange/routingKey (default herald.logs with empty routing key)."
+  alias: "'transient' to publish non-persistent; anything else keeps persistent=true."
+  notes: >
+    The sink does not declare the exchange — make sure your installer
+    or broker bootstrap does that. Unknown exchanges publish silently
+    to nowhere (default broker behaviour).
+
+dashboard_config:
+  - property: amqp_uri
+    name: AMQP URI
+    help: Full AMQP connection URI including credentials.
+    tooltip: amqp://user:pass@host:5672/vhost
+    width: xl
+    control: secret
+    required: true
+    group: Broker
+  - property: exchange
+    name: Exchange
+    help: Target exchange. Must exist on the broker.
+    tooltip: Pre-declared exchange name.
+    width: m
+    control: text
+    required: true
+    default: herald.logs
+    group: Target
+  - property: routing_key
+    name: Routing key
+    help: Routing key string. Empty for fanout.
+    tooltip: AMQP routing key.
+    width: m
+    control: text
+    required: false
+    default: ""
+    group: Target
+  - property: persistent
+    name: Persistent
+    help: Mark messages persistent (delivery mode 2) so a broker restart does not lose them.
+    tooltip: Persistent delivery mode.
+    width: xs
+    control: checkbox
+    required: false
+    default: true
+    group: Delivery
+
+capabilities:
+  - Single persistent connection + single channel held for sink lifetime
+  - Automatic connection recovery via RabbitMQ.Client's AutomaticRecoveryEnabled
+  - JSON body with ContentType=application/json, Timestamp in basic properties
+  - Persistent or transient delivery mode
+  - Thread-safe publishes via per-channel lock
+
+limitations:
+  - Sink does not declare exchanges or queues — broker-side setup required
+  - No per-event routing-key computation in 1.0 — fixed key for the sink's lifetime
+  - No publisher confirms in 1.0 — follow-up for audit-grade delivery guarantees
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe via per-channel publish lock.
+
+test_coverage: tests/Herald.Sinks.RabbitMQ.Tests/ (construction coverage; broker tests are manual)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.RabbitMQ equivalent). User-requested.

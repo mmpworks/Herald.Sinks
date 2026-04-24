@@ -1,0 +1,100 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.AzureAnalytics
+
+name: Herald.Sinks.AzureAnalytics
+package_id: MMP.Herald.Sinks.AzureAnalytics
+version: 1.0.0
+kind: sink
+category: cloud
+
+purpose: >
+  Writes Herald log events to Azure Log Analytics / Azure Monitor via
+  the HTTP Data Collector API. Drop-in for Serilog.Sinks.AzureAnalytics.
+  Pure HTTP — no Azure SDK dependency. HMAC-SHA256 signing per Data
+  Collector API spec.
+
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/azure-monitor/logs/data-collector-api
+
+ships:
+  - AzureAnalyticsLogSink
+  - AzureAnalyticsLogSinkProvider
+  - AzureAnalyticsSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Azure Log Analytics workspace
+    - Workspace id + primary/secondary key
+
+config:
+  kind: azure_analytics
+  uri: "Workspace id (required)."
+  alias: "Workspace key / primary or secondary shared key (required)."
+  host: "Log-Type name. Default 'HeraldLog' (Azure appends _CL at query time)."
+  notes: >
+    Log-Type must be alphanumeric (no spaces or special characters),
+    1-100 chars. Invalid names throw at sink construction. Rotate
+    keys on the Azure side and reconstruct the sink — there is no
+    live refresh hook.
+
+dashboard_config:
+  - property: workspace_id
+    name: Workspace ID
+    help: Azure Log Analytics workspace GUID.
+    tooltip: Azure Log Analytics workspace id.
+    width: l
+    control: text
+    required: true
+    group: Workspace
+  - property: workspace_key
+    name: Workspace key
+    help: Primary or secondary shared key for the workspace. Base64 string.
+    tooltip: Workspace shared key.
+    width: xl
+    control: secret
+    required: true
+    group: Workspace
+  - property: log_type
+    name: Log-Type
+    help: Custom log table name. Azure appends _CL at query time.
+    tooltip: Custom log type (alphanumeric, 1-100 chars).
+    width: m
+    control: text
+    required: false
+    default: HeraldLog
+    group: Workspace
+
+capabilities:
+  - Data Collector API with HMAC-SHA256 request signing
+  - No Azure SDK dependency — pure BCL HTTP + cryptography
+  - Properties flattened to prop_<Name> columns for Log Analytics query compatibility
+  - Batched POST per IBatchedLogSink
+  - time-generated-field header set to event timestamp for correct Kusto time filtering
+
+limitations:
+  - Data Collector is Azure's legacy ingest surface; Log Ingestion API is the modern path (follow-up feature)
+  - No structured jsonPayload support — properties flatten to columns
+  - Key rotation requires sink reconstruction
+  - Synchronous Send — pair with async decorator for heavy volume
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — HttpClient and HMACSHA256 signing are thread-safe.
+
+test_coverage: tests/Herald.Sinks.AzureAnalytics.Tests/ (signing + construction; workspace-backed tests are manual)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.AzureAnalytics equivalent).
