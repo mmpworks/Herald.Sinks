@@ -1,0 +1,142 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+
+name: Herald.Sinks.Otlp
+package_id: MMP.Herald.Sinks.Otlp
+version: 1.0.0
+kind: sink
+category: observability
+
+purpose: >
+  Three sinks for the OpenTelemetry Logs Protocol that share serialization
+  infrastructure: OtlpJsonLogSink posts JSON to an OTLP collector,
+  OtlpProtobufLogSink posts binary protobuf to the same endpoint, and
+  ProtobufFileLogSink writes length-delimited protobuf records to a
+  local .pb file for offline ingestion. The hand-rolled protobuf writer
+  keeps the package AOT-clean — no generated message classes, no
+  reflection paths the trim analyzer has to defeat.
+
+vendor:
+  name: OpenTelemetry
+  url: https://opentelemetry.io/docs/specs/otlp/
+
+ships:
+  - OtlpJsonLogSink
+  - OtlpProtobufLogSink
+  - ProtobufFileLogSink
+  - OtlpJsonLogSinkProvider
+  - OtlpProtobufLogSinkProvider
+  - ProtobufFileLogSinkProvider
+  - OtlpSinkRegistration
+  - OtlpProtobufLogSerializer
+  - OtlpDefaults
+
+requires:
+  core_version: ">=1.0.0"
+  nuget:
+    - name: Google.Protobuf
+      version: ">=3.34.0"
+  external:
+    - Reachable OTLP/HTTP collector (for OtlpJsonLogSink / OtlpProtobufLogSink)
+    - Writable filesystem path (for ProtobufFileLogSink)
+
+config:
+  kind: otlp_json | otlp_protobuf | protobuf_file
+  uri: "Collector endpoint (network sinks) — /v1/logs appended automatically."
+  host: null
+  alias: null
+  notes: >
+    Three kinds, three providers. All share OtlpProtobufLogSerializer +
+    OtlpProtobufWriter so payload shape stays consistent across
+    network and file transports. Resource attributes configurable at
+    construction; JSON-config wiring exposes only the endpoint/path
+    today to keep the config surface small.
+
+dashboard_config:
+  - property: endpoint
+    name: OTLP endpoint
+    help: >
+      Collector URL for the OTLP JSON and protobuf sinks. The sink
+      appends /v1/logs to the URL. Common targets — the OpenTelemetry
+      Collector on 4318, a Grafana Alloy agent, or a vendor-hosted
+      collector (Honeycomb, Lightstep, Dynatrace).
+    tooltip: Collector URL; /v1/logs is appended automatically.
+    width: l
+    control: url
+    required: false
+    placeholder: http://localhost:4318
+    group: Endpoint
+    schemes: [http, https]
+    visible_when: "kind == 'otlp_json' || kind == 'otlp_protobuf'"
+
+  - property: file_path
+    name: Output file path
+    help: >
+      Local filesystem path for the protobuf-file sink. Each event is
+      written as a 4-byte little-endian length prefix followed by its
+      protobuf-serialized LogRecord bytes. File readers can walk the
+      stream by reading 4 bytes, then that many bytes, repeating.
+    tooltip: Output .pb file for length-delimited records.
+    width: l
+    control: text
+    required: false
+    placeholder: logs/app.pb
+    group: File
+    visible_when: "kind == 'protobuf_file'"
+
+  - property: service_name
+    name: Service name
+    help: >
+      Populates the OTLP "service.name" resource attribute. Defaults to
+      "unknown_service" per the OpenTelemetry spec. Set this for
+      anything production — the collector uses it to route and aggregate.
+    tooltip: OTLP service.name resource attribute.
+    width: m
+    control: text
+    required: false
+    default: unknown_service
+    group: Resource
+
+capabilities:
+  - Three sinks in one package — pick network (JSON or protobuf) or file
+  - Hand-rolled protobuf writer — AOT-clean, no generated IMessage types
+  - OTLP semantic conventions (severityNumber, severityText, body,
+    attributes, resource, traceId, spanId)
+  - Batched delivery via IBatchedLogSink for the network sinks
+  - Length-delimited protobuf framing for the file sink (readable by
+    streaming readers)
+  - Rolling-by-size for the file sink (max file size, automatic
+    sequential rollover)
+  - Hex-nibble trace/span id parsing with no exception path (perf-aware)
+
+limitations:
+  - No gRPC transport — HTTP/1.1 only. gRPC-OTLP is a future enhancement.
+  - Resource attributes configurable at construction only
+  - No compression on the request body
+
+minimum_edition: Pro
+aot_compatible: true
+thread_safety: >
+  Network sinks thread-safe via shared HttpClient. File sink serializes
+  writes under a private lock so single-writer and concurrent-writer
+  workloads both behave.
+
+test_coverage: "tests/Herald.Sinks.Otlp.Tests/ (OtlpJsonLogSinkTests + OtlpProtobufLogSinkTests + ProtobufFileLogSinkTests)"
+
+product_pack:
+  - Herald.Business
+  - Herald.Game.Pro
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: >
+      Migrated from Herald.Core Addons/OtlpSinks. Sink-side code moved;
+      the receiver-side decoders (OtlpJsonDecoder / OtlpProtobufLogDecoder
+      / OtlpLogsDecoder / OtlpMetricsExporter) stayed in Core and may
+      move to a future Herald.Receivers.Otlp package.

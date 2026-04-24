@@ -6,6 +6,7 @@
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
     <Project Path="src/Herald.Sinks.Loki/Herald.Sinks.Loki.csproj" />
+    <Project Path="src/Herald.Sinks.Otlp/Herald.Sinks.Otlp.csproj" />
     <Project Path="src/Herald.Sinks.PagerDuty/Herald.Sinks.PagerDuty.csproj" />
     <Project Path="src/Herald.Sinks.Sentry/Herald.Sinks.Sentry.csproj" />
     <Project Path="src/Herald.Sinks.Seq/Herald.Sinks.Seq.csproj" />
@@ -22,6 +23,7 @@
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loki.Tests/Herald.Sinks.Loki.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Otlp.Tests/Herald.Sinks.Otlp.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.PagerDuty.Tests/Herald.Sinks.PagerDuty.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Sentry.Tests/Herald.Sinks.Sentry.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Seq.Tests/Herald.Sinks.Seq.Tests.csproj" />
