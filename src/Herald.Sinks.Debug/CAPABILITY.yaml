@@ -1,0 +1,93 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Debug
+
+# ─── Identity ─────────────────────────────────────────────────────────
+name: Herald.Sinks.Debug
+package_id: MMP.Herald.Sinks.Debug
+version: 1.0.0
+kind: sink
+category: diagnostics
+
+# ─── Human-readable ──────────────────────────────────────────────────
+purpose: >
+  Writes Herald log events to System.Diagnostics.Debug. Events appear
+  in Visual Studio / Rider / VS Code Output windows with a debugger
+  attached, and in any registered DebugListener otherwise. Intended
+  for development-time diagnostic output without touching stdout.
+
+vendor:
+  name: Microsoft
+  url: https://learn.microsoft.com/dotnet/api/system.diagnostics.debug
+
+# ─── What ships ──────────────────────────────────────────────────────
+ships:
+  - DebugLogSink
+  - DebugLogSinkProvider
+  - DebugSinkRegistration
+
+# ─── Dependencies ────────────────────────────────────────────────────
+requires:
+  core_version: ">=1.0.0"
+  external: []
+
+# ─── JSON-config surface ─────────────────────────────────────────────
+config:
+  kind: debug
+  alias: "Optional category prefix forwarded to Debug.WriteLine(msg, category)."
+  notes: >
+    The package csproj defines DEBUG for every build configuration so
+    the [Conditional(\"DEBUG\")] WriteLine calls survive the Release
+    package. Consumers do not need to add anything to make the sink
+    active.
+
+# ─── Dashboard-facing configuration ──────────────────────────────────
+dashboard_config:
+  - property: category
+    name: Category
+    help: >
+      Optional string passed to Debug.WriteLine as the category prefix.
+      Visual Studio's Output window uses it to group lines; leaving
+      this empty produces un-categorized output.
+    tooltip: Category prefix for Debug.WriteLine output.
+    width: m
+    control: text
+    required: false
+    default: ""
+    group: Output
+
+# ─── Capabilities ────────────────────────────────────────────────────
+capabilities:
+  - Zero external dependencies — BCL only
+  - Survives Release builds (DEBUG defined in csproj)
+  - Optional category prefix for IDE Output-window filtering
+  - Exception text appended after the formatted line
+
+# ─── Limitations ─────────────────────────────────────────────────────
+limitations:
+  - Single fixed line format — no custom template surface
+  - No structured emission — properties are not rendered separately
+  - Output visibility depends on a registered DebugListener or attached debugger
+
+# ─── Compliance + operational ────────────────────────────────────────
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — Debug.WriteLine is internally synchronized.
+
+test_coverage: tests/Herald.Sinks.Debug.Tests/DebugLogSinkTests.cs
+
+# ─── Metapackage membership ──────────────────────────────────────────
+product_pack: []
+
+# ─── Maintenance status ──────────────────────────────────────────────
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-24
+
+# ─── Changelog ───────────────────────────────────────────────────────
+changelog:
+  - version: 1.0.0
+    date: 2026-04-24
+    summary: Initial release — 1.1 parity pack (Serilog.Sinks.Debug equivalent).

@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Herald.Sinks.Datadog/Herald.Sinks.Datadog.csproj" />
+    <Project Path="src/Herald.Sinks.Debug/Herald.Sinks.Debug.csproj" />
     <Project Path="src/Herald.Sinks.Elasticsearch/Herald.Sinks.Elasticsearch.csproj" />
     <Project Path="src/Herald.Sinks.GenericWebhook/Herald.Sinks.GenericWebhook.csproj" />
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
@@ -22,6 +23,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Debug.Tests/Herald.Sinks.Debug.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Elasticsearch.Tests/Herald.Sinks.Elasticsearch.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />

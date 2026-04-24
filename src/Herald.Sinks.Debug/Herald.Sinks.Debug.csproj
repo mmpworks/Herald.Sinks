@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Debug</RootNamespace>
+    <AssemblyName>Herald.Sinks.Debug</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Debug</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Writes Herald log events to System.Diagnostics.Debug — IDE Output window, attached debugger listeners, and any registered DebugListener.</Description>
+    <PackageTags>herald;logging;sink;debug;diagnostics</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+
+    <!-- Debug.WriteLine is [Conditional("DEBUG")] — the calling assembly
+         must be compiled with DEBUG for the call to survive to IL.
+         Without this, the sink's WriteLine calls are stripped from a
+         Release build of this package, making the sink silently a no-op
+         in every consumer. Matches the convention Serilog.Sinks.Debug
+         uses. -->
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Debug.Tests" />
+  </ItemGroup>
+</Project>
