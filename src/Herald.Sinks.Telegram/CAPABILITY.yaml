@@ -1,0 +1,45 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Telegram
+package_id: MMP.Herald.Sinks.Telegram
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Sends Herald log events to a Telegram chat via the Bot API.
+  HTTP-only; no Telegram.Bot SDK dependency.
+vendor:
+  name: Telegram
+  url: https://core.telegram.org/bots/api
+ships:
+  - TelegramLogSink
+  - TelegramLogSinkProvider
+  - TelegramSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Telegram bot token + chat ID
+config:
+  kind: telegram
+  uri: "Bot token (required)."
+  host: "Chat ID (required)."
+capabilities:
+  - HTTP POST per event to api.telegram.org/bot{token}/sendMessage
+  - Text truncation at 4000 chars (Telegram hard cap is 4096)
+  - Pair with WithMinimumLevel('warn') to avoid spam
+limitations:
+  - One message per event; no batching support in Telegram's Bot API
+  - No Markdown / HTML formatting today; extend via custom subclass
+  - Bots can only message users / channels they've been added to
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Telegram.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.13 chat/notification tier.

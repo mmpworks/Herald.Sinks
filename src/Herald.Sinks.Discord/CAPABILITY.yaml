@@ -1,0 +1,45 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Discord
+package_id: MMP.Herald.Sinks.Discord
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Posts Herald log events to a Discord channel via incoming webhooks.
+  One message per event with severity-aware emoji prefix; content
+  truncated at 1900 chars (under Discord's 2000-char ceiling).
+vendor:
+  name: Discord
+  url: https://discord.com
+ships:
+  - DiscordLogSink
+  - DiscordLogSinkProvider
+  - DiscordSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Discord channel + incoming webhook URL
+config:
+  kind: discord
+  uri: "Webhook URL (required)."
+capabilities:
+  - HTTP POST per event with severity emoji prefix
+  - Content truncation at 1900 chars
+  - Pair with WithMinimumLevel('warn') to avoid spamming the channel
+limitations:
+  - One message per event — high-volume pipelines should filter to warn+
+  - No embed support today; extend via custom subclass
+  - No file attachment for stack traces — Discord webhooks don't support files via this path
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Discord.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.13 chat/notification tier.

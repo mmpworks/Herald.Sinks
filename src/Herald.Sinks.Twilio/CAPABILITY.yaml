@@ -1,0 +1,45 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Twilio
+package_id: MMP.Herald.Sinks.Twilio
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Sends Herald log events as SMS messages via the Twilio Messages
+  API. HTTP-only — no Twilio SDK. Code-first only because four
+  separate credentials cannot ride safely through declarative configs.
+vendor:
+  name: Twilio
+  url: https://www.twilio.com
+ships:
+  - TwilioLogSink
+  - TwilioLogSinkProvider
+  - TwilioSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Twilio account (SID + auth token + verified from number + verified to number)
+config:
+  kind: twilio
+  notes: Code-first only.
+capabilities:
+  - HTTP POST per event with Basic auth (SID + auth token)
+  - Form-urlencoded body matching Twilio's REST contract
+  - Truncation at 1500 chars (multi-segment SMS gets pricey fast)
+limitations:
+  - Pair with WithMinimumLevel('error') and a category filter — SMS cost discipline matters
+  - Trial accounts can only send to verified numbers
+  - No MMS / media — out of scope for a logging sink
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Twilio.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.13 chat/notification tier.

@@ -1,0 +1,26 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Mattermost
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: alerting
+
+purpose: >
+  Shows Herald users how to post to a Mattermost channel without a
+  dedicated sink package. Mattermost's incoming webhooks accept the
+  same body shape as Slack's — Herald.Sinks.Slack works against a
+  Mattermost webhook URL with no code changes.
+
+serilog_equivalent: Serilog.Sinks.Slack against a Mattermost webhook
+
+herald_api:
+  - Herald.Sinks.Slack (the actual sender)
+  - QuickLogBuilder.WithBridge
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
