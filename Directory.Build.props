@@ -30,4 +30,16 @@
           PackagePath="\"
           Visible="false" />
   </ItemGroup>
+
+  <!-- Embed CAPABILITY.yaml into every sink assembly when one exists at
+       the project root. The Dashboard server reads it back at runtime
+       via Assembly.GetManifestResourceStream so the UI can build a
+       per-sink configuration form without a side-channel manifest file.
+       Per-sink csprojs continue to ship the YAML in the .nupkg root via
+       their own None+Pack item; the two paths do not conflict. -->
+  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\CAPABILITY.yaml')">
+    <EmbeddedResource Include="CAPABILITY.yaml">
+      <LogicalName>CAPABILITY.yaml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
