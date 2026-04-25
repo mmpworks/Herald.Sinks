@@ -7,6 +7,7 @@
     <Project Path="src/Herald.Sinks.AzureCosmosDB/Herald.Sinks.AzureCosmosDB.csproj" />
     <Project Path="src/Herald.Sinks.AzureEventHub/Herald.Sinks.AzureEventHub.csproj" />
     <Project Path="src/Herald.Sinks.AzureLogAnalyticsDcr/Herald.Sinks.AzureLogAnalyticsDcr.csproj" />
+    <Project Path="src/Herald.Sinks.AzureServiceBus/Herald.Sinks.AzureServiceBus.csproj" />
     <Project Path="src/Herald.Sinks.AzureTableStorage/Herald.Sinks.AzureTableStorage.csproj" />
     <Project Path="src/Herald.Sinks.Cassandra/Herald.Sinks.Cassandra.csproj" />
     <Project Path="src/Herald.Sinks.Couchbase/Herald.Sinks.Couchbase.csproj" />
@@ -21,11 +22,13 @@
     <Project Path="src/Herald.Sinks.Exceptionless/Herald.Sinks.Exceptionless.csproj" />
     <Project Path="src/Herald.Sinks.GenericWebhook/Herald.Sinks.GenericWebhook.csproj" />
     <Project Path="src/Herald.Sinks.GoogleCloudLogging/Herald.Sinks.GoogleCloudLogging.csproj" />
+    <Project Path="src/Herald.Sinks.GoogleCloudPubSub/Herald.Sinks.GoogleCloudPubSub.csproj" />
     <Project Path="src/Herald.Sinks.Graylog/Herald.Sinks.Graylog.csproj" />
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
     <Project Path="src/Herald.Sinks.InMemory/Herald.Sinks.InMemory.csproj" />
     <Project Path="src/Herald.Sinks.Kafka/Herald.Sinks.Kafka.csproj" />
+    <Project Path="src/Herald.Sinks.Kinesis/Herald.Sinks.Kinesis.csproj" />
     <Project Path="src/Herald.Sinks.Loggly/Herald.Sinks.Loggly.csproj" />
     <Project Path="src/Herald.Sinks.LogzIo/Herald.Sinks.LogzIo.csproj" />
     <Project Path="src/Herald.Sinks.Loki/Herald.Sinks.Loki.csproj" />
@@ -49,6 +52,7 @@
     <Project Path="src/Herald.Sinks.SignalFx/Herald.Sinks.SignalFx.csproj" />
     <Project Path="src/Herald.Sinks.Slack/Herald.Sinks.Slack.csproj" />
     <Project Path="src/Herald.Sinks.Splunk/Herald.Sinks.Splunk.csproj" />
+    <Project Path="src/Herald.Sinks.Sqs/Herald.Sinks.Sqs.csproj" />
     <Project Path="src/Herald.Sinks.Stackify/Herald.Sinks.Stackify.csproj" />
     <Project Path="src/Herald.Sinks.SumoLogic/Herald.Sinks.SumoLogic.csproj" />
     <Project Path="src/Herald.Sinks.Syslog/Herald.Sinks.Syslog.csproj" />
@@ -71,6 +75,7 @@
     <Project Path="tests/Herald.Sinks.AzureCosmosDB.Tests/Herald.Sinks.AzureCosmosDB.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureEventHub.Tests/Herald.Sinks.AzureEventHub.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureLogAnalyticsDcr.Tests/Herald.Sinks.AzureLogAnalyticsDcr.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.AzureServiceBus.Tests/Herald.Sinks.AzureServiceBus.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureTableStorage.Tests/Herald.Sinks.AzureTableStorage.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Cassandra.Tests/Herald.Sinks.Cassandra.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Couchbase.Tests/Herald.Sinks.Couchbase.Tests.csproj" />
@@ -85,11 +90,13 @@
     <Project Path="tests/Herald.Sinks.Exceptionless.Tests/Herald.Sinks.Exceptionless.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GoogleCloudLogging.Tests/Herald.Sinks.GoogleCloudLogging.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.GoogleCloudPubSub.Tests/Herald.Sinks.GoogleCloudPubSub.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Graylog.Tests/Herald.Sinks.Graylog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.InMemory.Tests/Herald.Sinks.InMemory.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Kafka.Tests/Herald.Sinks.Kafka.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Kinesis.Tests/Herald.Sinks.Kinesis.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loggly.Tests/Herald.Sinks.Loggly.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.LogzIo.Tests/Herald.Sinks.LogzIo.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loki.Tests/Herald.Sinks.Loki.Tests.csproj" />
@@ -113,6 +120,7 @@
     <Project Path="tests/Herald.Sinks.SignalFx.Tests/Herald.Sinks.SignalFx.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Slack.Tests/Herald.Sinks.Slack.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Splunk.Tests/Herald.Sinks.Splunk.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Sqs.Tests/Herald.Sinks.Sqs.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Stackify.Tests/Herald.Sinks.Stackify.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.SumoLogic.Tests/Herald.Sinks.SumoLogic.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Syslog.Tests/Herald.Sinks.Syslog.Tests.csproj" />
