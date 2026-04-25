@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.DynamoDB</RootNamespace>
+    <AssemblyName>Herald.Sinks.DynamoDB</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.DynamoDB</PackageId>
+    <Version>1.0.0</Version>
+    <Description>PutItems Herald log events into a DynamoDB table via AWSSDK.DynamoDBv2. Drop-in for Serilog.Sinks.AmazonDynamoDB.</Description>
+    <PackageTags>herald;logging;sink;aws;dynamodb;nosql</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.DynamoDB.Tests" />
+  </ItemGroup>
+</Project>

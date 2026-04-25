@@ -1,0 +1,62 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.RavenDB
+package_id: MMP.Herald.Sinks.RavenDB
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Stores Herald log events as documents in a RavenDB database via the
+  official RavenDB.Client SDK. Drop-in for Serilog.Sinks.RavenDB.
+  Per-call session for Log; batched session for IBatchedLogSink.
+vendor:
+  name: Hibernating Rhinos / RavenDB
+  url: https://ravendb.net
+ships:
+  - RavenDBLogSink
+  - RavenDBLogSinkProvider
+  - RavenDBSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - RavenDB.Client (>= 6.0)
+    - RavenDB cluster + database with the target collection
+config:
+  kind: ravendb
+  uri: "Comma-separated cluster URLs (required)."
+  host: "Database name (required)."
+dashboard_config:
+  - property: urls
+    name: Cluster URLs
+    width: xl
+    control: text
+    required: true
+    group: Auth
+  - property: database
+    name: Database
+    width: m
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - One session per Log; batched session for IBatchedLogSink
+  - Document model with Level / Category / Message / Template / Properties
+  - Code-first overload accepts a pre-initialised IDocumentStore for shared scenarios
+  - Property bag stored as native Dictionary for RQL queries
+limitations:
+  - No TLS / certificate construction helpers — use the code-first overload for HSM scenarios
+  - Property values are passed through to RavenDB's BSON layer; complex BCL types may not round-trip
+  - No automatic database creation — operator responsibility
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — IDocumentStore is thread-safe per client contract; sessions are per-call.
+test_coverage: tests/Herald.Sinks.RavenDB.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.4 NoSQL pack.

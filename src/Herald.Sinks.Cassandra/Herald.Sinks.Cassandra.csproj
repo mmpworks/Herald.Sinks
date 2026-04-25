@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Cassandra</RootNamespace>
+    <AssemblyName>Herald.Sinks.Cassandra</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Cassandra</PackageId>
+    <Version>1.0.0</Version>
+    <Description>INSERTs Herald log events into a Cassandra table via the DataStax CassandraCSharpDriver. Drop-in for Serilog.Sinks.Cassandra. Works with ScyllaDB and any Cassandra-compatible cluster.</Description>
+    <PackageTags>herald;logging;sink;cassandra;scylla;wide-column;nosql</PackageTags>
+    <!-- DataStax driver uses internal reflection; not AOT-clean. -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CassandraCSharpDriver" />
+    <!-- Explicit override so the driver's transitive Newtonsoft.Json 9.0.1
+         gets bumped to a safe version (NU1903 fix for GHSA-5crp-9r3c-p9vr). -->
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Cassandra.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,73 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.RedisList
+package_id: MMP.Herald.Sinks.RedisList
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  RPUSHes Herald log events as JSON entries onto a Redis list via
+  StackExchange.Redis. Drop-in for Serilog.Sinks.Redis.List. Pairs
+  with downstream BLPOP / BRPOPLPUSH consumers for durable handoff
+  to a worker tier; pair with the optional LTRIM cap for bounded
+  retention.
+vendor:
+  name: Redis
+  url: https://redis.io
+ships:
+  - RedisListLogSink
+  - RedisListLogSinkProvider
+  - RedisListSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - StackExchange.Redis
+    - Redis 6.x or newer
+config:
+  kind: redis_list
+  uri: "Redis connection string (required)."
+  host: "List key (default herald-logs)."
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: list_key
+    name: List key
+    width: m
+    control: text
+    required: false
+    default: herald-logs
+    group: Target
+  - property: max_length
+    name: Max length
+    width: s
+    control: number
+    required: false
+    default: 0
+    group: Retention
+capabilities:
+  - RPUSH per event on the Log path
+  - Single multi-value RPUSH on IBatchedLogSink batches (one round trip)
+  - Optional LTRIM cap for bounded retention (oldest evicted first)
+  - Code-first overload accepts a pre-built IDatabase for shared multiplexer scenarios
+  - JSON payload via Utf8JsonWriter (AOT clean)
+limitations:
+  - LTRIM runs after every push when MaxLength > 0; large bursts amortize the cost
+  - Consumer-side acknowledge / retry semantics are the operator's responsibility (use BRPOPLPUSH for at-least-once)
+  - Property values of non-primitive types fall back to ToString()
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — the StackExchange.Redis multiplexer is thread-safe per driver contract.
+test_coverage: tests/Herald.Sinks.RedisList.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.4 NoSQL pack.

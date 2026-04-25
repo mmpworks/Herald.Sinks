@@ -7,8 +7,12 @@
     <Project Path="src/Herald.Sinks.AzureCosmosDB/Herald.Sinks.AzureCosmosDB.csproj" />
     <Project Path="src/Herald.Sinks.AzureEventHub/Herald.Sinks.AzureEventHub.csproj" />
     <Project Path="src/Herald.Sinks.AzureLogAnalyticsDcr/Herald.Sinks.AzureLogAnalyticsDcr.csproj" />
+    <Project Path="src/Herald.Sinks.AzureTableStorage/Herald.Sinks.AzureTableStorage.csproj" />
+    <Project Path="src/Herald.Sinks.Cassandra/Herald.Sinks.Cassandra.csproj" />
+    <Project Path="src/Herald.Sinks.Couchbase/Herald.Sinks.Couchbase.csproj" />
     <Project Path="src/Herald.Sinks.Datadog/Herald.Sinks.Datadog.csproj" />
     <Project Path="src/Herald.Sinks.Debug/Herald.Sinks.Debug.csproj" />
+    <Project Path="src/Herald.Sinks.DynamoDB/Herald.Sinks.DynamoDB.csproj" />
     <Project Path="src/Herald.Sinks.Dynatrace/Herald.Sinks.Dynatrace.csproj" />
     <Project Path="src/Herald.Sinks.Elasticsearch/Herald.Sinks.Elasticsearch.csproj" />
     <Project Path="src/Herald.Sinks.ElmahIo/Herald.Sinks.ElmahIo.csproj" />
@@ -34,7 +38,10 @@
     <Project Path="src/Herald.Sinks.PagerDuty/Herald.Sinks.PagerDuty.csproj" />
     <Project Path="src/Herald.Sinks.PostgreSQL/Herald.Sinks.PostgreSQL.csproj" />
     <Project Path="src/Herald.Sinks.RabbitMQ/Herald.Sinks.RabbitMQ.csproj" />
+    <Project Path="src/Herald.Sinks.RavenDB/Herald.Sinks.RavenDB.csproj" />
     <Project Path="src/Herald.Sinks.Raygun/Herald.Sinks.Raygun.csproj" />
+    <Project Path="src/Herald.Sinks.Redis/Herald.Sinks.Redis.csproj" />
+    <Project Path="src/Herald.Sinks.RedisList/Herald.Sinks.RedisList.csproj" />
     <Project Path="src/Herald.Sinks.SQLite/Herald.Sinks.SQLite.csproj" />
     <Project Path="src/Herald.Sinks.Sentry/Herald.Sinks.Sentry.csproj" />
     <Project Path="src/Herald.Sinks.Seq/Herald.Sinks.Seq.csproj" />
@@ -62,8 +69,12 @@
     <Project Path="tests/Herald.Sinks.AzureCosmosDB.Tests/Herald.Sinks.AzureCosmosDB.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureEventHub.Tests/Herald.Sinks.AzureEventHub.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureLogAnalyticsDcr.Tests/Herald.Sinks.AzureLogAnalyticsDcr.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.AzureTableStorage.Tests/Herald.Sinks.AzureTableStorage.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Cassandra.Tests/Herald.Sinks.Cassandra.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Couchbase.Tests/Herald.Sinks.Couchbase.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Debug.Tests/Herald.Sinks.Debug.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.DynamoDB.Tests/Herald.Sinks.DynamoDB.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Dynatrace.Tests/Herald.Sinks.Dynatrace.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Elasticsearch.Tests/Herald.Sinks.Elasticsearch.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.ElmahIo.Tests/Herald.Sinks.ElmahIo.Tests.csproj" />
@@ -89,7 +100,10 @@
     <Project Path="tests/Herald.Sinks.PagerDuty.Tests/Herald.Sinks.PagerDuty.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.PostgreSQL.Tests/Herald.Sinks.PostgreSQL.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.RabbitMQ.Tests/Herald.Sinks.RabbitMQ.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.RavenDB.Tests/Herald.Sinks.RavenDB.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Raygun.Tests/Herald.Sinks.Raygun.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Redis.Tests/Herald.Sinks.Redis.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.RedisList.Tests/Herald.Sinks.RedisList.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.SQLite.Tests/Herald.Sinks.SQLite.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Sentry.Tests/Herald.Sinks.Sentry.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Seq.Tests/Herald.Sinks.Seq.Tests.csproj" />

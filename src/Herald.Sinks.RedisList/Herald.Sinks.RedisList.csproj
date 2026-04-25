@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.RedisList</RootNamespace>
+    <AssemblyName>Herald.Sinks.RedisList</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.RedisList</PackageId>
+    <Version>1.0.0</Version>
+    <Description>RPUSHes Herald log events as JSON entries onto a Redis list via StackExchange.Redis. Drop-in for Serilog.Sinks.Redis.List. Optional LTRIM cap for bounded retention.</Description>
+    <PackageTags>herald;logging;sink;redis;list;nosql</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.RedisList.Tests" />
+  </ItemGroup>
+</Project>

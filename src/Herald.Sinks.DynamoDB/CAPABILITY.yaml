@@ -1,0 +1,63 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.DynamoDB
+package_id: MMP.Herald.Sinks.DynamoDB
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  PutItems Herald log events into a DynamoDB table via AWSSDK.DynamoDBv2.
+  Drop-in for Serilog.Sinks.AmazonDynamoDB. Composite id sorts newest-first
+  within a date prefix; BatchWriteItem chunks into 25-item slices.
+vendor:
+  name: Amazon Web Services
+  url: https://aws.amazon.com/dynamodb/
+ships:
+  - DynamoDBLogSink
+  - DynamoDBLogSinkProvider
+  - DynamoDBSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - AWSSDK.DynamoDBv2
+    - DynamoDB table with single-partition-key schema (id: String)
+config:
+  kind: dynamodb
+  uri: "AWS region system name (required, e.g. us-east-1)."
+  host: "Table name (required)."
+dashboard_config:
+  - property: region
+    name: AWS region
+    width: m
+    control: text
+    required: true
+    group: Auth
+  - property: table_name
+    name: Table name
+    width: m
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - PutItem per event on the Log path
+  - BatchWriteItem on IBatchedLogSink batches, chunked at 25 items per request
+  - Composite id (date#inverted-ticks#rand) for newest-first scans
+  - Code-first overload accepts a pre-built IAmazonDynamoDB
+  - Property bag serialised as JSON in the properties attribute
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - Item attribute size (and per-item ceiling) bound by DynamoDB's 400 KB limit
+  - No automatic table creation or schema management — operator responsibility
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — IAmazonDynamoDB clients are thread-safe per AWS SDK contract.
+test_coverage: tests/Herald.Sinks.DynamoDB.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.4 NoSQL pack.

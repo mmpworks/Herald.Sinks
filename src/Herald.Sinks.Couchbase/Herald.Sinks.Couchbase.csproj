@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Couchbase</RootNamespace>
+    <AssemblyName>Herald.Sinks.Couchbase</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Couchbase</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Upserts Herald log events as documents into a Couchbase collection via CouchbaseNetClient. Drop-in for Serilog.Sinks.Couchbase.</Description>
+    <PackageTags>herald;logging;sink;couchbase;document;nosql</PackageTags>
+    <!-- Couchbase SDK uses reflection internally and is not AOT-clean.
+         Explicit not-AOT keeps the build honest; users on PublishAot
+         should pick a different NoSQL sink (Mongo, RavenDB, DynamoDB
+         are all AOT-friendly). -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CouchbaseNetClient" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Couchbase.Tests" />
+  </ItemGroup>
+</Project>

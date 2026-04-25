@@ -1,0 +1,64 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Redis
+package_id: MMP.Herald.Sinks.Redis
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Publishes Herald log events as JSON messages to a Redis PubSub
+  channel via StackExchange.Redis. Drop-in for Serilog.Sinks.Redis
+  (PubSub mode). Pair with Herald.Sinks.RedisList when you need
+  durable delivery (RPUSH into a list consumers drain).
+vendor:
+  name: Redis
+  url: https://redis.io
+ships:
+  - RedisLogSink
+  - RedisLogSinkProvider
+  - RedisSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - StackExchange.Redis
+    - Redis 6.x or newer
+config:
+  kind: redis
+  uri: "Redis connection string (required)."
+  host: "Channel name (default herald-logs)."
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    width: xl
+    control: secret
+    required: true
+    group: Target
+  - property: channel
+    name: Channel
+    width: m
+    control: text
+    required: false
+    default: herald-logs
+    group: Target
+capabilities:
+  - PUBLISH per event with FireAndForget for minimum latency
+  - JSON payload via Utf8JsonWriter (AOT clean)
+  - Code-first overload accepts a pre-built ISubscriber for shared multiplexer scenarios
+  - Property values round-trip for common BCL primitives
+limitations:
+  - PubSub is fire-and-forget — subscribers offline at publish time miss events
+  - No batched publish (Redis PubSub has no native batching)
+  - Pattern channels (PSUBSCRIBE) are subscriber-side; the sink uses literal channel names
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — the StackExchange.Redis multiplexer is thread-safe per driver contract.
+test_coverage: tests/Herald.Sinks.Redis.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.4 NoSQL pack.

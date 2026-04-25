@@ -1,0 +1,67 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.AzureTableStorage
+package_id: MMP.Herald.Sinks.AzureTableStorage
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Writes Herald log events as entities into an Azure Table Storage
+  table via Azure.Data.Tables. Drop-in for Serilog.Sinks.AzureTableStorage.
+  Daily partition keys plus inverted-tick row keys keep date-range
+  queries cheap and newest-first by default.
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/storage/tables/
+ships:
+  - AzureTableStorageLogSink
+  - AzureTableStorageLogSinkProvider
+  - AzureTableStorageSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Azure.Data.Tables
+    - Azure.Identity (for DefaultAzureCredential overload)
+    - Azure Storage account with Tables enabled (or Cosmos DB Tables)
+config:
+  kind: azure_table_storage
+  uri: "Connection string (required)."
+  host: "Table name (default HeraldLogs)."
+dashboard_config:
+  - property: connection_string
+    name: Connection string
+    width: xl
+    control: secret
+    required: true
+    group: Auth
+  - property: table_name
+    name: Table name
+    width: m
+    control: text
+    required: false
+    default: HeraldLogs
+    group: Target
+capabilities:
+  - Daily partition key (yyyyMMdd) for balanced date-range queries
+  - Inverted-tick row key for newest-first ordering within a partition
+  - Transactional inserts for IBatchedLogSink batches (split per-partition, capped at 100/transaction)
+  - DefaultAzureCredential overload for managed-identity scenarios
+  - Property bag serialised as JSON in the Properties column
+  - Auto-creates the table on first use
+limitations:
+  - Single-partition transactions; cross-day batches issue one transaction per day
+  - Property values of non-primitive types fall back to ToString() inside the JSON column
+  - No TLS / DAC tweaks beyond the SDK defaults
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — TableClient is thread-safe per Azure SDK contract.
+test_coverage: tests/Herald.Sinks.AzureTableStorage.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.4 NoSQL pack.

@@ -1,0 +1,87 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Cassandra
+package_id: MMP.Herald.Sinks.Cassandra
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  INSERTs Herald log events into a Cassandra table via the DataStax
+  CassandraCSharpDriver. Drop-in for Serilog.Sinks.Cassandra. Works
+  against ScyllaDB and any Cassandra-protocol cluster. Prepared
+  statement bound per event keeps per-call cost bounded.
+vendor:
+  name: Apache Cassandra / DataStax / ScyllaDB
+  url: https://cassandra.apache.org
+ships:
+  - CassandraLogSink
+  - CassandraLogSinkProvider
+  - CassandraSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - CassandraCSharpDriver (>= 3.20)
+    - Cassandra cluster + keyspace + table with the expected schema
+schema:
+  expected: |
+    CREATE TABLE IF NOT EXISTS herald.herald_logs (
+      partition_date text,
+      time_uuid timeuuid,
+      level text,
+      category text,
+      message text,
+      template text,
+      properties text,
+      PRIMARY KEY (partition_date, time_uuid)
+    ) WITH CLUSTERING ORDER BY (time_uuid DESC);
+config:
+  kind: cassandra
+  uri: "Comma-separated contact points (required)."
+  host: "keyspace.table (default herald.herald_logs)."
+dashboard_config:
+  - property: contact_points
+    name: Contact points
+    width: xl
+    control: text
+    required: true
+    group: Auth
+  - property: keyspace
+    name: Keyspace
+    width: m
+    control: text
+    required: false
+    default: herald
+    group: Target
+  - property: table
+    name: Table
+    width: m
+    control: text
+    required: false
+    default: herald_logs
+    group: Target
+capabilities:
+  - Prepared INSERT bound per event (one round trip per Log call)
+  - Per-event Execute on batches; let the session pool handle concurrency
+  - Code-first overload accepts a pre-connected ISession
+  - Daily partition + DESC clustering produces newest-first scans by default
+  - Property bag serialised as JSON in the properties text column
+limitations:
+  - Schema creation is operator responsibility — the sink expects the table to exist
+  - No logged-batch INSERTs (Cassandra anti-pattern across partitions); operator can bind a custom batch via code-first
+  - Property values of non-primitive types fall back to ToString()
+minimum_edition: Community
+aot_compatible: false
+thread_safety: Thread-safe — ISession is thread-safe per DataStax driver contract.
+aot_notes: >
+  CassandraCSharpDriver uses internal reflection and is not AOT-clean.
+  Users on PublishAot should pick a different NoSQL sink.
+test_coverage: tests/Herald.Sinks.Cassandra.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.4 NoSQL pack.
