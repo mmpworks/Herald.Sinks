@@ -1,0 +1,49 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Mqtt
+package_id: MMP.Herald.Sinks.Mqtt
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Publishes Herald log events as JSON messages to an MQTT broker via
+  MQTTnet. IoT-flavoured pub/sub against HiveMQ, Mosquitto, EMQX, and
+  the AWS IoT Core / Azure IoT Hub MQTT endpoints.
+vendor:
+  name: Eclipse / OASIS MQTT
+  url: https://mqtt.org
+ships:
+  - MqttLogSink
+  - MqttLogSinkProvider
+  - MqttSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - MQTTnet (>= 4.3)
+    - MQTT broker reachable at the configured host:port
+config:
+  kind: mqtt
+  uri: "Broker host[:port] (required; default port 1883)."
+  host: "Topic (default herald/logs)."
+capabilities:
+  - PublishAsync per event
+  - QoS AtMostOnce by default; bump via the code-first overload (AtLeastOnce, ExactlyOnce)
+  - Topic supports MQTT hierarchy (herald/logs/error, fleet/+/health)
+  - Code-first overload accepts a pre-built IMqttClient for shared client + custom auth
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - No TLS / client-cert helpers — pass a pre-configured IMqttClient via the code-first ctor
+  - Connection happens in the connection-string ctor; failure throws at construction
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — IMqttClient is thread-safe per MQTTnet contract.
+test_coverage: tests/Herald.Sinks.Mqtt.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.9 transport extras.

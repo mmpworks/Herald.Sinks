@@ -1,0 +1,48 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Pulsar
+package_id: MMP.Herald.Sinks.Pulsar
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Sends Herald log events to an Apache Pulsar topic via DotPulsar.
+  Multi-tenant pub/sub with persistent and non-persistent topic
+  flavours selected by the topic URL.
+vendor:
+  name: Apache Pulsar
+  url: https://pulsar.apache.org
+ships:
+  - PulsarLogSink
+  - PulsarLogSinkProvider
+  - PulsarSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - DotPulsar (>= 3.4)
+    - Apache Pulsar broker reachable at the service URL
+config:
+  kind: pulsar
+  uri: "Pulsar service URL (required, e.g. pulsar://localhost:6650)."
+  host: "Topic (required, e.g. persistent://public/default/herald-logs)."
+capabilities:
+  - Send per event with byte[] schema
+  - Code-first overload accepts a pre-built IProducer<byte[]>
+  - Persistent and non-persistent topics selected via the topic URL prefix
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async DotPulsar API
+  - No partitioned-topic key-based routing helper — pass a custom producer via the code-first ctor
+  - No JWT / TLS auth helpers — wire via DotPulsar's ClientBuilder
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — DotPulsar IProducer is thread-safe per SDK contract.
+test_coverage: tests/Herald.Sinks.Pulsar.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.9 transport extras.

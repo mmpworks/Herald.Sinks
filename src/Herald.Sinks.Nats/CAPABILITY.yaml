@@ -1,0 +1,48 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Nats
+package_id: MMP.Herald.Sinks.Nats
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Publishes Herald log events as JSON messages to a NATS subject via
+  NATS.Client.Core (the modern v2 line). Cloud-native messaging with
+  optional JetStream durability handled at the operator side.
+vendor:
+  name: NATS.io / Synadia
+  url: https://nats.io
+ships:
+  - NatsLogSink
+  - NatsLogSinkProvider
+  - NatsSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - NATS.Client.Core (>= 2.5)
+    - NATS server reachable at the configured URL
+config:
+  kind: nats
+  uri: "NATS server URL (required, e.g. nats://localhost:4222)."
+  host: "Subject (default herald.logs)."
+capabilities:
+  - PublishAsync per event
+  - Subjects support hierarchical routing (herald.logs.error, herald.logs.audit)
+  - Code-first overload accepts a pre-built NatsConnection for shared client scenarios
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - JetStream durability is operator responsibility — wire JetStreamContext on the consumer side
+  - No TLS / NKey auth helpers — pass a pre-configured NatsConnection via the code-first ctor
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — NatsConnection is thread-safe per SDK contract.
+test_coverage: tests/Herald.Sinks.Nats.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.9 transport extras.
