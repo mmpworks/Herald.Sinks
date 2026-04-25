@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/Herald.Sinks.Aliyun/Herald.Sinks.Aliyun.csproj" />
     <Project Path="src/Herald.Sinks.AmazonS3/Herald.Sinks.AmazonS3.csproj" />
+    <Project Path="src/Herald.Sinks.ApplicationInsights/Herald.Sinks.ApplicationInsights.csproj" />
     <Project Path="src/Herald.Sinks.AwsCloudWatch/Herald.Sinks.AwsCloudWatch.csproj" />
     <Project Path="src/Herald.Sinks.AzureBlobStorage/Herald.Sinks.AzureBlobStorage.csproj" />
     <Project Path="src/Herald.Sinks.AzureCosmosDB/Herald.Sinks.AzureCosmosDB.csproj" />
@@ -10,6 +11,7 @@
     <Project Path="src/Herald.Sinks.AzureServiceBus/Herald.Sinks.AzureServiceBus.csproj" />
     <Project Path="src/Herald.Sinks.AzureTableStorage/Herald.Sinks.AzureTableStorage.csproj" />
     <Project Path="src/Herald.Sinks.Cassandra/Herald.Sinks.Cassandra.csproj" />
+    <Project Path="src/Herald.Sinks.ClickHouse/Herald.Sinks.ClickHouse.csproj" />
     <Project Path="src/Herald.Sinks.Couchbase/Herald.Sinks.Couchbase.csproj" />
     <Project Path="src/Herald.Sinks.Datadog/Herald.Sinks.Datadog.csproj" />
     <Project Path="src/Herald.Sinks.Debug/Herald.Sinks.Debug.csproj" />
@@ -70,6 +72,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/Herald.Sinks.Aliyun.Tests/Herald.Sinks.Aliyun.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AmazonS3.Tests/Herald.Sinks.AmazonS3.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.ApplicationInsights.Tests/Herald.Sinks.ApplicationInsights.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AwsCloudWatch.Tests/Herald.Sinks.AwsCloudWatch.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureBlobStorage.Tests/Herald.Sinks.AzureBlobStorage.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureCosmosDB.Tests/Herald.Sinks.AzureCosmosDB.Tests.csproj" />
@@ -78,6 +81,7 @@
     <Project Path="tests/Herald.Sinks.AzureServiceBus.Tests/Herald.Sinks.AzureServiceBus.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureTableStorage.Tests/Herald.Sinks.AzureTableStorage.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Cassandra.Tests/Herald.Sinks.Cassandra.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.ClickHouse.Tests/Herald.Sinks.ClickHouse.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Couchbase.Tests/Herald.Sinks.Couchbase.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Debug.Tests/Herald.Sinks.Debug.Tests.csproj" />
