@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Coralogix</RootNamespace>
+    <AssemblyName>Herald.Sinks.Coralogix</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.Coralogix</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Ships Herald log events to Coralogix via the bulk-logs ingest endpoint. HTTP-only.</Description>
+    <PackageTags>herald;logging;sink;coralogix;observability</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Coralogix.Tests" />
+  </ItemGroup>
+</Project>

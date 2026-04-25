@@ -1,0 +1,43 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Mezmo
+package_id: MMP.Herald.Sinks.Mezmo
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to Mezmo (formerly LogDNA) via the public
+  /logs/ingest endpoint. Basic-auth with ingest key. HTTP-only.
+vendor:
+  name: Mezmo
+  url: https://mezmo.com
+ships:
+  - MezmoLogSink
+  - MezmoLogSinkProvider
+  - MezmoSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Mezmo organization + ingest key
+config:
+  kind: mezmo
+  uri: "Mezmo ingest key (required)."
+  host: "Hostname (required, becomes the source host on ingest)."
+capabilities:
+  - HTTP POST per batch (lines envelope)
+  - Basic auth with ingest key as username
+  - On-prem / EU endpoint override via the endpoint constructor parameter
+limitations:
+  - One round trip per Log call without WithAsyncLogging
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Mezmo.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.11 observability tier.

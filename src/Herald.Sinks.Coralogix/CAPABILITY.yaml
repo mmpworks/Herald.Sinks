@@ -1,0 +1,44 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Coralogix
+package_id: MMP.Herald.Sinks.Coralogix
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to Coralogix via the bulk-logs ingest
+  endpoint. Code-first only — privateKey + applicationName +
+  subsystemName cannot ride through declarative sink definitions safely.
+vendor:
+  name: Coralogix
+  url: https://coralogix.com
+ships:
+  - CoralogixLogSink
+  - CoralogixLogSinkProvider
+  - CoralogixSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Coralogix account + private key
+config:
+  kind: coralogix
+  notes: Code-first only; provider throws.
+capabilities:
+  - HTTP POST per batch with body-envelope auth
+  - Severity mapping (Coralogix 1-6 scale)
+  - applicationName + subsystemName on every entry for routing rules
+  - EU / US / Asia / on-prem endpoint override via the endpoint constructor parameter
+limitations:
+  - Provider throws — credentials must be wired via the code-first ctor
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Coralogix.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.11 observability tier.

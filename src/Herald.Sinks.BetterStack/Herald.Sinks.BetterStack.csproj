@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.BetterStack</RootNamespace>
+    <AssemblyName>Herald.Sinks.BetterStack</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.BetterStack</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Ships Herald log events to Better Stack (Logtail) via the public ingest endpoint. HTTP-only.</Description>
+    <PackageTags>herald;logging;sink;betterstack;logtail;observability</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.BetterStack.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,43 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Axiom
+package_id: MMP.Herald.Sinks.Axiom
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to Axiom via the public dataset ingest
+  endpoint. Bearer-token auth. HTTP-only — no SDK.
+vendor:
+  name: Axiom
+  url: https://axiom.co
+ships:
+  - AxiomLogSink
+  - AxiomLogSinkProvider
+  - AxiomSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Axiom dataset + API token
+config:
+  kind: axiom
+  uri: "Axiom API token (required)."
+  host: "Dataset name (required)."
+capabilities:
+  - HTTP POST per batch as a JSON array
+  - Bearer token auth
+  - EU / on-prem endpoint override via the baseUrl constructor parameter
+limitations:
+  - One round trip per Log call without WithAsyncLogging
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Axiom.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.11 observability tier.

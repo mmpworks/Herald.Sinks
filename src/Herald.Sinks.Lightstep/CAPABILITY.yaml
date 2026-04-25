@@ -1,0 +1,27 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Lightstep
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: observability
+
+purpose: >
+  Shows Herald users how to ship logs to Lightstep (now Splunk
+  Observability Cloud) without a dedicated sink package. Lightstep's
+  public ingest is OTLP — Herald already ships Herald.Sinks.Otlp.
+  Point it at the Lightstep ingest URL with the access-token header
+  and you're done.
+
+serilog_equivalent: Serilog.Sinks.OpenTelemetry pointed at Lightstep
+
+herald_api:
+  - Herald.Sinks.Otlp (OtlpJsonLogSink / OtlpProtobufLogSink)
+  - QuickLogBuilder.WithBridge
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25

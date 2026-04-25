@@ -1,0 +1,42 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.BetterStack
+package_id: MMP.Herald.Sinks.BetterStack
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Ships Herald log events to Better Stack (Logtail) via the public
+  ingest endpoint. Bearer-token auth, NDJSON body. HTTP-only — no SDK.
+vendor:
+  name: Better Stack
+  url: https://betterstack.com/logs
+ships:
+  - BetterStackLogSink
+  - BetterStackLogSinkProvider
+  - BetterStackSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Better Stack source token
+config:
+  kind: betterstack
+  uri: "Source token (required)."
+capabilities:
+  - HTTP POST per event / batch (NDJSON body)
+  - Bearer token auth
+  - On-prem / EU endpoint override via the endpoint constructor parameter
+limitations:
+  - One round trip per Log call without WithAsyncLogging in front
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.BetterStack.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.11 observability tier.
