@@ -1,0 +1,30 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Snowflake
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: database
+
+purpose: >
+  Shows Herald users how to land logs in Snowflake without depending
+  on Snowflake.Data. The .NET driver has a long-standing backlog of
+  unpatched advisories (GHSA-2mqw-rq5m-8hc8, GHSA-c82r-c9f7-f5mj) and
+  pulls a vulnerable log4net transitively. Snowflake's own
+  recommendation for streaming inserts is Snowpipe, which lands logs
+  via a staged file in S3 / GCS / Azure Blob — no .NET driver in the
+  hot path.
+
+serilog_equivalent: none mainstream — most teams stage to S3 + Snowpipe
+
+herald_api:
+  - Herald.Sinks.AmazonS3 (writes JSON files Snowpipe ingests)
+  - Herald.Sinks.AzureBlobStorage
+  - Herald.Sinks.GoogleCloudLogging (export to BigQuery → Snowflake)
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25

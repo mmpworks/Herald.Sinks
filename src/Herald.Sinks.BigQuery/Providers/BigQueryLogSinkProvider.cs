@@ -1,0 +1,39 @@
+// Copyright (c) 2026 MMP LLC
+// Licensed under the MIT License. See LICENSE in the project root.
+#nullable enable
+
+using System;
+using MMP.Herald;
+using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Levels;
+using MMP.Herald.Output.Rendering;
+using MMP.Herald.Pipeline;
+using MMP.Herald.Routing;
+
+namespace Herald.Sinks.BigQuery.Providers;
+
+public sealed class BigQueryLogSinkProvider : ILogSinkProvider
+{
+    public const string KindKey = "bigquery";
+    public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
+    public ILogger CreateSink(
+        LoggingRuntimeSinkDefinition definition,
+        ILogLevelRegistry levelRegistry,
+        ILogOutputTransformerRegistry transformerRegistry)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
+        ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
+
+        var (dataset, table) = ParseHost(definition.Host);
+        return new BigQueryLogSink(definition.Uri, dataset, table);
+    }
+
+    private static (string Dataset, string Table) ParseHost(string host)
+    {
+        var dot = host.IndexOf('.');
+        return dot < 0 ? (host, "herald_logs") : (host[..dot], host[(dot + 1)..]);
+    }
+}

@@ -1,0 +1,52 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.BigQuery
+package_id: MMP.Herald.Sinks.BigQuery
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Streaming-inserts Herald log events into a Google BigQuery table via
+  Google.Cloud.BigQuery.V2. ADC for auth.
+vendor:
+  name: Google Cloud
+  url: https://cloud.google.com/bigquery
+ships:
+  - BigQueryLogSink
+  - BigQueryLogSinkProvider
+  - BigQuerySinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Google.Cloud.BigQuery.V2
+    - Existing BigQuery dataset.table with the expected schema
+config:
+  kind: bigquery
+  uri: "GCP project ID (required)."
+  host: "dataset.table (required)."
+schema:
+  expected: |
+    time_utc TIMESTAMP REQUIRED,
+    level    STRING    REQUIRED,
+    category STRING    NULLABLE,
+    message  STRING    NULLABLE,
+    template STRING    NULLABLE
+capabilities:
+  - InsertRows per batch — BigQuery's streaming insert API
+  - Code-first overload accepts a pre-built BigQueryClient
+  - Application Default Credentials chain for auth
+limitations:
+  - 1 MB per row, 10 MB per request — operator owns sizing
+  - Streaming inserts cost per-row; pair with WithAsyncLogging + batch sizing
+minimum_edition: Community
+aot_compatible: true
+thread_safety: BigQueryClient is thread-safe per Google SDK contract.
+test_coverage: tests/Herald.Sinks.BigQuery.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.12 analytics tier.

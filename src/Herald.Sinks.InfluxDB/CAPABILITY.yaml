@@ -1,0 +1,45 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.InfluxDB
+package_id: MMP.Herald.Sinks.InfluxDB
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Writes Herald log events to InfluxDB v2 via line protocol over HTTP.
+  No InfluxDB SDK dependency. Tags carry level + category; message
+  rides as a field. Code-first only.
+vendor:
+  name: InfluxData
+  url: https://www.influxdata.com
+ships:
+  - InfluxDBLogSink
+  - InfluxDBLogSinkProvider
+  - InfluxDBSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - InfluxDB v2 cluster + API token
+config:
+  kind: influxdb
+  notes: Code-first only.
+capabilities:
+  - HTTP POST per batch as line protocol
+  - Token auth (Authorization Token <token>)
+  - Tags level + category for cardinality-aware indexing
+  - ms-precision timestamps
+limitations:
+  - Provider throws — credentials + bucket must be wired via code-first
+  - No retention or downsampling helpers (operator responsibility)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.InfluxDB.Tests/
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.12 analytics tier.
