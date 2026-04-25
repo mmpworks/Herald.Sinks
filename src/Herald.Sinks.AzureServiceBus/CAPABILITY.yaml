@@ -1,0 +1,48 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.AzureServiceBus
+package_id: MMP.Herald.Sinks.AzureServiceBus
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  SendMessage Herald log events into an Azure Service Bus queue or topic
+  via Azure.Messaging.ServiceBus. Single SendMessage on the Log path,
+  SendMessages on batches.
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/service-bus-messaging/
+ships:
+  - AzureServiceBusLogSink
+  - AzureServiceBusLogSinkProvider
+  - AzureServiceBusSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Azure.Messaging.ServiceBus
+    - Azure Service Bus namespace + queue/topic
+config:
+  kind: azure_service_bus
+  uri: "Connection string (required)."
+  host: "Queue or topic name (required)."
+capabilities:
+  - SendMessage per event with ContentType=application/json
+  - Subject = level.key for cheap subscription rules on topics
+  - SendMessages on IBatchedLogSink batches (single AMQP transfer per batch)
+  - Code-first overload accepts a pre-built ServiceBusSender for shared client scenarios
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - 1 MB max message size (Premium tier 100 MB) — operator owns oversize policy
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — ServiceBusSender is thread-safe per Azure SDK contract.
+test_coverage: tests/Herald.Sinks.AzureServiceBus.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.7 cloud-queues pack.

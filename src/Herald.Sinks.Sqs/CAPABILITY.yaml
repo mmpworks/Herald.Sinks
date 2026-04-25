@@ -1,0 +1,48 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Sqs
+package_id: MMP.Herald.Sinks.Sqs
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  SendMessage Herald log events into an AWS SQS queue via AWSSDK.SQS.
+  Drop-in for Serilog.Sinks.AmazonSqs. Chunks batches at 10 messages per
+  request (the SQS SendMessageBatch limit).
+vendor:
+  name: Amazon Web Services
+  url: https://aws.amazon.com/sqs/
+ships:
+  - SqsLogSink
+  - SqsLogSinkProvider
+  - SqsSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - AWSSDK.SQS
+    - SQS standard or FIFO queue
+config:
+  kind: sqs
+  uri: "AWS region system name (required)."
+  host: "Queue URL (required)."
+capabilities:
+  - SendMessage per event
+  - SendMessageBatch for batches, chunked at 10 messages per request
+  - Code-first overload accepts a pre-built IAmazonSQS
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - 256 KB per message — operator owns oversize-event policy
+  - FIFO queues require a MessageGroupId; not configured by this sink (use code-first to add it)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — IAmazonSQS is thread-safe per AWS SDK contract.
+test_coverage: tests/Herald.Sinks.Sqs.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.7 cloud-queues pack.

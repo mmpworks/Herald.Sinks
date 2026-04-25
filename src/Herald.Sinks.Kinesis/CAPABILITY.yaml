@@ -1,0 +1,64 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Kinesis
+package_id: MMP.Herald.Sinks.Kinesis
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  PutRecords Herald log events into an AWS Kinesis Data Stream via
+  AWSSDK.Kinesis. Drop-in for Serilog.Sinks.AmazonKinesis. Defaults to
+  category-based partition keys for shard affinity; chunks batches at
+  500 records per request.
+vendor:
+  name: Amazon Web Services
+  url: https://aws.amazon.com/kinesis/
+ships:
+  - KinesisLogSink
+  - KinesisLogSinkProvider
+  - KinesisSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - AWSSDK.Kinesis
+    - Kinesis Data Stream provisioned with sufficient shards
+config:
+  kind: kinesis
+  uri: "AWS region system name (required, e.g. us-east-1)."
+  host: "Stream name (required)."
+dashboard_config:
+  - property: region
+    name: AWS region
+    width: m
+    control: text
+    required: true
+    group: Auth
+  - property: stream_name
+    name: Stream name
+    width: m
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - PutRecord per event on the Log path
+  - PutRecords for batches, chunked at 500 records per request (Kinesis limit)
+  - Default partition key is event category for shard affinity
+  - Optional Func<LogEvent, string> partition-key accessor
+  - Code-first overload accepts a pre-built IAmazonKinesis
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - 1 MB per record / 5 MB per PutRecords call — operator owns capacity planning
+  - No automatic stream creation
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — IAmazonKinesis is thread-safe per AWS SDK contract.
+test_coverage: tests/Herald.Sinks.Kinesis.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.7 cloud-queues pack.

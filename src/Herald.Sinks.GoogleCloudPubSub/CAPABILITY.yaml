@@ -1,0 +1,49 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.GoogleCloudPubSub
+package_id: MMP.Herald.Sinks.GoogleCloudPubSub
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Publish Herald log events into a Google Cloud Pub/Sub topic via
+  Google.Cloud.PubSub.V1. PublisherClient handles internal batching,
+  retries, and flow control by default.
+vendor:
+  name: Google Cloud
+  url: https://cloud.google.com/pubsub
+ships:
+  - GoogleCloudPubSubLogSink
+  - GoogleCloudPubSubLogSinkProvider
+  - GoogleCloudPubSubSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Google.Cloud.PubSub.V1
+    - GCP project + topic
+config:
+  kind: google_pubsub
+  uri: "GCP project ID (required)."
+  host: "Topic ID (required)."
+capabilities:
+  - PublishAsync per event; the SDK batches internally based on size and time
+  - Per-message attributes for level + category enable cheap subscription filters
+  - ShutdownAsync flushes pending publishes on Dispose
+  - Code-first overload accepts a pre-built PublisherClient
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async SDK
+  - Authentication via Application Default Credentials only (env, gcloud, instance)
+  - 10 MB max message size (per Google's quota)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — PublisherClient is thread-safe per Google SDK contract.
+test_coverage: tests/Herald.Sinks.GoogleCloudPubSub.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.7 cloud-queues pack.
