@@ -1,0 +1,92 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.ZeroMQ
+package_id: MMP.Herald.Sinks.ZeroMQ
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Publishes Herald log events as JSON frames over a ZeroMQ socket via
+  NetMQ. Drop-in for Serilog.Sinks.ZeroMQ. Supports PUB (fan-out to
+  subscribers) and PUSH (load-balance to pullers) socket kinds. Pair
+  with downstream SUB or PULL consumers for ad-hoc log streaming where
+  a full broker would be overkill.
+vendor:
+  name: ZeroMQ / NetMQ
+  url: https://zeromq.org
+ships:
+  - ZeroMqLogSink
+  - ZeroMqLogSinkProvider
+  - ZeroMqSinkRegistration
+  - ZeroMqSocketKind (enum)
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - NetMQ (>= 4.0)
+    - ZeroMQ subscriber or puller on the receiving end
+config:
+  kind: zeromq
+  uri: "ZeroMQ endpoint (required, e.g. tcp://*:5555)."
+  host: "Topic prefix for PUB (default herald-logs); ignored on PUSH."
+dashboard_config:
+  - property: endpoint
+    name: Endpoint
+    width: xl
+    control: text
+    required: true
+    group: Target
+  - property: topic
+    name: Topic
+    width: m
+    control: text
+    required: false
+    default: herald-logs
+    group: Target
+  - property: socket_kind
+    name: Socket kind
+    width: s
+    control: select
+    required: false
+    default: PubSub
+    options: [PubSub, PushPull]
+    group: Target
+  - property: bind
+    name: Bind (vs connect)
+    width: s
+    control: bool
+    required: false
+    group: Target
+capabilities:
+  - PUB socket for fan-out to multiple subscribers (with topic prefix)
+  - PUSH socket for load-balanced work-queue delivery
+  - Single-threaded poller drains a thread-safe NetMQQueue — producers Log() from any thread
+  - JSON payload via Utf8JsonWriter (AOT clean)
+  - Bind defaults match canonical patterns (PUB binds, PUSH connects); override per-instance
+limitations:
+  - PUB drops events for slow / disconnected subscribers (ZeroMQ HWM behaviour)
+  - PUSH blocks the queue when no puller is connected; pair with WithAsyncLogging for safety
+  - No TLS / CURVE auth (left to NetMQ's lower-level API)
+  - First Log() call waits for the poller thread to bind/connect before enqueuing
+
+security_notes: >
+  NetMQ pulls System.Security.Cryptography.Xml transitively. Every shipped
+  version (5.x through 10.0) carries GHSA-37gx-xxp4-5rgx and
+  GHSA-w3x6-4m5h-cxqf — Microsoft has not released a patched version. The
+  advisories cover XML signature validation; ZeroMQ messaging does not
+  expose any XML validation surface, so the transitive dependency is not
+  exploitable from this sink. NU1903 is suppressed in the csproj with a
+  matching comment. Operators in regulated environments should confirm
+  the trim-rooted dependency tree of their final binary.
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — NetMQQueue is the documented thread-safe entry; the socket lives entirely on the poller thread.
+test_coverage: tests/Herald.Sinks.ZeroMQ.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.5 transport pack.

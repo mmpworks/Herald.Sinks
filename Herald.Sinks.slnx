@@ -56,6 +56,7 @@
     <Project Path="src/Herald.Sinks.Trace/Herald.Sinks.Trace.csproj" />
     <Project Path="src/Herald.Sinks.UdpJsonLine/Herald.Sinks.UdpJsonLine.csproj" />
     <Project Path="src/Herald.Sinks.XUnit/Herald.Sinks.XUnit.csproj" />
+    <Project Path="src/Herald.Sinks.ZeroMQ/Herald.Sinks.ZeroMQ.csproj" />
   </Folder>
   <Folder Name="/meta/">
     <Project Path="meta/Herald.Business/Herald.Business.csproj" />
@@ -118,5 +119,6 @@
     <Project Path="tests/Herald.Sinks.Trace.Tests/Herald.Sinks.Trace.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.UdpJsonLine.Tests/Herald.Sinks.UdpJsonLine.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.XUnit.Tests/Herald.Sinks.XUnit.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.ZeroMQ.Tests/Herald.Sinks.ZeroMQ.Tests.csproj" />
   </Folder>
 </Solution>

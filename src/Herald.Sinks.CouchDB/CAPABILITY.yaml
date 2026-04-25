@@ -1,0 +1,31 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.CouchDB (migration guide)
+
+name: Herald.Sinks.CouchDB
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: database
+
+purpose: >
+  Shows Herald users how to ship logs to Apache CouchDB without a
+  dedicated sink package. CouchDB exposes a JSON-over-HTTP API; the
+  existing Herald.Sinks.HttpJson sink covers it cleanly when pointed at
+  the database's _bulk_docs endpoint. This guide walks through the
+  setup, batching choices, and operator concerns.
+
+serilog_equivalent: Serilog.Sinks.CouchDB
+
+herald_api:
+  - Herald.Sinks.HttpJson (POST batches as JSON to a URL)
+  - QuickLogBuilder.WithBridge (wire the sink into a pipeline)
+  - QuickLogBuilder.WithAsyncLogging (optional async delivery)
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25

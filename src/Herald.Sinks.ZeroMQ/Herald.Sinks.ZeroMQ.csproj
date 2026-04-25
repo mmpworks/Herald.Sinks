@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.ZeroMQ</RootNamespace>
+    <AssemblyName>Herald.Sinks.ZeroMQ</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.ZeroMQ</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Publishes Herald log events to a ZeroMQ socket via NetMQ. Drop-in for Serilog.Sinks.ZeroMQ. Supports PUB (fan-out) and PUSH (work-queue) socket kinds.</Description>
+    <PackageTags>herald;logging;sink;zeromq;netmq;transport;pubsub</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <!-- NetMQ pulls System.Security.Cryptography.Xml transitively. Every
+         currently-shipped version (5.x through 10.0) carries
+         GHSA-37gx-xxp4-5rgx + GHSA-w3x6-4m5h-cxqf — Microsoft has not
+         shipped a patched version. The advisories are about XML signature
+         validation; ZeroMQ messaging does not expose any XML validation
+         surface, so the transitive dependency is not exploitable here.
+         We pin the latest 10.0 line and suppress NU1903 for this project
+         only. The matching note lives in CAPABILITY.yaml. -->
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NetMQ" />
+    <!-- Override NetMQ's transitive 5.0.0 (critical NU1904) with the latest
+         line. Both packages still carry advisories (see <NoWarn> note above)
+         but the latest patched 9.0/10.0 line is the best Microsoft offers. -->
+    <PackageReference Include="System.Security.Cryptography.Xml" />
+    <PackageReference Include="System.Drawing.Common" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.ZeroMQ.Tests" />
+  </ItemGroup>
+</Project>
