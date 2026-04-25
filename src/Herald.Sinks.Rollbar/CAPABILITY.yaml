@@ -1,0 +1,47 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Rollbar
+package_id: MMP.Herald.Sinks.Rollbar
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Reports Herald log events to Rollbar via the public Items API.
+  HTTP-only implementation — no Rollbar SDK dependency.
+vendor:
+  name: Rollbar
+  url: https://rollbar.com
+ships:
+  - RollbarLogSink
+  - RollbarLogSinkProvider
+  - RollbarSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Rollbar project + access token (post_server_item scope)
+config:
+  kind: rollbar
+  uri: "Rollbar access token (required)."
+  host: "Environment label (default production)."
+capabilities:
+  - HTTP POST per event to api.rollbar.com/api/1/item
+  - Level mapping (trace/debug -> debug, info/notice -> info, warn -> warning, error -> error, critical/security -> critical)
+  - Environment label rides the data.environment field for cross-env grouping
+  - On-prem Rollbar URL override via the endpoint constructor parameter
+limitations:
+  - One HTTP request per event — pair with WithAsyncLogging for high volume
+  - No stack-trace handling — out of scope for a logging sink
+  - No person/user tracking — extend the body via a custom subclass
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Rollbar.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.10 error-monitoring tier.

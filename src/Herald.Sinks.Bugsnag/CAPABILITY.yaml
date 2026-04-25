@@ -1,0 +1,47 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Bugsnag
+package_id: MMP.Herald.Sinks.Bugsnag
+version: 1.0.0
+kind: sink
+category: alerting
+purpose: >
+  Reports Herald log events to Bugsnag via the public notify API.
+  Drop-in for Serilog.Sinks.Bugsnag. HTTP-only implementation — no
+  Bugsnag.NET SDK dependency.
+vendor:
+  name: SmartBear / Bugsnag
+  url: https://www.bugsnag.com
+ships:
+  - BugsnagLogSink
+  - BugsnagLogSinkProvider
+  - BugsnagSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Bugsnag project + API key (no SDK pin needed)
+config:
+  kind: bugsnag
+  uri: "Bugsnag API key (required)."
+capabilities:
+  - HTTP POST per event to notify.bugsnag.com (Payload v5)
+  - Severity mapping (error/critical/security -> error, warn -> warning, else info)
+  - Category becomes errorClass; message + template + level land in metaData.herald
+  - On-prem Bugsnag URL override via the endpoint constructor parameter
+limitations:
+  - One HTTP request per event — pair with WithAsyncLogging for high volume
+  - No stack-trace handling (Bugsnag's own SDK extracts those from Exception); use the code-first ctor and a custom payload if you need them
+  - No session tracking — out of scope for a logging sink
+minimum_edition: Community
+aot_compatible: true
+thread_safety: HttpClient is thread-safe per BCL contract.
+test_coverage: tests/Herald.Sinks.Bugsnag.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.10 error-monitoring tier.

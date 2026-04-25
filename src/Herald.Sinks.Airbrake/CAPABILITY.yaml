@@ -1,0 +1,30 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Airbrake (migration guide)
+
+name: Herald.Sinks.Airbrake
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: alerting
+
+purpose: >
+  Shows Herald users how to ship logs to Airbrake without a dedicated
+  sink package. The official Sharpbrake .NET client is largely dormant
+  (no commits in years) and Airbrake's notice API is plain HTTP+JSON,
+  which Herald.Sinks.HttpJson covers when pointed at the right URL
+  with the right headers.
+
+serilog_equivalent: Sharpbrake.Client (community Serilog wrappers)
+
+herald_api:
+  - Herald.Sinks.HttpJson
+  - QuickLogBuilder.WithBridge
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
