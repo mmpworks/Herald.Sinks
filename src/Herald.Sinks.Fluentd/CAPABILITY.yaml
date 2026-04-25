@@ -1,0 +1,29 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Fluentd (migration guide)
+
+name: Herald.Sinks.Fluentd
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: pipeline
+
+purpose: >
+  Shows Herald users how to ship logs to Fluentd or Fluent Bit
+  without a dedicated sink package. Both ship an in_http source
+  that accepts JSON; Herald.Sinks.HttpJson hands them the bytes
+  they expect.
+
+serilog_equivalent: Serilog.Sinks.Fluentd / Serilog.Sinks.Http -> Fluentd
+
+herald_api:
+  - Herald.Sinks.HttpJson (the actual writer)
+  - QuickLogBuilder.WithBridge
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25

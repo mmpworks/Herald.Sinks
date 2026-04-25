@@ -1,0 +1,31 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Logstash (migration guide)
+
+name: Herald.Sinks.Logstash
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: pipeline
+
+purpose: >
+  Shows Herald users how to ship logs to Logstash without a
+  dedicated sink package. Logstash's HTTP input plugin accepts
+  newline-delimited JSON over plain HTTP — exactly the wire format
+  Herald.Sinks.HttpJson already produces. One sink + one Logstash
+  input config, and you're routing through the same Logstash
+  pipelines you already wrote for everything else.
+
+serilog_equivalent: Serilog.Sinks.Http pointed at logstash-http-input
+
+herald_api:
+  - Herald.Sinks.HttpJson (the actual writer)
+  - QuickLogBuilder.WithBridge
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25

@@ -1,0 +1,31 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.TimescaleDB (migration guide)
+
+name: Herald.Sinks.TimescaleDB
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: database
+
+purpose: >
+  Shows Herald users how to write logs to TimescaleDB without a
+  dedicated sink package. TimescaleDB is a PostgreSQL extension that
+  turns regular tables into time-partitioned hypertables; the existing
+  Herald.Sinks.PostgreSQL sink writes the rows, and one
+  CREATE EXTENSION + create_hypertable call on the operator side
+  turns on the time-series superpowers.
+
+serilog_equivalent: Serilog.Sinks.PostgreSQL with timescale-flavoured DDL
+
+herald_api:
+  - Herald.Sinks.PostgreSQL (the actual writer)
+  - QuickLogBuilder.WithBridge (wire the sink into a pipeline)
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25

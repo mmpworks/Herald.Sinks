@@ -1,0 +1,28 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Vector (migration guide)
+
+name: Herald.Sinks.Vector
+package_id: null
+version: 1.0.0
+kind: migration-guide
+category: pipeline
+
+purpose: >
+  Shows Herald users how to feed Vector (vector.dev) without a
+  dedicated sink package. Vector's HTTP source accepts NDJSON
+  identical to what Herald.Sinks.HttpJson produces.
+
+serilog_equivalent: Serilog.Sinks.Http -> Vector
+
+herald_api:
+  - Herald.Sinks.HttpJson
+  - QuickLogBuilder.WithBridge
+
+guide: README.md
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
