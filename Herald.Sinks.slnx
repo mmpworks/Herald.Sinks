@@ -25,6 +25,7 @@
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
     <Project Path="src/Herald.Sinks.InMemory/Herald.Sinks.InMemory.csproj" />
+    <Project Path="src/Herald.Sinks.Kafka/Herald.Sinks.Kafka.csproj" />
     <Project Path="src/Herald.Sinks.Loggly/Herald.Sinks.Loggly.csproj" />
     <Project Path="src/Herald.Sinks.LogzIo/Herald.Sinks.LogzIo.csproj" />
     <Project Path="src/Herald.Sinks.Loki/Herald.Sinks.Loki.csproj" />
@@ -88,6 +89,7 @@
     <Project Path="tests/Herald.Sinks.Honeycomb.Tests/Herald.Sinks.Honeycomb.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.HttpJson.Tests/Herald.Sinks.HttpJson.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.InMemory.Tests/Herald.Sinks.InMemory.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Kafka.Tests/Herald.Sinks.Kafka.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loggly.Tests/Herald.Sinks.Loggly.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.LogzIo.Tests/Herald.Sinks.LogzIo.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loki.Tests/Herald.Sinks.Loki.Tests.csproj" />
