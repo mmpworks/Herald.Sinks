@@ -1,0 +1,99 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.UnityConsole
+
+name: Herald.Sinks.UnityConsole
+package_id: MMP.Herald.Sinks.UnityConsole
+version: 1.0.0
+kind: sink
+category: game
+
+purpose: >
+  Routes Herald log events to Unity's console — Debug.Log,
+  Debug.LogWarning, Debug.LogError. Takes delegates in the
+  constructor so the package itself has no UnityEngine reference;
+  the consumer wires UnityEngine.Debug methods directly. Result:
+  the package is fully trim-clean and IL2CPP / AOT-publish-safe,
+  and the consumer keeps full control over how Unity dispatch is
+  wired (real Debug for editor / standalone, custom logger for
+  tests, no-op for headless CI).
+
+vendor:
+  name: Unity Technologies
+  url: https://unity.com
+
+ships:
+  - UnityConsoleLogSink
+  - UnityConsoleLogSinkProvider
+
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Three Action<string> delegates supplied by the consumer at sink
+      construction (typically UnityEngine.Debug.Log /
+      Debug.LogWarning / Debug.LogError, but any sink-shaped
+      callback works).
+
+config:
+  kind: unity_console
+  alias: "Optional category prefix prepended to every emitted line."
+  notes: >
+    The package has no compile-time dependency on UnityEngine. This
+    is deliberate — Unity ships UnityEngine via the Unity package
+    manifest (not NuGet), and IL2CPP publishes are sensitive to
+    reflection-based discovery. The delegate constructor keeps the
+    sink itself pure-NuGet while leaving Unity wiring to the
+    consumer's Unity-aware code.
+
+dashboard_config:
+  - property: category
+    name: Category prefix
+    help: >
+      Optional string prepended to every emitted line. Useful for
+      filtering Herald output from other Unity console chatter.
+    tooltip: Prefix attached to every console line this sink emits.
+    width: m
+    control: text
+    required: false
+    default: ""
+    group: Output
+
+capabilities:
+  - Per-level routing to Unity's three Debug channels (Log,
+    LogWarning, LogError)
+  - Zero compile-time dependency on UnityEngine — pure NuGet,
+    IL2CPP / AOT publish-safe
+  - Optional category prefix for filtering
+  - Consumer-controlled dispatch (test mocks, no-op routes,
+    custom Unity wrappers all work)
+
+limitations:
+  - The consumer must wire Debug.Log / LogWarning / LogError (or
+    equivalent) at construction. The sink does not auto-discover
+    UnityEngine.
+  - Single fixed line format; wrap with an output transformer chain
+    for custom layouts
+  - Unity Console does not render ANSI color codes (text-only)
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: >
+  Thread-safe — the sink itself holds only immutable delegate
+  references. Whether the wired UnityEngine.Debug methods are
+  thread-safe is a Unity-runtime question (they are, on Editor
+  and Player; check the Unity docs for older versions).
+
+test_coverage: tests/Herald.Sinks.UnityConsole.Tests/UnityConsoleLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — Unity console sink, delegate-backed for IL2CPP safety.

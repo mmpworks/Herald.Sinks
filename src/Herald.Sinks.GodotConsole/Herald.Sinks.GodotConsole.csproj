@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.GodotConsole</RootNamespace>
+    <AssemblyName>Herald.Sinks.GodotConsole</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.GodotConsole</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Routes Herald log events to Godot 4.x console output channels (GD.Print / GD.PushWarning / GD.PushError). Editor Output panel + Warnings + Errors tabs receive levels appropriately. Game-dev counterpart to Herald.Sinks.Debug.</Description>
+    <PackageTags>herald;logging;sink;godot;godot4;game-development;console</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- GodotSharp 4.2+ for the Godot namespace (GD.Print etc.).
+         Game projects typically pull this in transitively via
+         Godot.NET.Sdk; the PackageReference here lets the sink
+         build standalone against the API surface. -->
+    <PackageReference Include="GodotSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.GodotConsole.Tests" />
+  </ItemGroup>
+</Project>

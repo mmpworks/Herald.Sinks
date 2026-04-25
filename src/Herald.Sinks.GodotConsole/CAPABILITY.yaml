@@ -1,0 +1,89 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.GodotConsole
+
+name: Herald.Sinks.GodotConsole
+package_id: MMP.Herald.Sinks.GodotConsole
+version: 1.0.0
+kind: sink
+category: game
+
+purpose: >
+  Routes Herald log events to Godot 4.x's built-in console output
+  channels. Levels at or above Error use GD.PushError (Errors tab,
+  audible stinger in the editor); Warn uses GD.PushWarning (Warnings
+  tab); everything below uses GD.Print (Output panel). Game-dev
+  counterpart to Herald.Sinks.Debug — registers as a normal Herald
+  sink via QuickLogBuilder, no embedding required.
+
+vendor:
+  name: Godot Foundation
+  url: https://godotengine.org
+
+ships:
+  - GodotConsoleLogSink
+  - GodotConsoleLogSinkProvider
+
+requires:
+  core_version: ">=1.0.0"
+  nuget:
+    - name: GodotSharp
+      version: ">=4.2.0"
+  external:
+    - Godot 4.x C# project (the sink's calls into the Godot namespace
+      need a runtime that loads GodotSharp).
+
+config:
+  kind: godot_console
+  alias: "Optional category prefix prepended to every emitted line."
+  notes: >
+    For consumers embedding Herald inside a Godot game (autoload-
+    based wiring), MMP.Herald.Embed.Godot ships an equivalent
+    GodotPrintSink with the same routing — install whichever fits
+    your project's wiring style.
+
+dashboard_config:
+  - property: category
+    name: Category prefix
+    help: >
+      Optional string prepended to every emitted line. Useful for
+      filtering Herald output from other Godot console chatter.
+    tooltip: Prefix attached to every console line this sink emits.
+    width: m
+    control: text
+    required: false
+    default: ""
+    group: Output
+
+capabilities:
+  - Per-level routing to Godot's three console channels (Output,
+    Warnings, Errors)
+  - Optional category prefix for filtering
+  - Exception text appended after the formatted line
+  - Pure synchronous dispatch — no async overhead
+
+limitations:
+  - GD.Print and friends are static — sink behavior depends on a
+    loaded Godot runtime
+  - Single fixed line format; wrap with an output transformer chain
+    for custom layouts
+  - Editor Output panel does not render ANSI color codes (text-only)
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — Godot's console APIs are internally synchronized.
+
+test_coverage: tests/Herald.Sinks.GodotConsole.Tests/GodotConsoleLogSinkTests.cs
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — game-engine console sink.
