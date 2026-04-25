@@ -1,0 +1,65 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.Kafka
+package_id: MMP.Herald.Sinks.Kafka
+version: 1.0.0
+kind: sink
+category: queue
+purpose: >
+  Produces Herald log events as JSON messages to a Kafka topic via
+  Confluent.Kafka. Drop-in for Serilog.Sinks.Kafka. Default config
+  (acks=all, linger.ms=5, compression=snappy) gives durable,
+  network-efficient delivery without further tuning.
+vendor:
+  name: Apache Kafka / Confluent
+  url: https://kafka.apache.org
+ships:
+  - KafkaLogSink
+  - KafkaLogSinkProvider
+  - KafkaSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Confluent.Kafka (>= 2.5)
+    - Kafka cluster + the target topic
+config:
+  kind: kafka
+  uri: "Comma-separated bootstrap servers (required)."
+  host: "Topic name (required)."
+dashboard_config:
+  - property: bootstrap_servers
+    name: Bootstrap servers
+    width: xl
+    control: text
+    required: true
+    group: Auth
+  - property: topic
+    name: Topic
+    width: m
+    control: text
+    required: true
+    group: Target
+capabilities:
+  - Produce per event with internal batching via linger.ms (5 ms default)
+  - Snappy compression on by default — bandwidth-efficient out of the box
+  - Acks=all for durable replication-aware delivery
+  - Optional partition key derivation via Func<LogEvent, string?> for ordered consumption
+  - Code-first overload accepts a pre-built IProducer for shared client scenarios
+  - Final Flush on Dispose so in-flight messages aren't lost on shutdown
+limitations:
+  - No transactional producer support (idempotent commits across topics) — out of scope for a logging sink
+  - SASL / TLS auth is left to ProducerConfig — pass a custom config via the code-first overload
+  - Producer queue is bounded by Confluent.Kafka's queue.buffering.max.messages (default 100k)
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — Confluent.Kafka producers are thread-safe per SDK contract.
+test_coverage: tests/Herald.Sinks.Kafka.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.6 Kafka.
