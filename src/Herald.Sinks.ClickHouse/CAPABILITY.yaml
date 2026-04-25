@@ -1,0 +1,61 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.ClickHouse
+package_id: MMP.Herald.Sinks.ClickHouse
+version: 1.0.0
+kind: sink
+category: database
+purpose: >
+  Inserts Herald log events into a ClickHouse table via the
+  ClickHouse.Client driver. Single INSERT on the Log path,
+  ClickHouseBulkCopy on IBatchedLogSink batches — the driver's native
+  column-block format gives sustained-throughput insert performance
+  ClickHouse is famous for.
+vendor:
+  name: ClickHouse
+  url: https://clickhouse.com
+ships:
+  - ClickHouseLogSink
+  - ClickHouseLogSinkProvider
+  - ClickHouseSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - ClickHouse.Client (>= 7.0)
+    - ClickHouse cluster + table with the expected schema
+schema:
+  expected: |
+    CREATE TABLE IF NOT EXISTS herald_logs (
+      time_utc  DateTime64(3, 'UTC'),
+      level     LowCardinality(String),
+      category  LowCardinality(String),
+      message   String,
+      template  String
+    ) ENGINE = MergeTree
+      ORDER BY (toDate(time_utc), level);
+config:
+  kind: clickhouse
+  uri: "ClickHouse connection string (required)."
+  host: "Table name (default herald_logs)."
+capabilities:
+  - Single INSERT per event on the Log path
+  - ClickHouseBulkCopy on batches — column-block native format
+  - Identifier validation prevents SQL injection on the table name
+  - LowCardinality columns suggested in the schema for level + category
+limitations:
+  - Synchronous Log path uses GetAwaiter().GetResult around the async bulk-copy SDK
+  - Schema creation is operator responsibility
+  - No automatic Properties column wiring; add a Map(String, String) column and bind via custom subclass
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Connection per call; no shared state across calls.
+test_coverage: tests/Herald.Sinks.ClickHouse.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.8 standalone.

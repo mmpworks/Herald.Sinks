@@ -1,0 +1,51 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.ApplicationInsights
+package_id: MMP.Herald.Sinks.ApplicationInsights
+version: 1.0.0
+kind: sink
+category: observability
+purpose: >
+  Tracks Herald log events as TelemetryClient.TrackTrace and
+  TrackException into Azure Application Insights via
+  Microsoft.ApplicationInsights. Drop-in for Serilog.Sinks.ApplicationInsights.
+  Events carrying an exception in their context promote to
+  ExceptionTelemetry so AI's exception analytics light up.
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
+ships:
+  - ApplicationInsightsLogSink
+  - ApplicationInsightsLogSinkProvider
+  - ApplicationInsightsSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Microsoft.ApplicationInsights
+    - Application Insights resource (connection string)
+config:
+  kind: application_insights
+  uri: "AI connection string (required)."
+capabilities:
+  - TraceTelemetry for normal events with SeverityLevel mapped from level key
+  - ExceptionTelemetry for events with $exception in their context
+  - Properties bag carries category, template, and event properties
+  - Code-first overload accepts a pre-built TelemetryClient for shared DI scenarios
+  - Final Flush on Dispose so in-flight telemetry survives shutdown
+limitations:
+  - Connection-string ctor builds a private TelemetryConfiguration; for shared DI use the code-first overload
+  - Properties are stringified — non-string structured values lose shape
+  - No sampling-rate override; configure on the TelemetryClient via DI
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — TelemetryClient is thread-safe per Microsoft SDK contract.
+test_coverage: tests/Herald.Sinks.ApplicationInsights.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-25
+changelog:
+  - version: 1.0.0
+    date: 2026-04-25
+    summary: Initial release — 1.8 standalone.
