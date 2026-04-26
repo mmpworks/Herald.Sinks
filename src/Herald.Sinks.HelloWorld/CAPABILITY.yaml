@@ -1,0 +1,64 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+name: Herald.Sinks.HelloWorld
+package_id: MMP.Herald.Sinks.HelloWorld
+version: 1.0.0
+kind: sink
+category: test
+purpose: >
+  Test-only Herald sink. Registers under kind "hello_world" with a
+  no-op CreateSink so the plugin loader has a concrete provider to
+  discover, hot-add, and hot-remove. The dashboard renders the
+  dashboard_config block here as a sanity check that the manifest
+  pipeline is end-to-end alive — there are no real connection
+  parameters because the sink does nothing.
+vendor:
+  name: MMP
+  url: https://github.com/smuchow1962/Herald.Sinks
+ships:
+  - HelloWorldLogSinkProvider
+  - HelloWorldLogSink
+requires:
+  core_version: ">=1.0.0"
+  external: []
+config:
+  kind: hello_world
+  uri: "Ignored. The sink does nothing with this value."
+  alias: "Ignored."
+  host: "Ignored."
+dashboard_config:
+  - property: greeting
+    name: Greeting
+    width: m
+    control: text
+    required: false
+    default: hello
+    group: Friendly
+  - property: shout
+    name: Shout
+    width: s
+    control: checkbox
+    required: false
+    default: false
+    group: Friendly
+capabilities:
+  - Discoverable through Herald.ManagementApi's plugin loader
+  - Embedded CAPABILITY.yaml for dashboard form rendering
+  - Counts received events for debugger inspection
+limitations:
+  - Does not emit anywhere — events go to /dev/null
+  - Not intended for production use
+  - No durability, no retry, no batching
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — counter increments use Interlocked.
+test_coverage: none
+product_pack: []
+maintenance:
+  level: test-only
+  owner: smuchow1962
+  last_audit: 2026-04-26
+changelog:
+  - version: 1.0.0
+    date: 2026-04-26
+    summary: Initial test sink for plugin-loader smoke tests.

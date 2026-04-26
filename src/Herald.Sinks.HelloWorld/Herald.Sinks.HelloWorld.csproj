@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.HelloWorld</RootNamespace>
+    <AssemblyName>Herald.Sinks.HelloWorld</AssemblyName>
+    <PackageId>MMP.Herald.Sinks.HelloWorld</PackageId>
+    <Version>1.0.0</Version>
+    <Description>
+      Test-only Herald sink. Registers under kind "hello_world" with a
+      no-op CreateSink so the plugin loader has a concrete provider to
+      discover, hot-add, and hot-remove without any external service
+      dependency. Not intended for production use; skip when scanning
+      for "real" Herald sinks.
+    </Description>
+    <PackageTags>herald;logging;sink;test;plugin</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);bin\**;obj\**</DefaultItemExcludes>
+
+    <!--
+      Plugin packaging. EnableDynamicLoading produces a .deps.json
+      next to the dll on build, which AssemblyDependencyResolver
+      (in Herald.ManagementApi's PluginLoader) reads to share the
+      host's Herald.Core types instead of loading a private copy
+      into the plugin AssemblyLoadContext.
+    -->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+
+    <!--
+      Don't emit a NuGet package for this test sink. It only ever
+      reaches a host as a drop-in dll under <host>/plugins/. Skipping
+      pack keeps it out of release pipelines that promote sinks to
+      nuget.org.
+    -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj">
+      <!--
+        The host already loads Herald.Core. The plugin context resolves
+        Herald.Core to the host copy via AssemblyDependencyResolver,
+        so shipping it inside the plugin folder would just waste disk.
+        Private="false" + ExcludeAssets="runtime" keeps the dll out of
+        the build output that gets copied into <host>/plugins/.
+      -->
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -33,6 +33,7 @@
     <Project Path="src/Herald.Sinks.GoogleCloudLogging/Herald.Sinks.GoogleCloudLogging.csproj" />
     <Project Path="src/Herald.Sinks.GoogleCloudPubSub/Herald.Sinks.GoogleCloudPubSub.csproj" />
     <Project Path="src/Herald.Sinks.Graylog/Herald.Sinks.Graylog.csproj" />
+    <Project Path="src/Herald.Sinks.HelloWorld/Herald.Sinks.HelloWorld.csproj" />
     <Project Path="src/Herald.Sinks.Honeycomb/Herald.Sinks.Honeycomb.csproj" />
     <Project Path="src/Herald.Sinks.HttpJson/Herald.Sinks.HttpJson.csproj" />
     <Project Path="src/Herald.Sinks.InMemory/Herald.Sinks.InMemory.csproj" />
