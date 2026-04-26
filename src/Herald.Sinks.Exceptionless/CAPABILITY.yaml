@@ -44,7 +44,7 @@ capabilities:
   - Self-hosted server URL override
 limitations:
   - Synchronous Send
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: Thread-safe.
 test_coverage: tests/Herald.Sinks.Exceptionless.Tests/

@@ -17,7 +17,7 @@ public sealed class NewRelicLogsLogSinkProvider : ILogSinkProvider
     public const string KindKey = "newrelic_logs";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public HeraldEdition MinimumEdition => HeraldEdition.Enterprise;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

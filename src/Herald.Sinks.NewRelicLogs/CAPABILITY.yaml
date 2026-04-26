@@ -51,7 +51,7 @@ capabilities:
 limitations:
   - 5 MB / 1 MB-per-record request ceiling enforced by New Relic
   - Synchronous Send
-minimum_edition: Community
+minimum_edition: Enterprise
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient.
 test_coverage: tests/Herald.Sinks.NewRelicLogs.Tests/

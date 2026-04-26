@@ -83,7 +83,7 @@ limitations:
   - One event per line — no framing negotiation
   - Single-connection — no connection pooling across instances
 
-minimum_edition: Pro
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — SemaphoreSlim guards the shared stream for both sync and async paths.
 

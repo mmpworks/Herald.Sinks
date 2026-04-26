@@ -16,7 +16,7 @@ public sealed class BetterStackLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "betterstack";
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public HeraldEdition MinimumEdition => HeraldEdition.Pro;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

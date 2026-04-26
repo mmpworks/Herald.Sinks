@@ -29,7 +29,7 @@ capabilities:
   - EU / on-prem endpoint override via the baseUrl constructor parameter
 limitations:
   - One round trip per Log call without WithAsyncLogging
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: HttpClient is thread-safe per BCL contract.
 test_coverage: tests/Herald.Sinks.Axiom.Tests/

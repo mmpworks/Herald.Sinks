@@ -52,7 +52,7 @@ capabilities:
   - Exception details in nested Ex.Error block
 limitations:
   - Synchronous Send
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: Thread-safe.
 test_coverage: tests/Herald.Sinks.Stackify.Tests/

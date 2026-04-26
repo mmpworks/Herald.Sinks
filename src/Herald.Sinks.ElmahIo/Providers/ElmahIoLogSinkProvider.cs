@@ -16,7 +16,7 @@ public sealed class ElmahIoLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "elmahio";
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public HeraldEdition MinimumEdition => HeraldEdition.Pro;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

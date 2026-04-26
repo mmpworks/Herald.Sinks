@@ -29,7 +29,7 @@ capabilities:
   - On-prem / EU endpoint override via the endpoint constructor parameter
 limitations:
   - One round trip per Log call without WithAsyncLogging
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: HttpClient is thread-safe per BCL contract.
 test_coverage: tests/Herald.Sinks.Mezmo.Tests/

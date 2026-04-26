@@ -30,7 +30,7 @@ capabilities:
   - EU / US / Asia / on-prem endpoint override via the endpoint constructor parameter
 limitations:
   - Provider throws — credentials must be wired via the code-first ctor
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: HttpClient is thread-safe per BCL contract.
 test_coverage: tests/Herald.Sinks.Coralogix.Tests/

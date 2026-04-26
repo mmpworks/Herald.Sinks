@@ -53,7 +53,7 @@ capabilities:
 limitations:
   - Synchronous Send path
   - Regional listeners (EU, AU) require manual URL override
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient.
 test_coverage: tests/Herald.Sinks.LogzIo.Tests/

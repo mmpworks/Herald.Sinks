@@ -47,7 +47,7 @@ capabilities:
 limitations:
   - One event per request (Raygun's entries API is per-event)
   - Synchronous Send — pair with async decorator + level filter
-minimum_edition: Community
+minimum_edition: Pro
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient.
 test_coverage: tests/Herald.Sinks.Raygun.Tests/
