@@ -66,7 +66,12 @@ config:
 #   name      — human label shown above the field in the Dashboard
 #   help      — longer operator guidance shown below the field
 #   tooltip   — short hint on hover (one sentence, no line breaks)
-#   width     — s | m | l — layout hint (s ≈ 1/4 row, m ≈ 1/2, l = full)
+#   width     — layout hint. Two accepted forms:
+#               1. semantic token: xs | s | m | l | xl
+#                    xs ≈ 3 cols, s ≈ 4 cols, m ≈ 6 cols, l = 12, xl = 12
+#               2. explicit Vuetify-style column count, integer 1..12
+#                    e.g. width: 7  → field spans 7 of the 12 grid cols
+#               Out-of-range or unrecognised values default to 6.
 #
 # Plus a control type (explicit widget name — NOT a data type) and
 # control-specific options.
@@ -77,7 +82,7 @@ dashboard_config:
       Longer explanation of what this field controls, when to change it,
       gotchas worth knowing. Flows into the generated product sheet.
     tooltip: <one-sentence hint>         # hover text; no newlines
-    width: <s | m | l>                   # layout hint
+    width: <token-or-1..12>              # see field rules: xs|s|m|l|xl OR integer 1..12
 
     control: <control-type>              # required — see control list below
 
