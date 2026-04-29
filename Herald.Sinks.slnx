@@ -28,6 +28,7 @@
     <Project Path="src/Herald.Sinks.Email/Herald.Sinks.Email.csproj" />
     <Project Path="src/Herald.Sinks.EventLog/Herald.Sinks.EventLog.csproj" />
     <Project Path="src/Herald.Sinks.Exceptionless/Herald.Sinks.Exceptionless.csproj" />
+    <Project Path="src/Herald.Sinks.File/Herald.Sinks.File.csproj" />
     <Project Path="src/Herald.Sinks.GenericWebhook/Herald.Sinks.GenericWebhook.csproj" />
     <Project Path="src/Herald.Sinks.GodotConsole/Herald.Sinks.GodotConsole.csproj" />
     <Project Path="src/Herald.Sinks.GoogleCloudLogging/Herald.Sinks.GoogleCloudLogging.csproj" />
@@ -115,6 +116,7 @@
     <Project Path="tests/Herald.Sinks.Email.Tests/Herald.Sinks.Email.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.EventLog.Tests/Herald.Sinks.EventLog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Exceptionless.Tests/Herald.Sinks.Exceptionless.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.File.Tests/Herald.Sinks.File.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GodotConsole.Tests/Herald.Sinks.GodotConsole.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GoogleCloudLogging.Tests/Herald.Sinks.GoogleCloudLogging.Tests.csproj" />

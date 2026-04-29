@@ -1,0 +1,124 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.File
+
+name: Herald.Sinks.File
+package_id: MMP.Herald.Sinks.File
+version: 1.0.0
+kind: sink
+category: io
+
+purpose: >
+  Writes Herald log events to disk. Plain-text mode produces
+  human-readable lines; structured mode produces NDJSON for
+  machine parsing. Optional file rolling for time-based or
+  size-based rotation, with per-pipeline path templating.
+
+vendor:
+  name: MMP
+
+ships:
+  - TextFileSinkProvider
+  - JsonFileSinkProvider
+
+requires:
+  core_version: ">=1.0.0"
+  external: []
+
+config:
+  kind: file
+
+# Form layout follows the dashboard's 12-column grid. Width accepts
+# semantic tokens (xs|s|m|l|xl) or an integer 1..12 — both forms
+# resolve through the same useGridSpan composable. Rows are
+# determined by the order of fields and each field's group; the
+# SchemaForm component packs adjacent fields onto the same row up
+# to the row's column capacity.
+dashboard_config:
+  - property: format
+    name: Format
+    width: xs
+    control: select
+    required: true
+    default: plain
+    # `options:` is the legacy shape SelectControl reads. The canonical
+    # schema also defines `values:` (with structured entries); both can
+    # coexist on a field and the transformer keeps both in scope until
+    # SelectControl moves over to the canonical shape.
+    options: [ plain, structured ]
+    group: Format
+    tooltip: "Plain writes human-readable lines; structured writes NDJSON."
+    help: "Plain writes human-readable lines; structured writes NDJSON for machine parsing."
+    errors:
+      required: "Pick a file format before saving."
+      out-of-set: "Format must be either plain or structured."
+
+  - property: directory
+    name: Directory (server path)
+    width: s
+    control: text
+    required: true
+    default: logs
+    group: Path
+    tooltip: "Directory where log files are written, relative to the server's working directory."
+    errors:
+      required: "Directory is required — relative paths resolve from the server's working directory."
+
+  - property: nameTemplate
+    name: File Name Template
+    width: s
+    control: text
+    required: true
+    default: "{pipeline}"
+    group: Path
+    tooltip: "Tokens: {pipeline}, {date}, {hour}."
+    help: "Tokens: {pipeline}, {date}, {hour}"
+    errors:
+      required: "File name template is required — {pipeline} is the safe default."
+
+  - property: suffix
+    name: Suffix
+    width: xs
+    control: text
+    default: ".log"
+    group: Path
+    tooltip: "Appended to every rolled file. Common: .log, .ndjson."
+
+  - property: enableRolling
+    name: Enable file rolling
+    width: 2
+    control: checkbox
+    default: false
+    group: Rolling
+    tooltip: "Roll the file at the configured interval and retain N most recent files."
+    help: "Roll the file at the configured interval and retain N most recent files."
+
+capabilities:
+  - Plain-text or NDJSON output via the format toggle
+  - Time-based rolling (hour / day / week)
+  - Size-based rolling (maxBytes per file)
+  - Retention by file count or total size cap
+  - Path templating with {pipeline}, {date}, {hour} tokens
+
+limitations:
+  - Local filesystem only (use a remote sink for cloud storage)
+  - One file per sink instance — fan-out via multiple sink registrations
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe via internal lock around write+flush.
+
+test_coverage: tests/Herald.Sinks.File.Tests/
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-04-28
+
+changelog:
+  - version: 1.0.0
+    date: 2026-04-28
+    summary: Extracted from Herald.Core into a standalone sink package.
