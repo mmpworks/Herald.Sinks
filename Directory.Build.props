@@ -42,4 +42,18 @@
       <LogicalName>CAPABILITY.yaml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
+
+  <!-- Embed configuration.mmpform when present. v2 sink-config form
+       authored in the FormBuilderDSL grammar. CAPABILITY.yaml points
+       at it via `formSchema: configuration.mmpform`; the Dashboard
+       server reads the file back from the assembly the same way it
+       reads CAPABILITY.yaml and ships the text on the capability
+       response so MmpformRenderer can parse and render it. Sinks
+       without this file continue on the v1 dashboard_config: path
+       with no change. -->
+  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\configuration.mmpform')">
+    <EmbeddedResource Include="configuration.mmpform">
+      <LogicalName>configuration.mmpform</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

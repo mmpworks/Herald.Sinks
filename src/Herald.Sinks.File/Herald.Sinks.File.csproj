@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
+    <None Include="configuration.mmpform" Pack="true" PackagePath="\" Condition="Exists('configuration.mmpform')" />
   </ItemGroup>
 
   <ItemGroup>
