@@ -32,7 +32,7 @@ public sealed class SplunkHecLogSinkProvider : ILogSinkProvider
     public const string KindKey = "splunk_hec";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Enterprise;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

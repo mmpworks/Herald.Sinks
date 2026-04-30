@@ -21,7 +21,7 @@ namespace Herald.Sinks.Slack;
 /// </summary>
 public sealed class SlackWebhookLogSink : ILogger, IDisposable
 {
-    internal static readonly HeraldEdition MinEdition = HeraldEdition.Enterprise;
+    internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 
     private readonly string _webhookUrl;
     private readonly string _channel;

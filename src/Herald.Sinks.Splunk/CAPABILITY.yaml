@@ -131,7 +131,7 @@ limitations:
   - Source / sourcetype / index configurable only at construction,
     not through JSON config
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

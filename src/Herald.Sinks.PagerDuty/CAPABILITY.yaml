@@ -90,7 +90,7 @@ limitations:
   - Single-event POST (no batching)
   - Component / group / dedup resolver configurable at construction only
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

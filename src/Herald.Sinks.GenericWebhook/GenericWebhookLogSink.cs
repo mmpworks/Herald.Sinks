@@ -32,7 +32,7 @@ namespace Herald.Sinks.GenericWebhook;
 /// </summary>
 public sealed class GenericWebhookLogSink : ILogger, IBatchedLogSink, IDisposable
 {
-    internal static readonly HeraldEdition MinEdition = HeraldEdition.Pro;
+    internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 
     private readonly string _url;
     private readonly ILogFormatter _formatter;

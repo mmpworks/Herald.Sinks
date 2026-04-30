@@ -128,7 +128,7 @@ limitations:
   - Synchronous Send path; pair with the async decorator for high-throughput pipelines
 
 # ─── Compliance + operational ────────────────────────────────────────
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

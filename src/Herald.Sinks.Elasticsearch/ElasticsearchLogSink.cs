@@ -23,7 +23,7 @@ namespace Herald.Sinks.Elasticsearch;
 /// </summary>
 public sealed class ElasticsearchLogSink : ILogger, IBatchedLogSink, IDisposable
 {
-    internal static readonly HeraldEdition MinEdition = HeraldEdition.Enterprise;
+    internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 
     private readonly string _baseUrl;
     private readonly string _indexPrefix;

@@ -97,7 +97,7 @@ limitations:
   - Static tags only via construction; JSON config limited to URI / service / key
   - Synchronous Send path; pair with the async decorator for throughput
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

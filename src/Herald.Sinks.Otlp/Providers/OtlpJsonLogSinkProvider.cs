@@ -21,7 +21,7 @@ public sealed class OtlpJsonLogSinkProvider : ILogSinkProvider
     public const string KindKey = "otlp_json";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Pro;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

@@ -92,7 +92,7 @@ limitations:
   - Synchronous Send path; pair with async decorator for throughput
   - Sample rate configurable at construction, not through JSON config
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

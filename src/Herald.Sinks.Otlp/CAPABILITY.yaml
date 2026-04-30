@@ -114,7 +114,7 @@ limitations:
   - Resource attributes configurable at construction only
   - No compression on the request body
 
-minimum_edition: Pro
+minimum_edition: Community
 aot_compatible: true
 thread_safety: >
   Network sinks thread-safe via shared HttpClient. File sink serializes

@@ -74,7 +74,7 @@ limitations:
     GenericWebhookSinkRegistration.RegisterWithRules
   - Content type configurable at construction only
 
-minimum_edition: Pro
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — HttpClient is reentrant; rule-engine cooldowns under ConcurrentDictionary.
 

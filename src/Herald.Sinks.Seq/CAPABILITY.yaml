@@ -83,7 +83,7 @@ limitations:
     high-throughput pipelines
   - Single shared HttpClient — pool config is the caller's concern
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

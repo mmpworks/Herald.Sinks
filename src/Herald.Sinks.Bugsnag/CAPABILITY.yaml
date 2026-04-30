@@ -32,7 +32,7 @@ limitations:
   - One HTTP request per event — pair with WithAsyncLogging for high volume
   - No stack-trace handling (Bugsnag's own SDK extracts those from Exception); use the code-first ctor and a custom payload if you need them
   - No session tracking — out of scope for a logging sink
-minimum_edition: Pro
+minimum_edition: Community
 aot_compatible: true
 thread_safety: HttpClient is thread-safe per BCL contract.
 test_coverage: tests/Herald.Sinks.Bugsnag.Tests/

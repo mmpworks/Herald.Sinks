@@ -64,7 +64,7 @@ limitations:
   - Slack truncates long messages; caller should pair with a message
     truncation decorator for noisy templates
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

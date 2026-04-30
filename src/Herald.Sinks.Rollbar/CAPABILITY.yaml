@@ -32,7 +32,7 @@ limitations:
   - One HTTP request per event — pair with WithAsyncLogging for high volume
   - No stack-trace handling — out of scope for a logging sink
   - No person/user tracking — extend the body via a custom subclass
-minimum_edition: Pro
+minimum_edition: Community
 aot_compatible: true
 thread_safety: HttpClient is thread-safe per BCL contract.
 test_coverage: tests/Herald.Sinks.Rollbar.Tests/

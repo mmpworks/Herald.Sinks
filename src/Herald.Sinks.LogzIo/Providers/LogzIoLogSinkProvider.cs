@@ -17,7 +17,7 @@ public sealed class LogzIoLogSinkProvider : ILogSinkProvider
     public const string KindKey = "logzio";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Pro;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

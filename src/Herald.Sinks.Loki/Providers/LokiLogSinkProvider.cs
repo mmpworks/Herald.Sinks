@@ -21,7 +21,7 @@ public sealed class LokiLogSinkProvider : ILogSinkProvider
     public const string KindKey = "loki";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Enterprise;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

@@ -83,7 +83,7 @@ limitations:
   - Synchronous Send path; pair with async decorator for throughput
   - No compression on the request body
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

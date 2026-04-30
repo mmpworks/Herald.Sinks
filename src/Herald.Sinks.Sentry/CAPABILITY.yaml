@@ -93,7 +93,7 @@ limitations:
   - Static tags configurable at construction only
   - Single exception per event (no AggregateException fan-out)
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient, synchronous Send.
 

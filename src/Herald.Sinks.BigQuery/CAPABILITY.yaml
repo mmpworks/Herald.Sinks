@@ -38,7 +38,7 @@ capabilities:
 limitations:
   - 1 MB per row, 10 MB per request — operator owns sizing
   - Streaming inserts cost per-row; pair with WithAsyncLogging + batch sizing
-minimum_edition: Pro
+minimum_edition: Community
 aot_compatible: true
 thread_safety: BigQueryClient is thread-safe per Google SDK contract.
 test_coverage: tests/Herald.Sinks.BigQuery.Tests/

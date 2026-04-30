@@ -39,7 +39,7 @@ public sealed class SignalFxLogSinkProvider : ILogSinkProvider
     public const string KindKey = "signalfx";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Enterprise;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

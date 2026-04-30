@@ -33,7 +33,7 @@ public sealed class SeqLogSinkProvider : ILogSinkProvider
     public const string KindKey = "seq";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Enterprise;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

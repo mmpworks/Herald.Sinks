@@ -44,7 +44,7 @@ capabilities:
 limitations:
   - 5 MB / 50,000-entry request ceiling enforced by Dynatrace
   - Synchronous Send path — pair with async decorator
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient.
 test_coverage: tests/Herald.Sinks.Dynatrace.Tests/

@@ -68,7 +68,7 @@ limitations:
   - Index prefix configurable at construction only
   - Synchronous Send path; pair with async decorator for throughput
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — shared HttpClient is reentrant.
 
