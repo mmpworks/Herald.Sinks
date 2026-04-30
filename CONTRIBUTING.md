@@ -174,6 +174,8 @@ Minimum coverage we expect:
 
 Aim for 8-12 tests per sink. More if the sink has real complexity.
 
+For sinks that take structured config through the management API (`logDirectory`, `rollingLogsEnabled`, custom fields) or ship a `configuration-{kind}.mmpform` form, the [testing guide](testing-guide.md) walks through the three SDK contracts every Herald sink speaks (JSON binding shape, management-API round-trip, per-kind form discovery) plus the end-to-end pattern for proving runtime side-effects survive a hot-swap. The reference test files in `Herald.Sinks.File.Tests` cover all of them and adapt cleanly to other sinks.
+
 ## Publishing
 
 The repo builds all sinks on every push. A release job (triggered by a git tag) publishes individual NuGet packages for each sink whose `Version` in CAPABILITY.yaml differs from the most-recently-published version on NuGet.

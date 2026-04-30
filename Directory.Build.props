@@ -43,17 +43,22 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <!-- Embed configuration.mmpform when present. v2 sink-config form
-       authored in the FormBuilderDSL grammar. CAPABILITY.yaml points
-       at it via `formSchema: configuration.mmpform`; the Dashboard
-       server reads the file back from the assembly the same way it
-       reads CAPABILITY.yaml and ships the text on the capability
-       response so MmpformRenderer can parse and render it. Sinks
-       without this file continue on the v1 dashboard_config: path
-       with no change. -->
-  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\configuration.mmpform')">
-    <EmbeddedResource Include="configuration.mmpform">
-      <LogicalName>configuration.mmpform</LogicalName>
+  <!-- Embed every configuration*.mmpform file present in the project
+       root. v2 sink-config forms authored in the FormBuilderDSL
+       grammar. Two layouts are supported and ILogSinkProvider's
+       default GetFormSchemaText() picks whichever is shipped:
+         - configuration.mmpform              one form for the sink
+         - configuration-{SinkKind}.mmpform   one form per provider
+                                              when the package ships
+                                              multiple sink kinds
+       The Dashboard server reads the matching file back from the
+       assembly the same way it reads CAPABILITY.yaml and ships the
+       text on the capability response so MmpformRenderer can parse
+       and render it. Sinks without any of these files continue on
+       the v1 dashboard_config: path with no change. -->
+  <ItemGroup>
+    <EmbeddedResource Include="configuration*.mmpform">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

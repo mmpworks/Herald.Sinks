@@ -16,7 +16,11 @@
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
-    <None Include="configuration.mmpform" Pack="true" PackagePath="\" Condition="Exists('configuration.mmpform')" />
+    <!-- Pack the per-kind form files into the .nupkg root for offline
+         consumption. The csproj globs both legacy single-form and the
+         per-kind variant so packaging stays right whichever layout the
+         sink author picks. -->
+    <None Include="configuration*.mmpform" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
