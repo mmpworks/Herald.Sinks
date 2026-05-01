@@ -5,6 +5,19 @@
 
 columns: 12
 
+__properties = [
+    "fileNamePattern" = { type: "string", default: "" },
+    "logDirectory" = { type: "string", default: "" },
+    "logExtension" = { type: "string", default: "ndjson" },
+    "logFileTemplate" = { type: "string", default: "log-file" },
+    "maxFileSize" = { type: "string", default: "10Mb" },
+    "maxRetainedFiles" = { type: "int", default: "50" },
+    "retentionDays" = { type: "int", default: "30" },
+    "rollingInterval" = { type: "string[]", default: "hourly" },
+    "rollingLogsEnabled" = { type: "bool", default: false },
+    "totalSizeCap" = { type: "string", default: "10Mb" }
+]
+
 extChoices = ["ndjson", "jsonl", "json"] -> {logExtension}
 rollingIntervalList = ["hourly", "daily", "custom"] -> {rollingInterval}
 namingConventionInfo = "Rolled files are named: {logFileTemplate}-{fileNamePattern}.{logExtension}\nThe pattern is a .NET date format string. Common tokens: yyyy (year), MM (month), dd (day), HH (hour 00-23), mm (minute).\n\nExamples with logFileTemplate='game-server', logExtension='ndjson':\n  Daily:  game-server-20260413.ndjson\n  Hourly: game-server-2026041314.ndjson\n  Custom: game-server-20260413_1430.ndjson\n\nMid-period size rolls append an index: game-server-20260413.1.ndjson, game-server-20260413.2.ndjson."

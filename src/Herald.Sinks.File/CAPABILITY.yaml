@@ -6,6 +6,7 @@
 name: Herald.Sinks.File
 package_id: MMP.Herald.Sinks.File
 version: 1.0.0
+configContract: 2
 kind: sink
 category: io
 

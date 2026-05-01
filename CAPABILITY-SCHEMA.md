@@ -11,6 +11,18 @@ No field is optional without a default stated below. A sink that omits a require
 name: Herald.Sinks.<Name>                # csproj name, no namespace prefix
 package_id: MMP.Herald.Sinks.<Name>      # published NuGet id
 version: <semver>                        # matches csproj <Version>
+configContract: 1 | 2                    # sink-config contract version.
+                                         #   1 (default if omitted): legacy flat
+                                         #     `dashboard_config:` form + flat
+                                         #     commit shape.
+                                         #   2: ships a `configuration-*.mmpform`
+                                         #     with a `__properties` block and
+                                         #     commits travel as a
+                                         #     `properties: {…}` sub-object.
+                                         #   The dashboard reads this field and
+                                         #   dispatches the matching commit
+                                         #   shape; the server accepts either
+                                         #   shape during the transition.
 kind: sink                               # reserved; always "sink" in this repo
 category: >                              # one of: observability | cloud-archive |
                                          #   alerting | analytics | community

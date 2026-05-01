@@ -4,6 +4,7 @@
 
 using FluentAssertions;
 using Herald.Sinks.File.Providers;
+using MMP.Herald.Routing;
 using Xunit;
 
 namespace Herald.Sinks.File.Tests;
@@ -23,7 +24,7 @@ public sealed class FormSchemaDiscoveryTests
     [Fact]
     public void TextFileSinkProvider_returns_its_per_kind_mmpform()
     {
-        var provider = new TextFileSinkProvider();
+        ILogSinkProvider provider = new TextFileSinkProvider();
 
         var formText = provider.GetFormSchemaText();
 
@@ -37,7 +38,7 @@ public sealed class FormSchemaDiscoveryTests
     [Fact]
     public void JsonFileSinkProvider_returns_its_per_kind_mmpform()
     {
-        var provider = new JsonFileSinkProvider();
+        ILogSinkProvider provider = new JsonFileSinkProvider();
 
         var formText = provider.GetFormSchemaText();
 
@@ -56,9 +57,10 @@ public sealed class FormSchemaDiscoveryTests
         // longer recognises, the form silently no-ops on commit — see
         // FileSinkConfig and CommitFullFileSinkTests in Herald.Core for
         // the matching server-side guarantees.
-        var textForm = new TextFileSinkProvider().GetFormSchemaText();
-        var jsonForm = new JsonFileSinkProvider().GetFormSchemaText();
+        var textForm = ((ILogSinkProvider)new TextFileSinkProvider()).GetFormSchemaText();
+        var jsonForm = ((ILogSinkProvider)new JsonFileSinkProvider()).GetFormSchemaText();
 
+        // Shared bindings — both forms expose these under the same name.
         foreach (var form in new[] { textForm, jsonForm })
         {
             form.Should().Contain("{logDirectory}");
@@ -67,10 +69,16 @@ public sealed class FormSchemaDiscoveryTests
             form.Should().Contain("{rollingLogsEnabled}");
             form.Should().Contain("{rollingInterval}");
             form.Should().Contain("{maxFileSize}");
-            form.Should().Contain("{fileNamePattern}");
             form.Should().Contain("{maxRetainedFiles}");
             form.Should().Contain("{totalSizeCap}");
             form.Should().Contain("{retentionDays}");
         }
+
+        // text_file moved to the shorter `namePattern` binding;
+        // json_file still uses the original `fileNamePattern`. The
+        // file-sink runtime helper accepts either spelling so both
+        // sinks stay compatible during the transition.
+        textForm!.Should().Contain("{namePattern}");
+        jsonForm!.Should().Contain("{fileNamePattern}");
     }
 }
