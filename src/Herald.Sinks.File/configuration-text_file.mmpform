@@ -17,8 +17,8 @@ __properties = [
     "totalSizeCap" = { type: "string", default: "10Mb" }
 ]
 
-extChoices = ["log", "ndjson", "csv"] -> {logExtension}
-logTypes   = ["text", "ndjson", "csv"] -> {logOutputType} 
+extChoices = ["log", "csv"] -> {logExtension}
+logTypes   = ["text", "csv"] -> {logOutputType}
 levels     = {levelsList}
 rollingIntervalList = ["hourly", "daily", "custom"] -> {rollingInterval}
 shorthandDescription = `+b`Directory`` `i`(server path)``
