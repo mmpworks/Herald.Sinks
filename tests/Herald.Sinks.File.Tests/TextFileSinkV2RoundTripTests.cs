@@ -194,6 +194,282 @@ public sealed class TextFileSinkV2RoundTripTests : IDisposable
     }
 
     [Fact]
+    public void Mixed_v1_and_v2_envelope_lets_v2_properties_win_through_reboot()
+    {
+        // Reproduces the dashboard payload an un-rebuilt UI sends:
+        // BOTH the v2 `properties` sub-object AND the legacy flat
+        // keys are present, with conflicting values. The v2 lift
+        // must take the inner bag, ignore the stale flat keys, and
+        // the saved JSON must carry only the NEW values forward so
+        // a reboot restores them — not the older flat-key set.
+        var (_, api) = CreatePipeline();
+        var json = $$"""
+            {
+              "sinks": [
+                {
+                  "sinkId": "text_file",
+                  "kind":   "text_file",
+                  "alias":  null,
+                  "config": {
+                    "properties": {
+                      "logDirectory":       "logsdddrrr",
+                      "logExtension":       "csv",
+                      "logFileTemplate":    "code-built-pipelined",
+                      "logOutputType":      "text",
+                      "maxFileSize":        "1MB",
+                      "maxRetainedFiles":   32,
+                      "namePattern":        "dd",
+                      "retentionDays":      30,
+                      "rollingInterval":    "hourly",
+                      "rollingLogsEnabled": true,
+                      "totalSizeCap":       "10MB"
+                    },
+                    "logDirectory":       "./logs",
+                    "logFileTemplate":    "code-built-pipelined",
+                    "logExtension":       "log",
+                    "rollingLogsEnabled": true,
+                    "rollingInterval":    "daily",
+                    "maxFileSize":        "12Gb",
+                    "maxRetainedFiles":   33,
+                    "namePattern":        "MMdd",
+                    "fileNamePattern":    "dd",
+                    "totalSizeCap":       "10.1Mb",
+                    "retentionDays":      302,
+                    "logOutputType":      "text"
+                  }
+                }
+              ]
+            }
+            """;
+
+        api.CommitFull(json).Success.Should().BeTrue();
+
+        // The persisted JSON must reflect the bag's values, not the
+        // stale flat ones. If a reboot reads the flat keys it would
+        // see logDirectory "./logs" / maxFileSize "12Gb" / etc., and
+        // every operator edit would silently revert.
+        System.IO.File.Exists(_configPath).Should().BeTrue();
+        var saved = System.IO.File.ReadAllText(_configPath);
+
+        var rebuiltBuilder = QuickLogBuilder.Create().WithFileSinkProviders();
+        HeraldManagementApi.RestoreBuilderFromConfig(rebuiltBuilder, saved);
+
+        var inspection = rebuiltBuilder.Inspect();
+        inspection.HasFileSink.Should().BeTrue();
+        inspection.FilePath.Should().Be("logsdddrrr/code-built-pipelined.csv",
+            "the v2 bag's logDirectory + logFileTemplate + logExtension drive the path; the stale flat ./logs must lose.");
+        inspection.HasFileRolling.Should().BeTrue();
+        inspection.FileRollingInterval.Should().Be("hourly",
+            "the bag picked hourly; the stale flat 'daily' must lose.");
+        inspection.FileMaxBytes.Should().Be(1L * 1024 * 1024,
+            "the bag picked 1MB; the stale flat 12Gb must lose.");
+        inspection.FileMaxRetainedFiles.Should().Be(32);
+        inspection.FileNamePattern.Should().Be("dd");
+        inspection.RetentionDays.Should().Be(30);
+        inspection.TotalSizeCapBytes.Should().Be(10L * 1024 * 1024);
+    }
+
+    [Fact]
+    public void Browser_reopen_after_commit_sees_the_committed_values_via_GetPipelineFlow()
+    {
+        // The user-reported sequence: dashboard sends a v2-only
+        // commit (no legacy flat keys, just `config: { properties }`),
+        // gets a success response, then the operator closes the
+        // browser. When a fresh browser opens it fetches the pipeline
+        // flow and that response has to carry the just-committed
+        // values — otherwise the form repaints with the boot-time
+        // state and every edit looks like it reverted.
+        //
+        // The test runs CommitFull, then asks the SAME api instance
+        // for GetPipelineFlow (the call the dashboard makes on
+        // browser open) and asserts the file sink's properties bag
+        // and flat-key snapshot both reflect the commit.
+        var (builder, api) = CreatePipeline();
+        var json = $$"""
+            {
+              "sinks": [
+                {
+                  "sinkId": "text_file",
+                  "kind":   "text_file",
+                  "config": {
+                    "minLevel": "warn",
+                    "properties": {
+                      "logDirectory":       "logsdddrrr",
+                      "logExtension":       "csv",
+                      "logFileTemplate":    "code-built-pipelined",
+                      "logOutputType":      "text",
+                      "rollingLogsEnabled": true,
+                      "rollingInterval":    "hourly",
+                      "maxFileSize":        "1MB",
+                      "maxRetainedFiles":   32,
+                      "namePattern":        "dd",
+                      "totalSizeCap":       "10MB",
+                      "retentionDays":      30
+                    }
+                  }
+                }
+              ]
+            }
+            """;
+
+        var commitResult = api.CommitFull(json);
+        commitResult.Success.Should().BeTrue($"commit failed: {commitResult.Message}");
+
+        // First "browser open" — same api instance. The dashboard's
+        // pipeline editor reads from /api/registry/{name}/flow which
+        // calls GetPipelineFlow under the hood.
+        var flow = api.GetPipelineFlow();
+        var fileSink = flow.Sinks.Single(s => s.SinkId == KnownSinkKinds.TextFile);
+
+        fileSink.Config.Should().NotBeNull("the v2 publish path must surface a Config dictionary");
+        var config = fileSink.Config!;
+
+        config.Should().ContainKey("properties",
+            "the dashboard reads `properties` to re-render the v2 form on every page reload");
+        var bag = config["properties"] as IReadOnlyDictionary<string, object?>;
+        bag.Should().NotBeNull("the properties value must be a dictionary, not opaque");
+        bag!.Should().ContainKey("logDirectory");
+        bag!["logDirectory"].Should().Be("logsdddrrr",
+            "if this fails the form will repaint with the boot-time directory and the user sees a 'reverted' state.");
+        bag!["logExtension"].Should().Be("csv");
+        bag!["logFileTemplate"].Should().Be("code-built-pipelined");
+        bag!["maxFileSize"].Should().Be("1MB");
+        bag!["maxRetainedFiles"].Should().Be(32L);
+        bag!["namePattern"].Should().Be("dd");
+        bag!["rollingInterval"].Should().Be("hourly");
+        bag!["totalSizeCap"].Should().Be("10MB");
+        bag!["retentionDays"].Should().Be(30L);
+
+        // The transitional flat keys must agree with the bag —
+        // until every consumer migrates, ConfigPanelRight and other
+        // legacy reader paths still read these.
+        config["logDirectory"].Should().Be("logsdddrrr");
+        config["logFileTemplate"].Should().Be("code-built-pipelined");
+        config["logExtension"].Should().Be("csv");
+        config["rollingLogsEnabled"].Should().Be(true);
+        config["rollingInterval"].Should().Be("hourly");
+        config["maxFileSize"].Should().Be("1MB");
+        config["maxRetainedFiles"].Should().Be(32L);
+        config["totalSizeCap"].Should().Be("10MB");
+        config["retentionDays"].Should().Be(30L);
+
+        // Second flow call — proves the response is stable across
+        // requests (no per-call side effect that resets the builder).
+        var flow2 = api.GetPipelineFlow();
+        var fileSink2 = flow2.Sinks.Single(s => s.SinkId == KnownSinkKinds.TextFile);
+        var bag2 = fileSink2.Config!["properties"] as IReadOnlyDictionary<string, object?>;
+        bag2.Should().NotBeNull();
+        bag2!["logDirectory"].Should().Be("logsdddrrr");
+        bag2["maxFileSize"].Should().Be("1MB");
+        bag2["maxRetainedFiles"].Should().Be(32L);
+    }
+
+    [Fact]
+    public void Commit_to_one_pipeline_does_not_leak_into_a_sibling_pipeline()
+    {
+        // Server hosts two pipelines side by side
+        // (code-built-pipeline and json-loaded-pipeline are the
+        // canonical two in the default tenant). The dashboard's
+        // commit endpoint takes the pipeline name in the URL —
+        // /api/registry/{name}/commit — so each pipeline has its own
+        // ConfigPath and its own builder. A commit to one must not
+        // touch the other; if it does, an operator editing pipeline
+        // A would see their changes "land" on pipeline B and pipeline
+        // A's view would still show pre-edit values, looking exactly
+        // like a revert.
+        //
+        // This pins server-side isolation. If the symptom reproduces
+        // on the dashboard while this test passes, the routing bug
+        // is on the client (wrong pipeline name in the POST URL).
+        var tempA = Path.Combine(Path.GetTempPath(), $"herald_iso_a_{Guid.NewGuid():N}");
+        var tempB = Path.Combine(Path.GetTempPath(), $"herald_iso_b_{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempA);
+        Directory.CreateDirectory(tempB);
+        var configA = Path.Combine(tempA, "code-built-pipeline.json");
+        var configB = Path.Combine(tempB, "json-loaded-pipeline.json");
+
+        try
+        {
+            var builderA = QuickLogBuilder.Create("code-built-pipeline")
+                .WithFileSinkProviders()
+                .WithFileSink(Path.Combine(tempA, "a.log"))
+                .WithMinimumLevel("info")
+                .WithHotReload();
+            var resultA = builderA.BuildAndCommit();
+            var apiA = new HeraldManagementApi(builderA, resultA) { ConfigPath = configA };
+
+            var builderB = QuickLogBuilder.Create("json-loaded-pipeline")
+                .WithFileSinkProviders()
+                .WithFileSink(Path.Combine(tempB, "b.log"))
+                .WithMinimumLevel("info")
+                .WithHotReload();
+            var resultB = builderB.BuildAndCommit();
+            var apiB = new HeraldManagementApi(builderB, resultB) { ConfigPath = configB };
+
+            // Commit a v2 payload against pipeline A only.
+            var json = $$"""
+                {
+                  "sinks": [
+                    {
+                      "sinkId": "text_file",
+                      "kind":   "text_file",
+                      "config": {
+                        "properties": {
+                          "logDirectory":       "{{tempA.Replace('\\', '/')}}",
+                          "logFileTemplate":    "isolation-target",
+                          "logExtension":       "csv",
+                          "rollingLogsEnabled": true,
+                          "rollingInterval":    "hourly",
+                          "maxFileSize":        "1MB",
+                          "maxRetainedFiles":   32,
+                          "namePattern":        "dd",
+                          "totalSizeCap":       "10MB",
+                          "retentionDays":      30,
+                          "logOutputType":      "text"
+                        }
+                      }
+                    }
+                  ]
+                }
+                """;
+
+            apiA.CommitFull(json).Success.Should().BeTrue();
+
+            // Pipeline A took the commit.
+            var inspectionA = builderA.Inspect();
+            inspectionA.FilePath.Should().EndWith("isolation-target.csv");
+            inspectionA.FileRollingInterval.Should().Be("hourly");
+            inspectionA.FileMaxBytes.Should().Be(1L * 1024 * 1024);
+
+            // Pipeline B was NOT touched.
+            var inspectionB = builderB.Inspect();
+            inspectionB.FilePath.Should().EndWith("b.log",
+                "a commit POSTed against the A endpoint must not mutate B's builder");
+            inspectionB.HasFileRolling.Should().BeFalse();
+
+            // Pipeline A's disk file was written; B's stays whatever
+            // it was on creation (or absent — these tests don't seed
+            // a B file, so the assertion is just that A's matches and
+            // B's doesn't carry A's values).
+            System.IO.File.Exists(configA).Should().BeTrue();
+            var savedA = System.IO.File.ReadAllText(configA);
+            savedA.Should().Contain("isolation-target");
+
+            if (System.IO.File.Exists(configB))
+            {
+                var savedB = System.IO.File.ReadAllText(configB);
+                savedB.Should().NotContain("isolation-target",
+                    "pipeline B's saved JSON must not pick up pipeline A's commit values");
+            }
+        }
+        finally
+        {
+            try { Directory.Delete(tempA, recursive: true); } catch { }
+            try { Directory.Delete(tempB, recursive: true); } catch { }
+        }
+    }
+
+    [Fact]
     public void RestoreBuilderFromConfig_accepts_a_hand_written_v2_only_json()
     {
         // Operators sometimes hand-edit the pipeline JSON. v2-only
