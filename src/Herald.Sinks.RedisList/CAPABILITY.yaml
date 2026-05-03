@@ -3,6 +3,8 @@
 name: Herald.Sinks.RedisList
 package_id: MMP.Herald.Sinks.RedisList
 version: 1.0.0
+configContract: 2
+formSchema: configuration-redis_list.mmpform
 kind: sink
 category: queue
 purpose: >
@@ -27,27 +29,7 @@ config:
   kind: redis_list
   uri: "Redis connection string (required)."
   host: "List key (default herald-logs)."
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: list_key
-    name: List key
-    width: m
-    control: text
-    required: false
-    default: herald-logs
-    group: Target
-  - property: max_length
-    name: Max length
-    width: s
-    control: number
-    required: false
-    default: 0
-    group: Retention
+
 capabilities:
   - RPUSH per event on the Log path
   - Single multi-value RPUSH on IBatchedLogSink batches (one round trip)

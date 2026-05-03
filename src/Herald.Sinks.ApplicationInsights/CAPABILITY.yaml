@@ -3,6 +3,8 @@
 name: Herald.Sinks.ApplicationInsights
 package_id: MMP.Herald.Sinks.ApplicationInsights
 version: 1.0.0
+configContract: 2
+formSchema: configuration-application_insights.mmpform
 kind: sink
 category: observability
 purpose: >

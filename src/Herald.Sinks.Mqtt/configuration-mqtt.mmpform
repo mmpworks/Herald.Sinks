@@ -1,0 +1,22 @@
+# MQTT sink — publishes events to an MQTT broker via MQTTnet.
+# Flat form: every field on its own row, no collapsible sections.
+# Derived from CAPABILITY.yaml's `config:` block — this sink has no
+# legacy `dashboard_config:` entry, so the operator-facing surface is
+# uri (broker host:port) + host (topic).
+
+columns: 12
+
+__properties = [
+    "broker" = { type: "string", default: "" },
+    "topic"  = { type: "string", default: "herald/logs" }
+]
+
+tooltips = [
+    "tt-broker" = "Broker host[:port] — defaults to port 1883 if no port supplied.",
+    "tt-topic"  = "MQTT topic. Hierarchy supported (e.g. herald/logs/error)."
+]
+
+[container("MQTT sink", "Publishes events to an MQTT broker.")]
+
+  - [textfield(12,{broker},tt="tt-broker",required=true,placeholder="broker.example.com:1883")] Broker
+  - [textfield(12,{topic},tt="tt-topic",init="herald/logs")] Topic

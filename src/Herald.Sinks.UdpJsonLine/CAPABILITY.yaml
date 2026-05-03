@@ -4,6 +4,8 @@
 name: Herald.Sinks.UdpJsonLine
 package_id: MMP.Herald.Sinks.UdpJsonLine
 version: 1.0.0
+configContract: 2
+formSchema: configuration-udp_json_line.mmpform
 kind: sink
 category: observability
 
@@ -37,40 +39,6 @@ config:
     Port is supplied on the LoggingRuntimeSinkDefinition.Port field.
     Per-event payload capped at 65,000 bytes; oversized events throw
     rather than fragment silently.
-
-dashboard_config:
-  - property: host
-    name: Host
-    help: >
-      UDP host the sink sends to. DNS hostnames and literal IPs both
-      accepted — the name is resolved lazily at first send and cached
-      for the lifetime of the sink.
-    tooltip: Destination UDP host.
-    width: m
-    control: text
-    required: true
-    placeholder: syslog.internal
-    group: Endpoint
-    errors:
-      required: "A UDP host is required."
-
-  - property: port
-    name: Port
-    help: >
-      UDP port on the destination host. Syslog commonly uses 514; other
-      collectors pick site-specific values.
-    tooltip: Destination UDP port (1-65535).
-    width: s
-    control: number
-    required: true
-    integer: true
-    min: 1
-    max: 65535
-    group: Endpoint
-    errors:
-      required: "A UDP port is required."
-      min: "Port must be at least 1."
-      max: "Port must be at most 65535."
 
 capabilities:
   - Fire-and-forget datagram delivery — minimal per-event cost

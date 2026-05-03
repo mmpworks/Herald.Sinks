@@ -1,0 +1,10 @@
+# XUnit sink — no configuration required.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("XUnit sink", "Routes Herald log events to xUnit's ITestOutputHelper so diagnostic output appears in the test report.")]
+
+  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]

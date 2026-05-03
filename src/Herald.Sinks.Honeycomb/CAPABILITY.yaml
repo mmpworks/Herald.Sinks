@@ -4,6 +4,8 @@
 name: Herald.Sinks.Honeycomb
 package_id: MMP.Herald.Sinks.Honeycomb
 version: 1.0.0
+configContract: 2
+formSchema: configuration-honeycomb.mmpform
 kind: sink
 category: observability
 
@@ -37,48 +39,6 @@ config:
     When the override URL omits the /1/batch/{dataset} path the sink
     appends it. Sample rate is set at construction and not currently
     surfaced through JSON config.
-
-dashboard_config:
-  - property: api_key
-    name: API key
-    help: >
-      Honeycomb API key used as the X-Honeycomb-Team header. Classic
-      keys scope to a team; ingest-only keys scope to a single dataset
-      and are the recommended choice for production log pipelines.
-    tooltip: Honeycomb API key — masked after save.
-    width: m
-    control: secret
-    required: true
-    min_length: 20
-    group: Auth
-
-  - property: dataset
-    name: Dataset
-    help: >
-      Target Honeycomb dataset name. Maps to the {dataset} segment of
-      the batch URL. Must already exist in the Honeycomb account.
-    tooltip: Honeycomb dataset receiving the events.
-    width: m
-    control: patterned-text
-    required: true
-    pattern: "^(?<ds>[A-Za-z0-9._-]+)$"
-    group: Endpoint
-    errors:
-      pattern: "Dataset names accept letters, numbers, dot, underscore, and hyphen."
-
-  - property: endpoint
-    name: Endpoint override
-    help: >
-      Optional full URL or host-root to point at a Refinery proxy or a
-      self-hosted Honeycomb Enterprise installation. Leave blank to
-      use api.honeycomb.io.
-    tooltip: Full URL or host; leave blank for api.honeycomb.io.
-    width: l
-    control: url
-    required: false
-    placeholder: https://refinery.example.com:8080
-    group: Endpoint
-    schemes: [http, https]
 
 capabilities:
   - Batched delivery via IBatchedLogSink

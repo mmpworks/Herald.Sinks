@@ -6,6 +6,8 @@
 name: Herald.Sinks.AzureAnalytics
 package_id: MMP.Herald.Sinks.AzureAnalytics
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_analytics.mmpform
 kind: sink
 category: cloud
 
@@ -40,33 +42,6 @@ config:
     1-100 chars. Invalid names throw at sink construction. Rotate
     keys on the Azure side and reconstruct the sink — there is no
     live refresh hook.
-
-dashboard_config:
-  - property: workspace_id
-    name: Workspace ID
-    help: Azure Log Analytics workspace GUID.
-    tooltip: Azure Log Analytics workspace id.
-    width: l
-    control: text
-    required: true
-    group: Workspace
-  - property: workspace_key
-    name: Workspace key
-    help: Primary or secondary shared key for the workspace. Base64 string.
-    tooltip: Workspace shared key.
-    width: xl
-    control: secret
-    required: true
-    group: Workspace
-  - property: log_type
-    name: Log-Type
-    help: Custom log table name. Azure appends _CL at query time.
-    tooltip: Custom log type (alphanumeric, 1-100 chars).
-    width: m
-    control: text
-    required: false
-    default: HeraldLog
-    group: Workspace
 
 capabilities:
   - Data Collector API with HMAC-SHA256 request signing

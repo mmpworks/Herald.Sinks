@@ -3,6 +3,8 @@
 name: Herald.Sinks.RavenDB
 package_id: MMP.Herald.Sinks.RavenDB
 version: 1.0.0
+configContract: 2
+formSchema: configuration-ravendb.mmpform
 kind: sink
 category: database
 purpose: >
@@ -25,19 +27,7 @@ config:
   kind: ravendb
   uri: "Comma-separated cluster URLs (required)."
   host: "Database name (required)."
-dashboard_config:
-  - property: urls
-    name: Cluster URLs
-    width: xl
-    control: text
-    required: true
-    group: Auth
-  - property: database
-    name: Database
-    width: m
-    control: text
-    required: true
-    group: Target
+
 capabilities:
   - One session per Log; batched session for IBatchedLogSink
   - Document model with Level / Category / Message / Template / Properties

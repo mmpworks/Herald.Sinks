@@ -1,0 +1,10 @@
+# UdpJsonLine sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("UdpJsonLine sink", "Fires Herald log events as newline-delimited JSON datagrams over UDP.")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

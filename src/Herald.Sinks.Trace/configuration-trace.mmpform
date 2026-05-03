@@ -1,0 +1,16 @@
+# Trace sink — Microsoft.Extensions.Logging-style trace listener output.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = [
+    "category" = { type: "string", default: "" }
+]
+
+tooltips = [
+    "tt-category" = "Category prefix for Trace.WriteLine output."
+]
+
+[container("Trace sink", "Writes events to System.Diagnostics.Trace listeners.")]
+
+  - [textfield(12,{category},tt="tt-category")] Category

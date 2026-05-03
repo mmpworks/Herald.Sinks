@@ -3,6 +3,8 @@
 name: Herald.Sinks.OpenSearch
 package_id: MMP.Herald.Sinks.OpenSearch
 version: 1.0.0
+configContract: 2
+formSchema: configuration-opensearch.mmpform
 kind: sink
 category: search
 purpose: >
@@ -27,26 +29,7 @@ config:
   uri: "Cluster endpoint (required). e.g. https://opensearch.example.com"
   host: "Index-name template. Default 'herald-logs-{0:yyyy-MM-dd}'."
   alias: "Basic-auth username (optional). Password via code-first ctor only."
-dashboard_config:
-  - property: endpoint
-    name: Endpoint
-    width: xl
-    control: url
-    required: true
-    group: Target
-  - property: index
-    name: Index template
-    width: l
-    control: text
-    required: false
-    default: herald-logs-{0:yyyy-MM-dd}
-    group: Target
-  - property: username
-    name: Username
-    width: m
-    control: text
-    required: false
-    group: Auth
+
 capabilities:
   - _bulk API indexing with action + document NDJSON framing
   - Date-token index rotation for time-series logs

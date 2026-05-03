@@ -3,6 +3,8 @@
 name: Herald.Sinks.Bugsnag
 package_id: MMP.Herald.Sinks.Bugsnag
 version: 1.0.0
+configContract: 2
+formSchema: configuration-bugsnag.mmpform
 kind: sink
 category: alerting
 purpose: >

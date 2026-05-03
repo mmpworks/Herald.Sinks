@@ -4,6 +4,8 @@
 name: Herald.Sinks.Seq
 package_id: MMP.Herald.Sinks.Seq
 version: 1.0.0
+configContract: 2
+formSchema: configuration-seq.mmpform
 kind: sink
 category: observability
 
@@ -37,36 +39,6 @@ config:
     The sink appends /api/events/raw?clef to the server URL. Content
     type is application/vnd.serilog.clef. Batches POST as one request
     with one CLEF event per line.
-
-dashboard_config:
-  - property: server_url
-    name: Seq server URL
-    help: >
-      Root URL of the Seq server. The sink appends the CLEF ingest
-      path automatically. Seq Cloud URLs (https://{tenant}.seq.app)
-      work the same as self-hosted URLs.
-    tooltip: Seq server root URL.
-    width: l
-    control: url
-    required: true
-    placeholder: https://seq.internal
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      required: "A Seq server URL is required."
-      url-malformed: "Server URL must be a full URL including scheme."
-
-  - property: api_key
-    name: API key
-    help: >
-      Optional write-side API key configured in Seq's administration
-      UI. Required when Seq is running with authenticated ingest;
-      leave blank for open instances.
-    tooltip: Optional Seq API key — masked after save.
-    width: m
-    control: secret
-    required: false
-    group: Auth
 
 capabilities:
   - Batched delivery via IBatchedLogSink — one HTTP request per batch

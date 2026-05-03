@@ -6,6 +6,8 @@
 name: Herald.Sinks.PostgreSQL
 package_id: MMP.Herald.Sinks.PostgreSQL
 version: 1.0.0
+configContract: 2
+formSchema: configuration-postgresql.mmpform
 kind: sink
 category: database
 
@@ -40,43 +42,6 @@ config:
     Custom column names require constructing PostgreSQLLogSink
     directly and registering via WithCustomSinkProvider. Properties
     are stored as JSONB for native JSON query support.
-
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    help: Npgsql connection string. Include Include Error Detail=true for debugging.
-    tooltip: PostgreSQL connection string.
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: schema
-    name: Schema
-    help: Table schema name. Default 'public'.
-    tooltip: Table schema.
-    width: s
-    control: text
-    required: false
-    default: public
-    group: Target
-  - property: table
-    name: Table
-    help: Table name. Default 'logs'.
-    tooltip: Table name.
-    width: s
-    control: text
-    required: false
-    default: logs
-    group: Target
-  - property: auto_create
-    name: Auto-create table
-    help: Issue CREATE TABLE IF NOT EXISTS DDL on first write. Dev only.
-    tooltip: Auto-create the logs table on startup.
-    width: xs
-    control: checkbox
-    required: false
-    default: false
-    group: Target
 
 capabilities:
   - Parameterized INSERT for single-event Log calls

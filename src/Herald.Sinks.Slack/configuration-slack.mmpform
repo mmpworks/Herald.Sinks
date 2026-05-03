@@ -1,0 +1,10 @@
+# Slack sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("Slack sink", "Sends Herald log events to a Slack webhook URL as formatted messages with per-level emoji.")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

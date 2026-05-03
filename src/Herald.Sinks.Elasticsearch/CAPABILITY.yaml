@@ -4,6 +4,8 @@
 name: Herald.Sinks.Elasticsearch
 package_id: MMP.Herald.Sinks.Elasticsearch
 version: 1.0.0
+configContract: 2
+formSchema: configuration-elasticsearch.mmpform
 kind: sink
 category: observability
 
@@ -37,23 +39,6 @@ config:
     Index prefix defaults to "herald-logs"; override only through the
     code constructor. The sink POSTs to /_bulk with
     application/x-ndjson content.
-
-dashboard_config:
-  - property: base_url
-    name: Cluster URL
-    help: >
-      The Elasticsearch cluster root. The sink appends /_bulk to this
-      URL on every request. Elastic Cloud URLs and self-hosted clusters
-      both work unchanged.
-    tooltip: Elasticsearch cluster URL.
-    width: l
-    control: url
-    required: true
-    placeholder: https://es.internal:9200
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      required: "A cluster URL is required."
 
 capabilities:
   - Batched delivery via the Bulk API (one NDJSON request per batch)

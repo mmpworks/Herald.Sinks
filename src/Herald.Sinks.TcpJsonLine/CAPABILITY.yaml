@@ -4,6 +4,8 @@
 name: Herald.Sinks.TcpJsonLine
 package_id: MMP.Herald.Sinks.TcpJsonLine
 version: 1.0.0
+configContract: 2
+formSchema: configuration-tcp_json_line.mmpform
 kind: sink
 category: observability
 
@@ -36,40 +38,6 @@ config:
   notes: >
     Port is supplied on the LoggingRuntimeSinkDefinition.Port field.
     One event per line, persistent connection reused across calls.
-
-dashboard_config:
-  - property: host
-    name: Host
-    help: >
-      The TCP host the sink connects to. DNS hostnames and literal IPs
-      are both accepted. The sink resolves lazily — the name does not
-      have to resolve at construction time.
-    tooltip: Destination TCP host.
-    width: m
-    control: text
-    required: true
-    placeholder: logs.internal
-    group: Endpoint
-    errors:
-      required: "A TCP host is required."
-
-  - property: port
-    name: Port
-    help: >
-      TCP port on the destination host. Accepts 1 through 65535. Most
-      JSONL collectors listen on 5170, 5044, or a site-specific port.
-    tooltip: Destination TCP port (1-65535).
-    width: s
-    control: number
-    required: true
-    integer: true
-    min: 1
-    max: 65535
-    group: Endpoint
-    errors:
-      required: "A TCP port is required."
-      min: "Port must be at least 1."
-      max: "Port must be at most 65535."
 
 capabilities:
   - Persistent connection with automatic reconnect on write failure

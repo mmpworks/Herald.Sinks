@@ -4,6 +4,8 @@
 name: Herald.Sinks.GenericWebhook
 package_id: MMP.Herald.Sinks.GenericWebhook
 version: 1.0.0
+configContract: 2
+formSchema: configuration-webhook.mmpform
 kind: sink
 category: alerting
 
@@ -41,23 +43,6 @@ config:
     Rules / headers / custom formatters are construction-only. Callers
     who need them call GenericWebhookSinkRegistration.RegisterWithRules
     or construct the sink directly and pass via WithCustomSinkProvider.
-
-dashboard_config:
-  - property: url
-    name: Webhook URL
-    help: >
-      The HTTP endpoint that receives the POST. Content type defaults
-      to application/json; the sink accepts the endpoint returning any
-      2xx status code.
-    tooltip: Target HTTP endpoint for the webhook.
-    width: l
-    control: url
-    required: true
-    placeholder: https://alerts.example.com/ingest
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      required: "A webhook URL is required."
 
 capabilities:
   - Batched delivery via IBatchedLogSink when rules are absent

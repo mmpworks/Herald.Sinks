@@ -6,6 +6,8 @@
 name: Herald.Sinks.RabbitMQ
 package_id: MMP.Herald.Sinks.RabbitMQ
 version: 1.0.0
+configContract: 2
+formSchema: configuration-rabbitmq.mmpform
 kind: sink
 category: queue
 
@@ -40,43 +42,6 @@ config:
     The sink does not declare the exchange — make sure your installer
     or broker bootstrap does that. Unknown exchanges publish silently
     to nowhere (default broker behaviour).
-
-dashboard_config:
-  - property: amqp_uri
-    name: AMQP URI
-    help: Full AMQP connection URI including credentials.
-    tooltip: amqp://user:pass@host:5672/vhost
-    width: xl
-    control: secret
-    required: true
-    group: Broker
-  - property: exchange
-    name: Exchange
-    help: Target exchange. Must exist on the broker.
-    tooltip: Pre-declared exchange name.
-    width: m
-    control: text
-    required: true
-    default: herald.logs
-    group: Target
-  - property: routing_key
-    name: Routing key
-    help: Routing key string. Empty for fanout.
-    tooltip: AMQP routing key.
-    width: m
-    control: text
-    required: false
-    default: ""
-    group: Target
-  - property: persistent
-    name: Persistent
-    help: Mark messages persistent (delivery mode 2) so a broker restart does not lose them.
-    tooltip: Persistent delivery mode.
-    width: xs
-    control: checkbox
-    required: false
-    default: true
-    group: Delivery
 
 capabilities:
   - Single persistent connection + single channel held for sink lifetime

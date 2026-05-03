@@ -6,6 +6,8 @@
 name: Herald.Sinks.MongoDB
 package_id: MMP.Herald.Sinks.MongoDB
 version: 1.0.0
+configContract: 2
+formSchema: configuration-mongodb.mmpform
 kind: sink
 category: database
 
@@ -37,34 +39,6 @@ config:
   notes: >
     Code-first ctor accepts a pre-built IMongoCollection so apps can
     share a MongoClient singleton with their repositories.
-
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    help: MongoDB connection URI. Use mongodb+srv:// for Atlas.
-    tooltip: MongoDB connection string.
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: database
-    name: Database
-    help: MongoDB database name. Default 'herald'.
-    tooltip: MongoDB database name.
-    width: s
-    control: text
-    required: false
-    default: herald
-    group: Target
-  - property: collection
-    name: Collection
-    help: MongoDB collection name. Default 'logs'.
-    tooltip: MongoDB collection name.
-    width: s
-    control: text
-    required: false
-    default: logs
-    group: Target
 
 capabilities:
   - InsertOne per event on the Log path

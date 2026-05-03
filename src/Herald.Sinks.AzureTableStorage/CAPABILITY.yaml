@@ -3,6 +3,8 @@
 name: Herald.Sinks.AzureTableStorage
 package_id: MMP.Herald.Sinks.AzureTableStorage
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_table_storage.mmpform
 kind: sink
 category: database
 purpose: >
@@ -27,20 +29,7 @@ config:
   kind: azure_table_storage
   uri: "Connection string (required)."
   host: "Table name (default HeraldLogs)."
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: table_name
-    name: Table name
-    width: m
-    control: text
-    required: false
-    default: HeraldLogs
-    group: Target
+
 capabilities:
   - Daily partition key (yyyyMMdd) for balanced date-range queries
   - Inverted-tick row key for newest-first ordering within a partition

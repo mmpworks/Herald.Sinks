@@ -1,0 +1,10 @@
+# Otlp sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("Otlp sink", "Three sinks for the OpenTelemetry Logs Protocol that share serialization infrastructure: OtlpJsonLogSink posts JSON to an OTLP collector, OtlpProtobufLogSink posts binary protobuf to the same endpoint, and ProtobufFileLogSink writes length-delimited protobuf records to a local .")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

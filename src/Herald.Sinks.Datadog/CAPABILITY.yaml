@@ -4,6 +4,8 @@
 name: Herald.Sinks.Datadog
 package_id: MMP.Herald.Sinks.Datadog
 version: 1.0.0
+configContract: 2
+formSchema: configuration-datadog.mmpform
 kind: sink
 category: observability
 
@@ -36,54 +38,6 @@ config:
   notes: >
     Uri optional — defaults to the public US intake. Set to
     http://localhost:8126 to route through a local Datadog Agent.
-
-dashboard_config:
-  - property: endpoint
-    name: Ingest endpoint
-    help: >
-      Public US intake is the default. Use https://http-intake.logs.datadoghq.eu
-      for the EU region, http://localhost:8126 to route through a local
-      Datadog Agent, or a site-specific intake (us3, us5) as needed.
-    tooltip: Datadog HTTP log intake URL or local Agent address.
-    width: l
-    control: url
-    required: false
-    default: https://http-intake.logs.datadoghq.com
-    placeholder: https://http-intake.logs.datadoghq.com
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      url-malformed: "Endpoint must be a full URL including scheme."
-
-  - property: api_key
-    name: API key
-    help: >
-      The Datadog DD-API-KEY header value. Stored encrypted by the
-      Dashboard; rotation clears the stored value.
-    tooltip: Datadog DD-API-KEY — masked after save.
-    width: m
-    control: secret
-    required: true
-    min_length: 32
-    group: Auth
-    errors:
-      required: "Datadog API key is required before events can be sent."
-      min-length: "API keys are at least 32 characters."
-
-  - property: service
-    name: Service name
-    help: >
-      Populates Datadog's "service" attribute on every event. Used for
-      routing in the Datadog UI and for correlating logs with traces.
-    tooltip: Datadog service tag for every event emitted here.
-    width: m
-    control: patterned-text
-    required: true
-    default: herald
-    pattern: "^(?<svc>[a-z0-9-]+)$"
-    group: Telemetry
-    errors:
-      pattern: "Lowercase letters, numbers, and hyphens only."
 
 capabilities:
   - Batched delivery via IBatchedLogSink

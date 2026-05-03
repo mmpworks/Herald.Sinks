@@ -3,6 +3,8 @@
 name: Herald.Sinks.Couchbase
 package_id: MMP.Herald.Sinks.Couchbase
 version: 1.0.0
+configContract: 2
+formSchema: configuration-couchbase.mmpform
 kind: sink
 category: database
 purpose: >
@@ -29,45 +31,7 @@ config:
     Code-first only — credentials cannot ride safely through the runtime
     sink definition without a secret-store integration. The provider
     throws when invoked; callers wire CouchbaseLogSink directly.
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: username
-    name: Username
-    width: m
-    control: text
-    required: true
-    group: Auth
-  - property: password
-    name: Password
-    width: m
-    control: secret
-    required: true
-    group: Auth
-  - property: bucket_name
-    name: Bucket
-    width: m
-    control: text
-    required: true
-    group: Target
-  - property: scope_name
-    name: Scope
-    width: s
-    control: text
-    required: false
-    default: _default
-    group: Target
-  - property: collection_name
-    name: Collection
-    width: s
-    control: text
-    required: false
-    default: _default
-    group: Target
+
 capabilities:
   - Upsert per event on the Log path
   - Concurrent UpsertAsync fan-out for IBatchedLogSink batches

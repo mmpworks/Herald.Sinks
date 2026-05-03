@@ -3,6 +3,8 @@
 name: Herald.Sinks.Dynatrace
 package_id: MMP.Herald.Sinks.Dynatrace
 version: 1.0.0
+configContract: 2
+formSchema: configuration-dynatrace.mmpform
 kind: sink
 category: observability
 purpose: >
@@ -24,19 +26,7 @@ config:
   kind: dynatrace
   uri: "Environment URL (required). e.g. https://abc123.live.dynatrace.com"
   alias: "API token with logs.ingest scope (required)."
-dashboard_config:
-  - property: environment_url
-    name: Environment URL
-    width: xl
-    control: url
-    required: true
-    group: Target
-  - property: api_token
-    name: API token
-    width: xl
-    control: secret
-    required: true
-    group: Auth
+
 capabilities:
   - Batched POST per IBatchedLogSink
   - Severity mapping (DEBUG/INFO/WARN/ERROR/CRITICAL)

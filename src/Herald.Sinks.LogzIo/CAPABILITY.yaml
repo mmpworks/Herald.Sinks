@@ -3,6 +3,8 @@
 name: Herald.Sinks.LogzIo
 package_id: MMP.Herald.Sinks.LogzIo
 version: 1.0.0
+configContract: 2
+formSchema: configuration-logzio.mmpform
 kind: sink
 category: observability
 purpose: >
@@ -24,27 +26,7 @@ config:
   alias: "Account token (required)."
   host: "Log type. Default 'herald'."
   uri: "Listener URL. Default https://listener.logz.io:8071/ (override for EU/AU)."
-dashboard_config:
-  - property: account_token
-    name: Account token
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: type
-    name: Type
-    width: s
-    control: text
-    required: false
-    default: herald
-    group: Output
-  - property: listener_url
-    name: Listener URL
-    width: l
-    control: url
-    required: false
-    default: https://listener.logz.io:8071/
-    group: Target
+
 capabilities:
   - NDJSON payload (one event per line) per Logz.io spec
   - Token travels in URL; no Authorization header needed

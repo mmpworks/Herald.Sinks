@@ -3,6 +3,8 @@
 name: Herald.Sinks.Kinesis
 package_id: MMP.Herald.Sinks.Kinesis
 version: 1.0.0
+configContract: 2
+formSchema: configuration-kinesis.mmpform
 kind: sink
 category: queue
 purpose: >
@@ -26,19 +28,7 @@ config:
   kind: kinesis
   uri: "AWS region system name (required, e.g. us-east-1)."
   host: "Stream name (required)."
-dashboard_config:
-  - property: region
-    name: AWS region
-    width: m
-    control: text
-    required: true
-    group: Auth
-  - property: stream_name
-    name: Stream name
-    width: m
-    control: text
-    required: true
-    group: Target
+
 capabilities:
   - PutRecord per event on the Log path
   - PutRecords for batches, chunked at 500 records per request (Kinesis limit)

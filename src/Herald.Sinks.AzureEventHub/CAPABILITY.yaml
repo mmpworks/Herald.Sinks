@@ -3,6 +3,8 @@
 name: Herald.Sinks.AzureEventHub
 package_id: MMP.Herald.Sinks.AzureEventHub
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_event_hub.mmpform
 kind: sink
 category: queue
 purpose: >
@@ -27,19 +29,7 @@ config:
   kind: azure_event_hub
   uri: "Connection string (required)."
   host: "Event Hub name (required)."
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: event_hub_name
-    name: Event Hub name
-    width: m
-    control: text
-    required: true
-    group: Target
+
 capabilities:
   - EventDataBatch with TryAdd → split-and-resend on 1 MB ceiling
   - DefaultAzureCredential overload for managed-identity scenarios

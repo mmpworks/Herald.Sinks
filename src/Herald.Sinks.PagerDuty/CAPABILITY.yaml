@@ -4,6 +4,8 @@
 name: Herald.Sinks.PagerDuty
 package_id: MMP.Herald.Sinks.PagerDuty
 version: 1.0.0
+configContract: 2
+formSchema: configuration-pagerduty.mmpform
 kind: sink
 category: alerting
 
@@ -35,47 +37,6 @@ config:
   notes: >
     Component / group / custom dedup resolver are construction-only.
     Callers who need them pass a pre-built sink via WithCustomSinkProvider.
-
-dashboard_config:
-  - property: routing_key
-    name: Routing key
-    help: >
-      The Events API v2 integration key configured in PagerDuty. Keys
-      are per-service; a single sink posts every event to that service.
-    tooltip: PagerDuty integration routing key — masked after save.
-    width: m
-    control: secret
-    required: true
-    min_length: 20
-    group: Auth
-    errors:
-      required: "A routing key is required before incidents can be created."
-
-  - property: source
-    name: Source
-    help: >
-      Value emitted as PagerDuty's "source" field. Defaults to the
-      machine name. A stable source string lets PagerDuty dedupe
-      incidents across sink restarts.
-    tooltip: PagerDuty 'source' field — defaults to machine name.
-    width: m
-    control: text
-    required: false
-    group: Identity
-
-  - property: endpoint
-    name: Endpoint override
-    help: >
-      Optional endpoint override. Use
-      https://events.eu.pagerduty.com/v2/enqueue for the EU region,
-      or a test intake URL. Leave blank for the default US endpoint.
-    tooltip: Full endpoint URL; leave blank for the US events API.
-    width: l
-    control: url
-    required: false
-    placeholder: https://events.pagerduty.com/v2/enqueue
-    group: Endpoint
-    schemes: [https]
 
 capabilities:
   - Events API v2 trigger payloads

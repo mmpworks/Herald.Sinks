@@ -3,6 +3,8 @@
 name: Herald.Sinks.BigQuery
 package_id: MMP.Herald.Sinks.BigQuery
 version: 1.0.0
+configContract: 2
+formSchema: configuration-bigquery.mmpform
 kind: sink
 category: database
 purpose: >

@@ -1,0 +1,10 @@
+# InfluxDB sink — no configuration required.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("InfluxDB sink", "Writes Herald log events to InfluxDB v2 via line protocol over HTTP.")]
+
+  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]

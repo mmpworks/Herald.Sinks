@@ -6,6 +6,8 @@
 name: Herald.Sinks.Trace
 package_id: MMP.Herald.Sinks.Trace
 version: 1.0.0
+configContract: 2
+formSchema: configuration-trace.mmpform
 kind: sink
 category: diagnostics
 
@@ -36,21 +38,6 @@ config:
   notes: >
     TRACE is defined by default in every .NET SDK build configuration,
     so the sink works out of the box in both Debug and Release.
-
-dashboard_config:
-  - property: category
-    name: Category
-    help: >
-      Optional string passed to Trace.WriteLine as the category prefix.
-      Listeners that group by category — Event Log, categorized file
-      writers, the Azure Monitor listener — use it to filter Herald
-      output from other Trace chatter.
-    tooltip: Category prefix for Trace.WriteLine output.
-    width: m
-    control: text
-    required: false
-    default: ""
-    group: Output
 
 capabilities:
   - Zero external dependencies — BCL only

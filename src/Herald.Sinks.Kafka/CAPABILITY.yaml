@@ -3,6 +3,8 @@
 name: Herald.Sinks.Kafka
 package_id: MMP.Herald.Sinks.Kafka
 version: 1.0.0
+configContract: 2
+formSchema: configuration-kafka.mmpform
 kind: sink
 category: queue
 purpose: >
@@ -26,19 +28,7 @@ config:
   kind: kafka
   uri: "Comma-separated bootstrap servers (required)."
   host: "Topic name (required)."
-dashboard_config:
-  - property: bootstrap_servers
-    name: Bootstrap servers
-    width: xl
-    control: text
-    required: true
-    group: Auth
-  - property: topic
-    name: Topic
-    width: m
-    control: text
-    required: true
-    group: Target
+
 capabilities:
   - Produce per event with internal batching via linger.ms (5 ms default)
   - Snappy compression on by default — bandwidth-efficient out of the box

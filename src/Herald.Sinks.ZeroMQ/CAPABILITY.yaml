@@ -3,6 +3,8 @@
 name: Herald.Sinks.ZeroMQ
 package_id: MMP.Herald.Sinks.ZeroMQ
 version: 1.0.0
+configContract: 2
+formSchema: configuration-zeromq.mmpform
 kind: sink
 category: queue
 purpose: >
@@ -28,34 +30,7 @@ config:
   kind: zeromq
   uri: "ZeroMQ endpoint (required, e.g. tcp://*:5555)."
   host: "Topic prefix for PUB (default herald-logs); ignored on PUSH."
-dashboard_config:
-  - property: endpoint
-    name: Endpoint
-    width: xl
-    control: text
-    required: true
-    group: Target
-  - property: topic
-    name: Topic
-    width: m
-    control: text
-    required: false
-    default: herald-logs
-    group: Target
-  - property: socket_kind
-    name: Socket kind
-    width: s
-    control: select
-    required: false
-    default: PubSub
-    options: [PubSub, PushPull]
-    group: Target
-  - property: bind
-    name: Bind (vs connect)
-    width: s
-    control: bool
-    required: false
-    group: Target
+
 capabilities:
   - PUB socket for fan-out to multiple subscribers (with topic prefix)
   - PUSH socket for load-balanced work-queue delivery

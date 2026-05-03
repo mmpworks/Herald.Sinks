@@ -4,6 +4,8 @@
 name: Herald.Sinks.Loki
 package_id: MMP.Herald.Sinks.Loki
 version: 1.0.0
+configContract: 2
+formSchema: configuration-loki.mmpform
 kind: sink
 category: observability
 
@@ -38,36 +40,6 @@ config:
     labels and basic-auth credentials are construction-only today —
     they are not surfaced through JSON config to keep the
     label-cardinality footgun far from config editing.
-
-dashboard_config:
-  - property: endpoint
-    name: Push endpoint
-    help: >
-      Loki push URL. Grafana Cloud format is
-      https://logs-prod.grafana.net/loki/api/v1/push; self-hosted Loki
-      typically lives at http://loki:3100. If the path is omitted the
-      sink appends /loki/api/v1/push automatically.
-    tooltip: Loki push URL.
-    width: l
-    control: url
-    required: true
-    placeholder: https://logs-prod.grafana.net
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      required: "A Loki push URL is required."
-
-  - property: bearer_token
-    name: Bearer token
-    help: >
-      Optional bearer token for Grafana Cloud. Sent as
-      Authorization: Bearer {token}. Leave blank when the endpoint
-      does not require bearer auth.
-    tooltip: Optional Grafana Cloud bearer token — masked after save.
-    width: m
-    control: secret
-    required: false
-    group: Auth
 
 capabilities:
   - Batched delivery via IBatchedLogSink

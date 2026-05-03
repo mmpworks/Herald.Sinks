@@ -1,0 +1,19 @@
+# Loki sink — Grafana Loki HTTP push endpoint.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = [
+    "endpoint"     = { type: "string", default: "" },
+    "bearer_token" = { type: "string", default: "" }
+]
+
+tooltips = [
+    "tt-endpoint" = "Loki push URL (https://logs-prod.grafana.net or http://loki:3100).",
+    "tt-bearer"   = "Optional Grafana Cloud bearer token — masked after save."
+]
+
+[container("Loki sink", "Posts events to Grafana Loki's push endpoint.")]
+
+  - [url(12,{endpoint},tt="tt-endpoint",required=true,placeholder="https://logs-prod.grafana.net")] Push endpoint
+  - [secret(12,{bearer_token},tt="tt-bearer")] Bearer token

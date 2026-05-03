@@ -6,6 +6,8 @@
 name: Herald.Sinks.MSSqlServer
 package_id: MMP.Herald.Sinks.MSSqlServer
 version: 1.0.0
+configContract: 2
+formSchema: configuration-mssql.mmpform
 kind: sink
 category: database
 
@@ -39,43 +41,6 @@ config:
   notes: >
     Custom column names require constructing MSSqlServerLogSink
     directly and registering via WithCustomSinkProvider.
-
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    help: ADO.NET connection string. Consider Managed Identity for Azure SQL.
-    tooltip: SQL Server or Azure SQL connection string.
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: schema
-    name: Schema
-    help: Table schema name. Default 'dbo'.
-    tooltip: Table schema.
-    width: s
-    control: text
-    required: false
-    default: dbo
-    group: Target
-  - property: table
-    name: Table
-    help: Table name. Default 'Logs'.
-    tooltip: Table name.
-    width: s
-    control: text
-    required: false
-    default: Logs
-    group: Target
-  - property: auto_create
-    name: Auto-create table
-    help: Issue CREATE TABLE IF NOT EXISTS DDL on first write. Dev only.
-    tooltip: Auto-create the Logs table on startup.
-    width: xs
-    control: checkbox
-    required: false
-    default: false
-    group: Target
 
 capabilities:
   - Parameterized INSERT for single-event Log calls

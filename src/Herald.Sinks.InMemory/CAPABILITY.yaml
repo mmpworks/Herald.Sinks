@@ -6,6 +6,8 @@
 name: Herald.Sinks.InMemory
 package_id: MMP.Herald.Sinks.InMemory
 version: 1.0.0
+configContract: 2
+formSchema: configuration-in_memory.mmpform
 kind: sink
 category: testing
 
@@ -36,20 +38,6 @@ config:
     WithCustomSinkProvider so they retain a reference for reading
     Events after the pipeline runs. The JSON-config path is a
     convenience for scripted / data-driven tests.
-
-dashboard_config:
-  - property: capacity
-    name: Capacity
-    help: >
-      Maximum number of events retained. When the buffer is full the
-      oldest event is dropped. Leaving this blank keeps the sink
-      unbounded — appropriate for test harnesses, never for production.
-    tooltip: Max retained events (blank = unlimited).
-    width: s
-    control: number
-    required: false
-    default: ""
-    group: Retention
 
 capabilities:
   - Snapshot read via Events (safe to iterate while logging continues)

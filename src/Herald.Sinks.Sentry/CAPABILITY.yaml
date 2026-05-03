@@ -4,6 +4,8 @@
 name: Herald.Sinks.Sentry
 package_id: MMP.Herald.Sinks.Sentry
 version: 1.0.0
+configContract: 2
+formSchema: configuration-sentry.mmpform
 kind: sink
 category: alerting
 
@@ -35,48 +37,6 @@ config:
   notes: >
     Static tags are not surfaced through JSON config. Callers who want
     them pass a pre-built SentryLogSink via WithCustomSinkProvider.
-
-dashboard_config:
-  - property: dsn
-    name: DSN
-    help: >
-      The Sentry DSN from your project settings. Format is
-      https://{publicKey}@o{orgId}.ingest.sentry.io/{projectId}. The
-      sink parses the DSN once — public key flows into the
-      X-Sentry-Auth header, host and project id compose the store URL.
-    tooltip: Full Sentry DSN — masked after save.
-    width: l
-    control: secret
-    required: true
-    group: Auth
-    errors:
-      required: "A Sentry DSN is required before events can be sent."
-
-  - property: logger
-    name: Logger name
-    help: >
-      Name shown in Sentry's event header. Defaults to "herald"; set
-      something per-service if multiple Herald pipelines share a
-      Sentry project.
-    tooltip: Logger name shown in Sentry — defaults to "herald".
-    width: m
-    control: text
-    required: false
-    default: herald
-    group: Identity
-
-  - property: platform
-    name: Platform tag
-    help: >
-      Sentry platform tag. Defaults to "csharp"; only change if you
-      need Sentry's UI to treat the events as something else (e.g.
-      "native" for a Godot build with symbols in a different format).
-    tooltip: Sentry platform tag — defaults to "csharp".
-    width: s
-    control: text
-    required: false
-    default: csharp
-    group: Identity
 
 capabilities:
   - Parses DSN into store URL + auth header at construction

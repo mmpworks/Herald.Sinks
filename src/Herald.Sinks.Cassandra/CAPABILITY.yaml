@@ -3,6 +3,8 @@
 name: Herald.Sinks.Cassandra
 package_id: MMP.Herald.Sinks.Cassandra
 version: 1.0.0
+configContract: 2
+formSchema: configuration-cassandra.mmpform
 kind: sink
 category: database
 purpose: >
@@ -38,27 +40,7 @@ config:
   kind: cassandra
   uri: "Comma-separated contact points (required)."
   host: "keyspace.table (default herald.herald_logs)."
-dashboard_config:
-  - property: contact_points
-    name: Contact points
-    width: xl
-    control: text
-    required: true
-    group: Auth
-  - property: keyspace
-    name: Keyspace
-    width: m
-    control: text
-    required: false
-    default: herald
-    group: Target
-  - property: table
-    name: Table
-    width: m
-    control: text
-    required: false
-    default: herald_logs
-    group: Target
+
 capabilities:
   - Prepared INSERT bound per event (one round trip per Log call)
   - Per-event Execute on batches; let the session pool handle concurrency

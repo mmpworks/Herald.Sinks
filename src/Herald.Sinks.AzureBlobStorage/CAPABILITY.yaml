@@ -3,6 +3,8 @@
 name: Herald.Sinks.AzureBlobStorage
 package_id: MMP.Herald.Sinks.AzureBlobStorage
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_blob.mmpform
 kind: sink
 category: cloud
 purpose: >
@@ -27,26 +29,7 @@ config:
   uri: "Connection string (required)."
   host: "Container name (required)."
   alias: "Optional key prefix. Default 'logs'."
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: container
-    name: Container
-    width: m
-    control: text
-    required: true
-    group: Target
-  - property: key_prefix
-    name: Key prefix
-    width: m
-    control: text
-    required: false
-    default: logs
-    group: Target
+
 capabilities:
   - Date-partitioned key layout (yyyy-MM-dd) for listable containers
   - NDJSON body — streams into Azure Synapse / Data Lake Analytics queries

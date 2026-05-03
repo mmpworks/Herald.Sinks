@@ -6,6 +6,8 @@
 name: Herald.Sinks.Syslog
 package_id: MMP.Herald.Sinks.Syslog
 version: 1.0.0
+configContract: 2
+formSchema: configuration-syslog.mmpform
 kind: sink
 category: infrastructure
 
@@ -39,53 +41,6 @@ config:
     Facility, app name, process id, and source host fall back to
     sensible defaults. Override them by constructing SyslogSink
     directly and registering with WithCustomSinkProvider.
-
-dashboard_config:
-  - property: host
-    name: Host
-    help: Target syslog host or collector.
-    tooltip: Syslog target host.
-    width: m
-    control: text
-    required: true
-    group: Target
-  - property: port
-    name: Port
-    help: Destination port. Default 514.
-    tooltip: Destination port.
-    width: xs
-    control: number
-    required: false
-    default: 514
-    group: Target
-  - property: transport
-    name: Transport
-    help: UDP (lossy, default) or TCP (reliable, RFC 6587 framing).
-    tooltip: Wire transport.
-    width: s
-    control: select
-    required: false
-    default: udp
-    values:
-      - value: udp
-        text: "UDP (default)"
-      - value: tcp
-        text: "TCP"
-    group: Wire
-  - property: format
-    name: Format
-    help: RFC 5424 (modern) or RFC 3164 (BSD legacy).
-    tooltip: Wire format.
-    width: s
-    control: select
-    required: false
-    default: rfc5424
-    values:
-      - value: rfc5424
-        text: "RFC 5424 (modern)"
-      - value: rfc3164
-        text: "RFC 3164 (BSD)"
-    group: Wire
 
 capabilities:
   - RFC 5424 and RFC 3164 wire formats

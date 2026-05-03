@@ -3,6 +3,8 @@
 name: Herald.Sinks.HelloWorld
 package_id: MMP.Herald.Sinks.HelloWorld
 version: 1.0.0
+configContract: 2
+formSchema: configuration-hello_world.mmpform
 kind: sink
 category: test
 purpose: >
@@ -26,21 +28,7 @@ config:
   uri: "Ignored. The sink does nothing with this value."
   alias: "Ignored."
   host: "Ignored."
-dashboard_config:
-  - property: greeting
-    name: Greeting
-    width: m
-    control: text
-    required: false
-    default: hello
-    group: Friendly
-  - property: shout
-    name: Shout
-    width: s
-    control: checkbox
-    required: false
-    default: false
-    group: Friendly
+
 capabilities:
   - Discoverable through Herald.ManagementApi's plugin loader
   - Embedded CAPABILITY.yaml for dashboard form rendering

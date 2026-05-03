@@ -6,6 +6,8 @@
 name: Herald.Sinks.TextWriter
 package_id: MMP.Herald.Sinks.TextWriter
 version: 1.0.0
+configContract: 2
+formSchema: configuration-text_writer.mmpform
 kind: sink
 category: io
 

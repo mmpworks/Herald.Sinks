@@ -3,6 +3,8 @@
 name: Herald.Sinks.Exceptionless
 package_id: MMP.Herald.Sinks.Exceptionless
 version: 1.0.0
+configContract: 2
+formSchema: configuration-exceptionless.mmpform
 kind: sink
 category: alerting
 purpose: >
@@ -23,20 +25,7 @@ config:
   kind: exceptionless
   alias: "API key (required)."
   uri: "Server URL. Default https://collector.exceptionless.io. Override for self-hosted."
-dashboard_config:
-  - property: api_key
-    name: API key
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: server_url
-    name: Server URL
-    width: l
-    control: url
-    required: false
-    default: https://collector.exceptionless.io
-    group: Target
+
 capabilities:
   - Bulk POST per IBatchedLogSink
   - Bearer-token auth

@@ -4,6 +4,8 @@
 name: Herald.Sinks.Splunk
 package_id: MMP.Herald.Sinks.Splunk
 version: 1.0.0
+configContract: 2
+formSchema: configuration-splunk_hec.mmpform
 kind: sink
 category: observability
 
@@ -37,84 +39,6 @@ config:
     Source, sourcetype, and index are not surfaced through JSON config;
     callers who need them construct SplunkHecLogSink directly and
     register via WithCustomSinkProvider.
-
-dashboard_config:
-  - property: hec_url
-    name: HEC URL
-    help: >
-      The full HEC ingest URL or the Splunk server root. When only the
-      root is supplied (https://splunk.example.com:8088) the default
-      path /services/collector/event is appended automatically.
-    tooltip: Full HEC URL or server root.
-    width: l
-    control: url
-    required: true
-    placeholder: https://splunk.example.com:8088
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      required: "A HEC URL is required."
-
-  - property: token
-    name: HEC token
-    help: >
-      The HEC token configured in Splunk's data inputs. Used as the
-      Authorization: Splunk {token} header on every request.
-    tooltip: HEC auth token — masked after save.
-    width: m
-    control: secret
-    required: true
-    min_length: 16
-    group: Auth
-    errors:
-      required: "A HEC token is required before events can be sent."
-      min-length: "HEC tokens are at least 16 characters."
-
-  - property: host
-    name: Host field
-    help: >
-      Optional value emitted in the Splunk 'host' field of every
-      event. Useful for multi-host rollups when the sending machine's
-      real hostname isn't what Splunk searches expect.
-    tooltip: Optional Splunk host-field override.
-    width: m
-    control: text
-    required: false
-    group: Envelope
-
-  - property: source
-    name: Source
-    help: >
-      Splunk 'source' field. Commonly the process name or service
-      identifier. Leave blank to accept Splunk's inferred source.
-    tooltip: Splunk 'source' field for every event.
-    width: s
-    control: text
-    required: false
-    group: Envelope
-
-  - property: sourcetype
-    name: Source type
-    help: >
-      Splunk 'sourcetype' field. Typically "herald_json" or a
-      site-specific sourcetype that defines parsing rules.
-    tooltip: Splunk 'sourcetype' field for every event.
-    width: s
-    control: text
-    required: false
-    default: herald_json
-    group: Envelope
-
-  - property: index
-    name: Index
-    help: >
-      Target Splunk index. The HEC token must have write permission
-      for this index — otherwise the event is dropped on the server.
-    tooltip: Target Splunk index.
-    width: s
-    control: text
-    required: false
-    group: Envelope
 
 capabilities:
   - Batched delivery via IBatchedLogSink — one HEC request per batch

@@ -6,6 +6,8 @@
 name: Herald.Sinks.GodotConsole
 package_id: MMP.Herald.Sinks.GodotConsole
 version: 1.0.0
+configContract: 2
+formSchema: configuration-godot_console.mmpform
 kind: sink
 category: game
 
@@ -42,19 +44,6 @@ config:
     based wiring), MMP.Herald.Embed.Godot ships an equivalent
     GodotPrintSink with the same routing — install whichever fits
     your project's wiring style.
-
-dashboard_config:
-  - property: category
-    name: Category prefix
-    help: >
-      Optional string prepended to every emitted line. Useful for
-      filtering Herald output from other Godot console chatter.
-    tooltip: Prefix attached to every console line this sink emits.
-    width: m
-    control: text
-    required: false
-    default: ""
-    group: Output
 
 capabilities:
   - Per-level routing to Godot's three console channels (Output,

@@ -3,6 +3,8 @@
 name: Herald.Sinks.Pulsar
 package_id: MMP.Herald.Sinks.Pulsar
 version: 1.0.0
+configContract: 2
+formSchema: configuration-pulsar.mmpform
 kind: sink
 category: queue
 purpose: >

@@ -1,0 +1,10 @@
+# Couchbase sink — no configuration required.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("Couchbase sink", "Upserts Herald log events as JSON documents into a Couchbase bucket / scope / collection via CouchbaseNetClient.")]
+
+  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]

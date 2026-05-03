@@ -1,0 +1,10 @@
+# TextWriter sink — no configuration required.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("TextWriter sink", "Writes Herald log events to an arbitrary System.")]
+
+  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]

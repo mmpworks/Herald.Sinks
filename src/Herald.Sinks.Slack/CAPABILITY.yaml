@@ -4,6 +4,8 @@
 name: Herald.Sinks.Slack
 package_id: MMP.Herald.Sinks.Slack
 version: 1.0.0
+configContract: 2
+formSchema: configuration-slack.mmpform
 kind: sink
 category: alerting
 
@@ -36,21 +38,6 @@ config:
     Channel override is construction-only (defaults to #alerts).
     Callers who need a different channel pass a SlackWebhookLogSink
     directly via WithCustomSinkProvider.
-
-dashboard_config:
-  - property: webhook_url
-    name: Webhook URL
-    help: >
-      The Slack incoming webhook URL from the app's configuration.
-      Stored encrypted by the Dashboard; rotation clears the stored
-      value.
-    tooltip: Slack incoming webhook URL — masked after save.
-    width: l
-    control: secret
-    required: true
-    group: Endpoint
-    errors:
-      required: "A Slack webhook URL is required."
 
 capabilities:
   - Per-level emoji mapping (trace → :mag:, warn → :warning:, etc.)

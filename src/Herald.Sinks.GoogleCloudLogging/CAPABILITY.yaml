@@ -6,6 +6,8 @@
 name: Herald.Sinks.GoogleCloudLogging
 package_id: MMP.Herald.Sinks.GoogleCloudLogging
 version: 1.0.0
+configContract: 2
+formSchema: configuration-gcp_logging.mmpform
 kind: sink
 category: cloud
 
@@ -42,25 +44,6 @@ config:
     attached service account on compute. MonitoredResource defaults
     to 'global' — override via the code-first ctor with the runtime
     resource (gce_instance, k8s_container, cloud_run_revision, ...).
-
-dashboard_config:
-  - property: project_id
-    name: GCP project id
-    help: Google Cloud project id to write to.
-    tooltip: GCP project id.
-    width: l
-    control: text
-    required: true
-    group: Target
-  - property: log_id
-    name: Log id
-    help: Log name under the project. Default 'herald'.
-    tooltip: Cloud Logging log id.
-    width: m
-    control: text
-    required: false
-    default: herald
-    group: Target
 
 capabilities:
   - Single and batched WriteLogEntries

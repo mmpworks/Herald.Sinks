@@ -6,6 +6,8 @@
 name: Herald.Sinks.AwsCloudWatch
 package_id: MMP.Herald.Sinks.AwsCloudWatch
 version: 1.0.0
+configContract: 2
+formSchema: configuration-aws_cloudwatch.mmpform
 kind: sink
 category: cloud
 
@@ -39,41 +41,6 @@ config:
     Credential resolution is the AWS SDK default chain: environment,
     shared credentials, IMDS, SSO, role. Production typically uses an
     IAM role attached to the compute platform.
-
-dashboard_config:
-  - property: log_group
-    name: Log group
-    help: CloudWatch log group name. Must exist or enable auto-create.
-    tooltip: CloudWatch log group.
-    width: l
-    control: text
-    required: true
-    group: Target
-  - property: log_stream
-    name: Log stream
-    help: CloudWatch log stream name under the log group.
-    tooltip: CloudWatch log stream.
-    width: l
-    control: text
-    required: true
-    group: Target
-  - property: region
-    name: Region
-    help: AWS region system name. Leave blank to use the SDK default.
-    tooltip: AWS region (us-east-1, eu-west-2, ...).
-    width: s
-    control: text
-    required: false
-    group: Target
-  - property: auto_create
-    name: Auto-create
-    help: Create the log group and stream on first write. Requires IAM permission.
-    tooltip: Auto-create log group + stream.
-    width: xs
-    control: checkbox
-    required: false
-    default: false
-    group: Target
 
 capabilities:
   - Single and batched PutLogEvents (respects 10,000-event / 1 MB / 256 KB ceilings)

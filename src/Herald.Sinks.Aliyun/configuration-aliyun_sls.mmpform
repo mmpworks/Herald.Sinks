@@ -1,0 +1,10 @@
+# Aliyun sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("Aliyun sink", "Sends Herald log events to Alibaba Cloud Simple Log Service (SLS) via the REST PutLogs API.")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

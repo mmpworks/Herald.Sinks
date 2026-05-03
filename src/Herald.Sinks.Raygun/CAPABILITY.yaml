@@ -3,6 +3,8 @@
 name: Herald.Sinks.Raygun
 package_id: MMP.Herald.Sinks.Raygun
 version: 1.0.0
+configContract: 2
+formSchema: configuration-raygun.mmpform
 kind: sink
 category: alerting
 purpose: >
@@ -25,20 +27,7 @@ config:
   kind: raygun
   alias: "API key (required)."
   host: "App version string. Default '1.0.0'."
-dashboard_config:
-  - property: api_key
-    name: API key
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: app_version
-    name: App version
-    width: m
-    control: text
-    required: false
-    default: "1.0.0"
-    group: Identity
+
 capabilities:
   - Maps log message → details.error.message and exception → className/stackTrace
   - Custom data carries Herald properties + level/category

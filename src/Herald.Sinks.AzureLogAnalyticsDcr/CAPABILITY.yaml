@@ -3,6 +3,8 @@
 name: Herald.Sinks.AzureLogAnalyticsDcr
 package_id: MMP.Herald.Sinks.AzureLogAnalyticsDcr
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_log_analytics_dcr.mmpform
 kind: sink
 category: cloud
 purpose: >
@@ -33,25 +35,7 @@ config:
     Credential resolution via DefaultAzureCredential. Override with a
     code-first ctor when explicit credentials or a pre-built
     LogsIngestionClient is needed.
-dashboard_config:
-  - property: endpoint
-    name: DCE endpoint
-    width: xl
-    control: url
-    required: true
-    group: Target
-  - property: rule_id
-    name: DCR immutable ID
-    width: l
-    control: text
-    required: true
-    group: Target
-  - property: stream_name
-    name: Stream name
-    width: m
-    control: text
-    required: true
-    group: Target
+
 capabilities:
   - Modern DCR-based ingest (supported by Microsoft going forward)
   - Single and batched Upload

@@ -7,6 +7,8 @@
 name: Herald.Sinks.Debug
 package_id: MMP.Herald.Sinks.Debug
 version: 1.0.0
+configContract: 2
+formSchema: configuration-debug.mmpform
 kind: sink
 category: diagnostics
 
@@ -43,19 +45,6 @@ config:
     active.
 
 # ─── Dashboard-facing configuration ──────────────────────────────────
-dashboard_config:
-  - property: category
-    name: Category
-    help: >
-      Optional string passed to Debug.WriteLine as the category prefix.
-      Visual Studio's Output window uses it to group lines; leaving
-      this empty produces un-categorized output.
-    tooltip: Category prefix for Debug.WriteLine output.
-    width: m
-    control: text
-    required: false
-    default: ""
-    group: Output
 
 # ─── Capabilities ────────────────────────────────────────────────────
 capabilities:

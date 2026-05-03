@@ -3,6 +3,8 @@
 name: Herald.Sinks.Redis
 package_id: MMP.Herald.Sinks.Redis
 version: 1.0.0
+configContract: 2
+formSchema: configuration-redis.mmpform
 kind: sink
 category: queue
 purpose: >
@@ -26,20 +28,7 @@ config:
   kind: redis
   uri: "Redis connection string (required)."
   host: "Channel name (default herald-logs)."
-dashboard_config:
-  - property: connection_string
-    name: Connection string
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: channel
-    name: Channel
-    width: m
-    control: text
-    required: false
-    default: herald-logs
-    group: Target
+
 capabilities:
   - PUBLISH per event with FireAndForget for minimum latency
   - JSON payload via Utf8JsonWriter (AOT clean)

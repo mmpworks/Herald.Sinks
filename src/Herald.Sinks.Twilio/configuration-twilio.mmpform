@@ -1,0 +1,10 @@
+# Twilio sink — no configuration required.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("Twilio sink", "Sends Herald log events as SMS messages via the Twilio Messages API.")]
+
+  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]

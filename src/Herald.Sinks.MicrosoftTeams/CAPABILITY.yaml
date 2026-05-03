@@ -3,6 +3,8 @@
 name: Herald.Sinks.MicrosoftTeams
 package_id: MMP.Herald.Sinks.MicrosoftTeams
 version: 1.0.0
+configContract: 2
+formSchema: configuration-ms_teams.mmpform
 kind: sink
 category: alerting
 purpose: >
@@ -25,19 +27,7 @@ config:
   kind: ms_teams
   uri: "Incoming webhook URL (required)."
   alias: "Optional title override. Default is '[level] category'."
-dashboard_config:
-  - property: webhook_url
-    name: Webhook URL
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: title
-    name: Title override
-    width: l
-    control: text
-    required: false
-    group: Card
+
 capabilities:
   - MessageCard format with colour-coded themeColor
   - Facts table auto-populated from properties

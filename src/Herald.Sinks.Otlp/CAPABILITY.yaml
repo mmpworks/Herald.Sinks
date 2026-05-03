@@ -4,6 +4,8 @@
 name: Herald.Sinks.Otlp
 package_id: MMP.Herald.Sinks.Otlp
 version: 1.0.0
+configContract: 2
+formSchema: configuration-otlp_json.mmpform
 kind: sink
 category: observability
 
@@ -51,51 +53,6 @@ config:
     network and file transports. Resource attributes configurable at
     construction; JSON-config wiring exposes only the endpoint/path
     today to keep the config surface small.
-
-dashboard_config:
-  - property: endpoint
-    name: OTLP endpoint
-    help: >
-      Collector URL for the OTLP JSON and protobuf sinks. The sink
-      appends /v1/logs to the URL. Common targets — the OpenTelemetry
-      Collector on 4318, a Grafana Alloy agent, or a vendor-hosted
-      collector (Honeycomb, Lightstep, Dynatrace).
-    tooltip: Collector URL; /v1/logs is appended automatically.
-    width: l
-    control: url
-    required: false
-    placeholder: http://localhost:4318
-    group: Endpoint
-    schemes: [http, https]
-    visible_when: "kind == 'otlp_json' || kind == 'otlp_protobuf'"
-
-  - property: file_path
-    name: Output file path
-    help: >
-      Local filesystem path for the protobuf-file sink. Each event is
-      written as a 4-byte little-endian length prefix followed by its
-      protobuf-serialized LogRecord bytes. File readers can walk the
-      stream by reading 4 bytes, then that many bytes, repeating.
-    tooltip: Output .pb file for length-delimited records.
-    width: l
-    control: text
-    required: false
-    placeholder: logs/app.pb
-    group: File
-    visible_when: "kind == 'protobuf_file'"
-
-  - property: service_name
-    name: Service name
-    help: >
-      Populates the OTLP "service.name" resource attribute. Defaults to
-      "unknown_service" per the OpenTelemetry spec. Set this for
-      anything production — the collector uses it to route and aggregate.
-    tooltip: OTLP service.name resource attribute.
-    width: m
-    control: text
-    required: false
-    default: unknown_service
-    group: Resource
 
 capabilities:
   - Three sinks in one package — pick network (JSON or protobuf) or file

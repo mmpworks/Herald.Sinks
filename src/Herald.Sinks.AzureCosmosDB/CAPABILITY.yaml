@@ -3,6 +3,8 @@
 name: Herald.Sinks.AzureCosmosDB
 package_id: MMP.Herald.Sinks.AzureCosmosDB
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_cosmosdb.mmpform
 kind: sink
 category: database
 purpose: >
@@ -27,31 +29,7 @@ config:
   uri: "Cosmos account endpoint (required). e.g. https://acct.documents.azure.com"
   alias: "Account key (primary or secondary) — required."
   host: "database/container (required)."
-dashboard_config:
-  - property: endpoint
-    name: Endpoint
-    width: xl
-    control: url
-    required: true
-    group: Target
-  - property: account_key
-    name: Account key
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: database
-    name: Database
-    width: m
-    control: text
-    required: true
-    group: Target
-  - property: container
-    name: Container
-    width: m
-    control: text
-    required: true
-    group: Target
+
 capabilities:
   - Document insert via Container.CreateItemAsync
   - GUID per-document id

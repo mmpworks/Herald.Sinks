@@ -3,6 +3,8 @@
 name: Herald.Sinks.Coralogix
 package_id: MMP.Herald.Sinks.Coralogix
 version: 1.0.0
+configContract: 2
+formSchema: configuration-coralogix.mmpform
 kind: sink
 category: observability
 purpose: >

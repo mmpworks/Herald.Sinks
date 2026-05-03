@@ -3,6 +3,8 @@
 name: Herald.Sinks.NewRelicLogs
 package_id: MMP.Herald.Sinks.NewRelicLogs
 version: 1.0.0
+configContract: 2
+formSchema: configuration-newrelic_logs.mmpform
 kind: sink
 category: observability
 purpose: >
@@ -24,25 +26,7 @@ config:
   kind: newrelic_logs
   alias: "License key (required)."
   uri: "Endpoint. Default https://log-api.newrelic.com/log/v1 (US). Use log-api.eu.newrelic.com for EU."
-dashboard_config:
-  - property: license_key
-    name: License key
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: endpoint
-    name: Endpoint
-    width: l
-    control: select
-    required: false
-    default: https://log-api.newrelic.com/log/v1
-    values:
-      - value: https://log-api.newrelic.com/log/v1
-        text: "US (default)"
-      - value: https://log-api.eu.newrelic.com/log/v1
-        text: "EU"
-    group: Target
+
 capabilities:
   - Batched POST per IBatchedLogSink
   - Properties emitted as flat attributes for NRQL query

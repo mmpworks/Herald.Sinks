@@ -3,6 +3,8 @@
 name: Herald.Sinks.AzureServiceBus
 package_id: MMP.Herald.Sinks.AzureServiceBus
 version: 1.0.0
+configContract: 2
+formSchema: configuration-azure_service_bus.mmpform
 kind: sink
 category: queue
 purpose: >

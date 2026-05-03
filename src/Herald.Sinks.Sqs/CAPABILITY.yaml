@@ -3,6 +3,8 @@
 name: Herald.Sinks.Sqs
 package_id: MMP.Herald.Sinks.Sqs
 version: 1.0.0
+configContract: 2
+formSchema: configuration-sqs.mmpform
 kind: sink
 category: queue
 purpose: >

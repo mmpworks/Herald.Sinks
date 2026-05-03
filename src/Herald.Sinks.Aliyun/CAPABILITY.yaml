@@ -3,6 +3,8 @@
 name: Herald.Sinks.Aliyun
 package_id: MMP.Herald.Sinks.Aliyun
 version: 1.0.0
+configContract: 2
+formSchema: configuration-aliyun_sls.mmpform
 kind: sink
 category: cloud
 purpose: >
@@ -33,37 +35,7 @@ config:
     accessKeyId/accessKeySecret and supply a pre-signing HttpClient via
     the code-first ctor. When both keys are empty the sink skips
     inline signing and trusts the HttpClient.
-dashboard_config:
-  - property: endpoint
-    name: Endpoint
-    width: xl
-    control: url
-    required: true
-    group: Target
-  - property: project
-    name: Project
-    width: m
-    control: text
-    required: true
-    group: Target
-  - property: logstore
-    name: Logstore
-    width: m
-    control: text
-    required: true
-    group: Target
-  - property: access_key_id
-    name: Access key ID
-    width: l
-    control: text
-    required: true
-    group: Auth
-  - property: access_key_secret
-    name: Access key secret
-    width: xl
-    control: secret
-    required: true
-    group: Auth
+
 capabilities:
   - HMAC-SHA1 request signing per Aliyun SLS spec (API version 0.6.0)
   - JSON body with __logs__ array and __time__ timestamp fields

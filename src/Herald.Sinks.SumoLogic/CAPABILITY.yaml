@@ -3,6 +3,8 @@
 name: Herald.Sinks.SumoLogic
 package_id: MMP.Herald.Sinks.SumoLogic
 version: 1.0.0
+configContract: 2
+formSchema: configuration-sumologic.mmpform
 kind: sink
 category: observability
 purpose: >
@@ -25,19 +27,7 @@ config:
   uri: "HTTP source URL (required)."
   alias: "Optional X-Sumo-Category."
   host: "Optional X-Sumo-Host."
-dashboard_config:
-  - property: source_url
-    name: HTTP source URL
-    width: xl
-    control: secret
-    required: true
-    group: Target
-  - property: source_category
-    name: Source category
-    width: m
-    control: text
-    required: false
-    group: Tags
+
 capabilities:
   - HTTP source POST with NDJSON body
   - X-Sumo-Category / -Name / -Host header tagging

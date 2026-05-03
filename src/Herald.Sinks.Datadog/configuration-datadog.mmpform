@@ -1,0 +1,22 @@
+# Datadog sink — HTTP log intake.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = [
+    "endpoint" = { type: "string", default: "https://http-intake.logs.datadoghq.com" },
+    "api_key"  = { type: "string", default: "" },
+    "service"  = { type: "string", default: "herald" }
+]
+
+tooltips = [
+    "tt-endpoint" = "Datadog HTTP log intake URL or local Agent address.",
+    "tt-api-key"  = "Datadog DD-API-KEY — masked after save.",
+    "tt-service"  = "Datadog service tag for every event emitted here."
+]
+
+[container("Datadog sink", "Posts events to Datadog's HTTP log intake.")]
+
+  - [url(12,{endpoint},tt="tt-endpoint",init="https://http-intake.logs.datadoghq.com")] Ingest endpoint
+  - [secret(12,{api_key},tt="tt-api-key",required=true)] API key
+  - [textfield(12,{service},tt="tt-service",init="herald")] Service name

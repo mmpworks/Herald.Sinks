@@ -6,6 +6,8 @@
 name: Herald.Sinks.UnityConsole
 package_id: MMP.Herald.Sinks.UnityConsole
 version: 1.0.0
+configContract: 2
+formSchema: configuration-unity_console.mmpform
 kind: sink
 category: game
 
@@ -45,19 +47,6 @@ config:
     reflection-based discovery. The delegate constructor keeps the
     sink itself pure-NuGet while leaving Unity wiring to the
     consumer's Unity-aware code.
-
-dashboard_config:
-  - property: category
-    name: Category prefix
-    help: >
-      Optional string prepended to every emitted line. Useful for
-      filtering Herald output from other Unity console chatter.
-    tooltip: Prefix attached to every console line this sink emits.
-    width: m
-    control: text
-    required: false
-    default: ""
-    group: Output
 
 capabilities:
   - Per-level routing to Unity's three Debug channels (Log,

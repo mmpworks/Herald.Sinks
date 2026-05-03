@@ -3,6 +3,8 @@
 name: Herald.Sinks.Stackify
 package_id: MMP.Herald.Sinks.Stackify
 version: 1.0.0
+configContract: 2
+formSchema: configuration-stackify.mmpform
 kind: sink
 category: observability
 purpose: >
@@ -24,27 +26,7 @@ config:
   alias: "API key (required)."
   host: "App name. Default 'herald'."
   uri: "Environment name. Default 'production'."
-dashboard_config:
-  - property: api_key
-    name: API key
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: app_name
-    name: App name
-    width: m
-    control: text
-    required: false
-    default: herald
-    group: Identity
-  - property: environment
-    name: Environment
-    width: s
-    control: text
-    required: false
-    default: production
-    group: Identity
+
 capabilities:
   - X-Stackify-Key auth header
   - Multi-message batched body (Msgs array)

@@ -3,6 +3,8 @@
 name: Herald.Sinks.Loggly
 package_id: MMP.Herald.Sinks.Loggly
 version: 1.0.0
+configContract: 2
+formSchema: configuration-loggly.mmpform
 kind: sink
 category: observability
 purpose: >
@@ -23,20 +25,7 @@ config:
   kind: loggly
   alias: "Customer token (required)."
   host: "Optional tag. Default 'herald'."
-dashboard_config:
-  - property: customer_token
-    name: Customer token
-    width: xl
-    control: secret
-    required: true
-    group: Auth
-  - property: tag
-    name: Tag
-    width: m
-    control: text
-    required: false
-    default: herald
-    group: Output
+
 capabilities:
   - Bulk HTTP endpoint with NDJSON body
   - Tag-driven routing in Loggly

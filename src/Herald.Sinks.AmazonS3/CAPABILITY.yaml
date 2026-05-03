@@ -3,6 +3,8 @@
 name: Herald.Sinks.AmazonS3
 package_id: MMP.Herald.Sinks.AmazonS3
 version: 1.0.0
+configContract: 2
+formSchema: configuration-aws_s3.mmpform
 kind: sink
 category: cloud
 purpose: >
@@ -27,26 +29,7 @@ config:
   uri: "Bucket name (required)."
   alias: "Key prefix. Default 'logs'."
   host: "AWS region system name. Optional."
-dashboard_config:
-  - property: bucket
-    name: Bucket
-    width: l
-    control: text
-    required: true
-    group: Target
-  - property: key_prefix
-    name: Key prefix
-    width: m
-    control: text
-    required: false
-    default: logs
-    group: Target
-  - property: region
-    name: Region
-    width: s
-    control: text
-    required: false
-    group: Target
+
 capabilities:
   - Date-partitioned key layout (yyyy-MM-dd) for listable buckets
   - NDJSON body — streams well into Athena / Redshift Spectrum / S3 Select

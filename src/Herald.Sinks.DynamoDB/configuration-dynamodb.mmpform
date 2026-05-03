@@ -1,0 +1,10 @@
+# DynamoDB sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+
+columns: 12
+
+__properties = []
+
+[container("DynamoDB sink", "PutItems Herald log events into a DynamoDB table via AWSSDK.")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

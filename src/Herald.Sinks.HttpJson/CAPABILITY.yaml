@@ -4,6 +4,8 @@
 name: Herald.Sinks.HttpJson
 package_id: MMP.Herald.Sinks.HttpJson
 version: 1.0.0
+configContract: 2
+formSchema: configuration-http_json.mmpform
 kind: sink
 category: observability
 
@@ -35,25 +37,6 @@ config:
   notes: >
     Minimal surface — point the URL at the receiver and the sink handles
     single events and batches uniformly.
-
-dashboard_config:
-  - property: endpoint
-    name: Endpoint URL
-    help: >
-      The HTTP endpoint that receives the NDJSON payload. Events are
-      POSTed with Content-Type application/x-ndjson — one log event per
-      line, multiple events joined by newlines when the pipeline
-      batches.
-    tooltip: HTTP URL that receives the NDJSON payload.
-    width: l
-    control: url
-    required: true
-    placeholder: https://logs.example.com/ingest
-    group: Endpoint
-    schemes: [http, https]
-    errors:
-      required: "An endpoint URL is required before events can be sent."
-      url-malformed: "Endpoint must be a full URL including scheme."
 
 capabilities:
   - Batched delivery via IBatchedLogSink
