@@ -5,11 +5,11 @@ columns: 12
 
 __properties = [
     "logDirectory" = { type: "string", default: "" },
-    "logExtension" = { type: "string[]", default: "log" },
+    "logExtension" = { type: "string", default: "log" },
     "logFileTemplate" = { type: "string", default: "log-file" },
     "logOutputType" = { type: "string", default: "text" },
     "maxFileSize" = { type: "string", default: "10Mb" },
-    "maxRetainedFiles" = { type: "int", default: "50" },
+    "maxRetainedFiles" = { type: "int", default: 50 },
     "namePattern" = { type: "string", default: "yyyyMMdd" },
     "retentionDays" = { type: "int", default: "30" },
     "rollingInterval" = { type: "string", default: "hourly" },
