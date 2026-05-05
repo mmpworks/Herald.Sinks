@@ -1,0 +1,85 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.OtlpGrpc
+
+name: Herald.Sinks.OtlpGrpc
+package_id: MMP.Herald.Sinks.OtlpGrpc
+version: 1.0.0
+configContract: 2
+formSchema: configuration-otlp_grpc.mmpform
+kind: sink
+category: observability
+
+purpose: >
+  Exports Herald log events to an OpenTelemetry collector over OTLP/gRPC.
+  Calls opentelemetry.proto.collector.logs.v1.LogsService/Export with
+  the standard ExportLogsServiceRequest payload. Reuses the hand-rolled
+  protobuf writer from Herald.Sinks.Otlp so payload shape stays identical
+  across HTTP and gRPC transports — no proto codegen, no generated
+  message types.
+
+vendor:
+  name: OpenTelemetry
+  url: https://opentelemetry.io/docs/specs/otlp/
+
+ships:
+  - OtlpGrpcLogSink
+  - OtlpGrpcLogSinkProvider
+  - OtlpGrpcSinkRegistration
+
+requires:
+  core_version: ">=1.0.0"
+  nuget:
+    - name: Grpc.Net.Client
+      version: ">=2.66.0"
+  external:
+    - Reachable OTLP/gRPC collector endpoint (default port 4317)
+
+config:
+  kind: otlp_grpc
+  uri: "Collector address (required), e.g. http://otel-collector:4317."
+  host: null
+  alias: null
+  notes: >
+    Resource attributes and call deadline are configurable at construction
+    only; runtime-definition wiring exposes only the endpoint to keep the
+    config surface small. Plain HTTP requires the collector to accept h2c
+    (HTTP/2 cleartext); TLS endpoints work without extra setup.
+
+capabilities:
+  - OTLP/gRPC log export to any compliant collector (OpenTelemetry
+    Collector, Tempo, Honeycomb, Grafana Agent, etc.)
+  - Reuses OtlpProtobufLogSerializer from Herald.Sinks.Otlp — identical
+    wire payload to the HTTP-OTLP sibling sink
+  - Raw byte marshallers on the gRPC method descriptor — no proto-codegen
+    step, no generated IMessage types, AOT-clean
+  - Batched delivery via IBatchedLogSink
+  - Configurable per-call deadline (default 30s)
+
+limitations:
+  - No compression on the request body (matches the HTTP-OTLP sibling)
+  - No mTLS / custom credentials configurable through runtime-definition
+    today — construct OtlpGrpcLogSink directly with a configured
+    GrpcChannel for advanced auth scenarios
+  - Resource attributes configurable at construction only
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: >
+  Thread-safe — GrpcChannel is shared across calls and is itself
+  thread-safe per gRPC contract.
+
+test_coverage: tests/Herald.Sinks.OtlpGrpc.Tests/ (round-trip against an in-process collector mock)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-05-03
+
+changelog:
+  - version: 1.0.0
+    date: 2026-05-03
+    summary: Initial release — fills the "no gRPC transport" gap noted in Herald.Sinks.Otlp.

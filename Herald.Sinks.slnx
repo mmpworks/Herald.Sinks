@@ -54,7 +54,9 @@
     <Project Path="src/Herald.Sinks.NewRelicLogs/Herald.Sinks.NewRelicLogs.csproj" />
     <Project Path="src/Herald.Sinks.OpenSearch/Herald.Sinks.OpenSearch.csproj" />
     <Project Path="src/Herald.Sinks.Otlp/Herald.Sinks.Otlp.csproj" />
+    <Project Path="src/Herald.Sinks.OtlpGrpc/Herald.Sinks.OtlpGrpc.csproj" />
     <Project Path="src/Herald.Sinks.PagerDuty/Herald.Sinks.PagerDuty.csproj" />
+    <Project Path="src/Herald.Sinks.Parquet/Herald.Sinks.Parquet.csproj" />
     <Project Path="src/Herald.Sinks.PostgreSQL/Herald.Sinks.PostgreSQL.csproj" />
     <Project Path="src/Herald.Sinks.Pulsar/Herald.Sinks.Pulsar.csproj" />
     <Project Path="src/Herald.Sinks.RabbitMQ/Herald.Sinks.RabbitMQ.csproj" />

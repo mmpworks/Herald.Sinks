@@ -1,0 +1,86 @@
+# Copyright (c) 2026 MMP LLC
+# Licensed under the MIT License. See LICENSE in the project root.
+#
+# CAPABILITY.yaml — Herald.Sinks.Parquet
+
+name: Herald.Sinks.Parquet
+package_id: MMP.Herald.Sinks.Parquet
+version: 1.0.0
+configContract: 2
+formSchema: configuration-parquet.mmpform
+kind: sink
+category: analytics
+
+purpose: >
+  Writes Herald log events as Apache Parquet files for long-term
+  analytical storage. One Parquet file per batch, seven-column schema
+  (time_utc, level, category, message, template, exception, properties).
+  Optional Iceberg catalog hook (no-op by default) for future
+  table-format integration.
+
+vendor:
+  name: Apache Parquet
+  url: https://parquet.apache.org
+
+ships:
+  - ParquetLogSink
+  - ParquetLogSinkProvider
+  - ParquetSinkRegistration
+  - IIcebergCatalogClient
+  - NoOpIcebergCatalogClient
+
+requires:
+  core_version: ">=1.0.0"
+  nuget:
+    - name: Parquet.Net
+      version: ">=5.0.0"
+  external:
+    - Writable filesystem path
+
+config:
+  kind: parquet
+  uri: "Output directory (required). Created if missing."
+  host: "File-name prefix, default 'herald-logs'."
+  alias: null
+  notes: >
+    The Iceberg catalog client is an in-process seam, not a runtime
+    config option. Inject a real IIcebergCatalogClient by constructing
+    ParquetLogSink directly and registering via WithCustomSinkProvider.
+
+capabilities:
+  - Apache Parquet 2.x columnar files via Parquet.Net
+  - Seven-column v1 schema covering the full LogEvent surface
+  - JSON-encoded properties column (transitional — MAP<STRING,STRING>
+    is the planned target)
+  - Iceberg catalog seam (IIcebergCatalogClient) with a no-op default,
+    callable after each file closes
+
+limitations:
+  - One Parquet file per LogBatch — naive sizing, no rolling/aggregation
+    yet (planned for v1.x to match Herald.Sinks.File's evolution path)
+  - Properties stored as stringified JSON, not native MAP type
+  - No compression configuration knob — Parquet.Net default applies
+  - Iceberg integration is a stub interface only; no REST-catalog
+    implementation ships in v1.0
+
+minimum_edition: Community
+aot_compatible: true
+thread_safety: >
+  Thread-safe — each LogBatch call writes its own file. Concurrent
+  callers produce concurrent files; filenames are timestamp-keyed
+  with millisecond resolution so collisions require sub-ms calls
+  on the same writer instance.
+
+test_coverage: tests/Herald.Sinks.Parquet.Tests/ (round-trip read of a written file)
+
+product_pack: []
+
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-05-03
+
+changelog:
+  - version: 1.0.0
+    date: 2026-05-03
+    summary: Initial release — Parquet writer + Iceberg catalog seam (stub).
