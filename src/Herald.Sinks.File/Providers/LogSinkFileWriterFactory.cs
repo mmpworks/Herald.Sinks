@@ -2,8 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root.
 #nullable enable
 
+using System;
 using MMP.Herald.Configuration.Runtime;
 using MMP.Herald.Output.Writers;
+using MMPWorks.RollingFiles;
 
 namespace Herald.Sinks.File.Providers;
 
@@ -12,12 +14,24 @@ namespace Herald.Sinks.File.Providers;
 /// Used by both <see cref="TextFileSinkProvider"/> and
 /// <see cref="JsonFileSinkProvider"/> to avoid duplication.
 ///
-/// <para>v2 contract: when the definition carries a <c>Properties</c>
-/// bag, this factory pulls the path and rolling policy from the bag
-/// via <see cref="FileSinkRuntimeConfig"/>. The legacy <c>Path</c> +
-/// <c>RollingPolicy</c> fields remain the source of truth for callers
-/// that have not migrated, so the build still passes for definitions
-/// constructed by the older code paths.</para>
+/// <para>
+/// v2 sinks (definitions carrying a <c>Properties</c> bag) route
+/// every write through <see cref="FilesManager"/> from the
+/// <c>MMPWorks.RollingFiles</c> library; the shim
+/// <see cref="FilesManagerLineWriter"/> keeps the in-Core
+/// <see cref="ILineWriter"/> shape so the sink providers stay
+/// unchanged. Phase 1 of the migration: project reference today,
+/// package reference once the standalone repo publishes.
+/// </para>
+///
+/// <para>
+/// Legacy sinks (no <c>Properties</c> bag, just the typed <c>Path</c>
+/// + <c>RollingPolicy</c> fields) still construct the old in-Core
+/// writers via <see cref="FileSinkRuntimeConfig"/>. Those writers
+/// stay in Core during the migration window; once every caller moves
+/// to the v2 bag-driven path, this branch and the in-Core writers can
+/// retire together.
+/// </para>
 /// </summary>
 internal static class LogSinkFileWriterFactory
 {
@@ -25,8 +39,25 @@ internal static class LogSinkFileWriterFactory
         LoggingRuntimeSinkDefinition definition,
         ILogFilePathResolver? pathResolver = null)
     {
-        var resolved = FileSinkRuntimeConfig.From(definition);
+        ArgumentNullException.ThrowIfNull(definition);
 
+        // v2 path: any definition with a populated Properties bag uses
+        // MMPWorks.RollingFiles. Bag interpretation lives in the
+        // mapper so this factory stays a one-line dispatch. The shim
+        // takes the policy (not a constructed manager) so filesystem
+        // IO is deferred to the first WriteLine, matching the legacy
+        // RollingFileLineWriter timing.
+        if (definition.Properties is { Count: > 0 })
+        {
+            var policy = FilesManagerPolicyMapper.From(definition);
+            return new FilesManagerLineWriter(policy);
+        }
+
+        // Legacy path: callers that have not migrated to the property
+        // bag still produce typed Path + RollingPolicy. Route them
+        // through the old in-Core writers via FileSinkRuntimeConfig
+        // (which collapses to (Path, Rolling) regardless of source).
+        var resolved = FileSinkRuntimeConfig.From(definition);
         return resolved.Rolling is not null
             ? new RollingFileLineWriter(resolved.Path, resolved.Rolling, pathResolver)
             : new FileLineWriter(resolved.Path, pathResolver);
