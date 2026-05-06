@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using MMP.Herald.Configuration.Runtime;
-using MMPWorks.RollingFiles;
+using MMP.RollingFiles;
 
 namespace Herald.Sinks.File.Providers;
 

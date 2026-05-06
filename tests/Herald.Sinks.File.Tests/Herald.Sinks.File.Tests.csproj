@@ -20,13 +20,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Herald.Sinks.File\Herald.Sinks.File.csproj" />
-    <!-- The sink-under-test pins MMPWorks.RollingFiles with
+    <!-- The sink-under-test pins MMP.RollingFiles with
          PrivateAssets="all" so the produced .nupkg does not leak a
          project-path reference to a sibling repo. The test project
          still needs the types directly to write FilesManagerPolicy
          and CompressionMode assertions, so the same ProjectReference
          lands here without the private-assets gate. -->
-    <ProjectReference Include="..\..\..\MMPWorks.RollingFiles\src\MMPWorks.RollingFiles\MMPWorks.RollingFiles.csproj" />
+    <ProjectReference Include="..\..\..\MMP.RollingFiles\packages\dotnet\MMP.RollingFiles\MMP.RollingFiles.csproj" />
   </ItemGroup>
 
   <ItemGroup>

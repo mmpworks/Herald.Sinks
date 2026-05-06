@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Herald.Sinks.File.Providers;
 using MMP.Herald.Configuration.Runtime;
-using MMPWorks.RollingFiles;
+using MMP.RollingFiles;
 using Xunit;
 
 namespace Herald.Sinks.File.Tests;

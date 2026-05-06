@@ -5,7 +5,7 @@
 using System;
 using System.Threading;
 using MMP.Herald.Output.Writers;
-using MMPWorks.RollingFiles;
+using MMP.RollingFiles;
 
 namespace Herald.Sinks.File.Providers;
 
@@ -14,7 +14,7 @@ namespace Herald.Sinks.File.Providers;
 /// <see cref="ILineWriter"/> contract. The sink providers in this
 /// package were built against <c>ILineWriter</c>; the shim keeps that
 /// surface intact while every actual write routes through the new
-/// <c>MMPWorks.RollingFiles</c> library.
+/// <c>MMP.RollingFiles</c> library.
 ///
 /// <para>
 /// <b>Lazy construction.</b> The legacy <c>RollingFileLineWriter</c>
@@ -44,7 +44,7 @@ namespace Herald.Sinks.File.Providers;
 /// <para>Stays internal because <see cref="FilesManager"/> is the
 /// canonical public surface for any caller that does not already need
 /// <c>ILineWriter</c>. Outside callers should depend on
-/// <c>MMPWorks.RollingFiles</c> directly.</para>
+/// <c>MMP.RollingFiles</c> directly.</para>
 /// </summary>
 internal sealed class FilesManagerLineWriter : ILineWriter, IDisposable
 {

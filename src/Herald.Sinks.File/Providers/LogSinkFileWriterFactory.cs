@@ -5,7 +5,7 @@
 using System;
 using MMP.Herald.Configuration.Runtime;
 using MMP.Herald.Output.Writers;
-using MMPWorks.RollingFiles;
+using MMP.RollingFiles;
 
 namespace Herald.Sinks.File.Providers;
 
@@ -17,7 +17,7 @@ namespace Herald.Sinks.File.Providers;
 /// <para>
 /// v2 sinks (definitions carrying a <c>Properties</c> bag) route
 /// every write through <see cref="FilesManager"/> from the
-/// <c>MMPWorks.RollingFiles</c> library; the shim
+/// <c>MMP.RollingFiles</c> library; the shim
 /// <see cref="FilesManagerLineWriter"/> keeps the in-Core
 /// <see cref="ILineWriter"/> shape so the sink providers stay
 /// unchanged. Phase 1 of the migration: project reference today,
@@ -42,7 +42,7 @@ internal static class LogSinkFileWriterFactory
         ArgumentNullException.ThrowIfNull(definition);
 
         // v2 path: any definition with a populated Properties bag uses
-        // MMPWorks.RollingFiles. Bag interpretation lives in the
+        // MMP.RollingFiles. Bag interpretation lives in the
         // mapper so this factory stays a one-line dispatch. The shim
         // takes the policy (not a constructed manager) so filesystem
         // IO is deferred to the first WriteLine, matching the legacy

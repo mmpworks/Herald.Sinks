@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-    <!-- Rolling-file behaviour now lives in MMPWorks.RollingFiles. The
+    <!-- Rolling-file behaviour now lives in MMP.RollingFiles. The
          project reference is intentional during phase 1 of the
          migration; once the standalone repo publishes a NuGet, this
          line flips to a <PackageReference> with the same key.
@@ -24,7 +24,7 @@
          that does not exist on their disk. The dependency becomes
          a normal <PackageReference> once the standalone library
          publishes; until then, the assets stay private. -->
-    <ProjectReference Include="..\..\..\MMPWorks.RollingFiles\src\MMPWorks.RollingFiles\MMPWorks.RollingFiles.csproj"
+    <ProjectReference Include="..\..\..\MMP.RollingFiles\packages\dotnet\MMP.RollingFiles\MMP.RollingFiles.csproj"
                       PrivateAssets="all" />
   </ItemGroup>
 

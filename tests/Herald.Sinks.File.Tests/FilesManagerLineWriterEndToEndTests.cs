@@ -19,7 +19,7 @@ namespace Herald.Sinks.File.Tests;
 /// End-to-end behavioural specs for the v2 file-sink writer chain:
 /// LoggingRuntimeSinkDefinition (with property bag) →
 /// LogSinkFileWriterFactory → FilesManagerPolicyMapper →
-/// FilesManagerLineWriter → MMPWorks.RollingFiles.FilesManager.
+/// FilesManagerLineWriter → MMP.RollingFiles.FilesManager.
 ///
 /// <para>
 /// The "no pre-existing files" guarantee: starting from an empty
