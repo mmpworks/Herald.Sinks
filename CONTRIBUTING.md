@@ -25,12 +25,12 @@ Every existing sink in `src/` is a valid template. Pick one whose shape matches 
 Every C# source file in this repo opens with the same two-line license header. Copy it verbatim at the top of every new `.cs` file.
 
 ```csharp
-// Copyright (c) 2026 MMP LLC
-// Licensed under the MIT License. See LICENSE in the project root.
+// Copyright (c) 2026 MMPWorks LLC
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 #nullable enable
 ```
 
-`Directory.Build.props` at the repo root already sets csproj-level copyright, authors, and `PackageLicenseExpression: MIT` so every NuGet package inherits the terms. The per-file header is the human-readable surface — readers see the license without opening another file.
+`Directory.Build.props` at the repo root already sets csproj-level copyright, authors, and `PackageLicenseExpression: Apache-2.0` so every NuGet package inherits the terms. The per-file header is the human-readable surface — readers see the license without opening another file.
 
 ## File layout
 
@@ -195,4 +195,4 @@ You bump your sink's version by editing both the csproj `<Version>` and the CAPA
 
 ## License
 
-MIT. All contributions here accept the repo's license.
+Apache License, Version 2.0. All contributions here accept the repo's license. See `LICENSE` for the full text.

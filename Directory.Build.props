@@ -5,9 +5,9 @@
   -->
   <PropertyGroup>
     <Authors>Steven Muchow</Authors>
-    <Company>MMP LLC</Company>
-    <Copyright>Copyright (c) 2026 MMP LLC</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Company>MMPWorks LLC</Company>
+    <Copyright>Copyright (c) 2026 MMPWorks LLC</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/smuchow1962/Herald.Sinks</PackageProjectUrl>
     <RepositoryUrl>https://github.com/smuchow1962/Herald.Sinks</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

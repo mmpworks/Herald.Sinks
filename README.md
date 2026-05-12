@@ -74,4 +74,4 @@ Core stays AOT-clean and reflection-free on the public surface. Each sink declar
 
 ## License
 
-MIT. Same as Herald.Core.
+Apache License, Version 2.0. See [`LICENSE`](LICENSE) for the full text. Copyright held by MMPWorks LLC.

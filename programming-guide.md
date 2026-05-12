@@ -422,8 +422,8 @@ Let's walk through writing a hypothetical `Herald.Sinks.Acme` that POSTs events 
 
 ```csharp
 // src/Herald.Sinks.Acme/AcmeLogSink.cs
-// Copyright (c) 2026 MMP LLC
-// Licensed under the MIT License. See LICENSE in the project root.
+// Copyright (c) 2026 MMPWorks LLC
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 #nullable enable
 
 using System;
@@ -538,8 +538,8 @@ public sealed class AcmeLogSink : ILogger, IDisposable
 
 ```csharp
 // src/Herald.Sinks.Acme/Providers/AcmeLogSinkProvider.cs
-// Copyright (c) 2026 MMP LLC
-// Licensed under the MIT License. See LICENSE in the project root.
+// Copyright (c) 2026 MMPWorks LLC
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 #nullable enable
 
 using System;
@@ -702,8 +702,8 @@ Every sink ships unit tests. You don't run against a real Acme — you use a fak
 
 ```csharp
 // tests/Herald.Sinks.Acme.Tests/AcmeLogSinkTests.cs
-// Copyright (c) 2026 MMP LLC
-// Licensed under the MIT License. See LICENSE in the project root.
+// Copyright (c) 2026 MMPWorks LLC
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 #nullable enable
 
 using System;
