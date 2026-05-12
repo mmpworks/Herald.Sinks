@@ -142,7 +142,10 @@ public sealed class WebhookRuleEngine
         if (prop is null) return false;
         if (expectedValue is null) return true; // Just checking existence
 
-        var actual = prop.ResolvedValue?.ToString();
+        // LogProperty migrated from `record class` to `readonly record struct`;
+        // GetProperty now returns LogProperty?, so .Value unwraps the Nullable<T>
+        // before reaching ResolvedValue (still defined on LogProperty itself).
+        var actual = prop.Value.ResolvedValue?.ToString();
         return string.Equals(actual, expectedValue, StringComparison.OrdinalIgnoreCase);
     }
 

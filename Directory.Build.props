@@ -22,6 +22,27 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+  <!--
+    Pack-on-build, opt-in. Off by default so a developer's local
+    `dotnet build` stays fast; CI flips HeraldPackOnBuild on for
+    release runs:
+
+      dotnet build -c Release -p:HeraldPackOnBuild=true
+
+    This pairs with the .github/workflows/sinks-release.yml workflow,
+    which also passes -p:Version=$TAG to override the per-csproj
+    <Version>1.0.0</Version> declarations with the tag the release
+    was cut from. CI uses `dotnet pack` explicitly rather than relying
+    on GeneratePackageOnBuild — both produce the same .nupkg, but the
+    explicit step is easier to gate, observe, and re-run if a single
+    push fails partway through. Leaving the property here gives
+    local-dev convenience (build = pack in one command) without
+    coupling to the CI shape.
+  -->
+  <PropertyGroup Condition="'$(HeraldPackOnBuild)' == 'true' AND '$(Configuration)' == 'Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
   <!-- Pack the LICENSE file into every produced NuGet so consumers
        receive the terms alongside the code. -->
   <ItemGroup>
@@ -60,5 +81,28 @@
     <EmbeddedResource Include="configuration*.mmpform">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Universal sink-auto-registration generator. Every Herald.Sinks.*
+       csproj picks this up automatically through Directory.Build.props
+       so a `dotnet add package MMP.Herald.Sinks.X` is the entire
+       developer workflow — no fluent WithXSinkProviders() call, no
+       manual RegisterAll(registry). The generator emits a
+       [ModuleInitializer] in each sink assembly that registers every
+       public concrete ILogSinkProvider with a publicly-constructable
+       ctor into LogSinkProviderRegistry.Default at assembly load.
+
+       Path is relative to this Directory.Build.props file:
+         MSBuildThisFileDirectory = Modules/Herald.Sinks/
+         + ..                     = Modules/
+         + Generators/MMP.Herald.Generators.csproj
+       OutputItemType=Analyzer makes Roslyn load it as a generator;
+       ReferenceOutputAssembly=false keeps the netstandard2.0
+       generator dll out of the sink's runtime closure. -->
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Generators\MMP.Herald.Generators.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 </Project>
