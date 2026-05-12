@@ -8,8 +8,8 @@
     <Company>MMPWorks LLC</Company>
     <Copyright>Copyright (c) 2026 MMPWorks LLC</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/smuchow1962/Herald.Sinks</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/smuchow1962/Herald.Sinks</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mmpworks/Herald.Sinks</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mmpworks/Herald.Sinks</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
     <LangVersion>12</LangVersion>
