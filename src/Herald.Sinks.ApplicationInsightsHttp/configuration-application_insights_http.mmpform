@@ -1,0 +1,23 @@
+# Application Insights (HTTP) sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+#
+# Sink kind: application_insights_http
+#
+# This is the HTTP-flavoured variant. It POSTs MessageData
+# telemetry envelopes directly to Application Insights' ingestion
+# endpoint via HttpClient — no Microsoft.ApplicationInsights SDK
+# dependency. Narrow dependency graph, AOT-friendly.
+#
+# Pick this sink if you want minimal dependencies, AOT-clean
+# publishing, or you are already using the OTLP HTTP sink and
+# prefer the same shape for AI. Pick application_insights_sdk
+# instead if you want idiomatic AI telemetry types (TraceTelemetry,
+# ExceptionTelemetry) and Serilog drop-in semantics.
+
+columns: 12
+
+__properties = []
+
+[container("Application Insights (HTTP) sink", "POSTs Herald log events as MessageData telemetry envelopes directly to AI's ingestion endpoint. No Microsoft.ApplicationInsights SDK dependency. Pair with Herald.Sinks.ApplicationInsightsSdk if you want the same destination with idiomatic AI telemetry types.")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

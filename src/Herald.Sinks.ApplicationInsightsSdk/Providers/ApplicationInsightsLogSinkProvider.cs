@@ -10,11 +10,17 @@ using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
 
-namespace Herald.Sinks.ApplicationInsights.Providers;
+namespace Herald.Sinks.ApplicationInsightsSdk.Providers;
 
+/// <summary>
+/// Provider for the SDK-flavoured Application Insights sink. The kind
+/// string <c>application_insights_sdk</c> disambiguates this from the
+/// HTTP-flavoured variant (<see cref="Herald.Sinks.ApplicationInsightsHttp" />)
+/// in JSON config and in dashboard catalog listings.
+/// </summary>
 public sealed class ApplicationInsightsLogSinkProvider : ILogSinkProvider
 {
-    public const string KindKey = "application_insights";
+    public const string KindKey = "application_insights_sdk";
     public string SinkKind => KindKey;
     public HeraldEdition MinimumEdition => HeraldEdition.Community;
 

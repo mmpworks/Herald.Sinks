@@ -4,12 +4,12 @@
 
 using System;
 using FluentAssertions;
-using Herald.Sinks.ApplicationInsights;
-using Herald.Sinks.ApplicationInsights.Providers;
+using Herald.Sinks.ApplicationInsightsSdk;
+using Herald.Sinks.ApplicationInsightsSdk.Providers;
 using MMP.Herald;
 using Xunit;
 
-namespace Herald.Sinks.ApplicationInsights.Tests;
+namespace Herald.Sinks.ApplicationInsightsSdk.Tests;
 
 public sealed class ApplicationInsightsLogSinkTests
 {
@@ -22,10 +22,10 @@ public sealed class ApplicationInsightsLogSinkTests
         ((Action)(() => new ApplicationInsightsLogSink(client: null!))).Should().Throw<ArgumentNullException>();
 
     [Fact]
-    public void Provider_sink_kind_is_application_insights()
+    public void Provider_sink_kind_is_application_insights_sdk()
     {
-        new ApplicationInsightsLogSinkProvider().SinkKind.Should().Be("application_insights");
-        ApplicationInsightsLogSinkProvider.KindKey.Should().Be("application_insights");
+        new ApplicationInsightsLogSinkProvider().SinkKind.Should().Be("application_insights_sdk");
+        ApplicationInsightsLogSinkProvider.KindKey.Should().Be("application_insights_sdk");
     }
 
     [Fact]

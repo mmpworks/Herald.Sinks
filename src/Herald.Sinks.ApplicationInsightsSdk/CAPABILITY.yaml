@@ -1,32 +1,35 @@
 # Copyright (c) 2026 MMPWorks LLC
 # Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
-name: Herald.Sinks.ApplicationInsights
-package_id: MMP.Herald.Sinks.ApplicationInsights
+name: Herald.Sinks.ApplicationInsightsSdk
+package_id: MMP.Herald.Sinks.ApplicationInsightsSdk
 version: 1.0.0
 configContract: 2
-formSchema: configuration-application_insights.mmpform
+formSchema: configuration-application_insights_sdk.mmpform
 kind: sink
 category: observability
 purpose: >
   Tracks Herald log events as TelemetryClient.TrackTrace and
-  TrackException into Azure Application Insights via
-  Microsoft.ApplicationInsights. Drop-in for Serilog.Sinks.ApplicationInsights.
-  Events carrying an exception in their context promote to
-  ExceptionTelemetry so AI's exception analytics light up.
+  TrackException into Azure Application Insights via the
+  Microsoft.ApplicationInsights SDK. Drop-in for
+  Serilog.Sinks.ApplicationInsights. Events carrying an exception
+  in their context promote to ExceptionTelemetry so AI's exception
+  analytics light up.
+  Pair with Herald.Sinks.ApplicationInsightsHttp if you want the
+  same destination without the SDK dependency.
 vendor:
   name: Microsoft Azure
   url: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
 ships:
   - ApplicationInsightsLogSink
   - ApplicationInsightsLogSinkProvider
-  - ApplicationInsightsSinkRegistration
+  - ApplicationInsightsSdkSinkRegistration
 requires:
   core_version: ">=1.0.0"
   external:
     - Microsoft.ApplicationInsights
     - Application Insights resource (connection string)
 config:
-  kind: application_insights
+  kind: application_insights_sdk
   uri: "AI connection string (required)."
 capabilities:
   - TraceTelemetry for normal events with SeverityLevel mapped from level key
@@ -38,16 +41,20 @@ limitations:
   - Connection-string ctor builds a private TelemetryConfiguration; for shared DI use the code-first overload
   - Properties are stringified — non-string structured values lose shape
   - No sampling-rate override; configure on the TelemetryClient via DI
+  - Pulls Microsoft.ApplicationInsights as a transitive dependency; use Herald.Sinks.ApplicationInsightsHttp for a narrower dependency graph
 minimum_edition: Community
 aot_compatible: true
 thread_safety: Thread-safe — TelemetryClient is thread-safe per Microsoft SDK contract.
-test_coverage: tests/Herald.Sinks.ApplicationInsights.Tests/
+test_coverage: tests/Herald.Sinks.ApplicationInsightsSdk.Tests/
 product_pack: []
 maintenance:
   level: active
   owner: smuchow1962
-  last_audit: 2026-04-25
+  last_audit: 2026-05-12
 changelog:
   - version: 1.0.0
     date: 2026-04-25
     summary: Initial release — 1.8 standalone.
+  - version: 1.0.0
+    date: 2026-05-12
+    summary: Renamed from Herald.Sinks.ApplicationInsights to ApplicationInsightsSdk to disambiguate from the new HTTP-flavoured variant (Herald.Sinks.ApplicationInsightsHttp). Sink kind string moved from "application_insights" to "application_insights_sdk".

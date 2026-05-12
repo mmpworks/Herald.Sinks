@@ -1,0 +1,22 @@
+# Application Insights (SDK) sink — configuration UI placeholder.
+# Flat form: every field on its own row, no collapsible sections.
+#
+# Sink kind: application_insights_sdk
+#
+# This is the SDK-flavoured variant. It uses the official
+# Microsoft.ApplicationInsights SDK (TelemetryClient → TraceTelemetry
+# / ExceptionTelemetry) and is the drop-in replacement for
+# Serilog.Sinks.ApplicationInsights.
+#
+# Pick this sink if you want idiomatic AI telemetry types or if you
+# already use the AI SDK elsewhere in your app. Pick
+# application_insights_http instead if you want a narrow dependency
+# graph or AOT-clean publishing without the AI SDK.
+
+columns: 12
+
+__properties = []
+
+[container("Application Insights (SDK) sink", "Tracks Herald log events as TelemetryClient.TrackTrace / TrackException calls via the Microsoft.ApplicationInsights SDK. Drop-in for Serilog.Sinks.ApplicationInsights. Pair with Herald.Sinks.ApplicationInsightsHttp if you want the same destination without the SDK dependency.")]
+
+  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

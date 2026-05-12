@@ -3,6 +3,8 @@
 #nullable enable
 
 using System;
+using Azure.Data.Tables;
+using Azure.Identity;
 using MMP.Herald;
 using MMP.Herald.Configuration.Runtime;
 using MMP.Herald.Levels;
@@ -17,9 +19,23 @@ namespace Herald.Sinks.AzureTableStorage.Providers;
 /// from a <see cref="LoggingRuntimeSinkDefinition"/>.
 /// </summary>
 /// <remarks>
+/// <para>
+/// Wire-up conventions:
+/// </para>
 /// <list type="bullet">
-///   <item><c>Uri</c> → connection string (required).</item>
-///   <item><c>Host</c> → table name (default <c>HeraldLogs</c>).</item>
+///   <item><c>Uri</c> holds either a full Azure Storage connection
+///     string (starts with <c>DefaultEndpointsProtocol=</c> or
+///     otherwise contains <c>AccountKey</c>) OR the table-service
+///     endpoint URL (<c>https://{account}.table.core.windows.net</c>).
+///     The endpoint-URL form authenticates through
+///     <see cref="DefaultAzureCredential"/> — managed identity in
+///     production, local dev credentials on a workstation — so no
+///     secret needs to live in config when the host has an assigned
+///     identity.</item>
+///   <item><c>Host</c> holds the table name (default <c>HeraldLogs</c>).</item>
+///   <item><c>Alias</c> optionally selects a partition strategy:
+///     <c>"day"</c> (default), <c>"hour"</c>, <c>"minute"</c>, or
+///     <c>"fixed"</c>.</item>
 /// </list>
 /// </remarks>
 public sealed class AzureTableStorageLogSinkProvider : ILogSinkProvider
@@ -38,6 +54,45 @@ public sealed class AzureTableStorageLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
         var tableName = string.IsNullOrWhiteSpace(definition.Host) ? "HeraldLogs" : definition.Host;
-        return new AzureTableStorageLogSink(definition.Uri, tableName);
+        var strategy = ParseStrategy(definition.Alias);
+        var tableClient = BuildTableClient(definition.Uri!, tableName);
+
+        return new AzureTableStorageLogSink(
+            tableClient: tableClient,
+            partitionStrategy: strategy);
+    }
+
+    // Pick the auth path from the shape of the Uri field. A URL
+    // (http/https) is treated as the service endpoint and
+    // authenticated through DefaultAzureCredential; anything else is
+    // treated as a connection string. Mirrors AzureBlobArchiveProvider.
+    private static TableClient BuildTableClient(string uri, string tableName)
+    {
+        if (LooksLikeEndpointUrl(uri))
+        {
+            var endpoint = new Uri(uri);
+            var client = new TableClient(endpoint, tableName, new DefaultAzureCredential());
+            client.CreateIfNotExists();
+            return client;
+        }
+        var sharedKeyClient = new TableClient(uri, tableName);
+        sharedKeyClient.CreateIfNotExists();
+        return sharedKeyClient;
+    }
+
+    private static bool LooksLikeEndpointUrl(string value) =>
+        value.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+        value.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+
+    private static AzureTablePartitionKeyStrategy ParseStrategy(string? alias)
+    {
+        return (alias ?? "day").ToLowerInvariant() switch
+        {
+            "day" => AzureTablePartitionKeyStrategy.UtcDay,
+            "hour" => AzureTablePartitionKeyStrategy.UtcHour,
+            "minute" => AzureTablePartitionKeyStrategy.UtcMinute,
+            "fixed" => AzureTablePartitionKeyStrategy.Fixed,
+            _ => AzureTablePartitionKeyStrategy.UtcDay
+        };
     }
 }

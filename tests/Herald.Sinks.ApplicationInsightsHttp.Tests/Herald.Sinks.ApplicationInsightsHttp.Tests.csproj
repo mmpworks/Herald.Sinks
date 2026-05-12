@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>Herald.Sinks.ApplicationInsights.Tests</RootNamespace>
+    <RootNamespace>Herald.Sinks.ApplicationInsightsHttp.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
@@ -17,7 +17,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Herald.Sinks.ApplicationInsights\Herald.Sinks.ApplicationInsights.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.ApplicationInsightsHttp\Herald.Sinks.ApplicationInsightsHttp.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Core\tests\Helpers\*.cs" LinkBase="_CoreTestHelpers" />

@@ -1,10 +1,18 @@
-# AzureTableStorage sink — configuration UI placeholder.
+# Azure Table Storage sink — configuration UI placeholder.
 # Flat form: every field on its own row, no collapsible sections.
+#
+# Sink kind: azure_table_storage
+#
+# Writes Herald log events as entities into an Azure Table Storage
+# table. Configurable partition strategy (UtcDay / UtcHour /
+# UtcMinute / Fixed) trades query locality for write throughput.
+# Auth via connection string OR DefaultAzureCredential (managed
+# identity in production) OR a caller-built TableClient.
 
 columns: 12
 
 __properties = []
 
-[container("AzureTableStorage sink", "Writes Herald log events as entities into an Azure Table Storage table via Azure.")]
+[container("Azure Table Storage sink", "Writes Herald log events as entities into an Azure Table Storage table via Azure.Data.Tables. Configurable partition strategy (day / hour / minute / fixed). Use a connection string in the URI field for shared-key auth or an endpoint URL (https://{account}.table.core.windows.net) for managed-identity auth via DefaultAzureCredential.")]
 
   - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]

@@ -11,7 +11,7 @@ using MMP.Herald;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
-namespace Herald.Sinks.ApplicationInsights;
+namespace Herald.Sinks.ApplicationInsightsSdk;
 
 /// <summary>
 /// Sink that tracks Herald log events as <see cref="TraceTelemetry"/>

@@ -3,12 +3,12 @@
 #nullable enable
 
 using System;
-using Herald.Sinks.ApplicationInsights.Providers;
+using Herald.Sinks.ApplicationInsightsHttp.Providers;
 using MMP.Herald.Routing;
 
-namespace Herald.Sinks.ApplicationInsights;
+namespace Herald.Sinks.ApplicationInsightsHttp;
 
-public static class ApplicationInsightsSinkRegistration
+public static class ApplicationInsightsHttpSinkRegistration
 {
     public static void RegisterAll(LogSinkProviderRegistry registry)
     {

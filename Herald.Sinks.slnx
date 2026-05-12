@@ -2,7 +2,8 @@
   <Folder Name="/src/">
     <Project Path="src/Herald.Sinks.Aliyun/Herald.Sinks.Aliyun.csproj" />
     <Project Path="src/Herald.Sinks.AmazonS3/Herald.Sinks.AmazonS3.csproj" />
-    <Project Path="src/Herald.Sinks.ApplicationInsights/Herald.Sinks.ApplicationInsights.csproj" />
+    <Project Path="src/Herald.Sinks.ApplicationInsightsHttp/Herald.Sinks.ApplicationInsightsHttp.csproj" />
+    <Project Path="src/Herald.Sinks.ApplicationInsightsSdk/Herald.Sinks.ApplicationInsightsSdk.csproj" />
     <Project Path="src/Herald.Sinks.AwsCloudWatch/Herald.Sinks.AwsCloudWatch.csproj" />
     <Project Path="src/Herald.Sinks.Axiom/Herald.Sinks.Axiom.csproj" />
     <Project Path="src/Herald.Sinks.AzureBlobStorage/Herald.Sinks.AzureBlobStorage.csproj" />
@@ -92,7 +93,8 @@
   <Folder Name="/tests/">
     <Project Path="tests/Herald.Sinks.Aliyun.Tests/Herald.Sinks.Aliyun.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AmazonS3.Tests/Herald.Sinks.AmazonS3.Tests.csproj" />
-    <Project Path="tests/Herald.Sinks.ApplicationInsights.Tests/Herald.Sinks.ApplicationInsights.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.ApplicationInsightsHttp.Tests/Herald.Sinks.ApplicationInsightsHttp.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.ApplicationInsightsSdk.Tests/Herald.Sinks.ApplicationInsightsSdk.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AwsCloudWatch.Tests/Herald.Sinks.AwsCloudWatch.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Axiom.Tests/Herald.Sinks.Axiom.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureBlobStorage.Tests/Herald.Sinks.AzureBlobStorage.Tests.csproj" />

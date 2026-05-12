@@ -1,0 +1,60 @@
+# Copyright (c) 2026 MMPWorks LLC
+# Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
+name: Herald.Sinks.ApplicationInsightsHttp
+package_id: MMP.Herald.Sinks.ApplicationInsightsHttp
+version: 1.0.0
+configContract: 2
+formSchema: configuration-application_insights_http.mmpform
+kind: sink
+category: observability
+purpose: >
+  POSTs Herald log events as MessageData telemetry envelopes directly
+  to Azure Application Insights' ingestion endpoint. No
+  Microsoft.ApplicationInsights SDK dependency — just HttpClient.
+  Narrow dependency graph, AOT-friendly. Same destination as
+  Herald.Sinks.ApplicationInsightsSdk, different implementation
+  approach. Pick this for minimal dependencies or AOT-clean publishing;
+  pick the SDK variant for idiomatic AI telemetry types
+  (TraceTelemetry, ExceptionTelemetry) and Serilog drop-in semantics.
+vendor:
+  name: Microsoft Azure
+  url: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
+ships:
+  - ApplicationInsightsLogSink
+  - ApplicationInsightsConnectionString
+  - ApplicationInsightsSeverityMapper
+  - ApplicationInsightsLogSinkProvider
+  - ApplicationInsightsHttpSinkRegistration
+requires:
+  core_version: ">=1.0.0"
+  external:
+    - Application Insights resource (connection string or instrumentation key)
+config:
+  kind: application_insights_http
+  uri: "AI connection string (InstrumentationKey=...;IngestionEndpoint=...) or bare instrumentation-key GUID."
+  alias: "Optional cloud role name — populates ai.cloud.role when set."
+capabilities:
+  - Direct HTTP POST of MessageData envelopes; no SDK round-trip overhead
+  - Connection-string parser supports modern AI format AND legacy bare-instrumentation-key
+  - SeverityNumber → AI SeverityLevel mapping
+  - Optional HttpClient injection for pooling / test mocking
+  - Implements IBatchedLogSink — pipeline batching decorator packs N events per request
+  - Cloud role name (ai.cloud.role) populated from the sink Alias when set
+limitations:
+  - Properties are stringified — non-string structured values lose shape
+  - No sampling-rate override; configure batch sizes upstream
+  - No automatic dependency tracking, performance counters, or other AI SDK features beyond log telemetry
+  - Bypasses Microsoft.ApplicationInsights.Channel buffering — failed POSTs do not auto-retry on the SDK channel
+minimum_edition: Community
+aot_compatible: true
+thread_safety: Thread-safe — HttpClient operations are concurrent-safe; the sink owns no mutable shared state.
+test_coverage: tests/Herald.Sinks.ApplicationInsightsHttp.Tests/
+product_pack: []
+maintenance:
+  level: active
+  owner: smuchow1962
+  last_audit: 2026-05-12
+changelog:
+  - version: 1.0.0
+    date: 2026-05-12
+    summary: Initial release. Moved from Core.Azure/src/Addons/AzureSinks/ (where it shipped as the embedded SDK-free AppInsights sink) to its own Herald.Sinks package so consumers can compose it independently of the cloud-Core chain-of-custody infrastructure.

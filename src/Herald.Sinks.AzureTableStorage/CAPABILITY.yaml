@@ -2,20 +2,24 @@
 # Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 name: Herald.Sinks.AzureTableStorage
 package_id: MMP.Herald.Sinks.AzureTableStorage
-version: 1.0.0
+version: 1.1.0
 configContract: 2
 formSchema: configuration-azure_table_storage.mmpform
 kind: sink
 category: database
 purpose: >
   Writes Herald log events as entities into an Azure Table Storage
-  table via Azure.Data.Tables. Drop-in for Serilog.Sinks.AzureTableStorage.
-  Daily partition keys plus inverted-tick row keys keep date-range
-  queries cheap and newest-first by default.
+  table via Azure.Data.Tables. Cheap high-volume archival destination
+  for Azure-hosted workloads. Configurable partition strategy
+  (UtcDay / UtcHour / UtcMinute / Fixed) trades query locality for
+  write throughput; the default UtcDay matches Serilog.Sinks.AzureTableStorage's
+  shape. Auth via connection string OR DefaultAzureCredential
+  (managed identity) OR a caller-built TableClient.
 vendor:
   name: Microsoft Azure
   url: https://learn.microsoft.com/azure/storage/tables/
 ships:
+  - AzureTablePartitionKeyStrategy (enum: UtcDay, UtcHour, UtcMinute, Fixed)
   - AzureTableStorageLogSink
   - AzureTableStorageLogSinkProvider
   - AzureTableStorageSinkRegistration
@@ -27,30 +31,39 @@ requires:
     - Azure Storage account with Tables enabled (or Cosmos DB Tables)
 config:
   kind: azure_table_storage
-  uri: "Connection string (required)."
+  uri: "Connection string OR table-service endpoint URL (https://{account}.table.core.windows.net) for DefaultAzureCredential auth."
   host: "Table name (default HeraldLogs)."
-
+  alias: "Partition strategy — 'day' (default) | 'hour' | 'minute' | 'fixed'."
 capabilities:
-  - Daily partition key (yyyyMMdd) for balanced date-range queries
-  - Inverted-tick row key for newest-first ordering within a partition
+  - Four partition strategies — UtcDay, UtcHour, UtcMinute, Fixed — for tuning the locality/parallelism trade-off
+  - Inverted-tick row key plus per-sink sequence suffix for deterministic newest-first ordering even under burst load
   - Transactional inserts for IBatchedLogSink batches (split per-partition, capped at 100/transaction)
-  - DefaultAzureCredential overload for managed-identity scenarios
-  - Property bag serialised as JSON in the Properties column
+  - Endpoint-URL auth via DefaultAzureCredential (managed identity in production, local-dev credentials on workstations) when Uri starts with https://
+  - Connection-string auth when Uri is the shared-key form
+  - Caller-built TableClient overload for full auth/SAS/lifecycle control
+  - Property names sanitised to Table Storage's column-name rules so the same Herald property maps to the same column deterministically
+  - Properties of simple types (string, number, bool, DateTime, Guid, byte[]) land as native Table columns; everything else stringifies
+  - Exception context (LogContextKeys.Exception) lands as a dedicated Exception column
+  - Context values (excluding Exception) merge into the entity alongside event properties
   - Auto-creates the table on first use
 limitations:
   - Single-partition transactions; cross-day batches issue one transaction per day
-  - Property values of non-primitive types fall back to ToString() inside the JSON column
+  - Property values of non-primitive types fall back to ToString()
+  - Column-name conflicts between properties and context resolve first-write-wins via the seen-set
   - No TLS / DAC tweaks beyond the SDK defaults
 minimum_edition: Community
 aot_compatible: true
-thread_safety: Thread-safe — TableClient is thread-safe per Azure SDK contract.
+thread_safety: Thread-safe — TableClient is thread-safe per Azure SDK contract; the per-sink row sequence counter uses Interlocked.Increment.
 test_coverage: tests/Herald.Sinks.AzureTableStorage.Tests/
 product_pack: []
 maintenance:
   level: active
   owner: smuchow1962
-  last_audit: 2026-04-25
+  last_audit: 2026-05-12
 changelog:
   - version: 1.0.0
     date: 2026-04-25
     summary: Initial release — 1.4 NoSQL pack.
+  - version: 1.1.0
+    date: 2026-05-12
+    summary: Merged Core.Azure's richer AzureTableLogSink in. New AzureTablePartitionKeyStrategy enum (UtcDay/UtcHour/UtcMinute/Fixed). Column-name sanitisation for Table Storage rules. Endpoint-URL auth via DefaultAzureCredential. Exception column from LogContextKeys. Context-value merging. Caller-built TableClient overload.
