@@ -20,7 +20,9 @@
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
-    <None Include="configuration*.mmpform" Pack="true" PackagePath="\" />
+    <!-- configuration*.mmpform pack rule now lives universally in
+         Modules/Herald.Sinks/Directory.Build.props; keeping it here
+         would cause an NU5118 duplicate-file error during pack. -->
   </ItemGroup>
 
   <ItemGroup>
