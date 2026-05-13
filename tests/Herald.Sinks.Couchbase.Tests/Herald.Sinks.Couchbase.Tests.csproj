@@ -15,6 +15,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <!-- CouchbaseNetClient's unsafe transitive Snappier 1.2.0 reaches this
+         test project via the ProjectReference below. Restate the explicit
+         pin (central version 1.3.1) to clear NU1903 here too. -->
+    <PackageReference Include="Snappier" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Herald.Sinks.Couchbase\Herald.Sinks.Couchbase.csproj" />

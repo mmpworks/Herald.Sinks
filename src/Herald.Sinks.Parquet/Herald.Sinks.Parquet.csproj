@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <PackageReference Include="Parquet.Net" />
+    <!-- Parquet.Net 5.0.2 pulls Snappier 1.1.6 transitively; explicit
+         reference pulls the safe central pin to the top of the graph
+         (NU1903 fix for GHSA-pggp-6c3x-2xmx). -->
+    <PackageReference Include="Snappier" />
   </ItemGroup>
 
   <ItemGroup>

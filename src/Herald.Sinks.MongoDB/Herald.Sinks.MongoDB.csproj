@@ -16,6 +16,12 @@
 
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" />
+    <!-- MongoDB.Driver 3.0.0 pulls Snappier 1.0.0 + SharpCompress 0.30.1
+         transitively; explicit references pull the safe central pins to
+         the top of the graph (NU1903 GHSA-pggp-6c3x-2xmx, NU1902
+         GHSA-6c8g-7p36-r338). -->
+    <PackageReference Include="Snappier" />
+    <PackageReference Include="SharpCompress" />
   </ItemGroup>
 
   <ItemGroup>

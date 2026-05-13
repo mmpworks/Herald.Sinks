@@ -20,6 +20,10 @@
 
   <ItemGroup>
     <PackageReference Include="CouchbaseNetClient" />
+    <!-- CouchbaseNetClient 3.7.1 pulls Snappier 1.2.0 transitively;
+         explicit reference pulls the safe central pin to the top of the
+         graph (NU1903 fix for GHSA-pggp-6c3x-2xmx). -->
+    <PackageReference Include="Snappier" />
   </ItemGroup>
 
   <ItemGroup>
