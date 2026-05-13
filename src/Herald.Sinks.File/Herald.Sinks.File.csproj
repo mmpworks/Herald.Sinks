@@ -30,11 +30,9 @@
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
-    <!-- Pack the per-kind form files into the .nupkg root for offline
-         consumption. The csproj globs both legacy single-form and the
-         per-kind variant so packaging stays right whichever layout the
-         sink author picks. -->
-    <None Include="configuration*.mmpform" Pack="true" PackagePath="\" />
+    <!-- mmpform side-file packing now lives in
+         Modules/Herald.Sinks/Directory.Build.props so every sink's
+         nupkg ships the form schema at its root, not just File. -->
   </ItemGroup>
 
   <ItemGroup>

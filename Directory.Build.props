@@ -83,6 +83,20 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <!-- ALSO pack each configuration*.mmpform as a side-file at the
+       nupkg root so consumers and nuget.org file browsers can read
+       the form schema without extracting the dll's embedded
+       resource. The same file participates in EmbeddedResource
+       (embed in assembly, for runtime Dashboard rendering) and
+       None (pack as nupkg file, for offline inspection) — MSBuild
+       allows item-type duality on the same physical path. -->
+  <ItemGroup>
+    <None Include="configuration*.mmpform"
+          Pack="true"
+          PackagePath="\"
+          Visible="false" />
+  </ItemGroup>
+
   <!-- Universal sink-auto-registration generator. Every Herald.Sinks.*
        csproj picks this up automatically through Directory.Build.props
        so a `dotnet add package MMP.Herald.Sinks.X` is the entire
