@@ -10,6 +10,11 @@
     <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
     <IsPackable>true</IsPackable>
 
+    <!-- Opt out of symbol packing — metapackage has no .dll, so there are
+         no PDBs to ship. See Herald.Business.csproj for the full rationale
+         (nuget.org rejects the empty .snupkg with 400 otherwise). -->
+    <IncludeSymbols>false</IncludeSymbols>
+
     <PackageId>MMP.Herald.Game.Pro</PackageId>
     <Version>1.0.0</Version>
     <Description>Herald observability metapackage tuned for paid-tier games. Pulls in the network transports (HttpJson / TcpJsonLine / UdpJsonLine), the Enterprise HTTP observability sinks (Seq, Splunk, Honeycomb, Datadog, Loki, SignalFx), Sentry for crash tracking, the generic-webhook sink, and the OTLP trio. PagerDuty, Elasticsearch, and Slack are deliberately excluded — those are business/on-call surfaces rather than game-side.</Description>

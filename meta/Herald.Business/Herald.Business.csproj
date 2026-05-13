@@ -17,6 +17,14 @@
     <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
     <IsPackable>true</IsPackable>
 
+    <!-- Opt out of symbol packing. Modules/Herald.Sinks/Directory.Build.props
+         turns on IncludeSymbols globally for the sinks, but metapackages
+         set IncludeBuildOutput=false (no .dll) so there are no PDBs to
+         ship. Without this override, `dotnet pack` still emits an empty
+         .snupkg which nuget.org rejects with `400 The package does not
+         contain any symbol (.pdb) files.` and trips the workflow exit code. -->
+    <IncludeSymbols>false</IncludeSymbols>
+
     <PackageId>MMP.Herald.Business</PackageId>
     <Version>1.0.0</Version>
     <Description>Herald observability metapackage for business and enterprise deployments. Pulls in every Herald.Sinks destination — HTTP, TCP, UDP, every Enterprise HTTP sink (Seq, Splunk, Honeycomb, Datadog, Loki, SignalFx, Sentry, PagerDuty), community transports (Elasticsearch, Slack, GenericWebhook), and the OTLP trio. Depend on this one package and pick destinations at registration time.</Description>
