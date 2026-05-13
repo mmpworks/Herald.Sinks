@@ -52,6 +52,23 @@
           Visible="false" />
   </ItemGroup>
 
+  <!-- Ship a README.md at the .nupkg root and register it as the
+       package's readme so nuget.org renders it on the package page.
+       README content is generated from CAPABILITY.yaml by
+       tools/generate-readmes.cjs; re-run after manifest edits. The
+       PackageReadmeFile property only fires when a README.md actually
+       exists in the project root so sinks without one (e.g. test-only
+       Herald.Sinks.HelloWorld) don't fail pack with NU5039. -->
+  <PropertyGroup Condition="Exists('$(MSBuildProjectDirectory)\README.md')">
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\README.md')">
+    <None Include="README.md"
+          Pack="true"
+          PackagePath="\"
+          Visible="false" />
+  </ItemGroup>
+
   <!-- Embed CAPABILITY.yaml into every sink assembly when one exists at
        the project root. The Dashboard server reads it back at runtime
        via Assembly.GetManifestResourceStream so the UI can build a
