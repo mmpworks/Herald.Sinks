@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -27,7 +28,7 @@ namespace Herald.Sinks.LogzIo;
 /// regional listeners (EU, AU) have their own hostnames. Supply the
 /// regional URL if your account is not on the US stack.
 /// </remarks>
-public sealed class LogzIoLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class LogzIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly Uri _endpoint;
     private readonly HttpClient _httpClient;
@@ -48,7 +49,7 @@ public sealed class LogzIoLogSink : ILogger, IBatchedLogSink, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

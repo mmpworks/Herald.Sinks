@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -18,7 +19,7 @@ namespace Herald.Sinks.Coralogix;
 /// Sink that ships log events to Coralogix via the bulk-logs ingest
 /// endpoint. Private-key auth in the body envelope; HTTP-only.
 /// </summary>
-public sealed class CoralogixLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const string DefaultEndpoint = "https://ingress.coralogix.com/api/v1/logs";
 
@@ -43,7 +44,7 @@ public sealed class CoralogixLogSink : ILogger, IBatchedLogSink, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
+    public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
     {

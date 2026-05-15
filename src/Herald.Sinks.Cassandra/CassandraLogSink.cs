@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.Json;
 using Cassandra;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -37,7 +38,7 @@ namespace Herald.Sinks.Cassandra;
 /// session's connection pool.
 /// </para>
 /// </remarks>
-public sealed class CassandraLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class CassandraLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly ISession _session;
     private readonly PreparedStatement _insert;
@@ -72,7 +73,7 @@ public sealed class CassandraLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownedCluster = null;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         _session.Execute(BindStatement(logEvent));

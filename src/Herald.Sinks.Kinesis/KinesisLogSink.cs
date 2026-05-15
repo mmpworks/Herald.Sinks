@@ -11,6 +11,7 @@ using Amazon;
 using Amazon.Kinesis;
 using Amazon.Kinesis.Model;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -33,7 +34,7 @@ namespace Herald.Sinks.Kinesis;
 /// per request automatically.
 /// </para>
 /// </remarks>
-public sealed class KinesisLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class KinesisLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const int PutRecordsLimit = 500;
 
@@ -64,7 +65,7 @@ public sealed class KinesisLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsClient = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var data = SerializeEvent(logEvent);

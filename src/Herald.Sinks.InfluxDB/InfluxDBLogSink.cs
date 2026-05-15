@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -21,7 +22,7 @@ namespace Herald.Sinks.InfluxDB;
 /// Each event becomes one line: <c>logs,level=info,category=Auth message="..." 1234567890</c>.
 /// Tags are <c>level</c> and <c>category</c>; <c>message</c> rides as a field.
 /// </remarks>
-public sealed class InfluxDBLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class InfluxDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly HttpClient _http;
     private readonly Uri _writeEndpoint;
@@ -44,7 +45,7 @@ public sealed class InfluxDBLogSink : ILogger, IBatchedLogSink, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
+    public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
     {

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Text;
 using Godot;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Services;
@@ -44,7 +45,7 @@ namespace Herald.Sinks.GodotConsole;
 /// that wires the real Godot APIs.
 /// </para>
 /// </remarks>
-public sealed class GodotConsoleLogSink : ILogger
+public sealed class GodotConsoleLogSink : HeraldSinkBase
 {
     private readonly Action<string> _print;
     private readonly Action<string> _warn;
@@ -83,7 +84,7 @@ public sealed class GodotConsoleLogSink : ILogger
         _category = category;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

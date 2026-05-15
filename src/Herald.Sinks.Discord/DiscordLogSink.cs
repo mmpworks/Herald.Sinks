@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -18,7 +19,7 @@ namespace Herald.Sinks.Discord;
 /// webhook. One message per event with category prefix and content
 /// truncated to Discord's 2000-character message ceiling.
 /// </summary>
-public sealed class DiscordLogSink : ILogger, IDisposable
+public sealed class DiscordLogSink : HeraldSinkBase, IDisposable
 {
     private const int DiscordMaxLength = 1900; // leave room for prefix
 
@@ -34,7 +35,7 @@ public sealed class DiscordLogSink : ILogger, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

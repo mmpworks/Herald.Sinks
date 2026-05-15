@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 
@@ -32,7 +33,7 @@ namespace Herald.Sinks.MicrosoftTeams;
 /// everything else → blue.
 /// </para>
 /// </remarks>
-public sealed class MicrosoftTeamsLogSink : ILogger, IDisposable
+public sealed class MicrosoftTeamsLogSink : HeraldSinkBase, IDisposable
 {
     private readonly Uri _webhookUrl;
     private readonly string? _titleOverride;
@@ -51,7 +52,7 @@ public sealed class MicrosoftTeamsLogSink : ILogger, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

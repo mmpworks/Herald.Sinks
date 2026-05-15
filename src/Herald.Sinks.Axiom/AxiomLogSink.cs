@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -20,7 +21,7 @@ namespace Herald.Sinks.Axiom;
 /// (api.axiom.co/v1/datasets/{dataset}/ingest). Bearer-token auth, JSON
 /// array body. HTTP-only.
 /// </summary>
-public sealed class AxiomLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AxiomLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const string DefaultBase = "https://api.axiom.co/v1/datasets/";
 
@@ -39,7 +40,7 @@ public sealed class AxiomLogSink : ILogger, IBatchedLogSink, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
+    public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
     {

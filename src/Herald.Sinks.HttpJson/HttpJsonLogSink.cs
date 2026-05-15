@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Formatting;
 using MMP.Herald.Levels;
@@ -23,7 +24,7 @@ namespace Herald.Sinks.HttpJson;
 /// The HttpClient is pooled internally (SocketsHttpHandler manages connection reuse).
 /// If the caller provides an HttpClient, the sink does not own it and will not dispose it.
 /// </summary>
-public sealed class HttpJsonLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class HttpJsonLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly Uri _endpoint;
     private readonly JsonFormatter _formatter;
@@ -43,7 +44,7 @@ public sealed class HttpJsonLogSink : ILogger, IBatchedLogSink, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) {
+    public override void Log(LogEvent logEvent) {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);
     }

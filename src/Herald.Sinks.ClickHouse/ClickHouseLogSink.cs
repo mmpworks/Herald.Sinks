@@ -8,6 +8,7 @@ using System.Data;
 using ClickHouse.Client.ADO;
 using ClickHouse.Client.Copy;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -36,7 +37,7 @@ namespace Herald.Sinks.ClickHouse;
 /// throughput. Single events still flow through ADO.NET INSERTs.
 /// </para>
 /// </remarks>
-public sealed class ClickHouseLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class ClickHouseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly string _connectionString;
     private readonly string _tableName;
@@ -56,7 +57,7 @@ public sealed class ClickHouseLogSink : ILogger, IBatchedLogSink, IDisposable
         _tableName = tableName;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         using var connection = new ClickHouseConnection(_connectionString);

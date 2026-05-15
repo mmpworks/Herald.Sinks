@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using Raven.Client.Documents;
 using LogEvent = MMP.Herald.Events.LogEvent;
@@ -34,7 +35,7 @@ namespace Herald.Sinks.RavenDB;
 /// call opens and disposes its own session.
 /// </para>
 /// </remarks>
-public sealed class RavenDBLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class RavenDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly IDocumentStore _store;
     private readonly bool _ownsStore;
@@ -78,7 +79,7 @@ public sealed class RavenDBLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsStore = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         using var session = _store.OpenSession();

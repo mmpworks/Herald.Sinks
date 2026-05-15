@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Data.SqlClient;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -41,7 +42,7 @@ namespace Herald.Sinks.MSSqlServer;
 /// pool handles concurrency.
 /// </para>
 /// </remarks>
-public sealed class MSSqlServerLogSink : ILogger, IBatchedLogSink
+public sealed class MSSqlServerLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly string _connectionString;
     private readonly string _schemaName;
@@ -68,7 +69,7 @@ public sealed class MSSqlServerLogSink : ILogger, IBatchedLogSink
         _autoCreateTable = autoCreateTable;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         EnsureTableOnce();

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Formatting;
 using MMP.Herald.Levels;
@@ -34,7 +35,7 @@ namespace Herald.Sinks.TcpJsonLine;
 /// a LAN / trusted-network primitive only.
 /// </para>
 /// </summary>
-public sealed class TcpJsonLineLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class TcpJsonLineLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly string _host;
     private readonly int _port;
@@ -68,7 +69,7 @@ public sealed class TcpJsonLineLogSink : ILogger, IBatchedLogSink, IDisposable
         _formatter = new JsonFormatter(levelRegistry);
     }
 
-    public void Log(LogEvent logEvent) {
+    public override void Log(LogEvent logEvent) {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);
     }

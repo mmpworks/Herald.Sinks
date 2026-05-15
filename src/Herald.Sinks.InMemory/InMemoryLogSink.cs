@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 
 namespace Herald.Sinks.InMemory;
@@ -29,7 +30,7 @@ namespace Herald.Sinks.InMemory;
 /// thread.
 /// </para>
 /// </remarks>
-public sealed class InMemoryLogSink : ILogger
+public sealed class InMemoryLogSink : HeraldSinkBase
 {
     private readonly List<LogEvent> _events = new();
     private readonly object _syncRoot = new();
@@ -84,7 +85,7 @@ public sealed class InMemoryLogSink : ILogger
         }
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

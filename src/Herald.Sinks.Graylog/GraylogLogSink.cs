@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 
 namespace Herald.Sinks.Graylog;
@@ -32,7 +33,7 @@ namespace Herald.Sinks.Graylog;
 /// name is ephemeral.
 /// </para>
 /// </remarks>
-public sealed class GraylogLogSink : ILogger, IDisposable
+public sealed class GraylogLogSink : HeraldSinkBase, IDisposable
 {
     private readonly GraylogTransport _transport;
     private readonly string _sourceHost;
@@ -71,7 +72,7 @@ public sealed class GraylogLogSink : ILogger, IDisposable
         }
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var gelf = GraylogMessageBuilder.Build(logEvent, _sourceHost);

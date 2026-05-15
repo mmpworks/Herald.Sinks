@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Couchbase;
 using Couchbase.KeyValue;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -35,7 +36,7 @@ namespace Herald.Sinks.Couchbase;
 /// instances are thread-safe per the SDK contract.
 /// </para>
 /// </remarks>
-public sealed class CouchbaseLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class CouchbaseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly ICouchbaseCollection _collection;
     private readonly ICluster? _ownedCluster;
@@ -80,7 +81,7 @@ public sealed class CouchbaseLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownedCluster = null;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var (key, document) = BuildDocument(logEvent);

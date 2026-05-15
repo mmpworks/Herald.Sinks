@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 // The namespace `Herald.Sinks.Debug` shadows `System.Diagnostics.Debug`,
@@ -39,7 +40,7 @@ namespace Herald.Sinks.Debug;
 /// needed.
 /// </para>
 /// </remarks>
-public sealed class DebugLogSink : ILogger
+public sealed class DebugLogSink : HeraldSinkBase
 {
     private readonly string? _category;
 
@@ -54,7 +55,7 @@ public sealed class DebugLogSink : ILogger
         _category = category;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

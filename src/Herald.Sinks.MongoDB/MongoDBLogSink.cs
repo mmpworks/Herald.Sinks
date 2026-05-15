@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -40,7 +41,7 @@ namespace Herald.Sinks.MongoDB;
 /// contract; concurrent Log calls share the single connection pool.
 /// </para>
 /// </remarks>
-public sealed class MongoDBLogSink : ILogger, IBatchedLogSink
+public sealed class MongoDBLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly IMongoCollection<BsonDocument> _collection;
 
@@ -67,7 +68,7 @@ public sealed class MongoDBLogSink : ILogger, IBatchedLogSink
         _collection = collection;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         _collection.InsertOne(BuildDocument(logEvent));

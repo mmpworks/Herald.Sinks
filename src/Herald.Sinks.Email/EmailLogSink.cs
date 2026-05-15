@@ -10,6 +10,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -36,7 +37,7 @@ namespace Herald.Sinks.Email;
 /// credentials, and a TLS-mode toggle.
 /// </para>
 /// </remarks>
-public sealed class EmailLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class EmailLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly string _host;
     private readonly int _port;
@@ -84,7 +85,7 @@ public sealed class EmailLogSink : ILogger, IBatchedLogSink, IDisposable
         _subjectTemplate = subjectTemplate;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

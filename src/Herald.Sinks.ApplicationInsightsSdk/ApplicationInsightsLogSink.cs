@@ -8,6 +8,7 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -33,7 +34,7 @@ namespace Herald.Sinks.ApplicationInsightsSdk;
 /// pass <c>InstrumentationKey={key}</c>.
 /// </para>
 /// </remarks>
-public sealed class ApplicationInsightsLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly TelemetryClient _client;
     private readonly TelemetryConfiguration? _ownedConfig;
@@ -58,7 +59,7 @@ public sealed class ApplicationInsightsLogSink : ILogger, IBatchedLogSink, IDisp
         _ownedConfig = null;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -22,7 +23,7 @@ namespace Herald.Sinks.ElmahIo;
 /// service via the v3 messages bulk API. Drop-in for
 /// Serilog.Sinks.ElmahIo. Pure HTTP — no elmah.io SDK.
 /// </summary>
-public sealed class ElmahIoLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class ElmahIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly Uri _endpoint;
     private readonly string _apiKey;
@@ -40,7 +41,7 @@ public sealed class ElmahIoLogSink : ILogger, IBatchedLogSink, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

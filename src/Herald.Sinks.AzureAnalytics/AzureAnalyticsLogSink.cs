@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -47,7 +48,7 @@ namespace Herald.Sinks.AzureAnalytics;
 /// to ~30,000 events per batch, far above typical pipeline sizing.
 /// </para>
 /// </remarks>
-public sealed class AzureAnalyticsLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AzureAnalyticsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const string ApiVersion = "2016-04-01";
     private const string ResourcePath = "/api/logs";
@@ -86,7 +87,7 @@ public sealed class AzureAnalyticsLogSink : ILogger, IBatchedLogSink, IDisposabl
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

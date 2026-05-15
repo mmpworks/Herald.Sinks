@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -18,7 +19,7 @@ namespace Herald.Sinks.Twilio;
 /// API. Use only for paging-grade events — SMS costs and character
 /// limits make this unfit for normal log volume.
 /// </summary>
-public sealed class TwilioLogSink : ILogger, IDisposable
+public sealed class TwilioLogSink : HeraldSinkBase, IDisposable
 {
     private const int SmsMaxLength = 1500;
 
@@ -44,7 +45,7 @@ public sealed class TwilioLogSink : ILogger, IDisposable
         _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", auth);
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

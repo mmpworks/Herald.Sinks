@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Data.Sqlite;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -39,7 +40,7 @@ namespace Herald.Sinks.SQLite;
 /// step).
 /// </para>
 /// </remarks>
-public sealed class SQLiteLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class SQLiteLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly string _tableName;
@@ -63,7 +64,7 @@ public sealed class SQLiteLogSink : ILogger, IBatchedLogSink, IDisposable
         EnsureSchema();
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         if (System.Threading.Volatile.Read(ref _disposed) == 1) return;

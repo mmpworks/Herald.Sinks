@@ -9,6 +9,7 @@ using Azure.Core;
 using Azure.Data.Tables;
 using Azure.Identity;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 using LogEvent = MMP.Herald.Events.LogEvent;
@@ -80,7 +81,7 @@ public enum AzureTablePartitionKeyStrategy
 /// (full caller control).
 /// </para>
 /// </remarks>
-public sealed class AzureTableStorageLogSink : ILogger, IBatchedLogSink
+public sealed class AzureTableStorageLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private const string DefaultFixedPartitionKey = "logs";
 
@@ -167,7 +168,7 @@ public sealed class AzureTableStorageLogSink : ILogger, IBatchedLogSink
         return client;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         _tableClient.AddEntity(BuildEntity(logEvent));

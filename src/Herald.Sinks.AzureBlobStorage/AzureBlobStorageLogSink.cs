@@ -12,6 +12,7 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 using LogEvent = MMP.Herald.Events.LogEvent;
@@ -37,7 +38,7 @@ namespace Herald.Sinks.AzureBlobStorage;
 /// tail prevents collisions under concurrent flushes.
 /// </para>
 /// </remarks>
-public sealed class AzureBlobStorageLogSink : ILogger, IBatchedLogSink
+public sealed class AzureBlobStorageLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly BlobContainerClient _container;
     private readonly string _keyPrefix;
@@ -74,7 +75,7 @@ public sealed class AzureBlobStorageLogSink : ILogger, IBatchedLogSink
         _keyPrefix = keyPrefix.TrimEnd('/');
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Formatting;
 using MMP.Herald.Levels;
@@ -40,7 +41,7 @@ namespace Herald.Sinks.UdpJsonLine;
 /// public endpoint without a DTLS-terminating sidecar or VPN.
 /// </para>
 /// </summary>
-public sealed class UdpJsonLineLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class UdpJsonLineLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     // ~65 KB - upper bound on a single UDP datagram payload. Actual MTU on
     // the path is usually lower (1,472 bytes for Ethernet); sending larger
@@ -80,7 +81,7 @@ public sealed class UdpJsonLineLogSink : ILogger, IBatchedLogSink, IDisposable
         _endpoint = new Lazy<IPEndPoint>(ResolveEndpoint, LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);

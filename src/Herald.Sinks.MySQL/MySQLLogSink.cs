@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -34,7 +35,7 @@ namespace Herald.Sinks.MySQL;
 /// <c>properties JSON</c> on the table.
 /// </para>
 /// </remarks>
-public sealed class MySQLLogSink : ILogger, IBatchedLogSink
+public sealed class MySQLLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly string _connectionString;
     private readonly string _tableName;
@@ -57,7 +58,7 @@ public sealed class MySQLLogSink : ILogger, IBatchedLogSink
         _autoCreateTable = autoCreateTable;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         EnsureTableOnce();

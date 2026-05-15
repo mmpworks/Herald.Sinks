@@ -5,6 +5,7 @@
 using System;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Configuration.Runtime;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
@@ -43,7 +44,7 @@ public sealed class HelloWorldLogSinkProvider : ILogSinkProvider
 /// was actually wired in." Production sinks should not subclass this —
 /// it's a discovery / load-context smoke target, not a real ILogger.
 /// </summary>
-public sealed class HelloWorldLogSink : ILogger
+public sealed class HelloWorldLogSink : HeraldSinkBase
 {
     private long _eventCount;
 
@@ -54,7 +55,7 @@ public sealed class HelloWorldLogSink : ILogger
     /// </summary>
     public long EventCount => Interlocked.Read(ref _eventCount);
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         Interlocked.Increment(ref _eventCount);
     }

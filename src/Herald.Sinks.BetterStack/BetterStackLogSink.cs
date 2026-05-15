@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -19,7 +20,7 @@ namespace Herald.Sinks.BetterStack;
 /// Sink that ships log events to Better Stack (formerly Logtail) via
 /// their public ingest endpoint. Bearer-token auth, NDJSON body.
 /// </summary>
-public sealed class BetterStackLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class BetterStackLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const string DefaultEndpoint = "https://in.logs.betterstack.com/";
 
@@ -37,7 +38,7 @@ public sealed class BetterStackLogSink : ILogger, IBatchedLogSink, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
+    public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
     {

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Pipeline;
@@ -20,7 +21,7 @@ namespace Herald.Sinks.Otlp;
 /// The file can be read back by reading 4 bytes (length), then reading that many bytes
 /// (OTLP ExportLogsServiceRequest), and repeating until EOF.
 /// </summary>
-public sealed class ProtobufFileLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class ProtobufFileLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly string _basePath;
     private readonly long _maxFileSizeBytes;
@@ -55,7 +56,7 @@ public sealed class ProtobufFileLogSink : ILogger, IBatchedLogSink, IDisposable
         _currentFileSize = _stream.Length;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         WriteRecord(_serializer.Serialize(logEvent));

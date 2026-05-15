@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using NetMQ;
 using NetMQ.Sockets;
@@ -60,7 +61,7 @@ public enum ZeroMqSocketKind
 /// for durability under load.
 /// </para>
 /// </remarks>
-public sealed class ZeroMqLogSink : ILogger, IDisposable
+public sealed class ZeroMqLogSink : HeraldSinkBase, IDisposable
 {
     private readonly NetMQQueue<string> _queue;
     private readonly NetMQPoller _poller;
@@ -95,7 +96,7 @@ public sealed class ZeroMqLogSink : ILogger, IDisposable
             TaskScheduler.Default);
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         // Wait for the socket to come online on first use; subsequent

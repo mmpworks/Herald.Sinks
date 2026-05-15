@@ -12,6 +12,7 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 // AWS SDK doesn't shadow Herald's LogEvent, but we alias for consistency.
@@ -37,7 +38,7 @@ namespace Herald.Sinks.AmazonS3;
 /// rely on an IAM role attached to the compute platform.
 /// </para>
 /// </remarks>
-public sealed class AmazonS3LogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AmazonS3LogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly IAmazonS3 _client;
     private readonly bool _ownsClient;
@@ -80,7 +81,7 @@ public sealed class AmazonS3LogSink : ILogger, IBatchedLogSink, IDisposable
         _keyPrefix = keyPrefix.TrimEnd('/');
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

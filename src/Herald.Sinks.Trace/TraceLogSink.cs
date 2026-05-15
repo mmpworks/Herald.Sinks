@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 // Namespace `Herald.Sinks.Trace` shadows `System.Diagnostics.Trace`, so
@@ -34,7 +35,7 @@ namespace Herald.Sinks.Trace;
 /// an output transformer chain for custom layouts.
 /// </para>
 /// </remarks>
-public sealed class TraceLogSink : ILogger
+public sealed class TraceLogSink : HeraldSinkBase
 {
     private readonly string? _category;
 
@@ -49,7 +50,7 @@ public sealed class TraceLogSink : ILogger
         _category = category;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 using Xunit.Abstractions;
@@ -33,7 +34,7 @@ namespace Herald.Sinks.XUnit;
 /// readable across harnesses.
 /// </para>
 /// </remarks>
-public sealed class XUnitLogSink : ILogger
+public sealed class XUnitLogSink : HeraldSinkBase
 {
     private readonly ITestOutputHelper _output;
 
@@ -43,7 +44,7 @@ public sealed class XUnitLogSink : ILogger
         _output = output;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

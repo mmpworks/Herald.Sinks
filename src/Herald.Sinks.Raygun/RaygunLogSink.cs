@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 
@@ -29,7 +30,7 @@ namespace Herald.Sinks.Raygun;
 /// bag.
 /// </para>
 /// </remarks>
-public sealed class RaygunLogSink : ILogger, IDisposable
+public sealed class RaygunLogSink : HeraldSinkBase, IDisposable
 {
     private static readonly Uri Endpoint = new("https://api.raygun.com/entries");
 
@@ -48,7 +49,7 @@ public sealed class RaygunLogSink : ILogger, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

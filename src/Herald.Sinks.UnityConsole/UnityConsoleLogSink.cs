@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Services;
@@ -44,7 +45,7 @@ namespace Herald.Sinks.UnityConsole;
 /// Unity-aware code.
 /// </para>
 /// </remarks>
-public sealed class UnityConsoleLogSink : ILogger
+public sealed class UnityConsoleLogSink : HeraldSinkBase
 {
     private readonly Action<string> _log;
     private readonly Action<string> _warn;
@@ -75,7 +76,7 @@ public sealed class UnityConsoleLogSink : ILogger
         _category = category;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

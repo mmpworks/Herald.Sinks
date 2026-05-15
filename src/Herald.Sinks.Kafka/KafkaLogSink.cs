@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.Json;
 using Confluent.Kafka;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -46,7 +47,7 @@ namespace Herald.Sinks.Kafka;
 /// internal connection pool.
 /// </para>
 /// </remarks>
-public sealed class KafkaLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class KafkaLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly IProducer<string?, string> _producer;
     private readonly string _topic;
@@ -88,7 +89,7 @@ public sealed class KafkaLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsProducer = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         _producer.Produce(_topic, BuildMessage(logEvent));

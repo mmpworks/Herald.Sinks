@@ -9,6 +9,7 @@ using System.Text.Json;
 using Google.Cloud.PubSub.V1;
 using Google.Protobuf;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -24,7 +25,7 @@ namespace Herald.Sinks.GoogleCloudPubSub;
 /// SDK defaults (Application Default Credentials chain). Apps that
 /// already share a publisher pass it in via the code-first overload.
 /// </remarks>
-public sealed class GoogleCloudPubSubLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class GoogleCloudPubSubLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly PublisherClient _publisher;
     private readonly bool _ownsPublisher;
@@ -46,7 +47,7 @@ public sealed class GoogleCloudPubSubLogSink : ILogger, IBatchedLogSink, IDispos
         _ownsPublisher = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var message = new PubsubMessage

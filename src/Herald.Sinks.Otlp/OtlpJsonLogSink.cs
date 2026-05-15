@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Pipeline;
@@ -25,7 +26,7 @@ namespace Herald.Sinks.Otlp;
 /// The HttpClient is pooled internally (SocketsHttpHandler manages connection reuse).
 /// If the caller provides an HttpClient, the sink does not own it and will not dispose it.
 /// </summary>
-public sealed class OtlpJsonLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class OtlpJsonLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly Uri _endpoint;
     private readonly ILogLevelRegistry _levelRegistry;
@@ -51,7 +52,7 @@ public sealed class OtlpJsonLogSink : ILogger, IBatchedLogSink, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) {
+    public override void Log(LogEvent logEvent) {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);
     }

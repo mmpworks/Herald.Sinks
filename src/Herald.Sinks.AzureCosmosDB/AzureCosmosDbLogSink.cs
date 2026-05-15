@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Azure.Cosmos;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 using LogEvent = MMP.Herald.Events.LogEvent;
@@ -37,7 +38,7 @@ namespace Herald.Sinks.AzureCosmosDB;
 /// 1.0 — follow-up feature.
 /// </para>
 /// </remarks>
-public sealed class AzureCosmosDbLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AzureCosmosDbLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly CosmosClient _client;
     private readonly bool _ownsClient;
@@ -83,7 +84,7 @@ public sealed class AzureCosmosDbLogSink : ILogger, IBatchedLogSink, IDisposable
         _partitionKeyProperty = partitionKeyProperty;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

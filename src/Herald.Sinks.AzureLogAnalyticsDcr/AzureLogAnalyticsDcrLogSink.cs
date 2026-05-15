@@ -12,6 +12,7 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.Monitor.Ingestion;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 // Azure ships its own LogEvent-adjacent types; alias for clarity.
@@ -44,7 +45,7 @@ namespace Herald.Sinks.AzureLogAnalyticsDcr;
 /// <c>Monitoring Metrics Publisher</c> role on the DCR.
 /// </para>
 /// </remarks>
-public sealed class AzureLogAnalyticsDcrLogSink : ILogger, IBatchedLogSink
+public sealed class AzureLogAnalyticsDcrLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly LogsIngestionClient _client;
     private readonly string _ruleId;
@@ -83,7 +84,7 @@ public sealed class AzureLogAnalyticsDcrLogSink : ILogger, IBatchedLogSink
         _streamName = streamName;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

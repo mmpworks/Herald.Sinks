@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using StackExchange.Redis;
@@ -37,7 +38,7 @@ namespace Herald.Sinks.RedisList;
 /// connection pool.
 /// </para>
 /// </remarks>
-public sealed class RedisListLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class RedisListLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly IDatabase _database;
     private readonly RedisKey _listKey;
@@ -73,7 +74,7 @@ public sealed class RedisListLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownedMultiplexer = null;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var payload = SerializeEvent(logEvent);

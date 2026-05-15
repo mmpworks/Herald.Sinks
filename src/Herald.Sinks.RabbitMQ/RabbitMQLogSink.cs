@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 using RabbitMQ.Client;
@@ -41,7 +42,7 @@ namespace Herald.Sinks.RabbitMQ;
 /// events to every bound queue.
 /// </para>
 /// </remarks>
-public sealed class RabbitMQLogSink : ILogger, IDisposable
+public sealed class RabbitMQLogSink : HeraldSinkBase, IDisposable
 {
     private readonly string _exchange;
     private readonly string _routingKey;
@@ -75,7 +76,7 @@ public sealed class RabbitMQLogSink : ILogger, IDisposable
         _channel = _connection.CreateModel();
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         if (Volatile.Read(ref _disposed) == 1) return;

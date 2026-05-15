@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 
@@ -29,7 +30,7 @@ namespace Herald.Sinks.TextWriter;
 /// flushed after every event so tests see output immediately.
 /// </para>
 /// </remarks>
-public sealed class TextWriterLogSink : ILogger, IDisposable
+public sealed class TextWriterLogSink : HeraldSinkBase, IDisposable
 {
     private readonly System.IO.TextWriter _writer;
     private readonly bool _disposeWriter;
@@ -47,7 +48,7 @@ public sealed class TextWriterLogSink : ILogger, IDisposable
         _disposeWriter = disposeWriter;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

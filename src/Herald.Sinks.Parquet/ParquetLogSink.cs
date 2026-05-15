@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading;
 using Herald.Sinks.Parquet.Iceberg;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -53,7 +54,7 @@ namespace Herald.Sinks.Parquet;
 /// matches how other sinks in this repo bridge sync/async I/O.
 /// </para>
 /// </remarks>
-public sealed class ParquetLogSink : ILogger, IBatchedLogSink
+public sealed class ParquetLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly string _outputDirectory;
     private readonly string _filePrefix;
@@ -75,7 +76,7 @@ public sealed class ParquetLogSink : ILogger, IBatchedLogSink
         Directory.CreateDirectory(_outputDirectory);
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);

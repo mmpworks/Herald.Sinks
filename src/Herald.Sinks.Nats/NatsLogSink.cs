@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using NATS.Client.Core;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -18,7 +19,7 @@ namespace Herald.Sinks.Nats;
 /// via NATS.Client.Core (the modern v2 line). Connects on construction
 /// and shares the connection across all calls.
 /// </summary>
-public sealed class NatsLogSink : ILogger, IAsyncDisposable
+public sealed class NatsLogSink : HeraldSinkBase, IAsyncDisposable
 {
     private readonly NatsConnection _connection;
     private readonly string _subject;
@@ -45,7 +46,7 @@ public sealed class NatsLogSink : ILogger, IAsyncDisposable
         _ownsConnection = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var payload = SerializeEvent(logEvent);

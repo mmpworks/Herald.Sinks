@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Services;
@@ -45,7 +46,7 @@ namespace Herald.Sinks.EventLog;
 /// </para>
 /// </remarks>
 [SupportedOSPlatform("windows")]
-public sealed class EventLogSink : ILogger
+public sealed class EventLogSink : HeraldSinkBase
 {
     private readonly string _source;
     private readonly string _logName;
@@ -96,7 +97,7 @@ public sealed class EventLogSink : ILogger
         }
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

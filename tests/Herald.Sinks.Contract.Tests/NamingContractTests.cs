@@ -190,8 +190,8 @@ public sealed class NamingContractTests
         var text = File.ReadAllText(propsPath);
         text.Should().Contain("<HeraldCoreVersion>",
             "the Herald.OSS NuGet version must be pinned in Directory.Build.props");
-        text.Should().Contain("Exists('$(MSBuildThisFileDirectory)..\\Core\\Herald.Core.csproj')",
-            "monorepo path must use ProjectReference to live Core source");
+        text.Should().Contain("Exists('$(MSBuildThisFileDirectory)..\\..\\..\\Herald.OSS\\Herald.OSS.csproj')",
+            "sibling-clone path must use ProjectReference to live Herald.OSS source");
         text.Should().Contain("PackageReference Include=\"Herald.OSS\"",
             "standalone path must fall back to the Herald.OSS NuGet package");
     }
@@ -203,13 +203,13 @@ public sealed class NamingContractTests
         var propsPath = Path.Combine(RepoRoot, "Directory.Build.props");
         var text = File.ReadAllText(propsPath);
 
-        // Positive condition (monorepo): Exists(...) ItemGroup with a ProjectReference.
-        text.Should().Contain("Condition=\"Exists('$(MSBuildThisFileDirectory)..\\Core\\Herald.Core.csproj')",
-            "the monorepo branch (Exists condition + ProjectReference) must be present");
+        // Positive condition (sibling clone): Exists(...) ItemGroup with a ProjectReference.
+        text.Should().Contain("Condition=\"Exists('$(MSBuildThisFileDirectory)..\\..\\..\\Herald.OSS\\Herald.OSS.csproj')",
+            "the sibling-clone branch (Exists condition + ProjectReference) must be present");
         // Negative condition (standalone): !Exists(...) ItemGroup with a PackageReference to Herald.OSS.
-        text.Should().Contain("Condition=\"!Exists('$(MSBuildThisFileDirectory)..\\Core\\Herald.Core.csproj')",
+        text.Should().Contain("Condition=\"!Exists('$(MSBuildThisFileDirectory)..\\..\\..\\Herald.OSS\\Herald.OSS.csproj')",
             "the standalone branch (!Exists condition + PackageReference) must be present — " +
-            "dropping it makes a fresh clone of this repo silently fail to find Core");
+            "dropping it makes a fresh clone of this repo silently fail to find Herald.OSS");
     }
 
     /// <summary>Standalone PackageReference targets exactly the literal Herald.OSS (typo-guard).</summary>
@@ -251,22 +251,22 @@ public sealed class NamingContractTests
             "lets standalone clones restore the package");
     }
 
-    /// <summary>HeraldCoreVersion in Directory.Build.props matches Core's actual published Version.</summary>
+    /// <summary>HeraldCoreVersion in Directory.Build.props matches Herald.OSS's actual published Version.</summary>
     [Fact]
     public void HeraldCoreVersion_matches_Core_csproj_Version()
     {
-        var coreCsprojPath = Path.GetFullPath(
-            Path.Combine(RepoRoot, "..", "Core", "Herald.Core.csproj"));
-        if (!File.Exists(coreCsprojPath))
+        var ossCsprojPath = Path.GetFullPath(
+            Path.Combine(RepoRoot, "..", "..", "..", "Herald.OSS", "Herald.OSS.csproj"));
+        if (!File.Exists(ossCsprojPath))
         {
-            // Standalone clone — Core isn't here; nothing to cross-check. The standalone
-            // branch is what kicks in at build time. Skip silently.
+            // Standalone clone — Herald.OSS isn't a sibling; nothing to cross-check.
+            // The standalone branch is what kicks in at build time. Skip silently.
             return;
         }
 
-        var coreDoc = XDocument.Load(coreCsprojPath);
-        var coreVersion = coreDoc.Descendants("Version").FirstOrDefault()?.Value;
-        coreVersion.Should().NotBeNullOrEmpty("Herald.Core.csproj must declare <Version>");
+        var ossDoc = XDocument.Load(ossCsprojPath);
+        var ossVersion = ossDoc.Descendants("Version").FirstOrDefault()?.Value;
+        ossVersion.Should().NotBeNullOrEmpty("Herald.OSS.csproj must declare <Version>");
 
         var propsText = File.ReadAllText(Path.Combine(RepoRoot, "Directory.Build.props"));
         var match = System.Text.RegularExpressions.Regex.Match(
@@ -274,9 +274,9 @@ public sealed class NamingContractTests
             @"<HeraldCoreVersion>([^<]+)</HeraldCoreVersion>");
         match.Success.Should().BeTrue("Directory.Build.props must pin <HeraldCoreVersion>");
 
-        match.Groups[1].Value.Should().Be(coreVersion,
-            "the Directory.Build.props pin and Core's actual Version must agree; drift " +
-            "means a standalone clone restores a different version than the monorepo builds against");
+        match.Groups[1].Value.Should().Be(ossVersion,
+            "the Directory.Build.props pin and Herald.OSS's actual Version must agree; drift " +
+            "means a standalone clone restores a different version than the sibling-clone builds against");
     }
 
     /// <summary>The sweep helper script that strips per-sink Core refs still exists.</summary>

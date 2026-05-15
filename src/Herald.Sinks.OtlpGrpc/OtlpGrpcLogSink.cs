@@ -9,6 +9,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using Herald.Sinks.Otlp;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Pipeline;
@@ -41,7 +42,7 @@ namespace Herald.Sinks.OtlpGrpc;
 /// concurrent <c>Log</c> / <c>LogBatch</c> calls share the channel.
 /// </para>
 /// </remarks>
-public sealed class OtlpGrpcLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class OtlpGrpcLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const string ServiceName = "opentelemetry.proto.collector.logs.v1.LogsService";
     private const string MethodName = "Export";
@@ -71,7 +72,7 @@ public sealed class OtlpGrpcLogSink : ILogger, IBatchedLogSink, IDisposable
         _callDeadline = callDeadline ?? TimeSpan.FromSeconds(30);
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);

@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Pipeline;
@@ -21,7 +22,7 @@ namespace Herald.Sinks.Elasticsearch;
 ///
 /// Supports both single-event and batch modes.
 /// </summary>
-public sealed class ElasticsearchLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 
@@ -47,7 +48,7 @@ public sealed class ElasticsearchLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsClient = httpClient is null;
     }
 
-    public void Log(LogEvent logEvent) {
+    public override void Log(LogEvent logEvent) {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);
     }

@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -38,7 +39,7 @@ namespace Herald.Sinks.OpenSearch;
 /// not embed AWS SigV4 logic.
 /// </para>
 /// </remarks>
-public sealed class OpenSearchLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class OpenSearchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly Uri _bulkEndpoint;
     private readonly string _indexNameTemplate;
@@ -68,7 +69,7 @@ public sealed class OpenSearchLogSink : ILogger, IBatchedLogSink, IDisposable
         }
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

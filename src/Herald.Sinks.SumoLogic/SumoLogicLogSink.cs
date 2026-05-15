@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -28,7 +29,7 @@ namespace Herald.Sinks.SumoLogic;
 /// <c>X-Sumo-Category</c>, and <c>X-Sumo-Host</c> headers tag events
 /// for searchability inside Sumo.
 /// </remarks>
-public sealed class SumoLogicLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class SumoLogicLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly Uri _sourceUrl;
     private readonly string? _sourceCategory;
@@ -53,7 +54,7 @@ public sealed class SumoLogicLogSink : ILogger, IBatchedLogSink, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Google.Cloud.BigQuery.V2;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -25,7 +26,7 @@ namespace Herald.Sinks.BigQuery;
 ///   <item>template STRING NULLABLE</item>
 /// </list>
 /// </remarks>
-public sealed class BigQueryLogSink : ILogger, IBatchedLogSink
+public sealed class BigQueryLogSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly BigQueryClient _client;
     private readonly string _datasetId;
@@ -53,7 +54,7 @@ public sealed class BigQueryLogSink : ILogger, IBatchedLogSink
         _tableId = tableId;
     }
 
-    public void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
+    public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
     {

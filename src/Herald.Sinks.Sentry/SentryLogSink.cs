@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -50,7 +51,7 @@ namespace Herald.Sinks.Sentry;
 /// different host — pass the full DSN and everything else works as-is.
 /// </para>
 /// </remarks>
-public sealed class SentryLogSink : ILogger, IDisposable
+public sealed class SentryLogSink : HeraldSinkBase, IDisposable
 {
     private readonly Uri _storeEndpoint;
     private readonly string _authHeader;
@@ -79,7 +80,7 @@ public sealed class SentryLogSink : ILogger, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
 

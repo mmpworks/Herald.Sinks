@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using Azure.Messaging.ServiceBus;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -24,7 +25,7 @@ namespace Herald.Sinks.AzureServiceBus;
 /// Apps already using ServiceBusClient share via the code-first
 /// overload that accepts a sender directly.
 /// </remarks>
-public sealed class AzureServiceBusLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AzureServiceBusLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly ServiceBusSender _sender;
     private readonly ServiceBusClient? _ownedClient;
@@ -45,7 +46,7 @@ public sealed class AzureServiceBusLogSink : ILogger, IBatchedLogSink, IDisposab
         _ownedClient = null;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var message = new ServiceBusMessage(SerializeEvent(logEvent))

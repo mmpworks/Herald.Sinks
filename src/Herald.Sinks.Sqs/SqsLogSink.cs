@@ -11,6 +11,7 @@ using Amazon;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -24,7 +25,7 @@ namespace Herald.Sinks.Sqs;
 /// SQS SendMessageBatch caps at 10 messages per call. The sink chunks
 /// larger batches into 10-message slices automatically.
 /// </remarks>
-public sealed class SqsLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class SqsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const int SendBatchLimit = 10;
 
@@ -52,7 +53,7 @@ public sealed class SqsLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsClient = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var request = new SendMessageRequest

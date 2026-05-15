@@ -12,6 +12,7 @@ using Azure.Identity;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 using LogEvent = MMP.Herald.Events.LogEvent;
@@ -36,7 +37,7 @@ namespace Herald.Sinks.AzureEventHub;
 /// round-trip count matches Herald's batching cadence.
 /// </para>
 /// </remarks>
-public sealed class AzureEventHubLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AzureEventHubLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly EventHubProducerClient _producer;
     private readonly bool _ownsProducer;
@@ -76,7 +77,7 @@ public sealed class AzureEventHubLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsProducer = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

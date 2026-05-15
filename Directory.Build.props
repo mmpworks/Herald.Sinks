@@ -22,14 +22,16 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <!--
-      Version of Herald.OSS (the published NuGet package for Herald.Core)
-      that every sink in this repo depends on. Pinned here so a single
-      edit moves the whole sink ecosystem to a new Core release. Standalone
-      clones of Herald.Sinks (where Modules/Core/ isn't a sibling) restore
-      Herald.OSS from nuget.org at this version; the umbrella-monorepo
-      build uses the live ProjectReference instead and ignores the pin.
+      Version of Herald.OSS that every sink in this repo depends on.
+      Pinned here so a single edit moves the whole sink ecosystem to
+      a new Herald.OSS release. Standalone clones of Herald.Sinks
+      (where Herald.OSS isn't a sibling directory) restore Herald.OSS
+      from nuget.org at this version; the umbrella-monorepo build uses
+      a live ProjectReference to ../../../Herald.OSS/ instead and
+      ignores the pin. Herald.OSS is the canonical upstream — the
+      former Modules/Core route is retired.
     -->
-    <HeraldCoreVersion>1.0.0</HeraldCoreVersion>
+    <HeraldCoreVersion>0.1.0</HeraldCoreVersion>
   </PropertyGroup>
 
   <!--
@@ -134,74 +136,81 @@
        ctor into LogSinkProviderRegistry.Default at assembly load.
 
        Path is relative to this Directory.Build.props file:
-         MSBuildThisFileDirectory = Modules/Herald.Sinks/
-         + ..                     = Modules/
-         + Generators/MMP.Herald.Generators.csproj
+         MSBuildThisFileDirectory = /e/dev/Herald/Modules/Herald.Sinks/
+         + ..\..\..              = /e/dev/
+         + Herald.OSS/generators/MMP.Herald.OSS.Generators.csproj
        OutputItemType=Analyzer makes Roslyn load it as a generator;
        ReferenceOutputAssembly=false keeps the netstandard2.0
-       generator dll out of the sink's runtime closure. -->
-  <ItemGroup>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Generators\MMP.Herald.Generators.csproj">
+       generator dll out of the sink's runtime closure. The generator
+       lives in Herald.OSS so the entire sink ecosystem references a
+       single upstream artifact. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\generators\MMP.Herald.OSS.Generators.csproj')">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\generators\MMP.Herald.OSS.Generators.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
 
   <!--
-    Herald.OSS dependency — every sink references the Herald.Core
+    Herald.OSS dependency — every sink references the Herald.OSS
     library. Two resolution paths, picked automatically based on
-    whether this clone sits inside the umbrella monorepo:
+    whether the Herald.OSS repo is cloned as a sibling of the
+    Herald monorepo:
 
-      * Monorepo  — Modules/Core/Herald.Core.csproj exists as a
-                    sibling. ProjectReference pulls the live source
-                    so a Core edit shows up immediately in every
-                    sink build. Private="false" + ExcludeAssets="runtime"
-                    keep Core out of the sink plugin's bin\, because
-                    Herald.Server / the host already loads Core and
-                    the plugin context resolves to that copy via
-                    AssemblyDependencyResolver.
-      * Standalone — Modules/Core/ does not exist (e.g. a fresh
-                    `git clone https://github.com/mmpworks/Herald.Sinks`
-                    outside the umbrella). PackageReference to
-                    Herald.OSS on nuget.org pinned at the
-                    HeraldCoreVersion declared above.
+      * Sibling clone — /e/dev/Herald.OSS/Herald.OSS.csproj exists
+                        relative to this monorepo at ../../../Herald.OSS/.
+                        ProjectReference pulls the live source so a
+                        Herald.OSS edit shows up immediately in every
+                        sink build. Private="false" + ExcludeAssets="runtime"
+                        keep Herald.OSS out of the sink plugin's bin\,
+                        because Herald.Server / the host already loads
+                        Herald.OSS and the plugin context resolves to
+                        that copy via AssemblyDependencyResolver.
+      * Standalone    — Herald.OSS is not present as a sibling (e.g. a
+                        fresh `git clone https://github.com/mmpworks/Herald.Sinks`
+                        outside the umbrella). PackageReference to
+                        Herald.OSS on nuget.org pinned at the
+                        HeraldCoreVersion declared above.
 
-    Per-sink csprojs do NOT declare a Herald.Core reference of their
+    The former route through Modules/Core is retired — Herald.OSS is
+    the canonical upstream for the entire sink ecosystem.
+
+    Per-sink csprojs do NOT declare a Herald.OSS reference of their
     own — the right one comes from here. A sink that needs to override
-    (e.g. a private-fork experiment pinning a custom Core branch)
-    sets <HeraldSinkCustomCoreRef>true</HeraldSinkCustomCoreRef> in
-    its csproj and supplies its own reference; both ItemGroups below
+    (e.g. a private-fork experiment pinning a custom branch) sets
+    <HeraldSinkCustomCoreRef>true</HeraldSinkCustomCoreRef> in its
+    csproj and supplies its own reference; both ItemGroups below
     short-circuit on that flag.
   -->
   <!-- Sink-package branch: Private=false + ExcludeAssets=runtime is the
        plugin-packaging shape. The sink's .nupkg stays small, and at runtime
-       Herald.Server / the host has Core loaded — the plugin's
-       AssemblyLoadContext resolves Core to the host's copy. -->
-  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' != 'true'">
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj">
+       Herald.Server / the host has Herald.OSS loaded — the plugin's
+       AssemblyLoadContext resolves Herald.OSS to the host's copy. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' != 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
     </ProjectReference>
   </ItemGroup>
 
-  <!-- Test-project branch: standard reference. Core.dll flows into the
-       test bin\ so xunit can load the assembly and discover tests. There
-       is no plugin host loading Core for us in a test process. -->
-  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' == 'true'">
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj" />
+  <!-- Test-project branch: standard reference. Herald.OSS.dll flows into
+       the test bin\ so xunit can load the assembly and discover tests.
+       There is no plugin host loading Herald.OSS for us in a test process. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' == 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">
+  <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">
     <!--
       Standalone PackageReference: NO PrivateAssets / ExcludeAssets.
       A consumer doing `dotnet add package Herald.Sinks.Datadog` to a
       plain ASP.NET Core or worker app expects Herald.OSS.dll to flow
       into their bin\ alongside the sink — otherwise the first sink
       registration throws FileNotFoundException at runtime. The
-      monorepo branch above sets Private="false" + ExcludeAssets="runtime"
+      sibling-clone branch above sets Private="false" + ExcludeAssets="runtime"
       because plugins live inside an AssemblyLoadContext where the host
-      already loaded Core; that's a plugin-packaging optimisation, not
-      a NuGet-distribution policy.
+      already loaded Herald.OSS; that's a plugin-packaging optimisation,
+      not a NuGet-distribution policy.
     -->
     <PackageReference Include="Herald.OSS" />
   </ItemGroup>

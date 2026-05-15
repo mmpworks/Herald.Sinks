@@ -10,6 +10,7 @@ using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -37,7 +38,7 @@ namespace Herald.Sinks.DynamoDB;
 /// call; the sink chunks larger batches automatically.
 /// </para>
 /// </remarks>
-public sealed class DynamoDBLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class DynamoDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const int BatchWriteLimit = 25;
 
@@ -70,7 +71,7 @@ public sealed class DynamoDBLogSink : ILogger, IBatchedLogSink, IDisposable
         _ownsClient = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var request = new PutItemRequest(_tableName, BuildItem(logEvent));

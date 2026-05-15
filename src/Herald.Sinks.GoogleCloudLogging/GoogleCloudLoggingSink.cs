@@ -9,6 +9,7 @@ using Google.Cloud.Logging.Type;
 using Google.Cloud.Logging.V2;
 using Google.Protobuf.WellKnownTypes;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 // google.logging.v2 ships a LogEntry type; alias Herald's LogEvent so
@@ -45,7 +46,7 @@ namespace Herald.Sinks.GoogleCloudLogging;
 /// colour-codes consistently.
 /// </para>
 /// </remarks>
-public sealed class GoogleCloudLoggingSink : ILogger, IBatchedLogSink
+public sealed class GoogleCloudLoggingSink : HeraldSinkBase, IBatchedLogSink
 {
     private readonly LoggingServiceV2Client _client;
     private readonly LogName _logName;
@@ -84,7 +85,7 @@ public sealed class GoogleCloudLoggingSink : ILogger, IBatchedLogSink
         _resource = resource ?? new MonitoredResource { Type = "global" };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

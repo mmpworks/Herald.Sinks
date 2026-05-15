@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -48,7 +49,7 @@ namespace Herald.Sinks.Honeycomb;
 /// dataset segment to the constructor to override the public host.
 /// </para>
 /// </remarks>
-public sealed class HoneycombLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class HoneycombLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     public const string PublicHost = "https://api.honeycomb.io";
     public const string BatchPathPrefix = "1/batch";
@@ -78,7 +79,7 @@ public sealed class HoneycombLogSink : ILogger, IBatchedLogSink, IDisposable
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);

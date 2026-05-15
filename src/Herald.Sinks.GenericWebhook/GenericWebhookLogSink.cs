@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Formatting;
 using MMP.Herald.Levels;
@@ -30,7 +31,7 @@ namespace Herald.Sinks.GenericWebhook;
 ///
 /// Use with any ILogFormatter (JSON, plain text, template) or the default JsonFormatter.
 /// </summary>
-public sealed class GenericWebhookLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class GenericWebhookLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 
@@ -62,7 +63,7 @@ public sealed class GenericWebhookLogSink : ILogger, IBatchedLogSink, IDisposabl
             : null;
     }
 
-    public void Log(LogEvent logEvent) {
+    public override void Log(LogEvent logEvent) {
         ArgumentNullException.ThrowIfNull(logEvent);
 
         if (_ruleEngine is not null)

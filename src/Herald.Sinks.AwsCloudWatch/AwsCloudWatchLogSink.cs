@@ -13,6 +13,7 @@ using Amazon;
 using Amazon.CloudWatchLogs;
 using Amazon.CloudWatchLogs.Model;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
 // AWS SDK ships its own LogEvent type in Amazon.CloudWatchLogs.Model.
@@ -51,7 +52,7 @@ namespace Herald.Sinks.AwsCloudWatch;
 /// failing the batch.
 /// </para>
 /// </remarks>
-public sealed class AwsCloudWatchLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class AwsCloudWatchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const int MaxBatchEvents = 10_000;
     private const int MaxEventBytes = 262_144;  // 256 KB single-event ceiling
@@ -109,7 +110,7 @@ public sealed class AwsCloudWatchLogSink : ILogger, IBatchedLogSink, IDisposable
         _autoCreateLogStream = autoCreateLogStream;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch(new[] { logEvent });

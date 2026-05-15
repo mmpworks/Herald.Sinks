@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -19,7 +20,7 @@ namespace Herald.Sinks.Mezmo;
 /// Sink that ships log events to Mezmo (LogDNA) via the public ingest
 /// endpoint. Basic-auth (ingest key as username); HTTP-only.
 /// </summary>
-public sealed class MezmoLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class MezmoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private const string DefaultEndpoint = "https://logs.logdna.com/logs/ingest";
 
@@ -40,7 +41,7 @@ public sealed class MezmoLogSink : ILogger, IBatchedLogSink, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
+    public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
     {

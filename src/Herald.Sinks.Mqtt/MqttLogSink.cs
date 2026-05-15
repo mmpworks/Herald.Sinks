@@ -9,6 +9,7 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Protocol;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -20,7 +21,7 @@ namespace Herald.Sinks.Mqtt;
 /// delivery; bump QoS via the code-first overload for durable IoT
 /// flows.
 /// </summary>
-public sealed class MqttLogSink : ILogger, IDisposable
+public sealed class MqttLogSink : HeraldSinkBase, IDisposable
 {
     private readonly IMqttClient _client;
     private readonly string _topic;
@@ -54,7 +55,7 @@ public sealed class MqttLogSink : ILogger, IDisposable
         _ownsClient = false;
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var message = new MqttApplicationMessageBuilder()

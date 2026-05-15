@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -26,7 +27,7 @@ namespace Herald.Sinks.Bugsnag;
 /// rate-limited by Bugsnag itself.
 /// </para>
 /// </remarks>
-public sealed class BugsnagLogSink : ILogger, IDisposable
+public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable
 {
     private const string DefaultEndpoint = "https://notify.bugsnag.com/";
 
@@ -44,7 +45,7 @@ public sealed class BugsnagLogSink : ILogger, IDisposable
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var body = BuildBody(logEvent);

@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
+using MMP.Herald.Sinks;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -43,7 +44,7 @@ namespace Herald.Sinks.ApplicationInsightsHttp;
 /// end-to-end batching; the sink itself does not buffer.
 /// </para>
 /// </remarks>
-public sealed class ApplicationInsightsLogSink : ILogger, IBatchedLogSink, IDisposable
+public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
 {
     private readonly ApplicationInsightsConnectionString _connection;
     private readonly string? _roleName;
@@ -61,7 +62,7 @@ public sealed class ApplicationInsightsLogSink : ILogger, IBatchedLogSink, IDisp
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
 
-    public void Log(LogEvent logEvent)
+    public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         LogBatch([logEvent]);
