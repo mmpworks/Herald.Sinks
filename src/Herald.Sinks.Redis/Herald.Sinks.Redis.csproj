@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Redis</RootNamespace>
     <AssemblyName>Herald.Sinks.Redis</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Redis</PackageId>
+    <PackageId>Herald.Sinks.Redis</PackageId>
     <Version>1.0.0</Version>
     <Description>Publishes Herald log events as JSON messages to a Redis channel via StackExchange.Redis. Drop-in for Serilog.Sinks.Redis (PubSub).</Description>
     <PackageTags>herald;logging;sink;redis;pubsub;nosql</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" />

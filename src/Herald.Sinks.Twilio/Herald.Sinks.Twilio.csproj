@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Twilio</RootNamespace>
     <AssemblyName>Herald.Sinks.Twilio</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Twilio</PackageId>
+    <PackageId>Herald.Sinks.Twilio</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events as SMS via the Twilio Messages API. HTTP-only — no Twilio SDK.</Description>
     <PackageTags>herald;logging;sink;twilio;sms;alerting</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
   </ItemGroup>

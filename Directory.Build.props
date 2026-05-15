@@ -20,6 +20,16 @@
 
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!--
+      Version of Herald.OSS (the published NuGet package for Herald.Core)
+      that every sink in this repo depends on. Pinned here so a single
+      edit moves the whole sink ecosystem to a new Core release. Standalone
+      clones of Herald.Sinks (where Modules/Core/ isn't a sibling) restore
+      Herald.OSS from nuget.org at this version; the umbrella-monorepo
+      build uses the live ProjectReference instead and ignores the pin.
+    -->
+    <HeraldCoreVersion>1.0.0</HeraldCoreVersion>
   </PropertyGroup>
 
   <!--
@@ -135,5 +145,53 @@
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+
+  <!--
+    Herald.OSS dependency — every sink references the Herald.Core
+    library. Two resolution paths, picked automatically based on
+    whether this clone sits inside the umbrella monorepo:
+
+      * Monorepo  — Modules/Core/Herald.Core.csproj exists as a
+                    sibling. ProjectReference pulls the live source
+                    so a Core edit shows up immediately in every
+                    sink build. Private="false" + ExcludeAssets="runtime"
+                    keep Core out of the sink plugin's bin\, because
+                    Herald.Server / the host already loads Core and
+                    the plugin context resolves to that copy via
+                    AssemblyDependencyResolver.
+      * Standalone — Modules/Core/ does not exist (e.g. a fresh
+                    `git clone https://github.com/mmpworks/Herald.Sinks`
+                    outside the umbrella). PackageReference to
+                    Herald.OSS on nuget.org pinned at the
+                    HeraldCoreVersion declared above.
+
+    Per-sink csprojs do NOT declare a Herald.Core reference of their
+    own — the right one comes from here. A sink that needs to override
+    (e.g. a private-fork experiment pinning a custom Core branch)
+    sets <HeraldSinkCustomCoreRef>true</HeraldSinkCustomCoreRef> in
+    its csproj and supplies its own reference; both ItemGroups below
+    short-circuit on that flag.
+  -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">
+    <!--
+      Standalone PackageReference: NO PrivateAssets / ExcludeAssets.
+      A consumer doing `dotnet add package Herald.Sinks.Datadog` to a
+      plain ASP.NET Core or worker app expects Herald.OSS.dll to flow
+      into their bin\ alongside the sink — otherwise the first sink
+      registration throws FileNotFoundException at runtime. The
+      monorepo branch above sets Private="false" + ExcludeAssets="runtime"
+      because plugins live inside an AssemblyLoadContext where the host
+      already loaded Core; that's a plugin-packaging optimisation, not
+      a NuGet-distribution policy.
+    -->
+    <PackageReference Include="Herald.OSS" Version="$(HeraldCoreVersion)" />
   </ItemGroup>
 </Project>

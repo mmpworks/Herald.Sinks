@@ -108,6 +108,7 @@
     <Project Path="tests/Herald.Sinks.Bugsnag.Tests/Herald.Sinks.Bugsnag.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Cassandra.Tests/Herald.Sinks.Cassandra.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.ClickHouse.Tests/Herald.Sinks.ClickHouse.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Contract.Tests/Herald.Sinks.Contract.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Coralogix.Tests/Herald.Sinks.Coralogix.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Couchbase.Tests/Herald.Sinks.Couchbase.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Datadog.Tests/Herald.Sinks.Datadog.Tests.csproj" />

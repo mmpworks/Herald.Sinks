@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.SignalFx</RootNamespace>
     <AssemblyName>Herald.Sinks.SignalFx</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.SignalFx</PackageId>
+    <PackageId>Herald.Sinks.SignalFx</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to SignalFx / Splunk Observability Cloud's HTTP log intake. Supports realm-based routing and self-hosted endpoint overrides.</Description>
     <PackageTags>herald;logging;sink;signalfx;splunk;observability</PackageTags>
@@ -14,8 +14,7 @@
     <!-- Herald.Core lives as a sibling submodule under Modules/Core. The
          sink depends on Core's contracts (ILogSinkProvider, LogEvent,
          ILogger) and nothing else. -->
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
+</ItemGroup>
 
   <ItemGroup>
     <!-- CAPABILITY.yaml is the Dashboard + product-sheet contract. Pack

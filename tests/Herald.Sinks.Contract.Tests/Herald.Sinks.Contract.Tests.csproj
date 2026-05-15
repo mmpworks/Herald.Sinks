@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+      Contract tests for the Herald.Sinks naming + structure invariants.
+      The tests in this project don't exercise sink behaviour — they read
+      every csproj and CAPABILITY.yaml on disk and assert the repo-wide
+      shape (PackageId == AssemblyName, no MMP. prefix, package_id field
+      matches csproj, etc.). Catches a regression the next time someone
+      copies a sink template and forgets to align the names.
+
+      Reads filesystem only; no Herald runtime needed, so no
+      Herald.Core/Herald.OSS reference. Single TFM is fine — the
+      contract is invariant across targets.
+    -->
+    <RootNamespace>Herald.Sinks.Contract.Tests</RootNamespace>
+    <!-- Inherit the multi-target list from Directory.Build.props (net8/9/10)
+         like every other test project here. Single-framework override
+         interferes with xunit.runner.visualstudio's test-adapter copy task. -->
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+      Contract tests read csproj + yaml files only; no Herald runtime
+      types are touched. Skip the Directory.Build.props injection of
+      Herald.OSS (the conditional ProjectReference / PackageReference
+      pair) so this project doesn't carry a runtime dep it never uses.
+    -->
+    <HeraldSinkCustomCoreRef>true</HeraldSinkCustomCoreRef>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="YamlDotNet" />
+  </ItemGroup>
+</Project>

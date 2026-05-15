@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Mqtt</RootNamespace>
     <AssemblyName>Herald.Sinks.Mqtt</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Mqtt</PackageId>
+    <PackageId>Herald.Sinks.Mqtt</PackageId>
     <Version>1.0.0</Version>
     <Description>Publishes Herald log events to an MQTT broker via MQTTnet. IoT pub/sub for HiveMQ / Mosquitto / EMQX.</Description>
     <PackageTags>herald;logging;sink;mqtt;iot</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MQTTnet" />
   </ItemGroup>

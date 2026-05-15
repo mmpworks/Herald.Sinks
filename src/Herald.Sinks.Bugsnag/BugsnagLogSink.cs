@@ -72,7 +72,7 @@ public sealed class BugsnagLogSink : ILogger, IDisposable
             writer.WriteStartObject("notifier");
             writer.WriteString("name", "Herald.Sinks.Bugsnag");
             writer.WriteString("version", "1.0.0");
-            writer.WriteString("url", "https://github.com/smuchow1962/Herald.Sinks");
+            writer.WriteString("url", "https://github.com/mmpworks/Herald.Sinks");
             writer.WriteEndObject();
 
             writer.WriteStartArray("events");

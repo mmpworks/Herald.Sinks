@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AzureServiceBus</RootNamespace>
     <AssemblyName>Herald.Sinks.AzureServiceBus</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.AzureServiceBus</PackageId>
+    <PackageId>Herald.Sinks.AzureServiceBus</PackageId>
     <Version>1.0.0</Version>
     <Description>SendMessage Herald log events into an Azure Service Bus queue or topic via Azure.Messaging.ServiceBus.</Description>
     <PackageTags>herald;logging;sink;azure;service-bus;queue</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Messaging.ServiceBus" />
   </ItemGroup>

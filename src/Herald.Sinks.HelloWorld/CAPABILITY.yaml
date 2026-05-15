@@ -1,7 +1,7 @@
 # Copyright (c) 2026 MMPWorks LLC
 # Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 name: Herald.Sinks.HelloWorld
-package_id: MMP.Herald.Sinks.HelloWorld
+package_id: Herald.Sinks.HelloWorld
 version: 1.0.0
 configContract: 2
 formSchema: configuration-hello_world.mmpform
@@ -16,7 +16,7 @@ purpose: >
   parameters because the sink does nothing.
 vendor:
   name: MMP
-  url: https://github.com/smuchow1962/Herald.Sinks
+  url: https://github.com/mmpworks/Herald.Sinks
 ships:
   - HelloWorldLogSinkProvider
   - HelloWorldLogSink
@@ -30,7 +30,7 @@ config:
   host: "Ignored."
 
 capabilities:
-  - Discoverable through Herald.ManagementApi's plugin loader
+  - Discoverable through Herald's plugin host
   - Embedded CAPABILITY.yaml for dashboard form rendering
   - Counts received events for debugger inspection
 limitations:
@@ -44,7 +44,7 @@ test_coverage: none
 product_pack: []
 maintenance:
   level: test-only
-  owner: smuchow1962
+  owner: mmpworks
   last_audit: 2026-04-26
 changelog:
   - version: 1.0.0

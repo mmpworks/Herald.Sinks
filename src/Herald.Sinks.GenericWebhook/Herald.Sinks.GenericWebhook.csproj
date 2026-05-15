@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.GenericWebhook</RootNamespace>
     <AssemblyName>Herald.Sinks.GenericWebhook</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.GenericWebhook</PackageId>
+    <PackageId>Herald.Sinks.GenericWebhook</PackageId>
     <Version>1.0.0</Version>
     <Description>Generic HTTP webhook sink with optional rules engine. POSTs formatted log events to any endpoint; rules engine supports cooldown, message-pattern matching, and per-rule payload templates modelled on PagerDuty / Opsgenie / Datadog.</Description>
     <PackageTags>herald;logging;sink;webhook;alerting;rules-engine</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

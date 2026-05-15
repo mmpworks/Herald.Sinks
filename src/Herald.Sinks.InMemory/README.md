@@ -36,7 +36,7 @@ Sink kind: `in_memory` (the identifier the Dashboard form and JSON config use to
 
 ## Vendor
 
-Herald — https://github.com/smuchow1962/Herald
+Herald — https://github.com/mmpworks/Herald
 
 ## Configuration
 

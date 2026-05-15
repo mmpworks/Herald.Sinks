@@ -4,7 +4,7 @@
 # CAPABILITY.yaml — Herald.Sinks.PostgreSQL
 
 name: Herald.Sinks.PostgreSQL
-package_id: MMP.Herald.Sinks.PostgreSQL
+package_id: Herald.Sinks.PostgreSQL
 version: 1.0.0
 configContract: 2
 formSchema: configuration-postgresql.mmpform
@@ -66,7 +66,7 @@ product_pack: []
 
 maintenance:
   level: active
-  owner: smuchow1962
+  owner: mmpworks
   last_audit: 2026-04-24
 
 changelog:

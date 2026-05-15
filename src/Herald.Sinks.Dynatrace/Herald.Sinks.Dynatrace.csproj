@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Dynatrace</RootNamespace>
     <AssemblyName>Herald.Sinks.Dynatrace</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Dynatrace</PackageId>
+    <PackageId>Herald.Sinks.Dynatrace</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to Dynatrace Generic Log Ingest API. Drop-in for Serilog.Sinks.Dynatrace. No SDK dependency — pure HTTP with API-Token authentication.</Description>
     <PackageTags>herald;logging;sink;dynatrace;observability</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

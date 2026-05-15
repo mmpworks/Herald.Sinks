@@ -1,0 +1,46 @@
+# DCO check — verifies every commit in a PR carries a `Signed-off-by:`
+# trailer that matches the commit author's email.
+#
+# The Developer Certificate of Origin (DCO) is Herald.Sinks's contribution
+# gate. It's lighter weight than a Contributor License Agreement: contributors
+# just append `Signed-off-by: Real Name <email@example.com>` to each commit
+# message, certifying that they have the right to submit the code under the
+# project's Apache 2.0 license. The canonical DCO 1.1 text lives in the
+# repo-root /DCO file.
+#
+# Contributor workflow:
+#   git commit -s -m "your message"     # the -s flag adds the sign-off line
+#   git push
+#
+# Why DCO and not a CLA for Herald.Sinks:
+#   * Herald.Sinks ships under Apache 2.0 and is expected to stay under
+#     Apache 2.0. No future license-family change is planned, so the
+#     sublicense rights a CLA grants aren't load-bearing here.
+#   * Sinks are a high-throughput contribution surface — new destinations,
+#     bug fixes, version bumps. Lower contribution friction matches the
+#     ecosystem shape.
+#   * Herald.OSS itself uses a CLA because it sits closer to Core and
+#     license-family flexibility matters more there. Different gate per repo
+#     is the right answer; we're not forcing one tool on both.
+
+name: DCO
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  dco-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check DCO sign-off
+        uses: tim-actions/dco@2fd0504dc0d27b33f542867c300c84172288b620 # v1.1.0
+        with:
+          # Tell the action which commits to inspect: every commit between
+          # the PR's base and head. The action fails the check if any
+          # commit lacks a Signed-off-by line, or if the email on the
+          # sign-off doesn't match the commit author email.
+          commits: ${{ github.event.pull_request.commits }}

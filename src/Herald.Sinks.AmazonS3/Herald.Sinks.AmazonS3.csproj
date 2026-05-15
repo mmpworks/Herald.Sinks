@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AmazonS3</RootNamespace>
     <AssemblyName>Herald.Sinks.AmazonS3</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.AmazonS3</PackageId>
+    <PackageId>Herald.Sinks.AmazonS3</PackageId>
     <Version>1.0.0</Version>
     <Description>Uploads Herald log events as NDJSON objects to an Amazon S3 bucket. Drop-in for Serilog.Sinks.AmazonS3. Periodic batch upload via IBatchedLogSink.</Description>
     <PackageTags>herald;logging;sink;aws;s3</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" />
   </ItemGroup>

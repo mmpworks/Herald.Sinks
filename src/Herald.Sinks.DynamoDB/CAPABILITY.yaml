@@ -1,7 +1,7 @@
 # Copyright (c) 2026 MMPWorks LLC
 # Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 name: Herald.Sinks.DynamoDB
-package_id: MMP.Herald.Sinks.DynamoDB
+package_id: Herald.Sinks.DynamoDB
 version: 1.0.0
 configContract: 2
 formSchema: configuration-dynamodb.mmpform
@@ -45,7 +45,7 @@ test_coverage: tests/Herald.Sinks.DynamoDB.Tests/
 product_pack: []
 maintenance:
   level: active
-  owner: smuchow1962
+  owner: mmpworks
   last_audit: 2026-04-25
 changelog:
   - version: 1.0.0

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.InMemory</RootNamespace>
     <AssemblyName>Herald.Sinks.InMemory</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.InMemory</PackageId>
+    <PackageId>Herald.Sinks.InMemory</PackageId>
     <Version>1.0.0</Version>
     <Description>Retains Herald log events in-memory for assertion-based testing. The sink exposes a snapshot list and a Clear() call for per-test isolation.</Description>
     <PackageTags>herald;logging;sink;testing;in-memory</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

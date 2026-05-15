@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.UnityConsole</RootNamespace>
     <AssemblyName>Herald.Sinks.UnityConsole</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.UnityConsole</PackageId>
+    <PackageId>Herald.Sinks.UnityConsole</PackageId>
     <Version>1.0.0</Version>
     <Description>Routes Herald log events to Unity's console (Debug.Log / Debug.LogWarning / Debug.LogError). Takes delegates in the constructor — consumer wires UnityEngine.Debug methods directly — so the package itself has no Unity reference and stays trim-clean for IL2CPP / AOT publishes.</Description>
     <PackageTags>herald;logging;sink;unity;unity3d;game-development;console</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

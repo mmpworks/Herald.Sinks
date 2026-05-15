@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.MicrosoftTeams</RootNamespace>
     <AssemblyName>Herald.Sinks.MicrosoftTeams</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.MicrosoftTeams</PackageId>
+    <PackageId>Herald.Sinks.MicrosoftTeams</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to a Microsoft Teams channel via an incoming webhook. Drop-in for Serilog.Sinks.MicrosoftTeams.Alternative. Adaptive Card format.</Description>
     <PackageTags>herald;logging;sink;microsoft-teams;webhook;alerting</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
   </ItemGroup>

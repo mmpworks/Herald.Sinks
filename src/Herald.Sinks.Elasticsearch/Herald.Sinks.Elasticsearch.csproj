@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Elasticsearch</RootNamespace>
     <AssemblyName>Herald.Sinks.Elasticsearch</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Elasticsearch</PackageId>
+    <PackageId>Herald.Sinks.Elasticsearch</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events to Elasticsearch as JSON documents via the Bulk API. Uses time-based indexes (prefix-yyyy.MM.dd) and emits exceptions as a typed sub-object for Kibana's exception-tracking UI.</Description>
     <PackageTags>herald;logging;sink;elasticsearch;bulk-api</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

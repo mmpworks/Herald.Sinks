@@ -4,7 +4,7 @@
 # CAPABILITY.yaml — Herald.Sinks.GoogleCloudLogging
 
 name: Herald.Sinks.GoogleCloudLogging
-package_id: MMP.Herald.Sinks.GoogleCloudLogging
+package_id: Herald.Sinks.GoogleCloudLogging
 version: 1.0.0
 configContract: 2
 formSchema: configuration-gcp_logging.mmpform
@@ -69,7 +69,7 @@ product_pack: []
 
 maintenance:
   level: active
-  owner: smuchow1962
+  owner: mmpworks
   last_audit: 2026-04-24
 
 changelog:

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.MongoDB</RootNamespace>
     <AssemblyName>Herald.Sinks.MongoDB</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.MongoDB</PackageId>
+    <PackageId>Herald.Sinks.MongoDB</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as BSON documents into a MongoDB collection. Drop-in for Serilog.Sinks.MongoDB. Single insert on Log, bulk insert on IBatchedLogSink.</Description>
     <PackageTags>herald;logging;sink;mongodb;nosql</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" />

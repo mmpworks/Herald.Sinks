@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Syslog</RootNamespace>
     <AssemblyName>Herald.Sinks.Syslog</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Syslog</PackageId>
+    <PackageId>Herald.Sinks.Syslog</PackageId>
     <Version>1.0.0</Version>
     <Description>Emits Herald log events as RFC 3164 or RFC 5424 syslog messages over UDP or TCP — drop-in for Serilog.Sinks.SyslogMessages.</Description>
     <PackageTags>herald;logging;sink;syslog;rfc3164;rfc5424</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

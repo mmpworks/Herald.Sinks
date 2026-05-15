@@ -1,7 +1,7 @@
 # Copyright (c) 2026 MMPWorks LLC
 # Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 name: Herald.Sinks.AzureLogAnalyticsDcr
-package_id: MMP.Herald.Sinks.AzureLogAnalyticsDcr
+package_id: Herald.Sinks.AzureLogAnalyticsDcr
 version: 1.0.0
 configContract: 2
 formSchema: configuration-azure_log_analytics_dcr.mmpform
@@ -53,7 +53,7 @@ test_coverage: tests/Herald.Sinks.AzureLogAnalyticsDcr.Tests/
 product_pack: []
 maintenance:
   level: active
-  owner: smuchow1962
+  owner: mmpworks
   last_audit: 2026-04-24
 changelog:
   - version: 1.0.0

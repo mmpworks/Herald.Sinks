@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AzureCosmosDB</RootNamespace>
     <AssemblyName>Herald.Sinks.AzureCosmosDB</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.AzureCosmosDB</PackageId>
+    <PackageId>Herald.Sinks.AzureCosmosDB</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as documents in an Azure Cosmos DB container via the modern v3 SDK. Drop-in for Serilog.Sinks.AzureCosmosDB.</Description>
     <PackageTags>herald;logging;sink;azure;cosmosdb;nosql</PackageTags>
@@ -15,9 +15,6 @@
          its own internal serializer when the check is bypassed. -->
     <AzureCosmosDisableNewtonsoftJsonCheck>true</AzureCosmosDisableNewtonsoftJsonCheck>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos" />
   </ItemGroup>

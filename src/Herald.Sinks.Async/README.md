@@ -153,7 +153,7 @@ exit while events are still in the queue.
 | One drop policy (block or drop) | Two explicit strategies — `DropWrite` and `Wait`, configurable timeout |
 | Silent drops | Every drop flows to `ILogFailureSink` with a reason (`QueueFull`, `SyncWaitTimeout`) |
 | No easy way to read queue depth | `AsyncLogger.QueueDepth` property exposed via `PipelineAccessor` — healthchecks and dashboards read it directly |
-| Async wrapper is opaque | The pipeline step plays with the kernel fast path; kernel-eligible sinks still get the zero-allocation dispatch below the async boundary |
+| Async wrapper is opaque | Wrapped sinks keep Herald's zero-allocation contract — per-event cost is the same as a non-async sink |
 | Separate bounded buffer per wrapped sink | Single bounded queue per pipeline — one memory bound to reason about |
 
 **Bonus:** `WithAsyncLogging` pairs with `WithDeferredRendering`.

@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.GoogleCloudPubSub</RootNamespace>
     <AssemblyName>Herald.Sinks.GoogleCloudPubSub</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.GoogleCloudPubSub</PackageId>
+    <PackageId>Herald.Sinks.GoogleCloudPubSub</PackageId>
     <Version>1.0.0</Version>
     <Description>Publish Herald log events into a Google Cloud Pub/Sub topic via Google.Cloud.PubSub.V1.</Description>
     <PackageTags>herald;logging;sink;gcp;pubsub;queue</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Cloud.PubSub.V1" />
   </ItemGroup>

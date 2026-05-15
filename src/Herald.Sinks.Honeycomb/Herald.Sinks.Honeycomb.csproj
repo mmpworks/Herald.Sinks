@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Honeycomb</RootNamespace>
     <AssemblyName>Herald.Sinks.Honeycomb</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Honeycomb</PackageId>
+    <PackageId>Herald.Sinks.Honeycomb</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to Honeycomb's batch ingest endpoint. Maps events onto Honeycomb's flat data-object shape with per-event sample-rate support.</Description>
     <PackageTags>herald;logging;sink;honeycomb;observability</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

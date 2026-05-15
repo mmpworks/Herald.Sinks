@@ -1,7 +1,7 @@
 # Copyright (c) 2026 MMPWorks LLC
 # Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 name: Herald.Sinks.Axiom
-package_id: MMP.Herald.Sinks.Axiom
+package_id: Herald.Sinks.Axiom
 version: 1.0.0
 configContract: 2
 formSchema: configuration-axiom.mmpform
@@ -37,7 +37,7 @@ thread_safety: HttpClient is thread-safe per BCL contract.
 test_coverage: tests/Herald.Sinks.Axiom.Tests/
 maintenance:
   level: active
-  owner: smuchow1962
+  owner: mmpworks
   last_audit: 2026-04-25
 changelog:
   - version: 1.0.0

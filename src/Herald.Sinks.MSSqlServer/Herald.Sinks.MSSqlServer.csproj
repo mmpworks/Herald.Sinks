@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.MSSqlServer</RootNamespace>
     <AssemblyName>Herald.Sinks.MSSqlServer</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.MSSqlServer</PackageId>
+    <PackageId>Herald.Sinks.MSSqlServer</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as rows in a Microsoft SQL Server or Azure SQL table. Drop-in for Serilog.Sinks.MSSqlServer. Parameterized INSERT on single writes, SqlBulkCopy on batches, optional auto-create.</Description>
     <PackageTags>herald;logging;sink;sql-server;mssql;azure-sql</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" />

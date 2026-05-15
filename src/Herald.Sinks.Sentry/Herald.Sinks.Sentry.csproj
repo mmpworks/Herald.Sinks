@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Sentry</RootNamespace>
     <AssemblyName>Herald.Sinks.Sentry</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Sentry</PackageId>
+    <PackageId>Herald.Sinks.Sentry</PackageId>
     <Version>1.0.0</Version>
     <Description>Forwards Herald log events to Sentry's store endpoint as structured events. Parses the standard DSN format and emits exceptions, tags, and extras in the shape Sentry's UI expects.</Description>
     <PackageTags>herald;logging;sink;sentry;errors</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />

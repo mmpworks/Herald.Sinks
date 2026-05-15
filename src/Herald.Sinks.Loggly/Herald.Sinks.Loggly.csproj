@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Loggly</RootNamespace>
     <AssemblyName>Herald.Sinks.Loggly</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Loggly</PackageId>
+    <PackageId>Herald.Sinks.Loggly</PackageId>
     <Version>1.0.0</Version>
     <Description>Ships Herald log events to Loggly's bulk HTTP endpoint. Drop-in for Serilog.Sinks.Loggly. NDJSON body, token in URL.</Description>
     <PackageTags>herald;logging;sink;loggly</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
   </ItemGroup>

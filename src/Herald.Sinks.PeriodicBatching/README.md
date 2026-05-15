@@ -134,10 +134,9 @@ tool. Pick based on your visibility requirement, not a default.
 | Hard to add a new batched sink — must inherit the base class, handle the abstract `EmitBatchAsync` method, wire the disposal correctly | Add a sink that implements `IBatchedLogSink`, that's it |
 | Batching state invisible from the outside | Pipeline introspection exposes current batch size, queue depth, and flush rate via `PipelineAccessor` |
 
-**Bonus:** Herald's batching lives below the kernel fast path. When
-the pipeline is kernel-eligible, events flow into the batch buffer
-without going through the full decorator chain first — meaningfully
-cheaper per event than Serilog's per-sink wrapper approach.
+**Bonus:** Herald's batching is a single pipeline step, not a
+per-sink wrapper. Per-event cost is materially lower than wrapping
+each batched sink individually.
 
 ---
 

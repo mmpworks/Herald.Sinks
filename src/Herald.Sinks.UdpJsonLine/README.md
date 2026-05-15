@@ -37,7 +37,7 @@ Sink kind: `udp_json_line` (the identifier the Dashboard form and JSON config us
 
 ## Vendor
 
-Herald — https://github.com/smuchow1962/Herald.Sinks
+Herald — https://github.com/mmpworks/Herald.Sinks
 
 ## Configuration
 

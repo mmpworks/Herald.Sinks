@@ -39,7 +39,15 @@ DOCS_DIR = REPO_ROOT / "docs"
 # Minimal set of required top-level keys every CAPABILITY.yaml must
 # carry. The full schema — every field, every type — lives in
 # CAPABILITY-SCHEMA.md; we enforce the hard-required subset here.
-REQUIRED_KEYS = [
+#
+# Field set depends on `kind`. Sinks (kind: sink) ship a NuGet package
+# and need the operator-facing config / capability fields. Migration
+# guides (kind: migration-guide) point at an existing sink instead of
+# shipping their own; they need the navigation fields but skip the
+# package fields. Pipeline-shape capabilities (kind: async,
+# periodic-batching, in-memory, map) sit between — they're library
+# packages without an operator-facing config form.
+REQUIRED_KEYS_SINK = [
     "name",
     "package_id",
     "version",
@@ -55,6 +63,25 @@ REQUIRED_KEYS = [
     "maintenance",
     "changelog",
 ]
+
+REQUIRED_KEYS_MIGRATION_GUIDE = [
+    "name",
+    "package_id",
+    "version",
+    "kind",
+    "category",
+    "purpose",
+    "herald_api",
+    "guide",
+    "maintenance",
+]
+
+
+def required_keys_for(kind: str | None) -> list[str]:
+    """Pick the validator field-set based on the manifest's `kind`."""
+    if kind == "migration-guide":
+        return REQUIRED_KEYS_MIGRATION_GUIDE
+    return REQUIRED_KEYS_SINK
 
 
 def find_manifests() -> list[Path]:
@@ -86,7 +113,8 @@ def validate_manifest(path: Path) -> list[str]:
         errors.append(f"{path.relative_to(REPO_ROOT)}: top level must be a mapping.")
         return errors
 
-    for key in REQUIRED_KEYS:
+    kind = manifest.get("kind")
+    for key in required_keys_for(kind):
         if key not in manifest:
             errors.append(
                 f"{path.relative_to(REPO_ROOT)}: missing required field `{key}`."
@@ -101,12 +129,15 @@ def validate_manifest(path: Path) -> list[str]:
             f"match the directory name `{expected_dir}`."
         )
 
-    # Sanity: package_id must start with the monorepo prefix.
-    package_id = manifest.get("package_id", "")
-    if package_id and not package_id.startswith("MMP.Herald.Sinks."):
+    # Sanity: package_id must start with the Herald.Sinks. namespace
+    # (post-naming-contract — historical manifests used MMP.Herald.Sinks.).
+    # Migration guides set package_id to null because they don't ship a
+    # NuGet package, so skip the check when the value is null or omitted.
+    package_id = manifest.get("package_id")
+    if package_id and not str(package_id).startswith("Herald.Sinks."):
         errors.append(
             f"{path.relative_to(REPO_ROOT)}: `package_id: {package_id}` must "
-            f"start with `MMP.Herald.Sinks.`."
+            f"start with `Herald.Sinks.`."
         )
 
     return errors

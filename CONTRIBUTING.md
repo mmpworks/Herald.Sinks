@@ -2,6 +2,39 @@
 
 This guide walks through adding a new destination-specific sink. Follow the shape and your sink ships as `MMP.Herald.Sinks.<Name>` on NuGet with no extra wiring.
 
+## License + the DCO
+
+Herald.Sinks ships under the **Apache License, Version 2.0** — see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE). Every contribution you submit is licensed under those same terms.
+
+Contributions are gated by the **Developer Certificate of Origin (DCO)**, version 1.1. The canonical text lives in [`DCO`](DCO) at the repository root. Practically:
+
+- Every commit in your pull request must carry a `Signed-off-by:` trailer.
+- You add the trailer by passing `-s` to `git commit`:
+
+  ```bash
+  git commit -s -m "feat(sink): add MyDestination"
+  # message ends with:
+  # Signed-off-by: Your Name <your.email@example.com>
+  ```
+
+- The email on the sign-off must match the email on the commit author.
+
+The DCO is what the contributor certifies — that you have the right to submit the contribution under Apache 2.0, that the work is yours or you have permission to submit it. It's lighter weight than a Contributor License Agreement and matches the pattern most open ecosystems use for high-volume contribution surfaces. No external signature store, no PAT, no one-time enrollment — just `git commit -s` on every commit.
+
+A GitHub Action runs on every pull request and fails the check if any commit in the PR lacks the sign-off, or if the sign-off email doesn't match the author email. Fix is straightforward:
+
+```bash
+# Re-sign the last commit:
+git commit --amend -s --no-edit
+git push --force-with-lease
+
+# Re-sign every commit on the branch:
+git rebase -i main --exec "git commit --amend --no-edit -s"
+git push --force-with-lease
+```
+
+If you're contributing on behalf of an employer that has IP claims on your work, make sure you have permission to submit under Apache 2.0 before signing.
+
 ## The contract
 
 A sink is two things:
@@ -117,7 +150,7 @@ limitations:
   - No batching today
   - No compression
 
-minimum_edition: Enterprise
+minimum_edition: Community
 aot_compatible: true
 thread_safety: thread-safe, shared HttpClient
 test_coverage: tests/Herald.Sinks.Acme.Tests/AcmeLogSinkTests.cs (8 tests)
@@ -190,7 +223,7 @@ You bump your sink's version by editing both the csproj `<Version>` and the CAPA
 
 ## Getting help
 
-- Open an issue on the Herald main repo (`smuchow1962/Herald`) with the `sinks` label.
+- Open an issue on the Herald main repo (`mmpworks/Herald`) with the `sinks` label.
 - For destination-specific API questions (rate limits, field semantics, schema) — ask the destination's vendor first, then file an issue here if Herald's sink shape needs to adapt.
 
 ## License

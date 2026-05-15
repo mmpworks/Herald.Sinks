@@ -39,7 +39,7 @@ Sink kind: `webhook` (the identifier the Dashboard form and JSON config use to r
 
 ## Vendor
 
-Herald — https://github.com/smuchow1962/Herald.Sinks
+Herald — https://github.com/mmpworks/Herald.Sinks
 
 ## Configuration
 

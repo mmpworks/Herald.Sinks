@@ -16,7 +16,7 @@ Sink kind: `hello_world` (the identifier the Dashboard form and JSON config use 
 
 ## Capabilities
 
-- Discoverable through Herald.ManagementApi's plugin loader
+- Discoverable through Herald's plugin host
 - Embedded CAPABILITY.yaml for dashboard form rendering
 - Counts received events for debugger inspection
 
@@ -35,7 +35,7 @@ Sink kind: `hello_world` (the identifier the Dashboard form and JSON config use 
 
 ## Vendor
 
-MMP — https://github.com/smuchow1962/Herald.Sinks
+MMP — https://github.com/mmpworks/Herald.Sinks
 
 ## Configuration
 

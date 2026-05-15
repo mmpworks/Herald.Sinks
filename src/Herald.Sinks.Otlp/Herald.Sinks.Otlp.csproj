@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Otlp</RootNamespace>
     <AssemblyName>Herald.Sinks.Otlp</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Otlp</PackageId>
+    <PackageId>Herald.Sinks.Otlp</PackageId>
     <Version>1.0.0</Version>
     <Description>Herald sinks for the OpenTelemetry Logs Protocol. Ships three sinks (OTLP JSON, OTLP protobuf, length-delimited protobuf file) that share a hand-rolled protobuf writer so the package stays AOT-clean — no generated messages, no reflection, no IMessage codegen.</Description>
     <PackageTags>herald;logging;sink;otlp;opentelemetry;protobuf</PackageTags>
@@ -10,9 +10,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <!-- Google.Protobuf's CodedOutputStream is the only piece we use. No

@@ -2,16 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Telegram</RootNamespace>
     <AssemblyName>Herald.Sinks.Telegram</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Telegram</PackageId>
+    <PackageId>Herald.Sinks.Telegram</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events to a Telegram chat via the Bot API. HTTP-only.</Description>
     <PackageTags>herald;logging;sink;telegram;chat</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
   </ItemGroup>
