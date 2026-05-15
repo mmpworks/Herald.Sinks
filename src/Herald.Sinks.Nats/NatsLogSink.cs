@@ -19,7 +19,7 @@ namespace Herald.Sinks.Nats;
 /// via NATS.Client.Core (the modern v2 line). Connects on construction
 /// and shares the connection across all calls.
 /// </summary>
-public sealed class NatsLogSink : HeraldSinkBase, IAsyncDisposable
+public sealed class NatsLogSink : HeraldSinkBase, IAsyncDisposable, INetworkSink
 {
     private readonly NatsConnection _connection;
     private readonly string _subject;

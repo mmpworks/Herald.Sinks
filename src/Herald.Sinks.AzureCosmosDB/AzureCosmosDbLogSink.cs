@@ -38,7 +38,7 @@ namespace Herald.Sinks.AzureCosmosDB;
 /// 1.0 — follow-up feature.
 /// </para>
 /// </remarks>
-public sealed class AzureCosmosDbLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AzureCosmosDbLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly CosmosClient _client;
     private readonly bool _ownsClient;

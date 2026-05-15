@@ -19,7 +19,7 @@ namespace Herald.Sinks.Coralogix;
 /// Sink that ships log events to Coralogix via the bulk-logs ingest
 /// endpoint. Private-key auth in the body envelope; HTTP-only.
 /// </summary>
-public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://ingress.coralogix.com/api/v1/logs";
 

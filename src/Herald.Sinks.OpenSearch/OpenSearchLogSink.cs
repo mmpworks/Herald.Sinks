@@ -39,7 +39,7 @@ namespace Herald.Sinks.OpenSearch;
 /// not embed AWS SigV4 logic.
 /// </para>
 /// </remarks>
-public sealed class OpenSearchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class OpenSearchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _bulkEndpoint;
     private readonly string _indexNameTemplate;

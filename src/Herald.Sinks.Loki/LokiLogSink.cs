@@ -54,7 +54,7 @@ namespace Herald.Sinks.Loki;
 /// can leave both unset.
 /// </para>
 /// </remarks>
-public sealed class LokiLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class LokiLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     public const string PushPathSuffix = "loki/api/v1/push";
 

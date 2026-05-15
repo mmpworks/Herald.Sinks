@@ -35,7 +35,7 @@ namespace Herald.Sinks.RavenDB;
 /// call opens and disposes its own session.
 /// </para>
 /// </remarks>
-public sealed class RavenDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class RavenDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly IDocumentStore _store;
     private readonly bool _ownsStore;

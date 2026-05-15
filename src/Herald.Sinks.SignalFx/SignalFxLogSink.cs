@@ -44,7 +44,7 @@ namespace Herald.Sinks.SignalFx;
 /// same URL shape; pass the full URL to override the public realm host.
 /// </para>
 /// </remarks>
-public sealed class SignalFxLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class SignalFxLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     public const string PathSuffix = "v2/log";
 

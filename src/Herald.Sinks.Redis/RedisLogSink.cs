@@ -39,7 +39,7 @@ namespace Herald.Sinks.Redis;
 /// share the multiplexer's connection pool.
 /// </para>
 /// </remarks>
-public sealed class RedisLogSink : HeraldSinkBase, IDisposable
+public sealed class RedisLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly ISubscriber _subscriber;
     private readonly RedisChannel _channel;

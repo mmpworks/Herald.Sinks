@@ -51,7 +51,7 @@ namespace Herald.Sinks.Sentry;
 /// different host — pass the full DSN and everything else works as-is.
 /// </para>
 /// </remarks>
-public sealed class SentryLogSink : HeraldSinkBase, IDisposable
+public sealed class SentryLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly Uri _storeEndpoint;
     private readonly string _authHeader;

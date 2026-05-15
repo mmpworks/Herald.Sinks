@@ -42,7 +42,7 @@ namespace Herald.Sinks.RabbitMQ;
 /// events to every bound queue.
 /// </para>
 /// </remarks>
-public sealed class RabbitMQLogSink : HeraldSinkBase, IDisposable
+public sealed class RabbitMQLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly string _exchange;
     private readonly string _routingKey;

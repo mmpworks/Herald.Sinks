@@ -26,7 +26,7 @@ namespace Herald.Sinks.BigQuery;
 ///   <item>template STRING NULLABLE</item>
 /// </list>
 /// </remarks>
-public sealed class BigQueryLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class BigQueryLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly BigQueryClient _client;
     private readonly string _datasetId;

@@ -38,7 +38,7 @@ namespace Herald.Sinks.AzureBlobStorage;
 /// tail prevents collisions under concurrent flushes.
 /// </para>
 /// </remarks>
-public sealed class AzureBlobStorageLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class AzureBlobStorageLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly BlobContainerClient _container;
     private readonly string _keyPrefix;

@@ -26,7 +26,7 @@ namespace Herald.Sinks.NewRelicLogs;
 /// Default endpoint is the US region (<c>log-api.newrelic.com</c>).
 /// EU accounts must override with <c>log-api.eu.newrelic.com</c>.
 /// </remarks>
-public sealed class NewRelicLogsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class NewRelicLogsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly string _licenseKey;

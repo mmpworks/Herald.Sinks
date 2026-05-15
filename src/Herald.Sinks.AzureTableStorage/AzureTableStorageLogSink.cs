@@ -81,7 +81,7 @@ public enum AzureTablePartitionKeyStrategy
 /// (full caller control).
 /// </para>
 /// </remarks>
-public sealed class AzureTableStorageLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class AzureTableStorageLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private const string DefaultFixedPartitionKey = "logs";
 

@@ -38,7 +38,7 @@ namespace Herald.Sinks.DynamoDB;
 /// call; the sink chunks larger batches automatically.
 /// </para>
 /// </remarks>
-public sealed class DynamoDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class DynamoDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const int BatchWriteLimit = 25;
 

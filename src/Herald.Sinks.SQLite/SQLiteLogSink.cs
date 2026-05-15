@@ -40,7 +40,7 @@ namespace Herald.Sinks.SQLite;
 /// step).
 /// </para>
 /// </remarks>
-public sealed class SQLiteLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class SQLiteLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly SqliteConnection _connection;
     private readonly string _tableName;

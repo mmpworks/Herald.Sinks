@@ -66,7 +66,7 @@ namespace Herald.Sinks.PagerDuty;
 /// reaching this sink, but the mapping keeps the payload valid.
 /// </para>
 /// </remarks>
-public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable
+public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     public const string EnqueueEndpoint = "https://events.pagerduty.com/v2/enqueue";
 

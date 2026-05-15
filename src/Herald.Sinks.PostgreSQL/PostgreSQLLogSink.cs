@@ -39,7 +39,7 @@ namespace Herald.Sinks.PostgreSQL;
 /// concurrency.
 /// </para>
 /// </remarks>
-public sealed class PostgreSQLLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class PostgreSQLLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly string _connectionString;
     private readonly string _schemaName;

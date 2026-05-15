@@ -46,7 +46,7 @@ namespace Herald.Sinks.GoogleCloudLogging;
 /// colour-codes consistently.
 /// </para>
 /// </remarks>
-public sealed class GoogleCloudLoggingSink : HeraldSinkBase, IBatchedLogSink
+public sealed class GoogleCloudLoggingSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly LoggingServiceV2Client _client;
     private readonly LogName _logName;

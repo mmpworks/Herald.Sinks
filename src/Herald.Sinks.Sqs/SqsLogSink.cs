@@ -25,7 +25,7 @@ namespace Herald.Sinks.Sqs;
 /// SQS SendMessageBatch caps at 10 messages per call. The sink chunks
 /// larger batches into 10-message slices automatically.
 /// </remarks>
-public sealed class SqsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class SqsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const int SendBatchLimit = 10;
 

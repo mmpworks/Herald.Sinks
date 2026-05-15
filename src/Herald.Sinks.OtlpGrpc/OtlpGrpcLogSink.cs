@@ -42,7 +42,7 @@ namespace Herald.Sinks.OtlpGrpc;
 /// concurrent <c>Log</c> / <c>LogBatch</c> calls share the channel.
 /// </para>
 /// </remarks>
-public sealed class OtlpGrpcLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class OtlpGrpcLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string ServiceName = "opentelemetry.proto.collector.logs.v1.LogsService";
     private const string MethodName = "Export";

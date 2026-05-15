@@ -38,7 +38,7 @@ namespace Herald.Sinks.Dynatrace;
 /// still worth a soak test.
 /// </para>
 /// </remarks>
-public sealed class DynatraceLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class DynatraceLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly string _apiToken;

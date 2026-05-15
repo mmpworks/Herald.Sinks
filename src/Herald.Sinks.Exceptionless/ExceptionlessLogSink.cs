@@ -23,7 +23,7 @@ namespace Herald.Sinks.Exceptionless;
 /// error-tracking platform. Drop-in for Serilog.Sinks.Exceptionless.
 /// Pure HTTP — no Exceptionless SDK dependency.
 /// </summary>
-public sealed class ExceptionlessLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class ExceptionlessLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly string _apiKey;

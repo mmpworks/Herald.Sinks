@@ -34,7 +34,7 @@ namespace Herald.Sinks.ApplicationInsightsSdk;
 /// pass <c>InstrumentationKey={key}</c>.
 /// </para>
 /// </remarks>
-public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly TelemetryClient _client;
     private readonly TelemetryConfiguration? _ownedConfig;

@@ -21,7 +21,7 @@ namespace Herald.Sinks.Otlp;
 /// The HttpClient is pooled internally (SocketsHttpHandler manages connection reuse).
 /// If the caller provides an HttpClient, the sink does not own it and will not dispose it.
 /// </summary>
-public sealed class OtlpProtobufLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class OtlpProtobufLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly OtlpProtobufLogSerializer _serializer;

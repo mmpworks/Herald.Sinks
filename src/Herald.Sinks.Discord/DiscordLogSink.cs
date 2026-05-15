@@ -19,7 +19,7 @@ namespace Herald.Sinks.Discord;
 /// webhook. One message per event with category prefix and content
 /// truncated to Discord's 2000-character message ceiling.
 /// </summary>
-public sealed class DiscordLogSink : HeraldSinkBase, IDisposable
+public sealed class DiscordLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private const int DiscordMaxLength = 1900; // leave room for prefix
 

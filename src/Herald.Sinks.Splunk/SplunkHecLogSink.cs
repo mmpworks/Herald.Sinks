@@ -40,7 +40,7 @@ namespace Herald.Sinks.Splunk;
 /// full URL to the constructor.
 /// </para>
 /// </remarks>
-public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     public const string DefaultHecPath = "services/collector/event";
 

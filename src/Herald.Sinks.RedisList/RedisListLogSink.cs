@@ -38,7 +38,7 @@ namespace Herald.Sinks.RedisList;
 /// connection pool.
 /// </para>
 /// </remarks>
-public sealed class RedisListLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class RedisListLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly IDatabase _database;
     private readonly RedisKey _listKey;

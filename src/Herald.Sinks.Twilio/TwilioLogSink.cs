@@ -19,7 +19,7 @@ namespace Herald.Sinks.Twilio;
 /// API. Use only for paging-grade events — SMS costs and character
 /// limits make this unfit for normal log volume.
 /// </summary>
-public sealed class TwilioLogSink : HeraldSinkBase, IDisposable
+public sealed class TwilioLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private const int SmsMaxLength = 1500;
 

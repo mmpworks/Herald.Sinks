@@ -37,7 +37,7 @@ namespace Herald.Sinks.AzureEventHub;
 /// round-trip count matches Herald's batching cadence.
 /// </para>
 /// </remarks>
-public sealed class AzureEventHubLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AzureEventHubLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly EventHubProducerClient _producer;
     private readonly bool _ownsProducer;

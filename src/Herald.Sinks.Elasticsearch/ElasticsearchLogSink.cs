@@ -22,7 +22,7 @@ namespace Herald.Sinks.Elasticsearch;
 ///
 /// Supports both single-event and batch modes.
 /// </summary>
-public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 

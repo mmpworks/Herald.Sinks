@@ -18,7 +18,7 @@ namespace Herald.Sinks.Rollbar;
 /// Sink that reports log events to Rollbar via the public Items API.
 /// HTTP-only — no Rollbar SDK dependency.
 /// </summary>
-public sealed class RollbarLogSink : HeraldSinkBase, IDisposable
+public sealed class RollbarLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://api.rollbar.com/api/1/item/";
 

@@ -35,7 +35,7 @@ namespace Herald.Sinks.TcpJsonLine;
 /// a LAN / trusted-network primitive only.
 /// </para>
 /// </summary>
-public sealed class TcpJsonLineLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class TcpJsonLineLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly string _host;
     private readonly int _port;

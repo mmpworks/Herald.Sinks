@@ -62,7 +62,7 @@ namespace Herald.Sinks.Datadog;
 /// per event as <c>category:{name}</c>.
 /// </para>
 /// </remarks>
-public sealed class DatadogLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class DatadogLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     public const string PublicUsEndpoint = "https://http-intake.logs.datadoghq.com";
     public const string LogsPathSuffix = "api/v2/logs";

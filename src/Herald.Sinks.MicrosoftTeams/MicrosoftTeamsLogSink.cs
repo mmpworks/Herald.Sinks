@@ -33,7 +33,7 @@ namespace Herald.Sinks.MicrosoftTeams;
 /// everything else → blue.
 /// </para>
 /// </remarks>
-public sealed class MicrosoftTeamsLogSink : HeraldSinkBase, IDisposable
+public sealed class MicrosoftTeamsLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly Uri _webhookUrl;
     private readonly string? _titleOverride;

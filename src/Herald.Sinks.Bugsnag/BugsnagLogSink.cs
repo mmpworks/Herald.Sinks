@@ -27,7 +27,7 @@ namespace Herald.Sinks.Bugsnag;
 /// rate-limited by Bugsnag itself.
 /// </para>
 /// </remarks>
-public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable
+public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://notify.bugsnag.com/";
 

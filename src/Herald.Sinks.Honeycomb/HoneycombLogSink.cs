@@ -49,7 +49,7 @@ namespace Herald.Sinks.Honeycomb;
 /// dataset segment to the constructor to override the public host.
 /// </para>
 /// </remarks>
-public sealed class HoneycombLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class HoneycombLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     public const string PublicHost = "https://api.honeycomb.io";
     public const string BatchPathPrefix = "1/batch";

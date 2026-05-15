@@ -38,7 +38,7 @@ namespace Herald.Sinks.Syslog;
 /// concurrent events do not interleave frames on the same connection.
 /// </para>
 /// </remarks>
-public sealed class SyslogSink : HeraldSinkBase, IDisposable
+public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly string _host;
     private readonly int _port;

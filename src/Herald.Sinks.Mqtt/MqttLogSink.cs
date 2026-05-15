@@ -21,7 +21,7 @@ namespace Herald.Sinks.Mqtt;
 /// delivery; bump QoS via the code-first overload for durable IoT
 /// flows.
 /// </summary>
-public sealed class MqttLogSink : HeraldSinkBase, IDisposable
+public sealed class MqttLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly IMqttClient _client;
     private readonly string _topic;

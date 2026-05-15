@@ -52,7 +52,7 @@ namespace Herald.Sinks.AwsCloudWatch;
 /// failing the batch.
 /// </para>
 /// </remarks>
-public sealed class AwsCloudWatchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AwsCloudWatchLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const int MaxBatchEvents = 10_000;
     private const int MaxEventBytes = 262_144;  // 256 KB single-event ceiling

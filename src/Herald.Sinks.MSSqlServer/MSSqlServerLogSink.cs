@@ -42,7 +42,7 @@ namespace Herald.Sinks.MSSqlServer;
 /// pool handles concurrency.
 /// </para>
 /// </remarks>
-public sealed class MSSqlServerLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class MSSqlServerLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly string _connectionString;
     private readonly string _schemaName;

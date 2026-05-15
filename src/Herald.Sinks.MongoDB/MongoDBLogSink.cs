@@ -41,7 +41,7 @@ namespace Herald.Sinks.MongoDB;
 /// contract; concurrent Log calls share the single connection pool.
 /// </para>
 /// </remarks>
-public sealed class MongoDBLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class MongoDBLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly IMongoCollection<BsonDocument> _collection;
 

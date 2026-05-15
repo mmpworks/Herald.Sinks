@@ -20,7 +20,7 @@ namespace Herald.Sinks.Slack;
 /// Best used for high-severity alerts (Error, Critical) rather than all events.
 /// Combine with a LevelFilter or predicate to limit volume.
 /// </summary>
-public sealed class SlackWebhookLogSink : HeraldSinkBase, IDisposable
+public sealed class SlackWebhookLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 

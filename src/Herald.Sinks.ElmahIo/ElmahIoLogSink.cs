@@ -23,7 +23,7 @@ namespace Herald.Sinks.ElmahIo;
 /// service via the v3 messages bulk API. Drop-in for
 /// Serilog.Sinks.ElmahIo. Pure HTTP — no elmah.io SDK.
 /// </summary>
-public sealed class ElmahIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class ElmahIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly string _apiKey;

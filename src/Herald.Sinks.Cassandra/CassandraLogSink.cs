@@ -38,7 +38,7 @@ namespace Herald.Sinks.Cassandra;
 /// session's connection pool.
 /// </para>
 /// </remarks>
-public sealed class CassandraLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class CassandraLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly ISession _session;
     private readonly PreparedStatement _insert;

@@ -22,7 +22,7 @@ namespace Herald.Sinks.InfluxDB;
 /// Each event becomes one line: <c>logs,level=info,category=Auth message="..." 1234567890</c>.
 /// Tags are <c>level</c> and <c>category</c>; <c>message</c> rides as a field.
 /// </remarks>
-public sealed class InfluxDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class InfluxDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly HttpClient _http;
     private readonly Uri _writeEndpoint;

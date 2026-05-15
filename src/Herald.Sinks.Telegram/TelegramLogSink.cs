@@ -19,7 +19,7 @@ namespace Herald.Sinks.Telegram;
 /// One sendMessage per event; truncates content at Telegram's 4000-char
 /// safe ceiling (the hard limit is 4096).
 /// </summary>
-public sealed class TelegramLogSink : HeraldSinkBase, IDisposable
+public sealed class TelegramLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private const int TelegramMaxLength = 4000;
 

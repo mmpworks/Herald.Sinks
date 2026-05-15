@@ -20,7 +20,7 @@ namespace Herald.Sinks.Mezmo;
 /// Sink that ships log events to Mezmo (LogDNA) via the public ingest
 /// endpoint. Basic-auth (ingest key as username); HTTP-only.
 /// </summary>
-public sealed class MezmoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class MezmoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://logs.logdna.com/logs/ingest";
 

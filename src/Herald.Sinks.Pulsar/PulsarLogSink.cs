@@ -22,7 +22,7 @@ namespace Herald.Sinks.Pulsar;
 /// topic via DotPulsar. Supports persistent and non-persistent topics
 /// with the same code path; the topic URL determines durability.
 /// </summary>
-public sealed class PulsarLogSink : HeraldSinkBase, IAsyncDisposable
+public sealed class PulsarLogSink : HeraldSinkBase, IAsyncDisposable, INetworkSink
 {
     private readonly IPulsarClient _client;
     private readonly IProducer<byte[]> _producer;

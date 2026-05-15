@@ -54,7 +54,7 @@ namespace Herald.Sinks.Parquet;
 /// matches how other sinks in this repo bridge sync/async I/O.
 /// </para>
 /// </remarks>
-public sealed class ParquetLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class ParquetLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly string _outputDirectory;
     private readonly string _filePrefix;

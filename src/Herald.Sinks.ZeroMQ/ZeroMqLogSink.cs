@@ -61,7 +61,7 @@ public enum ZeroMqSocketKind
 /// for durability under load.
 /// </para>
 /// </remarks>
-public sealed class ZeroMqLogSink : HeraldSinkBase, IDisposable
+public sealed class ZeroMqLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly NetMQQueue<string> _queue;
     private readonly NetMQPoller _poller;

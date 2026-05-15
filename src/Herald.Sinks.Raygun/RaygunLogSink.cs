@@ -30,7 +30,7 @@ namespace Herald.Sinks.Raygun;
 /// bag.
 /// </para>
 /// </remarks>
-public sealed class RaygunLogSink : HeraldSinkBase, IDisposable
+public sealed class RaygunLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private static readonly Uri Endpoint = new("https://api.raygun.com/entries");
 

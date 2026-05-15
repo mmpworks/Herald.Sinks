@@ -48,7 +48,7 @@ namespace Herald.Sinks.AzureAnalytics;
 /// to ~30,000 events per batch, far above typical pipeline sizing.
 /// </para>
 /// </remarks>
-public sealed class AzureAnalyticsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AzureAnalyticsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string ApiVersion = "2016-04-01";
     private const string ResourcePath = "/api/logs";

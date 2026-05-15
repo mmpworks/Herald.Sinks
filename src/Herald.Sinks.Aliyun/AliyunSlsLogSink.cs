@@ -41,7 +41,7 @@ namespace Herald.Sinks.Aliyun;
 /// own auth handler on top.
 /// </para>
 /// </remarks>
-public sealed class AliyunSlsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AliyunSlsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly string _accessKeyId;

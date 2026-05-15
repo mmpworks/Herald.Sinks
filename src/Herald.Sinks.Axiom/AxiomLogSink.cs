@@ -21,7 +21,7 @@ namespace Herald.Sinks.Axiom;
 /// (api.axiom.co/v1/datasets/{dataset}/ingest). Bearer-token auth, JSON
 /// array body. HTTP-only.
 /// </summary>
-public sealed class AxiomLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AxiomLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string DefaultBase = "https://api.axiom.co/v1/datasets/";
 

@@ -34,7 +34,7 @@ namespace Herald.Sinks.Kinesis;
 /// per request automatically.
 /// </para>
 /// </remarks>
-public sealed class KinesisLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class KinesisLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const int PutRecordsLimit = 500;
 

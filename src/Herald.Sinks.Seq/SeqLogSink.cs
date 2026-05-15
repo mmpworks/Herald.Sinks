@@ -39,7 +39,7 @@ namespace Herald.Sinks.Seq;
 /// throughput amortisation.
 /// </para>
 /// </remarks>
-public sealed class SeqLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class SeqLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     /// <summary>
     /// The CLEF content type Seq accepts at <c>/api/events/raw?clef</c>.

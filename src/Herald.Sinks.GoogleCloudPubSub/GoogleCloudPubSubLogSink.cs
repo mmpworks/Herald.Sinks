@@ -25,7 +25,7 @@ namespace Herald.Sinks.GoogleCloudPubSub;
 /// SDK defaults (Application Default Credentials chain). Apps that
 /// already share a publisher pass it in via the code-first overload.
 /// </remarks>
-public sealed class GoogleCloudPubSubLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class GoogleCloudPubSubLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly PublisherClient _publisher;
     private readonly bool _ownsPublisher;

@@ -35,7 +35,7 @@ namespace Herald.Sinks.MySQL;
 /// <c>properties JSON</c> on the table.
 /// </para>
 /// </remarks>
-public sealed class MySQLLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class MySQLLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly string _connectionString;
     private readonly string _tableName;

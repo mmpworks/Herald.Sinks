@@ -20,7 +20,7 @@ namespace Herald.Sinks.BetterStack;
 /// Sink that ships log events to Better Stack (formerly Logtail) via
 /// their public ingest endpoint. Bearer-token auth, NDJSON body.
 /// </summary>
-public sealed class BetterStackLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class BetterStackLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://in.logs.betterstack.com/";
 

@@ -23,7 +23,7 @@ namespace Herald.Sinks.Loggly;
 /// Drop-in for Serilog.Sinks.Loggly. Token travels in the URL; body
 /// is NDJSON per Loggly's bulk-input spec.
 /// </summary>
-public sealed class LogglyLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class LogglyLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly HttpClient _httpClient;

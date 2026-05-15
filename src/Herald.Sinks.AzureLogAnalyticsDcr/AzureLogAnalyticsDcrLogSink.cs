@@ -45,7 +45,7 @@ namespace Herald.Sinks.AzureLogAnalyticsDcr;
 /// <c>Monitoring Metrics Publisher</c> role on the DCR.
 /// </para>
 /// </remarks>
-public sealed class AzureLogAnalyticsDcrLogSink : HeraldSinkBase, IBatchedLogSink
+public sealed class AzureLogAnalyticsDcrLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSink
 {
     private readonly LogsIngestionClient _client;
     private readonly string _ruleId;

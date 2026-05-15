@@ -31,7 +31,7 @@ namespace Herald.Sinks.GenericWebhook;
 ///
 /// Use with any ILogFormatter (JSON, plain text, template) or the default JsonFormatter.
 /// </summary>
-public sealed class GenericWebhookLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class GenericWebhookLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 

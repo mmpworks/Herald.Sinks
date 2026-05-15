@@ -23,7 +23,7 @@ namespace Herald.Sinks.Stackify;
 /// logs API. Drop-in for Serilog.Sinks.Stackify. Pure HTTP — no
 /// Stackify SDK.
 /// </summary>
-public sealed class StackifyLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class StackifyLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private static readonly Uri Endpoint = new("https://api.stackify.com/Log/Save");
 

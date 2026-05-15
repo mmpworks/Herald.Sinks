@@ -44,7 +44,7 @@ namespace Herald.Sinks.ApplicationInsightsHttp;
 /// end-to-end batching; the sink itself does not buffer.
 /// </para>
 /// </remarks>
-public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly ApplicationInsightsConnectionString _connection;
     private readonly string? _roleName;

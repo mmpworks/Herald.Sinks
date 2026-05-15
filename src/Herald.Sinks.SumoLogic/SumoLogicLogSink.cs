@@ -29,7 +29,7 @@ namespace Herald.Sinks.SumoLogic;
 /// <c>X-Sumo-Category</c>, and <c>X-Sumo-Host</c> headers tag events
 /// for searchability inside Sumo.
 /// </remarks>
-public sealed class SumoLogicLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class SumoLogicLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _sourceUrl;
     private readonly string? _sourceCategory;

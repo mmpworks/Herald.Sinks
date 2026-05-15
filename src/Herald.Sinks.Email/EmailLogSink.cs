@@ -37,7 +37,7 @@ namespace Herald.Sinks.Email;
 /// credentials, and a TLS-mode toggle.
 /// </para>
 /// </remarks>
-public sealed class EmailLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class EmailLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly string _host;
     private readonly int _port;

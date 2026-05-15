@@ -37,7 +37,7 @@ namespace Herald.Sinks.ClickHouse;
 /// throughput. Single events still flow through ADO.NET INSERTs.
 /// </para>
 /// </remarks>
-public sealed class ClickHouseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class ClickHouseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly string _connectionString;
     private readonly string _tableName;

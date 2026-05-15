@@ -25,7 +25,7 @@ namespace Herald.Sinks.AzureServiceBus;
 /// Apps already using ServiceBusClient share via the code-first
 /// overload that accepts a sender directly.
 /// </remarks>
-public sealed class AzureServiceBusLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AzureServiceBusLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly ServiceBusSender _sender;
     private readonly ServiceBusClient? _ownedClient;

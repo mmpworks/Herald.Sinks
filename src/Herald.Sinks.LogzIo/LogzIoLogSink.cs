@@ -28,7 +28,7 @@ namespace Herald.Sinks.LogzIo;
 /// regional listeners (EU, AU) have their own hostnames. Supply the
 /// regional URL if your account is not on the US stack.
 /// </remarks>
-public sealed class LogzIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class LogzIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly Uri _endpoint;
     private readonly HttpClient _httpClient;

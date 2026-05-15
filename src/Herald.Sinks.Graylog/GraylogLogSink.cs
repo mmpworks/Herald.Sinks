@@ -33,7 +33,7 @@ namespace Herald.Sinks.Graylog;
 /// name is ephemeral.
 /// </para>
 /// </remarks>
-public sealed class GraylogLogSink : HeraldSinkBase, IDisposable
+public sealed class GraylogLogSink : HeraldSinkBase, IDisposable, INetworkSink
 {
     private readonly GraylogTransport _transport;
     private readonly string _sourceHost;

@@ -38,7 +38,7 @@ namespace Herald.Sinks.AmazonS3;
 /// rely on an IAM role attached to the compute platform.
 /// </para>
 /// </remarks>
-public sealed class AmazonS3LogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class AmazonS3LogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly IAmazonS3 _client;
     private readonly bool _ownsClient;

@@ -47,7 +47,7 @@ namespace Herald.Sinks.Kafka;
 /// internal connection pool.
 /// </para>
 /// </remarks>
-public sealed class KafkaLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class KafkaLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly IProducer<string?, string> _producer;
     private readonly string _topic;

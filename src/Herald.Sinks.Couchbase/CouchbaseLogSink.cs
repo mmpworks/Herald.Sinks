@@ -36,7 +36,7 @@ namespace Herald.Sinks.Couchbase;
 /// instances are thread-safe per the SDK contract.
 /// </para>
 /// </remarks>
-public sealed class CouchbaseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class CouchbaseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private readonly ICouchbaseCollection _collection;
     private readonly ICluster? _ownedCluster;

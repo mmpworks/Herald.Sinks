@@ -41,7 +41,7 @@ namespace Herald.Sinks.UdpJsonLine;
 /// public endpoint without a DTLS-terminating sidecar or VPN.
 /// </para>
 /// </summary>
-public sealed class UdpJsonLineLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable
+public sealed class UdpJsonLineLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     // ~65 KB - upper bound on a single UDP datagram payload. Actual MTU on
     // the path is usually lower (1,472 bytes for Ethernet); sending larger
