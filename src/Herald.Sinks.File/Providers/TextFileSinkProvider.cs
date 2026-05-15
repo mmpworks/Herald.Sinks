@@ -37,6 +37,6 @@ public sealed class TextFileSinkProvider : ILogSinkProvider
             ? new OutputTemplateFormatter(levelRegistry, definition.OutputTemplate)
             : new PlainTextFormatter(levelRegistry);
 
-        return new WriterLogger(formatter, LogSinkFileWriterFactory.Create(definition, _pathResolver));
+        return new FileWriterLogger(formatter, LogSinkFileWriterFactory.Create(definition, _pathResolver));
     }
 }

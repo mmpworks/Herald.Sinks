@@ -33,7 +33,7 @@ public sealed class JsonFileSinkProvider : ILogSinkProvider
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)
     {
-        return new WriterLogger(
+        return new FileWriterLogger(
             new JsonFormatter(levelRegistry),
             LogSinkFileWriterFactory.Create(definition, _pathResolver));
     }
