@@ -10,21 +10,13 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 
+  <!-- Rolling-file behaviour lives in MMP.RollingFiles (Apache 2.0,
+       framework-neutral, AOT-clean). Now a normal NuGet dependency:
+       consumers of Herald.Sinks.File get MMP.RollingFiles.dll flowing
+       into their bin\ as a transitive package, same as any other
+       declared dependency. -->
   <ItemGroup>
-<!-- Rolling-file behaviour now lives in MMP.RollingFiles. The
-         project reference is intentional during phase 1 of the
-         migration; once the standalone repo publishes a NuGet, this
-         line flips to a <PackageReference> with the same key.
-
-         PrivateAssets="all" prevents the in-tree ProjectReference
-         from leaking into the produced .nupkg as an unresolvable
-         transitive dependency. Consumers of Herald.Sinks.File
-         must not see a project-path reference to a sibling repo
-         that does not exist on their disk. The dependency becomes
-         a normal <PackageReference> once the standalone library
-         publishes; until then, the assets stay private. -->
-    <ProjectReference Include="..\..\..\MMP.RollingFiles\packages\dotnet\MMP.RollingFiles\MMP.RollingFiles.csproj"
-                      PrivateAssets="all" />
+    <PackageReference Include="MMP.RollingFiles" />
   </ItemGroup>
 
   <ItemGroup>

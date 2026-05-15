@@ -1,0 +1,170 @@
+<Project>
+  <!--
+    Central Package Management for Herald.Sinks. A standalone clone of
+    this repo (one that doesn't sit inside the umbrella monorepo) has no
+    parent Directory.Packages.props to inherit from, so this file is the
+    one authoritative version source. The umbrella build also picks this
+    file up (closest-wins resolution), which keeps the two paths in sync.
+
+    Every PackageReference in src/, tests/, and Directory.Build.props
+    must have a matching PackageVersion entry here. Adding a new sink
+    that pulls a new vendor SDK? Pin it here in the same PR.
+  -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Herald.OSS — the published Core for standalone clones. Version
+         tracks $(HeraldCoreVersion) declared in Directory.Build.props
+         so a single edit moves the whole sink ecosystem to a new Core
+         release. In the monorepo, Directory.Build.props uses a
+         ProjectReference to Modules/Core instead and this pin doesn't
+         participate in restore. -->
+    <PackageVersion Include="Herald.OSS" Version="$(HeraldCoreVersion)" />
+
+    <!-- Rolling-file behaviour for Herald.Sinks.File. Apache 2.0,
+         framework-neutral, AOT-clean. -->
+    <PackageVersion Include="MMP.RollingFiles" Version="0.1.1" />
+
+    <!-- Protobuf — used by the OtlpGrpc sink for the OTLP wire format. -->
+    <PackageVersion Include="Google.Protobuf" Version="3.34.1" />
+
+    <!-- GodotSharp for Herald.Sinks.GodotConsole. Bracketed range so
+         a future Godot 5.x major cannot quietly slip in via transitive
+         resolution: lower bound 4.2.2 (last 4.2.x with .NET 8 support
+         and the API surface this sink uses), upper bound exclusive of
+         5.0. Game projects on Godot 4.3+ override at their own csproj
+         level. -->
+    <PackageVersion Include="GodotSharp" Version="[4.2.2,5.0.0)" />
+
+    <!-- Windows Event Log sink. Ships the System.Diagnostics.EventLog
+         type cross-target, but the underlying API is Windows-only —
+         the sink is marked [SupportedOSPlatform("windows")] and throws
+         a PlatformNotSupportedException at construction on Linux / macOS. -->
+    <PackageVersion Include="System.Diagnostics.EventLog" Version="8.0.1" />
+
+    <!-- Database sink drivers. Each sink pulls its ADO.NET provider.
+         Pinned at LTS-equivalent stable versions — bumps should run
+         the sink's functional suite against its target DB before
+         landing. -->
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageVersion Include="Npgsql" Version="8.0.6" />
+    <PackageVersion Include="MongoDB.Driver" Version="3.0.0" />
+    <!-- RabbitMQ.Client pinned at 6.x; the 7.x release went async-only
+         (IModel→IChannel, BasicPublishAsync) and Herald's ILogger.Log
+         contract is synchronous. 6.8.1 is the last sync-API release
+         and carries net8.0 support. Bump only if/when Herald grows an
+         async log path. -->
+    <PackageVersion Include="RabbitMQ.Client" Version="6.8.1" />
+    <PackageVersion Include="AWSSDK.CloudWatchLogs" Version="3.7.406" />
+    <PackageVersion Include="Google.Cloud.Logging.V2" Version="4.4.0" />
+
+    <!-- Extended sink drivers. -->
+    <PackageVersion Include="MySqlConnector" Version="2.4.0" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="8.0.8" />
+    <PackageVersion Include="Azure.Monitor.Ingestion" Version="1.1.2" />
+    <PackageVersion Include="Microsoft.Azure.Cosmos" Version="3.46.0" />
+
+    <!-- Cloud archive providers. Pinned at recent stable versions;
+         bumps should run the archive provider tests to confirm the
+         upload + verify contract still holds. -->
+    <PackageVersion Include="AWSSDK.S3" Version="3.7.406" />
+    <!-- Confluent.Kafka bundles librdkafka.redist (~5 MB native per
+         platform). Pinned at 2.6.x; upstream 2.7 changed the
+         SASL/OAUTHBEARER flow and requires a producer-config sweep
+         before bumping. -->
+    <PackageVersion Include="Confluent.Kafka" Version="2.6.1" />
+    <PackageVersion Include="Azure.Storage.Blobs" Version="12.24.0" />
+    <!-- Managed-identity + DefaultAzureCredential chain for Azure
+         archive auth. Unlocks production auth patterns (pod-level
+         managed identity, workload identity, CLI credentials for dev). -->
+    <PackageVersion Include="Azure.Identity" Version="1.13.2" />
+    <!-- Azure Tables sink (S4). Schema-flexible NoSQL destination;
+         cheaper than App Insights for very-high-volume archival
+         workloads. Same auth chain as the other Azure SDKs. -->
+    <PackageVersion Include="Azure.Data.Tables" Version="12.10.0" />
+
+    <!-- Email + Azure Event Hubs. MailKit pinned at 4.16.x — earlier
+         4.10 line carries GHSA-9j88-vvj5-vhgr (MailKit) and
+         GHSA-g7hc-96xr-gvvx (MimeKit) which trip NU1902 → build error. -->
+    <PackageVersion Include="MailKit" Version="4.16.0" />
+    <PackageVersion Include="Azure.Messaging.EventHubs" Version="5.11.5" />
+
+    <!-- NoSQL pack. -->
+    <PackageVersion Include="StackExchange.Redis" Version="2.8.16" />
+    <PackageVersion Include="AWSSDK.DynamoDBv2" Version="3.7.404" />
+    <PackageVersion Include="RavenDB.Client" Version="6.0.100" />
+    <PackageVersion Include="CouchbaseNetClient" Version="3.7.1" />
+    <PackageVersion Include="CassandraCSharpDriver" Version="3.22.0" />
+    <!-- Cassandra driver pulls Newtonsoft.Json 9.0.1 transitively
+         which carries GHSA-5crp-9r3c-p9vr (NU1903). Override at the
+         top of the graph so any sink referencing the driver picks
+         up the safe version. -->
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- Transitive-vulnerability overrides for the columnar / NoSQL
+         pack. Sinks that need the override add an explicit
+         <PackageReference Include="..." /> (no Version) so the
+         central pin reaches the top of the graph and overrides the
+         transitive request.
+           - Parquet.Net 5.0.2 → Snappier 1.1.6 (GHSA-pggp-6c3x-2xmx)
+           - CouchbaseNetClient 3.7.1 → Snappier 1.2.0 (same)
+           - MongoDB.Driver 3.0.0 → Snappier 1.0.0 (same)
+           - MongoDB.Driver 3.0.0 → SharpCompress 0.30.1
+             (GHSA-6c8g-7p36-r338 / CVE-2026-44788, zip-slip via
+              directory entries; advisory covers <= 0.47.4). -->
+    <PackageVersion Include="Snappier" Version="1.3.1" />
+    <PackageVersion Include="SharpCompress" Version="0.48.0" />
+
+    <!-- Analytics tier. -->
+    <PackageVersion Include="Google.Cloud.BigQuery.V2" Version="3.10.0" />
+    <!-- Apache Parquet writer for Herald.Sinks.Parquet. Pure-managed,
+         AOT-compatible. 5.x line targets net8+. -->
+    <PackageVersion Include="Parquet.Net" Version="5.0.2" />
+
+    <!-- gRPC client for Herald.Sinks.OtlpGrpc — the outbound OTLP/gRPC
+         sink. Client side only. -->
+    <PackageVersion Include="Grpc.Net.Client" Version="2.66.0" />
+
+    <!-- Transport extras: NATS, Pulsar, MQTT. -->
+    <PackageVersion Include="NATS.Client.Core" Version="2.5.4" />
+    <PackageVersion Include="DotPulsar" Version="3.5.0" />
+    <PackageVersion Include="MQTTnet" Version="4.3.7.1207" />
+
+    <!-- ClickHouse + Application Insights. -->
+    <PackageVersion Include="ClickHouse.Client" Version="7.10.0" />
+    <PackageVersion Include="Microsoft.ApplicationInsights" Version="2.22.0" />
+
+    <!-- Cloud-queues pack. -->
+    <PackageVersion Include="AWSSDK.Kinesis" Version="3.7.404" />
+    <PackageVersion Include="AWSSDK.SQS" Version="3.7.400" />
+    <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.18.2" />
+    <PackageVersion Include="Google.Cloud.PubSub.V1" Version="3.20.0" />
+
+    <!-- Transport pack: ZeroMQ via NetMQ (the .NET binding).
+         NetMQ 4.0.1.x pulls vulnerable transitive 5.0.0 versions of
+         System.Security.Cryptography.Xml (GHSA-vh55-786g-wjwj) and
+         System.Drawing.Common (GHSA-rxg9-xrhp-64gj). Both overridden
+         at the top of the graph with the patched 8.x line. -->
+    <PackageVersion Include="NetMQ" Version="4.0.1.13" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.0" />
+    <PackageVersion Include="System.Drawing.Common" Version="8.0.10" />
+
+    <!-- Dashboard reads CAPABILITY.yaml resources embedded in every
+         sink assembly so the sink-config UI can build per-sink forms
+         without a side-channel manifest file. -->
+    <PackageVersion Include="YamlDotNet" Version="16.2.1" />
+
+    <!-- Testing -->
+    <PackageVersion Include="FluentAssertions" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <!-- xunit.abstractions ships ITestOutputHelper — the contract
+         Herald.Sinks.XUnit takes in its ctor. The sink needs it as
+         a direct reference because it surfaces the interface in its
+         public API. -->
+    <PackageVersion Include="xunit.abstractions" Version="2.0.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+</Project>

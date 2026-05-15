@@ -219,13 +219,36 @@ public sealed class NamingContractTests
         var propsPath = Path.Combine(RepoRoot, "Directory.Build.props");
         var text = File.ReadAllText(propsPath);
 
-        text.Should().Contain("PackageReference Include=\"Herald.OSS\" Version=\"$(HeraldCoreVersion)\"",
-            "the standalone PackageReference must target exactly the literal `Herald.OSS` " +
-            "with the version coming from the $(HeraldCoreVersion) pin");
+        text.Should().Contain("PackageReference Include=\"Herald.OSS\" />",
+            "the standalone PackageReference must target exactly the literal `Herald.OSS`; " +
+            "the version comes from Directory.Packages.props (CPM), not an inline Version attribute");
+        text.Should().NotContain("PackageReference Include=\"Herald.OSS\" Version=",
+            "Herald.Sinks uses Central Package Management — inline Version attributes fail NU1008. " +
+            "Pin Herald.OSS in Directory.Packages.props instead.");
         text.Should().NotContain("PackageReference Include=\"Herald.Oss\"",
             "casing typo — NuGet is case-insensitive on Windows but case-sensitive on Linux");
         text.Should().NotContain("PackageReference Include=\"Herald.Core\"",
             "the package ID is Herald.OSS, not Herald.Core — a search/replace mistake would land here");
+    }
+
+    /// <summary>Directory.Packages.props exists and pins Herald.OSS via the HeraldCoreVersion property.</summary>
+    [Fact]
+    public void DirectoryPackagesProps_pins_Herald_OSS_via_HeraldCoreVersion()
+    {
+        var cpmPath = Path.Combine(RepoRoot, "Directory.Packages.props");
+        File.Exists(cpmPath).Should().BeTrue(
+            "Directory.Packages.props is the CPM source for standalone clones — without it, " +
+            "every PackageReference fails restore with NU1008");
+
+        var text = File.ReadAllText(cpmPath);
+        text.Should().Contain("<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>",
+            "the file must enable CPM explicitly");
+        text.Should().Contain("PackageVersion Include=\"Herald.OSS\" Version=\"$(HeraldCoreVersion)\"",
+            "Herald.OSS must be pinned via the $(HeraldCoreVersion) property so a single edit " +
+            "to Directory.Build.props moves the whole sink ecosystem to a new Core release");
+        text.Should().Contain("PackageVersion Include=\"MMP.RollingFiles\"",
+            "MMP.RollingFiles is Herald.Sinks.File's runtime dependency — pinning it here " +
+            "lets standalone clones restore the package");
     }
 
     /// <summary>HeraldCoreVersion in Directory.Build.props matches Core's actual published Version.</summary>

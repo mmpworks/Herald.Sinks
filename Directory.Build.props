@@ -192,6 +192,6 @@
       already loaded Core; that's a plugin-packaging optimisation, not
       a NuGet-distribution policy.
     -->
-    <PackageReference Include="Herald.OSS" Version="$(HeraldCoreVersion)" />
+    <PackageReference Include="Herald.OSS" />
   </ItemGroup>
 </Project>
