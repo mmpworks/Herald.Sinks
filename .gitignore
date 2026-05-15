@@ -28,3 +28,7 @@ __pycache__/
 
 # Generated docs
 docs/product-sheet.md
+
+# AI-agent context — internal, not part of the public release
+CLAUDE.md
+CODING_INSTRUCTIONS.md
