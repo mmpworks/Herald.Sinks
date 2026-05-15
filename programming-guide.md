@@ -592,9 +592,11 @@ public sealed class AcmeLogSinkProvider : ILogSinkProvider
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
+  <!-- No <ProjectReference> to Herald.Core here. Directory.Build.props
+       at the repo root injects the Core reference conditionally — a
+       Herald.OSS PackageReference for standalone clones, a
+       ProjectReference for the monorepo. The NamingContractTests fail
+       the build if a per-sink csproj redeclares it. -->
 
   <ItemGroup>
     <!-- Ship the CAPABILITY.yaml inside the NuGet package so the
@@ -895,7 +897,7 @@ Always accept an optional `HttpClient` in the constructor — tests inject a fak
 - [ ] The sink class implements `ILogger`.
 - [ ] The provider class implements `ILogSinkProvider`.
 - [ ] `csproj` has `<PackageId>Herald.Sinks.{Name}</PackageId>` (no `MMP.` prefix — the contract test enforces this).
-- [ ] `csproj` has `<ProjectReference>` to Core.
+- [ ] `csproj` does NOT redeclare a `<ProjectReference>` to Herald.Core — `Directory.Build.props` owns it (the contract test enforces this).
 - [ ] `csproj` packs `CAPABILITY.yaml` into the NuGet.
 - [ ] Tests cover the 6 minimum scenarios (see Part 6).
 - [ ] `bash build.sh --test` passes.

@@ -96,9 +96,11 @@ tests/Herald.Sinks.<Name>.Tests/
                                                     pulls a reflection-heavy dep -->
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Herald.Core.csproj" />
-  </ItemGroup>
+  <!-- No <ProjectReference> to Herald.Core here. Directory.Build.props
+       at the repo root injects the Core reference conditionally — a
+       Herald.OSS PackageReference for standalone clones, a
+       ProjectReference for the monorepo. The NamingContractTests fail
+       the build if a per-sink csproj redeclares it. -->
 
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
