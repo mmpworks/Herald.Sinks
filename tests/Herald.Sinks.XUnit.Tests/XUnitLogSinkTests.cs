@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Herald.Sinks.XUnit;
+using Herald.Sinks.XUnit.Providers;
+using MMP.Herald;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Services;
@@ -96,6 +98,17 @@ public sealed class XUnitLogSinkTests
         var sink = new XUnitLogSink(new CapturingOutputHelper());
         Action act = () => sink.Log(null!);
         act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact] public void Provider_throws_on_create_sink() =>
+        ((Action)(() => new XUnitLogSinkProvider().CreateSink(
+            definition: null!, levelRegistry: null!, transformerRegistry: null!)))
+            .Should().Throw<NotSupportedException>();
+
+    [Fact] public void Provider_kind_and_edition()
+    {
+        new XUnitLogSinkProvider().SinkKind.Should().Be("xunit");
+        new XUnitLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 
     private sealed class CapturingOutputHelper : ITestOutputHelper
