@@ -10,6 +10,7 @@ using MMP.Herald.Configuration.Runtime;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
+using MMP.Herald.Pipeline.Kernel;
 using MMP.Herald.Routing;
 
 namespace Herald.Sinks.HelloWorld;
@@ -56,6 +57,17 @@ public sealed class HelloWorldLogSink : HeraldSinkBase
     public long EventCount => Interlocked.Read(ref _eventCount);
 
     public override void Log(LogEvent logEvent)
+    {
+        Interlocked.Increment(ref _eventCount);
+    }
+
+    // Zero-allocation override: this sink reads no field from the event,
+    // so skip both the heap LogEvent materialisation AND the message
+    // render that the HeraldSinkBase default would otherwise pay.
+    // Reference implementation for the "consume the buffer directly"
+    // pattern documented in HOWTO-SINKS § "What if a custom sink reads
+    // LogEvent.Message?".
+    public override void Log(in LogEventBuffer buffer)
     {
         Interlocked.Increment(ref _eventCount);
     }
