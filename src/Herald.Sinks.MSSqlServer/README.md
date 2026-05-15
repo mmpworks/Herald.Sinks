@@ -2,7 +2,7 @@
 
 > Writes Herald log events as rows in a Microsoft SQL Server or Azure SQL table. Drop-in for Serilog.Sinks.MSSqlServer. Parameterized INSERT for single writes, SqlBulkCopy for batches, optional auto-create DDL for dev loops.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

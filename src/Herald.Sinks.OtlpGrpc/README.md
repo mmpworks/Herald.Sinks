@@ -2,7 +2,7 @@
 
 > Exports Herald log events to an OpenTelemetry collector over OTLP/gRPC. Calls opentelemetry.proto.collector.logs.v1.LogsService/Export with the standard ExportLogsServiceRequest payload. Reuses the hand-rolled protobuf writer from Herald.Sinks.Otlp so payload shape stays identical across HTTP and gRPC transports — no proto codegen, no generated message types.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to an embedded SQLite database. Drop-in for Serilog.Sinks.SQLite. Single-file, no server, no deps beyond Microsoft.Data.Sqlite.</Description>
     <PackageTags>herald;logging;sink;sqlite;embedded</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

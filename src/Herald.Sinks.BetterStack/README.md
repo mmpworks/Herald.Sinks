@@ -2,7 +2,7 @@
 
 > Ships Herald log events to Better Stack (Logtail) via the public ingest endpoint. Bearer-token auth, NDJSON body. HTTP-only — no SDK.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

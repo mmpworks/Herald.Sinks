@@ -2,7 +2,7 @@
 
 > PutRecords Herald log events into an AWS Kinesis Data Stream via AWSSDK.Kinesis. Drop-in for Serilog.Sinks.AmazonKinesis. Defaults to category-based partition keys for shard affinity; chunks batches at 500 records per request.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

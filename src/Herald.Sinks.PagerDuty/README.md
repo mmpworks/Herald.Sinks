@@ -2,7 +2,7 @@
 
 > Posts Herald log events to PagerDuty's Events API v2 for incident creation. Designed for high-severity alerting, not general log forwarding — stack behind a Warn-or-above filter so routine info events don't page the on-call rotation.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

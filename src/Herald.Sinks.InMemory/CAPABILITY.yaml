@@ -19,7 +19,7 @@ purpose: >
 
 vendor:
   name: Herald
-  url: https://github.com/mmpworks/Herald
+  url: https://github.com/mmpworks/Herald.OSS
 
 ships:
   - InMemoryLogSink

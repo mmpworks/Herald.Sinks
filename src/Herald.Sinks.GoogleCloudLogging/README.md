@@ -2,7 +2,7 @@
 
 > Writes Herald log events to Google Cloud Logging (formerly Stackdriver) via LoggingServiceV2Client.WriteLogEntries. Drop-in for Serilog.Sinks.GoogleCloudLogging. Maps Herald severity to Cloud Logging's LogSeverity enum so the log viewer colour-codes events consistently with other GCP services.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

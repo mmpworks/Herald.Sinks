@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as rows in a MySQL / MariaDB table via MySqlConnector. Drop-in for Serilog.Sinks.MySQL. Parameterized INSERT with batched transactions.</Description>
     <PackageTags>herald;logging;sink;mysql;mariadb</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 
 > Inserts Herald log events into a ClickHouse table via the ClickHouse.Client driver. Single INSERT on the Log path, ClickHouseBulkCopy on IBatchedLogSink batches — the driver's native column-block format gives sustained-throughput insert performance ClickHouse is famous for.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

@@ -2,7 +2,7 @@
 
 > Reports Herald log events to Bugsnag via the public notify API. Drop-in for Serilog.Sinks.Bugsnag. HTTP-only implementation — no Bugsnag.NET SDK dependency.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

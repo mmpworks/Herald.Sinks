@@ -2,7 +2,7 @@
 
 > Forwards Herald log events to the Raygun crash-reporting / error- tracking service. Drop-in for Serilog.Sinks.Raygun. Pair with a warn+ level filter — Raygun is sized for crash reports, not info chatter.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

@@ -2,7 +2,7 @@
 
 > Streaming-inserts Herald log events into a Google BigQuery table via Google.Cloud.BigQuery.V2. ADC for auth.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

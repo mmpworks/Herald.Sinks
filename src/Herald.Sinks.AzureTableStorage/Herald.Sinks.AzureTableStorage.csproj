@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as entities into an Azure Table Storage table via Azure.Data.Tables. Drop-in for Serilog.Sinks.AzureTableStorage.</Description>
     <PackageTags>herald;logging;sink;azure;table-storage;nosql</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 

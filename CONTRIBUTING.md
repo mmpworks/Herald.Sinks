@@ -35,6 +35,8 @@ git push --force-with-lease
 
 If you're contributing on behalf of an employer that has IP claims on your work, make sure you have permission to submit under Apache 2.0 before signing.
 
+Historical commits authored by the maintainer prior to DCO adoption (the commits in this repository's initial public history) are exempt from sign-off. DCO enforcement applies forward of policy adoption — every commit in a pull request must be signed off.
+
 ## The contract
 
 A sink is two things:
@@ -46,7 +48,7 @@ Nothing more. No events, no channels, no background threads (unless your destina
 
 ## Start from a template
 
-Every existing sink in `src/` is a valid template. Pick one whose shape matches your destination:
+Every sink in `src/` that ships a `.csproj` is a valid template. Directories containing only a `CAPABILITY.yaml` and `README.md` are migration guides describing why we did **not** ship a sink for that destination — copy from a directory with a csproj. Pick one whose shape matches your destination:
 
 - **HTTP POST with JSON body + single auth header** (most common) — copy `Herald.Sinks.Seq/` or `Herald.Sinks.Splunk/`.
 - **HTTP POST with stream labels + nanosecond timestamps** — copy `Herald.Sinks.Loki/`.
@@ -225,7 +227,7 @@ You bump your sink's version by editing both the csproj `<Version>` and the CAPA
 
 ## Getting help
 
-- Open an issue on the Herald main repo (`mmpworks/Herald`) with the `sinks` label.
+- Open an issue on this repo (`mmpworks/Herald.Sinks`).
 - For destination-specific API questions (rate limits, field semantics, schema) — ask the destination's vendor first, then file an issue here if Herald's sink shape needs to adapt.
 
 ## License

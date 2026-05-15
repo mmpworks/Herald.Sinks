@@ -2,7 +2,7 @@
 
 > Posts Herald log events to Splunk's HTTP Event Collector (HEC). Matches the wire shape Serilog.Sinks.Splunk uses so teams on Splunk can drop in Herald without touching the collector config. Supports the full HEC envelope (time, host, source, sourcetype, index).
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

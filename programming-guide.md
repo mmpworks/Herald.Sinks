@@ -907,7 +907,7 @@ Always accept an optional `HttpClient` in the constructor — tests inject a fak
 
 ## Part 11 — Where to ask for help
 
-- Herald main repo (`mmpworks/Herald`) — open an issue with the `sinks` label.
+- This repo (`mmpworks/Herald.Sinks`) — open an issue.
 - This repo's `CONTRIBUTING.md` — the short-form reference.
 - `CAPABILITY-SCHEMA.md` — the schema-level reference with every field documented.
 - Existing sinks in `src/` — every one is a valid working template. `Herald.Sinks.Seq` is the simplest; `Herald.Sinks.Loki` shows the add/remove-label pattern; `Herald.Sinks.Datadog` is the fullest example of a dashboard-rich manifest.

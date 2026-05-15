@@ -2,7 +2,7 @@
 
 > Writes Herald log events to disk. Plain-text mode produces human-readable lines; structured mode produces NDJSON for machine parsing. Optional file rolling for time-based or size-based rotation, with per-pipeline path templating.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

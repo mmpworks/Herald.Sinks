@@ -2,7 +2,7 @@
 
 > Three sinks for the OpenTelemetry Logs Protocol that share serialization infrastructure: OtlpJsonLogSink posts JSON to an OTLP collector, OtlpProtobufLogSink posts binary protobuf to the same endpoint, and ProtobufFileLogSink writes length-delimited protobuf records to a local .pb file for offline ingestion. The hand-rolled protobuf writer keeps the package AOT-clean — no generated message classes, no reflection paths the trim analyzer has to defeat.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

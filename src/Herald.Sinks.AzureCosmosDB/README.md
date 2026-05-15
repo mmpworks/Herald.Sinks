@@ -2,7 +2,7 @@
 
 > Writes Herald log events as documents in an Azure Cosmos DB container via the modern Microsoft.Azure.Cosmos v3 SDK. Drop-in for Serilog.Sinks.AzureCosmosDB. Partition-keyed on category by default for query locality.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

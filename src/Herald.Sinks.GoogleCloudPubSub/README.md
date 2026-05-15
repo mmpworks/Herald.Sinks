@@ -2,7 +2,7 @@
 
 > Publish Herald log events into a Google Cloud Pub/Sub topic via Google.Cloud.PubSub.V1. PublisherClient handles internal batching, retries, and flow control by default.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

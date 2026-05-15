@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to Google Cloud Logging via LoggingServiceV2Client.WriteLogEntries. Drop-in for Serilog.Sinks.GoogleCloudLogging.</Description>
     <PackageTags>herald;logging;sink;gcp;google-cloud;stackdriver</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 

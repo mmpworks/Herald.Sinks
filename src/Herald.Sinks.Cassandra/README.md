@@ -2,7 +2,7 @@
 
 > INSERTs Herald log events into a Cassandra table via the DataStax CassandraCSharpDriver. Drop-in for Serilog.Sinks.Cassandra. Works against ScyllaDB and any Cassandra-protocol cluster. Prepared statement bound per event keeps per-call cost bounded.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

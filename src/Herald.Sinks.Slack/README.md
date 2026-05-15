@@ -2,7 +2,7 @@
 
 > Sends Herald log events to a Slack webhook URL as formatted messages with per-level emoji. Intended for high-severity alerts — stack behind a Warn-or-above filter so routine info events don't swamp the channel.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

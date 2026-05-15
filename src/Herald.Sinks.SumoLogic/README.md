@@ -2,7 +2,7 @@
 
 > Posts Herald log events to a Sumo Logic HTTP source endpoint. Drop-in for SumoLogic.Logging.Serilog. Auth lives in the source URL itself; optional X-Sumo-* headers tag events for search.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

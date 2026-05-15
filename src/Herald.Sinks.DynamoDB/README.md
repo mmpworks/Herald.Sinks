@@ -2,7 +2,7 @@
 
 > PutItems Herald log events into a DynamoDB table via AWSSDK.DynamoDBv2. Drop-in for Serilog.Sinks.AmazonDynamoDB. Composite id sorts newest-first within a date prefix; BatchWriteItem chunks into 25-item slices.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

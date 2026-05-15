@@ -2,7 +2,7 @@
 
 > Publishes Herald log events as JSON frames over a ZeroMQ socket via NetMQ. Drop-in for Serilog.Sinks.ZeroMQ. Supports PUB (fan-out to subscribers) and PUSH (load-balance to pullers) socket kinds. Pair with downstream SUB or PULL consumers for ad-hoc log streaming where a full broker would be overkill.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

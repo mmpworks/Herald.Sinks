@@ -2,7 +2,7 @@
 
 > Publishes Herald log events as JSON messages to a Redis PubSub channel via StackExchange.Redis. Drop-in for Serilog.Sinks.Redis (PubSub mode). Pair with Herald.Sinks.RedisList when you need durable delivery (RPUSH into a list consumers drain).
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

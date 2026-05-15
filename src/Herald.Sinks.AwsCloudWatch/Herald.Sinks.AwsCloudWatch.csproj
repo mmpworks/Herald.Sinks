@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to an AWS CloudWatch Logs log group / log stream. Drop-in for Serilog.Sinks.AwsCloudWatch. Batched PutLogEvents, optional auto-create.</Description>
     <PackageTags>herald;logging;sink;aws;cloudwatch</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 

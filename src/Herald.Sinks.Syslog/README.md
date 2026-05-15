@@ -2,7 +2,7 @@
 
 > Emits Herald log events as RFC 5424 or RFC 3164 syslog messages over UDP or TCP. Drop-in for Serilog.Sinks.SyslogMessages. Cross-platform — works on Windows, Linux, and macOS. Typical targets: rsyslog, syslog-ng, Graylog, Logstash, Fluentd with a syslog input.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

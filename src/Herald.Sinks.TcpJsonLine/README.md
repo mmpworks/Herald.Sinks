@@ -2,7 +2,7 @@
 
 > Streams Herald log events as newline-delimited JSON lines over a persistent TCP connection. Reconnects automatically on failure. Plaintext transport — terminate TLS at a sidecar (stunnel, HAProxy, envoy) for anything crossing an untrusted network.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

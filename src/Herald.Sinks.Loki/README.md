@@ -2,7 +2,7 @@
 
 > Posts Herald log events to Grafana Loki's push endpoint. Groups events into streams by label set so batches produce the minimum number of Loki streams, and keeps high-cardinality properties out of the label index so an operator misstep cannot explode it.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

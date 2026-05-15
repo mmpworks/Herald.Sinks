@@ -2,7 +2,7 @@
 
 > SendMessage Herald log events into an AWS SQS queue via AWSSDK.SQS. Drop-in for Serilog.Sinks.AmazonSqs. Chunks batches at 10 messages per request (the SQS SendMessageBatch limit).
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

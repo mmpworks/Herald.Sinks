@@ -2,7 +2,7 @@
 
 > Ships Herald log events to Coralogix via the bulk-logs ingest endpoint. Code-first only — privateKey + applicationName + subsystemName cannot ride through declarative sink definitions safely.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

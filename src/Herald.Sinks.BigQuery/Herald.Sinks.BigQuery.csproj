@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Streaming-inserts Herald log events into a Google BigQuery table via Google.Cloud.BigQuery.V2.</Description>
     <PackageTags>herald;logging;sink;bigquery;gcp;analytics</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

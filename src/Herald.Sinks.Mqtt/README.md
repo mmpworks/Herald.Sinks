@@ -2,7 +2,7 @@
 
 > Publishes Herald log events as JSON messages to an MQTT broker via MQTTnet. IoT-flavoured pub/sub against HiveMQ, Mosquitto, EMQX, and the AWS IoT Core / Azure IoT Hub MQTT endpoints.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

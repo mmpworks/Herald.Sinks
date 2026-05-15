@@ -2,7 +2,7 @@
 
 > Generic HTTP webhook sink with optional rules engine. POSTs formatted log events to any endpoint. The rules engine supports cooldown, message-pattern matching, property/category conditions, and per-rule payload templates — the feature set that PagerDuty, Opsgenie, and Datadog use for incident routing.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

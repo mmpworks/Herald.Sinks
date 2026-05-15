@@ -2,7 +2,7 @@
 
 > Reports Herald log events to Rollbar via the public Items API. HTTP-only implementation — no Rollbar SDK dependency.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

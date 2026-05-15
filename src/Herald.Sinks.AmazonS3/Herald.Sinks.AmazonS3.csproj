@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Uploads Herald log events as NDJSON objects to an Amazon S3 bucket. Drop-in for Serilog.Sinks.AmazonS3. Periodic batch upload via IBatchedLogSink.</Description>
     <PackageTags>herald;logging;sink;aws;s3</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

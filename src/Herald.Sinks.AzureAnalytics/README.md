@@ -2,7 +2,7 @@
 
 > Writes Herald log events to Azure Log Analytics / Azure Monitor via the HTTP Data Collector API. Drop-in for Serilog.Sinks.AzureAnalytics. Pure HTTP — no Azure SDK dependency. HMAC-SHA256 signing per Data Collector API spec.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

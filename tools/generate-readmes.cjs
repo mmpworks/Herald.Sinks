@@ -115,17 +115,17 @@ function renderReadme(m, sinkDirName) {
     ? m.requires.external : [];
 
   const tierLine = edition === 'Community'
-    ? 'works on the free Apache 2.0 Herald.Core. No license key required.'
+    ? 'works on the free Apache 2.0 Herald.OSS. No license key required.'
     : edition === 'Pro'
-      ? 'requires a Pro license at runtime — see https://github.com/mmpworks/Herald for licensing.'
+      ? 'requires a Pro license at runtime — see https://github.com/mmpworks/Herald.OSS for licensing.'
       : edition === 'Enterprise'
-        ? 'requires an Enterprise license at runtime — see https://github.com/mmpworks/Herald for licensing.'
+        ? 'requires an Enterprise license at runtime — see https://github.com/mmpworks/Herald.OSS for licensing.'
         : `requires the ${edition} edition.`;
 
   let md = '';
   md += `# ${pkg}\n\n`;
   md += `> ${purpose}\n\n`;
-  md += `Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.\n\n`;
+  md += `Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.\n\n`;
 
   md += `## Install\n\n`;
   md += '```bash\n';

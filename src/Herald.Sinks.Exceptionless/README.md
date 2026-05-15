@@ -2,7 +2,7 @@
 
 > Forwards Herald log events to the Exceptionless error-tracking platform via the v2 events API. Drop-in for Serilog.Sinks.Exceptionless.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

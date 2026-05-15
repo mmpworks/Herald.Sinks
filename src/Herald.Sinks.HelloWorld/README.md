@@ -2,7 +2,7 @@
 
 > Test-only Herald sink. Registers under kind "hello_world" with a no-op CreateSink so the plugin loader has a concrete provider to discover, hot-add, and hot-remove. The dashboard renders the dashboard_config block here as a sanity check that the manifest pipeline is end-to-end alive — there are no real connection parameters because the sink does nothing.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

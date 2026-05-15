@@ -2,7 +2,7 @@
 
 > Routes Herald log events to xUnit's ITestOutputHelper so diagnostic output appears in the test report. Drop-in replacement for Serilog.Sinks.XUnit. Register in the test ctor; the sink absorbs the post-test InvalidOperationException so a late-firing background log call never fails a passed test.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

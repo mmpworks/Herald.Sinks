@@ -2,7 +2,7 @@
 
 > Writes Herald log events to an AWS CloudWatch Logs log group / log stream via PutLogEvents. Drop-in for Serilog.Sinks.AwsCloudWatch. Honours CloudWatch's 10,000-event / 1 MB batch ceiling and the 256 KB single-event ceiling. Optional auto-create of log group and stream.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

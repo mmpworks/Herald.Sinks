@@ -2,7 +2,7 @@
 
 > Indexes Herald log events into an OpenSearch cluster via the _bulk HTTP API. Drop-in for Serilog.Sinks.OpenSearch. Pure HTTP — no OpenSearch SDK dependency keeps the transitive footprint small. Natural companion to Herald.Sinks.Elasticsearch for AWS shops after the Elasticsearch/OpenSearch split.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

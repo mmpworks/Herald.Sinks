@@ -2,7 +2,7 @@
 
 > Writes Herald log events as entities into an Azure Table Storage table via Azure.Data.Tables. Cheap high-volume archival destination for Azure-hosted workloads. Configurable partition strategy (UtcDay / UtcHour / UtcMinute / Fixed) trades query locality for write throughput; the default UtcDay matches Serilog.Sinks.AzureTableStorage's shape. Auth via connection string OR DefaultAzureCredential (managed identity) OR a caller-built TableClient.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

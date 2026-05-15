@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# Copyright (c) 2026 MMP LLC
-# Licensed under the MIT License. See LICENSE in the project root.
+# Copyright (c) 2026 MMPWorks LLC
+# Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 """
 product-sheet.py — validates every CAPABILITY.yaml in the monorepo
 against the schema, and generates docs/product-sheet.md.

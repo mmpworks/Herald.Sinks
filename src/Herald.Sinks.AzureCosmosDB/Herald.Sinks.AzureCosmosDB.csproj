@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as documents in an Azure Cosmos DB container via the modern v3 SDK. Drop-in for Serilog.Sinks.AzureCosmosDB.</Description>
     <PackageTags>herald;logging;sink;azure;cosmosdb;nosql</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
 
     <!-- Cosmos SDK 3.x checks for a Newtonsoft.Json reference at build

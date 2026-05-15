@@ -2,7 +2,7 @@
 
 > Writes Herald log events to System.Diagnostics.Trace listeners. Any TraceListener registered on Trace.Listeners — the Windows Event Log listener, a TextWriterTraceListener redirecting to a file, Azure Monitor's listener — picks the events up. Intended for Trace-ecosystem integration where diagnostic plumbing is already in place.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

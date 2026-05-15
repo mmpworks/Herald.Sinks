@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Indexes Herald log events into an OpenSearch cluster via the _bulk API. Drop-in for Serilog.Sinks.OpenSearch. Pure HTTP — no OpenSearch SDK dependency.</Description>
     <PackageTags>herald;logging;sink;opensearch;aws</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

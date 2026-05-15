@@ -2,7 +2,7 @@
 
 > Uploads Herald log events as NDJSON blobs to an Azure Blob Storage container. Drop-in for Serilog.Sinks.AzureBlobStorage. Pairs with App Insights / Log Analytics for cheap retention.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

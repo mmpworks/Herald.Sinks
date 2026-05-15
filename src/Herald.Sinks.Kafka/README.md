@@ -2,7 +2,7 @@
 
 > Produces Herald log events as JSON messages to a Kafka topic via Confluent.Kafka. Drop-in for Serilog.Sinks.Kafka. Default config (acks=all, linger.ms=5, compression=snappy) gives durable, network-efficient delivery without further tuning.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

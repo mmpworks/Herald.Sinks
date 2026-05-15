@@ -173,11 +173,22 @@
     its csproj and supplies its own reference; both ItemGroups below
     short-circuit on that flag.
   -->
-  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">
+  <!-- Sink-package branch: Private=false + ExcludeAssets=runtime is the
+       plugin-packaging shape. The sink's .nupkg stays small, and at runtime
+       Herald.Server / the host has Core loaded — the plugin's
+       AssemblyLoadContext resolves Core to the host's copy. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' != 'true'">
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
     </ProjectReference>
+  </ItemGroup>
+
+  <!-- Test-project branch: standard reference. Core.dll flows into the
+       test bin\ so xunit can load the assembly and discover tests. There
+       is no plugin host loading Core for us in a test process. -->
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' == 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\Core\Herald.Core.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">

@@ -2,7 +2,7 @@
 
 > Sends Herald log events to Alibaba Cloud Simple Log Service (SLS) via the REST PutLogs API. Primary target for China-region deployments and any workload that reports into the Aliyun log ecosystem. Pure HTTP with inline HMAC-SHA1 signing — no Aliyun SDK dependency.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

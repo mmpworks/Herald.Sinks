@@ -2,7 +2,7 @@
 
 > Writes Herald log events to InfluxDB v2 via line protocol over HTTP. No InfluxDB SDK dependency. Tags carry level + category; message rides as a field. Code-first only.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

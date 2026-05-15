@@ -12,16 +12,9 @@ Herald.Core ships with the universal sinks every consumer needs: console, null, 
 dotnet add package Herald.Sinks.Datadog
 ```
 
-Then register the provider at bootstrap:
+The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `registry.Register(...)` call is required — `dotnet add package` is the whole workflow. Configure the sink either through `herald.json` (`kind: datadog`) or by constructing it directly and attaching it with `.WithBridge(sink)`. See [`docs/adding-sinks.md`](docs/adding-sinks.md) for the full walkthrough.
 
-```csharp
-using Herald.Sinks.Datadog.Providers;
-
-// ... inside your pipeline setup:
-registry.Register(new DatadogLogSinkProvider());
-```
-
-You can also install a curated pack via one of the official Herald metapackages (`MMP.Herald`, `MMP.Herald.Business`, `MMP.Herald.Game.Pro`). See the main Herald repo for the metapackage list.
+You can also install a curated pack via one of the official Herald metapackages (`MMP.Herald.Business`, `MMP.Herald.Game.Pro`). See [Herald.OSS](https://github.com/mmpworks/Herald.OSS) for the full metapackage list.
 
 **Contributors.** You want to add a new destination. Read `CONTRIBUTING.md` for the contract. Every sink ships an `ILogSinkProvider`, tests against a fake `HttpMessageHandler` (or equivalent), and a `CAPABILITY.yaml` manifest.
 

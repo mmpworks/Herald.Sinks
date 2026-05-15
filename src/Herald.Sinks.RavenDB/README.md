@@ -2,7 +2,7 @@
 
 > Stores Herald log events as documents in a RavenDB database via the official RavenDB.Client SDK. Drop-in for Serilog.Sinks.RavenDB. Per-call session for Log; batched session for IBatchedLogSink.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

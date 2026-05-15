@@ -2,7 +2,7 @@
 
 > Posts Herald log events to SignalFx / Splunk Observability Cloud's HTTP log intake. Routes by realm or against a self-hosted Splunk Observability endpoint, with optional low-cardinality dimensions applied to every event for metric correlation.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

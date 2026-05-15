@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>SendMessage Herald log events into an AWS SQS queue via AWSSDK.SQS. Drop-in for Serilog.Sinks.AmazonSqs.</Description>
     <PackageTags>herald;logging;sink;aws;sqs;queue</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

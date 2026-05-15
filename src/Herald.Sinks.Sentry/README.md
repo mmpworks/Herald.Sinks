@@ -2,7 +2,7 @@
 
 > Forwards Herald log events to Sentry's store endpoint as structured events. Parses the standard DSN format and emits exceptions, tags, and extras in the shape Sentry's UI expects. Typical deployment stacks this sink behind a Warn-or-above filter.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

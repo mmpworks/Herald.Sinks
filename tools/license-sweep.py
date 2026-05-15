@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 MMPWorks LLC
+# Licensed under the Apache License, Version 2.0. See LICENSE in the project root.
 """
 license-sweep.py — convert Herald.Sinks from MIT/MMP LLC to Apache 2.0/MMPWorks LLC.
 

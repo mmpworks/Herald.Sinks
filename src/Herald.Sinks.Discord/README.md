@@ -2,7 +2,7 @@
 
 > Posts Herald log events to a Discord channel via incoming webhooks. One message per event with severity-aware emoji prefix; content truncated at 1900 chars (under Discord's 2000-char ceiling).
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

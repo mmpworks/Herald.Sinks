@@ -2,7 +2,7 @@
 
 > Posts Herald log events to Datadog's HTTP log intake. Works against both the public site intake and a local Datadog Agent, with per-event error-triple emission that lights up Datadog's error-tracking pipeline in addition to plain log search.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

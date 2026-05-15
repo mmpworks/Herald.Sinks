@@ -2,7 +2,7 @@
 
 > Posts Herald log events to Honeycomb's batch ingest endpoint. Maps each event onto Honeycomb's flat data-object shape with per-event sample-rate support so aggregates stay correct when an upstream sampler is in play.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

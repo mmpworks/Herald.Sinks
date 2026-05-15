@@ -1,0 +1,87 @@
+name: sinks-release
+
+# Tag-driven NuGet publish for every sink in Herald.Sinks.slnx via OIDC
+# trusted publishing. A tag like `sinks-v1.2.0` fires this workflow.
+# The tag's version segment (everything after `sinks-v`) overrides the
+# per-csproj <Version>1.0.0</Version> declaration so every sink ships
+# the same version on the same tag.
+#
+# `--skip-duplicate` on `dotnet nuget push` means re-tagging the same
+# version is a safe no-op for sinks already published at that version.
+# Sinks with bumped CAPABILITY.yaml content but unchanged version
+# numbers are NOT re-pushed — bump <Version> first if you want a
+# refresh on nuget.org.
+#
+# Prereq before the first release:
+#   1. Sign in to nuget.org as the package owner.
+#   2. Under Account settings → Trusted publishers, add:
+#        Repository owner = mmpworks
+#        Repository name  = Herald.Sinks
+#        Workflow file    = sinks-release.yml
+#        Environment      = (leave blank)
+#   3. Set the `user:` input on NuGet/login below to the nuget.org
+#      account that owns the trusted-publisher config.
+# See https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
+# for the nuget.org-side walkthrough.
+
+on:
+  push:
+    tags: ['sinks-v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Derive package version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#sinks-v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Publishing Herald.Sinks version: $VERSION"
+
+      - name: Restore
+        run: dotnet restore Herald.Sinks.slnx
+
+      - name: Build
+        run: |
+          dotnet build Herald.Sinks.slnx \
+            --configuration Release \
+            --no-restore \
+            -p:Version=${{ steps.version.outputs.version }}
+
+      - name: Pack all sinks
+        run: |
+          dotnet pack Herald.Sinks.slnx \
+            --configuration Release \
+            --no-build \
+            -p:Version=${{ steps.version.outputs.version }} \
+            --output ./artifacts
+
+      - uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
+        id: nuget-login
+        with:
+          # Edit before the first release to match the nuget.org
+          # account that owns the trusted-publisher configuration.
+          user: mmpworks
+
+      - name: Push every .nupkg
+        run: |
+          for pkg in ./artifacts/*.nupkg; do
+            echo "Pushing $pkg"
+            dotnet nuget push "$pkg" \
+              --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" \
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
+          done

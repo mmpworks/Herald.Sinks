@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>SendMessage Herald log events into an Azure Service Bus queue or topic via Azure.Messaging.ServiceBus.</Description>
     <PackageTags>herald;logging;sink;azure;service-bus;queue</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

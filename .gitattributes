@@ -1,0 +1,37 @@
+# Default: text files normalised to LF in the repository, with line
+# endings restored on checkout per the platform's default. Stops the
+# CRLF/LF flip-flop on Windows checkouts that otherwise turns every
+# `git status` red after a fresh clone.
+* text=auto eol=lf
+
+# Source explicitly LF — guarantees the same bytes on disk regardless
+# of the contributor's platform.
+*.cs       text eol=lf
+*.csproj   text eol=lf
+*.sln      text eol=lf
+*.props    text eol=lf
+*.targets  text eol=lf
+*.json     text eol=lf
+*.md       text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.txt      text eol=lf
+*.sh       text eol=lf
+
+# Windows-native files keep CRLF; bat/cmd scripts depend on it.
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+*.ps1      text eol=crlf
+
+# Binaries get the binary handler — no LF translation, no diff noise.
+*.dll      binary
+*.exe      binary
+*.pdb      binary
+*.snk      binary
+*.png      binary
+*.jpg      binary
+*.gif      binary
+*.ico      binary
+*.zip      binary
+*.gz       binary
+*.br       binary

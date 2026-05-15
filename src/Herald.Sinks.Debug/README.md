@@ -2,7 +2,7 @@
 
 > Writes Herald log events to System.Diagnostics.Debug. Events appear in Visual Studio / Rider / VS Code Output windows with a debugger attached, and in any registered DebugListener otherwise. Intended for development-time diagnostic output without touching stdout.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

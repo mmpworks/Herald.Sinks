@@ -1,5 +1,5 @@
 # DCO check — verifies every commit in a PR carries a `Signed-off-by:`
-# trailer that matches the commit author's email.
+# trailer whose email matches the commit author's email.
 #
 # The Developer Certificate of Origin (DCO) is Herald.Sinks's contribution
 # gate. It's lighter weight than a Contributor License Agreement: contributors
@@ -22,6 +22,13 @@
 #   * Herald.OSS itself uses a CLA because it sits closer to Core and
 #     license-family flexibility matters more there. Different gate per repo
 #     is the right answer; we're not forcing one tool on both.
+#
+# Why an inline check instead of a Marketplace action:
+#   The popular DCO actions (tim-actions/dco, etc.) declare Node 12 in
+#   their action.yml and haven't been updated since 2021. GitHub's
+#   Node 12 runtime bridge is on borrowed time. A ~20-line shell check
+#   has no maintenance surface and ages gracefully — git semantics
+#   don't change.
 
 name: DCO
 
@@ -30,17 +37,110 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
+  contents: read
   pull-requests: read
 
 jobs:
   dco-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check DCO sign-off
-        uses: tim-actions/dco@2fd0504dc0d27b33f542867c300c84172288b620 # v1.1.0
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
-          # Tell the action which commits to inspect: every commit between
-          # the PR's base and head. The action fails the check if any
-          # commit lacks a Signed-off-by line, or if the email on the
-          # sign-off doesn't match the commit author email.
-          commits: ${{ github.event.pull_request.commits }}
+          # Full history so we can walk every commit in base..head.
+          fetch-depth: 0
+          # Check out the PR head so HEAD points at what's being merged.
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Verify DCO sign-off on every PR commit
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          # Make sure the base commit is reachable. For fork PRs the
+          # base may not have been fetched by default; this is cheap
+          # and idempotent.
+          git fetch --quiet origin "$BASE_SHA" || true
+
+          failed=0
+          total=0
+          skipped_merges=0
+
+          # Walk every commit reachable from HEAD but not from BASE —
+          # that is exactly the PR's own commits, in topological order.
+          while IFS= read -r sha; do
+            [ -z "$sha" ] && continue
+
+            short=$(git rev-parse --short "$sha")
+            subject=$(git show -s --format='%s' "$sha")
+            author_email=$(git show -s --format='%ae' "$sha")
+            parent_count=$(git show -s --format='%P' "$sha" | wc -w)
+
+            # Skip merge commits. The DCO is about authoring; a merge
+            # is composed by the merger, not the original contributor,
+            # and is typically not subject to sign-off.
+            if [ "$parent_count" -gt 1 ]; then
+              skipped_merges=$((skipped_merges + 1))
+              echo "::notice::Skipping merge commit $short: $subject"
+              continue
+            fi
+
+            total=$((total + 1))
+
+            # Extract every Signed-off-by email in the commit message.
+            # A commit may carry multiple sign-offs (chain-of-custody,
+            # co-authoring); any one matching the author passes.
+            signoff_emails=$(git show -s --format='%B' "$sha" \
+              | grep -iE '^[[:space:]]*Signed-off-by:[[:space:]].+<.+>' \
+              | sed -E 's/.*<([^>]+)>.*/\1/' || true)
+
+            if [ -z "$signoff_emails" ]; then
+              echo "::error::Commit $short missing Signed-off-by trailer"
+              echo "  Subject:      $subject"
+              echo "  Author email: $author_email"
+              echo "  Fix:          git commit --amend --no-edit -s"
+              failed=$((failed + 1))
+              continue
+            fi
+
+            # Case-insensitive email match. The Linux DCO convention
+            # is lenient on case for the email address.
+            author_lc=$(echo "$author_email" | tr '[:upper:]' '[:lower:]')
+            match=0
+            while IFS= read -r se; do
+              [ -z "$se" ] && continue
+              se_lc=$(echo "$se" | tr '[:upper:]' '[:lower:]')
+              if [ "$se_lc" = "$author_lc" ]; then
+                match=1
+                break
+              fi
+            done <<< "$signoff_emails"
+
+            if [ "$match" -ne 1 ]; then
+              signoff_csv=$(echo "$signoff_emails" | tr '\n' ',' | sed 's/,$//')
+              echo "::error::Commit $short sign-off email does not match author"
+              echo "  Subject:         $subject"
+              echo "  Author email:    $author_email"
+              echo "  Sign-off email(s): $signoff_csv"
+              echo "  Fix: amend the commit so the sign-off email matches the author"
+              echo "       email, or set your git config user.email to match the sign-off."
+              failed=$((failed + 1))
+            fi
+          done < <(git rev-list "$BASE_SHA..$HEAD_SHA")
+
+          echo ""
+          if [ "$failed" -eq 0 ]; then
+            summary="DCO check passed: $total commit(s) carry valid Signed-off-by trailers."
+            if [ "$skipped_merges" -gt 0 ]; then
+              summary="$summary ($skipped_merges merge commit(s) skipped.)"
+            fi
+            echo "$summary"
+          else
+            echo "DCO check failed: $failed of $total commit(s) missing or mismatched sign-off."
+            echo ""
+            echo "To re-sign every commit on this branch in one pass:"
+            echo "  git rebase main --exec 'git commit --amend --no-edit -s'"
+            echo "  git push --force-with-lease"
+            exit 1
+          fi

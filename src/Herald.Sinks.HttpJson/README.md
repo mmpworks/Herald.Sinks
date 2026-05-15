@@ -2,7 +2,7 @@
 
 > Posts Herald log events as newline-delimited JSON (NDJSON) over HTTP. One event per line, batched when the pipeline supplies multiple. Pairs with any HTTP log-intake that accepts NDJSON — Elasticsearch bulk, Loki push, generic aggregators, custom backends.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

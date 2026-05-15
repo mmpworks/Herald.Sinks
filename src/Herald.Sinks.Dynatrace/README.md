@@ -2,7 +2,7 @@
 
 > Posts Herald log events to Dynatrace Generic Log Ingest API via HTTP with Api-Token authentication. Drop-in for Serilog.Sinks.Dynatrace. No Dynatrace SDK dependency.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

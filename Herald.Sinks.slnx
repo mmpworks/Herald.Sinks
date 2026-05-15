@@ -6,6 +6,7 @@
     <Project Path="src/Herald.Sinks.ApplicationInsightsSdk/Herald.Sinks.ApplicationInsightsSdk.csproj" />
     <Project Path="src/Herald.Sinks.AwsCloudWatch/Herald.Sinks.AwsCloudWatch.csproj" />
     <Project Path="src/Herald.Sinks.Axiom/Herald.Sinks.Axiom.csproj" />
+    <Project Path="src/Herald.Sinks.AzureAnalytics/Herald.Sinks.AzureAnalytics.csproj" />
     <Project Path="src/Herald.Sinks.AzureBlobStorage/Herald.Sinks.AzureBlobStorage.csproj" />
     <Project Path="src/Herald.Sinks.AzureCosmosDB/Herald.Sinks.AzureCosmosDB.csproj" />
     <Project Path="src/Herald.Sinks.AzureEventHub/Herald.Sinks.AzureEventHub.csproj" />
@@ -97,6 +98,7 @@
     <Project Path="tests/Herald.Sinks.ApplicationInsightsSdk.Tests/Herald.Sinks.ApplicationInsightsSdk.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AwsCloudWatch.Tests/Herald.Sinks.AwsCloudWatch.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Axiom.Tests/Herald.Sinks.Axiom.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.AzureAnalytics.Tests/Herald.Sinks.AzureAnalytics.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureBlobStorage.Tests/Herald.Sinks.AzureBlobStorage.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureCosmosDB.Tests/Herald.Sinks.AzureCosmosDB.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.AzureEventHub.Tests/Herald.Sinks.AzureEventHub.Tests.csproj" />
@@ -146,7 +148,9 @@
     <Project Path="tests/Herald.Sinks.NewRelicLogs.Tests/Herald.Sinks.NewRelicLogs.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.OpenSearch.Tests/Herald.Sinks.OpenSearch.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Otlp.Tests/Herald.Sinks.Otlp.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.OtlpGrpc.Tests/Herald.Sinks.OtlpGrpc.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.PagerDuty.Tests/Herald.Sinks.PagerDuty.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Parquet.Tests/Herald.Sinks.Parquet.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.PostgreSQL.Tests/Herald.Sinks.PostgreSQL.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Pulsar.Tests/Herald.Sinks.Pulsar.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.RabbitMQ.Tests/Herald.Sinks.RabbitMQ.Tests.csproj" />

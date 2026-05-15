@@ -2,7 +2,7 @@
 
 > SendMessage Herald log events into an Azure Service Bus queue or topic via Azure.Messaging.ServiceBus. Single SendMessage on the Log path, SendMessages on batches.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

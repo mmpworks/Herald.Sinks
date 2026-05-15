@@ -2,7 +2,7 @@
 
 > Sends Herald log events as GELF 1.1 messages to Graylog over HTTP or TCP. Drop-in for Serilog.Sinks.Graylog / Graylog.Batching. Common target for European enterprise shops and any Graylog-as-central-log- aggregator deployment.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

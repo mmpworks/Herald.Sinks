@@ -2,7 +2,7 @@
 
 > Ships Herald log events to elmah.io's error-tracking service via the v3 bulk messages API. Drop-in for Serilog.Sinks.ElmahIo.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

@@ -2,7 +2,7 @@
 
 > Sends Herald log events to Elasticsearch as JSON documents via the Bulk API. Uses time-based indexes (prefix-yyyy.MM.dd) and emits exceptions as a typed sub-object (type / message / stack) that Kibana's exception-tracking UI indexes as first-class fields.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

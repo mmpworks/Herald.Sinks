@@ -2,7 +2,7 @@
 
 > Writes Herald log events as BSON documents into a MongoDB collection. Drop-in for Serilog.Sinks.MongoDB. Single InsertOne on Log, unordered InsertMany for IBatchedLogSink batches. Works with capped collections for bounded retention.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

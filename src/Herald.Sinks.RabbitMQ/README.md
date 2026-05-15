@@ -2,7 +2,7 @@
 
 > Publishes Herald log events as JSON messages onto a RabbitMQ exchange with a caller-supplied routing key. Downstream consumers (Graylog, Logstash, custom pipelines) decide what to do with them. Persistent messages by default for crash-safety on the broker side.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

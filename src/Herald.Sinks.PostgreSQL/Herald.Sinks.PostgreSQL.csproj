@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as rows in a PostgreSQL table. Drop-in for Serilog.Sinks.PostgreSQL. Parameterized INSERT on single writes, COPY binary protocol on batches, optional auto-create.</Description>
     <PackageTags>herald;logging;sink;postgresql;postgres;npgsql</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
 

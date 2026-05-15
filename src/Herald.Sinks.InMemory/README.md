@@ -2,7 +2,7 @@
 
 > Retains Herald log events in-memory so tests can assert against what the pipeline produced. Not intended for production — a long-running app using this sink will grow the event list unboundedly unless a capacity is set.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 
@@ -36,7 +36,7 @@ Sink kind: `in_memory` (the identifier the Dashboard form and JSON config use to
 
 ## Vendor
 
-Herald — https://github.com/mmpworks/Herald
+Herald — https://github.com/mmpworks/Herald.OSS
 
 ## Configuration
 

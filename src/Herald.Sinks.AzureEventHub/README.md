@@ -2,7 +2,7 @@
 
 > Publishes Herald log events as messages to an Azure Event Hubs partition via EventHubProducerClient. Drop-in for Serilog.Sinks.AzureEventHub. Pairs with Herald.Sinks.Kafka for multi-cloud streaming setups.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

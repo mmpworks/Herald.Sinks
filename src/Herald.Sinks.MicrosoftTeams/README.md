@@ -2,7 +2,7 @@
 
 > Posts Herald log events to a Microsoft Teams channel via an incoming webhook. Drop-in for Serilog.Sinks.MicrosoftTeams.Alternative. MessageCard format — compatible with both Office 365 Connectors and the newer Workflows webhook.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

@@ -6,7 +6,7 @@
     <Version>1.0.0</Version>
     <Description>Publishes Herald log events as messages to an Azure Event Hubs partition. Drop-in for Serilog.Sinks.AzureEventHub.</Description>
     <PackageTags>herald;logging;sink;azure;event-hubs;streaming</PackageTags>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>

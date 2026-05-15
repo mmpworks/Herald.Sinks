@@ -2,7 +2,7 @@
 
 > Writes Herald log events as rows in a PostgreSQL table. Drop-in for Serilog.Sinks.PostgreSQL. Parameterized INSERT for single writes, binary COPY for batches (~10x faster than prepared INSERTs), optional auto-create DDL.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

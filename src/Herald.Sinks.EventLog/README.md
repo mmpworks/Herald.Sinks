@@ -2,7 +2,7 @@
 
 > Writes Herald log events to the Windows Event Log. Drop-in for Serilog.Sinks.EventLog — forwards level / category / message through EventLog.WriteEntry with a mapped EventLogEntryType. Windows-only; throws PlatformNotSupportedException on Linux and macOS.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

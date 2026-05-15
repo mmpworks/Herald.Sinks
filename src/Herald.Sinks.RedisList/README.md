@@ -2,7 +2,7 @@
 
 > RPUSHes Herald log events as JSON entries onto a Redis list via StackExchange.Redis. Drop-in for Serilog.Sinks.Redis.List. Pairs with downstream BLPOP / BRPOPLPUSH consumers for durable handoff to a worker tier; pair with the optional LTRIM cap for bounded retention.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

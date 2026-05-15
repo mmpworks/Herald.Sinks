@@ -2,7 +2,7 @@
 
 > Tracks Herald log events as TelemetryClient.TrackTrace and TrackException into Azure Application Insights via the Microsoft.ApplicationInsights SDK. Drop-in for Serilog.Sinks.ApplicationInsights. Events carrying an exception in their context promote to ExceptionTelemetry so AI's exception analytics light up. Pair with Herald.Sinks.ApplicationInsightsHttp if you want the same destination without the SDK dependency.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

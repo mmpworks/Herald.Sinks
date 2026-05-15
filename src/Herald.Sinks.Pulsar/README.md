@@ -2,7 +2,7 @@
 
 > Sends Herald log events to an Apache Pulsar topic via DotPulsar. Multi-tenant pub/sub with persistent and non-persistent topic flavours selected by the topic URL.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

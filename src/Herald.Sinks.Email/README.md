@@ -2,7 +2,7 @@
 
 > Sends Herald log events as SMTP email via MailKit. Drop-in for Serilog.Sinks.Email. Sized for high-severity alerts — pair with a warn+ or error+ level filter, otherwise mailbox flooding becomes the bug you're trying to solve.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

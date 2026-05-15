@@ -2,7 +2,7 @@
 
 > Writes Herald log events to an arbitrary System.IO.TextWriter. Useful for tests (redirecting into a StringWriter), for memory-stream pipelines, and for custom writer shims that route output somewhere Core's File sinks do not cover.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

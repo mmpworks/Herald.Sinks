@@ -2,7 +2,7 @@
 
 > Routes Herald log events to Godot 4.x's built-in console output channels. Levels at or above Error use GD.PushError (Errors tab, audible stinger in the editor); Warn uses GD.PushWarning (Warnings tab); everything below uses GD.Print (Output panel). Game-dev counterpart to Herald.Sinks.Debug — registers as a normal Herald sink via QuickLogBuilder, no embedding required.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

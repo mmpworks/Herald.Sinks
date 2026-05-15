@@ -2,7 +2,7 @@
 
 > POSTs Herald log events as MessageData telemetry envelopes directly to Azure Application Insights' ingestion endpoint. No Microsoft.ApplicationInsights SDK dependency — just HttpClient. Narrow dependency graph, AOT-friendly. Same destination as Herald.Sinks.ApplicationInsightsSdk, different implementation approach. Pick this for minimal dependencies or AOT-clean publishing; pick the SDK variant for idiomatic AI telemetry types (TraceTelemetry, ExceptionTelemetry) and Serilog drop-in semantics.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

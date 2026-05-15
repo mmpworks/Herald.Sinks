@@ -2,7 +2,7 @@
 
 > Writes Herald log events to Azure Monitor via the modern Data Collection Rule (DCR)-based Log Ingestion API. Microsoft's supported successor to the legacy Data Collector API (Herald.Sinks.AzureAnalytics). Use this for new workspaces.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

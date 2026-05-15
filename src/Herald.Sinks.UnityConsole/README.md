@@ -2,7 +2,7 @@
 
 > Routes Herald log events to Unity's console — Debug.Log, Debug.LogWarning, Debug.LogError. Takes delegates in the constructor so the package itself has no UnityEngine reference; the consumer wires UnityEngine.Debug methods directly. Result: the package is fully trim-clean and IL2CPP / AOT-publish-safe, and the consumer keeps full control over how Unity dispatch is wired (real Debug for editor / standalone, custom logger for tests, no-op for headless CI).
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 

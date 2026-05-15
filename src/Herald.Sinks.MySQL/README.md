@@ -2,7 +2,7 @@
 
 > Writes Herald log events as rows in a MySQL or MariaDB table via MySqlConnector (the modern, fully-async, open-source driver). Drop-in for Serilog.Sinks.MySQL. Completes the relational-DB trio alongside MSSqlServer and PostgreSQL.
 
-Part of [Herald](https://github.com/mmpworks/Herald) — high-performance structured logging for .NET 8, 9, and 10.
+Part of [Herald](https://github.com/mmpworks/Herald.OSS) — high-performance structured logging for .NET 8, 9, and 10.
 
 ## Install
 
