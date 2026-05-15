@@ -33,6 +33,6 @@
     <!-- Reuse the small test-helper set from Core's test project via
          linked-compile rather than a test-project-to-test-project
          reference. Same pattern Herald.Sinks.SignalFx.Tests uses. -->
-    <Compile Include="..\..\..\Core\tests\Helpers\*.cs" LinkBase="_CoreTestHelpers" />
+    <Compile Include="..\_shared\*.cs" LinkBase="_CoreTestHelpers" />
   </ItemGroup>
 </Project>

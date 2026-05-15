@@ -20,6 +20,6 @@
     <ProjectReference Include="..\..\src\Herald.Sinks.Axiom\Herald.Sinks.Axiom.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Core\tests\Helpers\*.cs" LinkBase="_CoreTestHelpers" />
+    <Compile Include="..\_shared\*.cs" LinkBase="_CoreTestHelpers" />
   </ItemGroup>
 </Project>
