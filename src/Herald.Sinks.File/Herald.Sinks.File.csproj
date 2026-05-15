@@ -18,7 +18,7 @@
 
          PrivateAssets="all" prevents the in-tree ProjectReference
          from leaking into the produced .nupkg as an unresolvable
-         transitive dependency. Consumers of MMP.Herald.Sinks.File
+         transitive dependency. Consumers of Herald.Sinks.File
          must not see a project-path reference to a sibling repo
          that does not exist on their disk. The dependency becomes
          a normal <PackageReference> once the standalone library

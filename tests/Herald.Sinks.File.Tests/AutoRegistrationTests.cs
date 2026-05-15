@@ -70,7 +70,7 @@ public sealed class AutoRegistrationTests
     [Fact]
     public void Auto_registration_works_without_any_manual_RegisterAll_call()
     {
-        // This is the headline claim: `dotnet add package MMP.Herald.Sinks.File`
+        // This is the headline claim: `dotnet add package Herald.Sinks.File`
         // plus a single `using` is the entire developer workflow. No call to
         // FileSinkRegistration.RegisterAll, no QuickLogBuilder.WithFileSinkProviders.
         _ = _forceLoad;

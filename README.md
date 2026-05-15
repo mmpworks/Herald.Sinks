@@ -9,7 +9,7 @@ Herald.Core ships with the universal sinks every consumer needs: console, null, 
 **Herald consumers.** You want a specific destination. Install the matching NuGet:
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Datadog
+dotnet add package Herald.Sinks.Datadog
 ```
 
 Then register the provider at bootstrap:

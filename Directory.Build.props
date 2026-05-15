@@ -126,7 +126,7 @@
 
   <!-- Universal sink-auto-registration generator. Every Herald.Sinks.*
        csproj picks this up automatically through Directory.Build.props
-       so a `dotnet add package MMP.Herald.Sinks.X` is the entire
+       so a `dotnet add package Herald.Sinks.X` is the entire
        developer workflow — no fluent WithXSinkProviders() call, no
        manual RegisterAll(registry). The generator emits a
        [ModuleInitializer] in each sink assembly that registers every

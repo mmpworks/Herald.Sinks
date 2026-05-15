@@ -38,7 +38,7 @@ Herald.Sinks/
 │   └── product-sheet.py           # reads CAPABILITY.yaml files, emits catalog
 ├── src/
 │   └── Herald.Sinks.<Name>/
-│       ├── Herald.Sinks.<Name>.csproj   # publishes MMP.Herald.Sinks.<Name>
+│       ├── Herald.Sinks.<Name>.csproj   # publishes Herald.Sinks.<Name>
 │       ├── CAPABILITY.yaml              # capability manifest
 │       ├── <Name>LogSink.cs
 │       └── Providers/<Name>LogSinkProvider.cs

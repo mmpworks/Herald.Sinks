@@ -1,6 +1,6 @@
 # Contributing a sink to Herald.Sinks
 
-This guide walks through adding a new destination-specific sink. Follow the shape and your sink ships as `MMP.Herald.Sinks.<Name>` on NuGet with no extra wiring.
+This guide walks through adding a new destination-specific sink. Follow the shape and your sink ships as `Herald.Sinks.<Name>` on NuGet with no extra wiring.
 
 ## License + the DCO
 
@@ -89,7 +89,7 @@ tests/Herald.Sinks.<Name>.Tests/
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.<Name></RootNamespace>
     <AssemblyName>Herald.Sinks.<Name></AssemblyName>
-    <PackageId>MMP.Herald.Sinks.<Name></PackageId>
+    <PackageId>Herald.Sinks.<Name></PackageId>
     <Version>1.0.0</Version>
     <Description>(filled from CAPABILITY.yaml at pack time)</Description>
     <IsAotCompatible>true</IsAotCompatible>   <!-- adjust if the sink
@@ -114,7 +114,7 @@ Minimum viable manifest for a community-contributed HTTP sink:
 
 ```yaml
 name: Herald.Sinks.Acme
-package_id: MMP.Herald.Sinks.Acme
+package_id: Herald.Sinks.Acme
 version: 1.0.0
 kind: sink
 category: observability

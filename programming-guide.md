@@ -133,7 +133,7 @@ Here's every property, grouped by section.
 | Property | Example | Purpose |
 | --- | --- | --- |
 | `name` | `Herald.Sinks.Acme` | Must match the csproj filename exactly. The build validates this. |
-| `package_id` | `MMP.Herald.Sinks.Acme` | The NuGet package id published to nuget.org. Must start with `MMP.Herald.Sinks.`. |
+| `package_id` | `Herald.Sinks.Acme` | The NuGet package id published to nuget.org. Must start with `Herald.Sinks.` (not `MMP.`). |
 | `version` | `1.0.0` | Must match `<Version>` in the csproj. Release scripts use this to decide whether to publish. |
 | `kind` | `sink` | Always `sink` in this repo. Reserved for future categories. |
 | `category` | `observability` | One of: `observability`, `cloud-archive`, `alerting`, `analytics`, `community`. Drives the product-sheet grouping. |
@@ -586,7 +586,7 @@ public sealed class AcmeLogSinkProvider : ILogSinkProvider
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Acme</RootNamespace>
     <AssemblyName>Herald.Sinks.Acme</AssemblyName>
-    <PackageId>MMP.Herald.Sinks.Acme</PackageId>
+    <PackageId>Herald.Sinks.Acme</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts log events to Acme's HTTP log intake.</Description>
     <IsAotCompatible>true</IsAotCompatible>
@@ -609,7 +609,7 @@ public sealed class AcmeLogSinkProvider : ILogSinkProvider
 ```yaml
 # src/Herald.Sinks.Acme/CAPABILITY.yaml
 name: Herald.Sinks.Acme
-package_id: MMP.Herald.Sinks.Acme
+package_id: Herald.Sinks.Acme
 version: 1.0.0
 kind: sink
 category: observability
@@ -894,7 +894,7 @@ Always accept an optional `HttpClient` in the constructor — tests inject a fak
 - [ ] `CAPABILITY.yaml` is complete; all required fields filled.
 - [ ] The sink class implements `ILogger`.
 - [ ] The provider class implements `ILogSinkProvider`.
-- [ ] `csproj` has `<PackageId>MMP.Herald.Sinks.{Name}</PackageId>`.
+- [ ] `csproj` has `<PackageId>Herald.Sinks.{Name}</PackageId>` (no `MMP.` prefix — the contract test enforces this).
 - [ ] `csproj` has `<ProjectReference>` to Core.
 - [ ] `csproj` packs `CAPABILITY.yaml` into the NuGet.
 - [ ] Tests cover the 6 minimum scenarios (see Part 6).

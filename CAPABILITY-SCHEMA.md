@@ -9,7 +9,7 @@ No field is optional without a default stated below. A sink that omits a require
 ```yaml
 # ─── Identity ─────────────────────────────────────────────────────────
 name: Herald.Sinks.<Name>                # csproj name, no namespace prefix
-package_id: MMP.Herald.Sinks.<Name>      # published NuGet id
+package_id: Herald.Sinks.<Name>          # published NuGet id
 version: <semver>                        # matches csproj <Version>
 configContract: 1 | 2                    # sink-config contract version.
                                          #   1 (default if omitted): legacy flat
@@ -316,7 +316,7 @@ changelog:                               # high-level, one entry per version
 Must match the csproj filename without extension. The build validates this on every compile.
 
 ### `package_id`
-Must start with `MMP.Herald.Sinks.` — the monorepo enforces this prefix so consumers searching NuGet for Herald sinks find the whole catalog together.
+Must start with `Herald.Sinks.` — and not `MMP.`. The contract test in `tests/Herald.Sinks.Contract.Tests/NamingContractTests.cs` asserts both. Consumers searching NuGet for Herald sinks find the whole catalog together.
 
 ### `version`
 Must match the `<Version>` element in the csproj. A release-pack script reads this to decide which NuGets to publish; a mismatch fails the script.
@@ -382,7 +382,7 @@ What a real sink's manifest looks like. The Dashboard renders this as eight form
 
 ```yaml
 name: Herald.Sinks.Datadog
-package_id: MMP.Herald.Sinks.Datadog
+package_id: Herald.Sinks.Datadog
 version: 1.0.0
 kind: sink
 category: observability
