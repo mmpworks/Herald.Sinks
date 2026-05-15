@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.ZeroMQ
+# Herald.Sinks.ZeroMQ
 
 > Publishes Herald log events as JSON frames over a ZeroMQ socket via NetMQ. Drop-in for Serilog.Sinks.ZeroMQ. Supports PUB (fan-out to subscribers) and PUSH (load-balance to pullers) socket kinds. Pair with downstream SUB or PULL consumers for ad-hoc log streaming where a full broker would be overkill.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.ZeroMQ
+dotnet add package Herald.Sinks.ZeroMQ
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

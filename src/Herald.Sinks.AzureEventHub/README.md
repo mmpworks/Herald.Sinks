@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AzureEventHub
+# Herald.Sinks.AzureEventHub
 
 > Publishes Herald log events as messages to an Azure Event Hubs partition via EventHubProducerClient. Drop-in for Serilog.Sinks.AzureEventHub. Pairs with Herald.Sinks.Kafka for multi-cloud streaming setups.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AzureEventHub
+dotnet add package Herald.Sinks.AzureEventHub
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

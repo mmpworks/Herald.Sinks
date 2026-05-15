@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Seq
+# Herald.Sinks.Seq
 
 > Posts Herald log events to a Seq server as newline-delimited CLEF over HTTP. Matches the wire format Serilog.Sinks.Seq ships so teams with an existing Seq deployment can switch to Herald without touching their log store.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Seq
+dotnet add package Herald.Sinks.Seq
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

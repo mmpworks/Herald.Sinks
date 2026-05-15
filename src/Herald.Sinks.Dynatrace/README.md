@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Dynatrace
+# Herald.Sinks.Dynatrace
 
 > Posts Herald log events to Dynatrace Generic Log Ingest API via HTTP with Api-Token authentication. Drop-in for Serilog.Sinks.Dynatrace. No Dynatrace SDK dependency.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Dynatrace
+dotnet add package Herald.Sinks.Dynatrace
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

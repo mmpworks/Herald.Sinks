@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AzureTableStorage
+# Herald.Sinks.AzureTableStorage
 
 > Writes Herald log events as entities into an Azure Table Storage table via Azure.Data.Tables. Cheap high-volume archival destination for Azure-hosted workloads. Configurable partition strategy (UtcDay / UtcHour / UtcMinute / Fixed) trades query locality for write throughput; the default UtcDay matches Serilog.Sinks.AzureTableStorage's shape. Auth via connection string OR DefaultAzureCredential (managed identity) OR a caller-built TableClient.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AzureTableStorage
+dotnet add package Herald.Sinks.AzureTableStorage
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

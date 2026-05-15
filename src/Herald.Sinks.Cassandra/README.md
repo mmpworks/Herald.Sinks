@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Cassandra
+# Herald.Sinks.Cassandra
 
 > INSERTs Herald log events into a Cassandra table via the DataStax CassandraCSharpDriver. Drop-in for Serilog.Sinks.Cassandra. Works against ScyllaDB and any Cassandra-protocol cluster. Prepared statement bound per event keeps per-call cost bounded.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Cassandra
+dotnet add package Herald.Sinks.Cassandra
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

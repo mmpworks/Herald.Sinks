@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Otlp
+# Herald.Sinks.Otlp
 
 > Three sinks for the OpenTelemetry Logs Protocol that share serialization infrastructure: OtlpJsonLogSink posts JSON to an OTLP collector, OtlpProtobufLogSink posts binary protobuf to the same endpoint, and ProtobufFileLogSink writes length-delimited protobuf records to a local .pb file for offline ingestion. The hand-rolled protobuf writer keeps the package AOT-clean — no generated message classes, no reflection paths the trim analyzer has to defeat.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Otlp
+dotnet add package Herald.Sinks.Otlp
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

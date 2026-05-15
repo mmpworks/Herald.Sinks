@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.BigQuery
+# Herald.Sinks.BigQuery
 
 > Streaming-inserts Herald log events into a Google BigQuery table via Google.Cloud.BigQuery.V2. ADC for auth.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.BigQuery
+dotnet add package Herald.Sinks.BigQuery
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

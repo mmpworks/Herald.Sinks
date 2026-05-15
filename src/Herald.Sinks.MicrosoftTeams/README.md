@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.MicrosoftTeams
+# Herald.Sinks.MicrosoftTeams
 
 > Posts Herald log events to a Microsoft Teams channel via an incoming webhook. Drop-in for Serilog.Sinks.MicrosoftTeams.Alternative. MessageCard format — compatible with both Office 365 Connectors and the newer Workflows webhook.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.MicrosoftTeams
+dotnet add package Herald.Sinks.MicrosoftTeams
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.MongoDB
+# Herald.Sinks.MongoDB
 
 > Writes Herald log events as BSON documents into a MongoDB collection. Drop-in for Serilog.Sinks.MongoDB. Single InsertOne on Log, unordered InsertMany for IBatchedLogSink batches. Works with capped collections for bounded retention.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.MongoDB
+dotnet add package Herald.Sinks.MongoDB
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Discord
+# Herald.Sinks.Discord
 
 > Posts Herald log events to a Discord channel via incoming webhooks. One message per event with severity-aware emoji prefix; content truncated at 1900 chars (under Discord's 2000-char ceiling).
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Discord
+dotnet add package Herald.Sinks.Discord
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.RavenDB
+# Herald.Sinks.RavenDB
 
 > Stores Herald log events as documents in a RavenDB database via the official RavenDB.Client SDK. Drop-in for Serilog.Sinks.RavenDB. Per-call session for Log; batched session for IBatchedLogSink.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.RavenDB
+dotnet add package Herald.Sinks.RavenDB
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.MSSqlServer
+# Herald.Sinks.MSSqlServer
 
 > Writes Herald log events as rows in a Microsoft SQL Server or Azure SQL table. Drop-in for Serilog.Sinks.MSSqlServer. Parameterized INSERT for single writes, SqlBulkCopy for batches, optional auto-create DDL for dev loops.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.MSSqlServer
+dotnet add package Herald.Sinks.MSSqlServer
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

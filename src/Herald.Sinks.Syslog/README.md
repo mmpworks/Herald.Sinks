@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Syslog
+# Herald.Sinks.Syslog
 
 > Emits Herald log events as RFC 5424 or RFC 3164 syslog messages over UDP or TCP. Drop-in for Serilog.Sinks.SyslogMessages. Cross-platform — works on Windows, Linux, and macOS. Typical targets: rsyslog, syslog-ng, Graylog, Logstash, Fluentd with a syslog input.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Syslog
+dotnet add package Herald.Sinks.Syslog
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

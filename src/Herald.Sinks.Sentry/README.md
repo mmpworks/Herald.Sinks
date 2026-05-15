@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Sentry
+# Herald.Sinks.Sentry
 
 > Forwards Herald log events to Sentry's store endpoint as structured events. Parses the standard DSN format and emits exceptions, tags, and extras in the shape Sentry's UI expects. Typical deployment stacks this sink behind a Warn-or-above filter.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Sentry
+dotnet add package Herald.Sinks.Sentry
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

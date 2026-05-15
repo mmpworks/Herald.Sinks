@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.SQLite
+# Herald.Sinks.SQLite
 
 > Writes Herald log events to an embedded SQLite database. Drop-in for Serilog.Sinks.SQLite. Single-file, no server, no background process. Ideal for desktop apps, CLI tools, and edge deployments.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.SQLite
+dotnet add package Herald.Sinks.SQLite
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

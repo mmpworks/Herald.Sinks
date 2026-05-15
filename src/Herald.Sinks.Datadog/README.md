@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Datadog
+# Herald.Sinks.Datadog
 
 > Posts Herald log events to Datadog's HTTP log intake. Works against both the public site intake and a local Datadog Agent, with per-event error-triple emission that lights up Datadog's error-tracking pipeline in addition to plain log search.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Datadog
+dotnet add package Herald.Sinks.Datadog
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

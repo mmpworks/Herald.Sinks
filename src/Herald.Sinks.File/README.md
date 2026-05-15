@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.File
+# Herald.Sinks.File
 
 > Writes Herald log events to disk. Plain-text mode produces human-readable lines; structured mode produces NDJSON for machine parsing. Optional file rolling for time-based or size-based rotation, with per-pipeline path templating.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.File
+dotnet add package Herald.Sinks.File
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.BetterStack
+# Herald.Sinks.BetterStack
 
 > Ships Herald log events to Better Stack (Logtail) via the public ingest endpoint. Bearer-token auth, NDJSON body. HTTP-only — no SDK.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.BetterStack
+dotnet add package Herald.Sinks.BetterStack
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

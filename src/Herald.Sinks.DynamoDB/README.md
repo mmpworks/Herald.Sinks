@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.DynamoDB
+# Herald.Sinks.DynamoDB
 
 > PutItems Herald log events into a DynamoDB table via AWSSDK.DynamoDBv2. Drop-in for Serilog.Sinks.AmazonDynamoDB. Composite id sorts newest-first within a date prefix; BatchWriteItem chunks into 25-item slices.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.DynamoDB
+dotnet add package Herald.Sinks.DynamoDB
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

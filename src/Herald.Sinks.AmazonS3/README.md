@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AmazonS3
+# Herald.Sinks.AmazonS3
 
 > Uploads Herald log events as NDJSON objects to an Amazon S3 bucket. Drop-in for Serilog.Sinks.AmazonS3. One batch → one S3 object. Pairs naturally with Herald.Sinks.AwsCloudWatch for archive vs live-query separation.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AmazonS3
+dotnet add package Herald.Sinks.AmazonS3
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

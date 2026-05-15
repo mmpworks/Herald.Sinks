@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.ElmahIo
+# Herald.Sinks.ElmahIo
 
 > Ships Herald log events to elmah.io's error-tracking service via the v3 bulk messages API. Drop-in for Serilog.Sinks.ElmahIo.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.ElmahIo
+dotnet add package Herald.Sinks.ElmahIo
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

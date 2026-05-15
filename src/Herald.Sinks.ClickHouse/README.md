@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.ClickHouse
+# Herald.Sinks.ClickHouse
 
 > Inserts Herald log events into a ClickHouse table via the ClickHouse.Client driver. Single INSERT on the Log path, ClickHouseBulkCopy on IBatchedLogSink batches — the driver's native column-block format gives sustained-throughput insert performance ClickHouse is famous for.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.ClickHouse
+dotnet add package Herald.Sinks.ClickHouse
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

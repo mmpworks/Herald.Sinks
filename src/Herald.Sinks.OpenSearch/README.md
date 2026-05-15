@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.OpenSearch
+# Herald.Sinks.OpenSearch
 
 > Indexes Herald log events into an OpenSearch cluster via the _bulk HTTP API. Drop-in for Serilog.Sinks.OpenSearch. Pure HTTP — no OpenSearch SDK dependency keeps the transitive footprint small. Natural companion to Herald.Sinks.Elasticsearch for AWS shops after the Elasticsearch/OpenSearch split.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.OpenSearch
+dotnet add package Herald.Sinks.OpenSearch
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

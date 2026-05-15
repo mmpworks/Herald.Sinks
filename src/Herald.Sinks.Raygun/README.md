@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Raygun
+# Herald.Sinks.Raygun
 
 > Forwards Herald log events to the Raygun crash-reporting / error- tracking service. Drop-in for Serilog.Sinks.Raygun. Pair with a warn+ level filter — Raygun is sized for crash reports, not info chatter.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Raygun
+dotnet add package Herald.Sinks.Raygun
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

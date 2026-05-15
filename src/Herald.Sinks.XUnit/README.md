@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.XUnit
+# Herald.Sinks.XUnit
 
 > Routes Herald log events to xUnit's ITestOutputHelper so diagnostic output appears in the test report. Drop-in replacement for Serilog.Sinks.XUnit. Register in the test ctor; the sink absorbs the post-test InvalidOperationException so a late-firing background log call never fails a passed test.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.XUnit
+dotnet add package Herald.Sinks.XUnit
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

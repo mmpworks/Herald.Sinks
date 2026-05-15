@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Kafka
+# Herald.Sinks.Kafka
 
 > Produces Herald log events as JSON messages to a Kafka topic via Confluent.Kafka. Drop-in for Serilog.Sinks.Kafka. Default config (acks=all, linger.ms=5, compression=snappy) gives durable, network-efficient delivery without further tuning.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Kafka
+dotnet add package Herald.Sinks.Kafka
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

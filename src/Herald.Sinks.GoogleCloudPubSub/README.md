@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.GoogleCloudPubSub
+# Herald.Sinks.GoogleCloudPubSub
 
 > Publish Herald log events into a Google Cloud Pub/Sub topic via Google.Cloud.PubSub.V1. PublisherClient handles internal batching, retries, and flow control by default.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.GoogleCloudPubSub
+dotnet add package Herald.Sinks.GoogleCloudPubSub
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

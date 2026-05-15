@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AwsCloudWatch
+# Herald.Sinks.AwsCloudWatch
 
 > Writes Herald log events to an AWS CloudWatch Logs log group / log stream via PutLogEvents. Drop-in for Serilog.Sinks.AwsCloudWatch. Honours CloudWatch's 10,000-event / 1 MB batch ceiling and the 256 KB single-event ceiling. Optional auto-create of log group and stream.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AwsCloudWatch
+dotnet add package Herald.Sinks.AwsCloudWatch
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

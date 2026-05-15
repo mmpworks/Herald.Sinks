@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AzureLogAnalyticsDcr
+# Herald.Sinks.AzureLogAnalyticsDcr
 
 > Writes Herald log events to Azure Monitor via the modern Data Collection Rule (DCR)-based Log Ingestion API. Microsoft's supported successor to the legacy Data Collector API (Herald.Sinks.AzureAnalytics). Use this for new workspaces.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AzureLogAnalyticsDcr
+dotnet add package Herald.Sinks.AzureLogAnalyticsDcr
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

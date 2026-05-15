@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.GoogleCloudLogging
+# Herald.Sinks.GoogleCloudLogging
 
 > Writes Herald log events to Google Cloud Logging (formerly Stackdriver) via LoggingServiceV2Client.WriteLogEntries. Drop-in for Serilog.Sinks.GoogleCloudLogging. Maps Herald severity to Cloud Logging's LogSeverity enum so the log viewer colour-codes events consistently with other GCP services.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.GoogleCloudLogging
+dotnet add package Herald.Sinks.GoogleCloudLogging
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

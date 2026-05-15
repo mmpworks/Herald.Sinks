@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.LogzIo
+# Herald.Sinks.LogzIo
 
 > Ships Herald log events to Logz.io's bulk HTTP listener. Drop-in for Serilog.Sinks.Logz.Io. NDJSON body, token carried in the URL.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.LogzIo
+dotnet add package Herald.Sinks.LogzIo
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

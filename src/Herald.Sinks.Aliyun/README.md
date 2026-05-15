@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Aliyun
+# Herald.Sinks.Aliyun
 
 > Sends Herald log events to Alibaba Cloud Simple Log Service (SLS) via the REST PutLogs API. Primary target for China-region deployments and any workload that reports into the Aliyun log ecosystem. Pure HTTP with inline HMAC-SHA1 signing — no Aliyun SDK dependency.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Aliyun
+dotnet add package Herald.Sinks.Aliyun
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.MySQL
+# Herald.Sinks.MySQL
 
 > Writes Herald log events as rows in a MySQL or MariaDB table via MySqlConnector (the modern, fully-async, open-source driver). Drop-in for Serilog.Sinks.MySQL. Completes the relational-DB trio alongside MSSqlServer and PostgreSQL.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.MySQL
+dotnet add package Herald.Sinks.MySQL
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

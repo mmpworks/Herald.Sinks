@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Elasticsearch
+# Herald.Sinks.Elasticsearch
 
 > Sends Herald log events to Elasticsearch as JSON documents via the Bulk API. Uses time-based indexes (prefix-yyyy.MM.dd) and emits exceptions as a typed sub-object (type / message / stack) that Kibana's exception-tracking UI indexes as first-class fields.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Elasticsearch
+dotnet add package Herald.Sinks.Elasticsearch
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

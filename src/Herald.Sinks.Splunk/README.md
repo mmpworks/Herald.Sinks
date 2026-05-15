@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Splunk
+# Herald.Sinks.Splunk
 
 > Posts Herald log events to Splunk's HTTP Event Collector (HEC). Matches the wire shape Serilog.Sinks.Splunk uses so teams on Splunk can drop in Herald without touching the collector config. Supports the full HEC envelope (time, host, source, sourcetype, index).
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Splunk
+dotnet add package Herald.Sinks.Splunk
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

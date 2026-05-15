@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.HttpJson
+# Herald.Sinks.HttpJson
 
 > Posts Herald log events as newline-delimited JSON (NDJSON) over HTTP. One event per line, batched when the pipeline supplies multiple. Pairs with any HTTP log-intake that accepts NDJSON — Elasticsearch bulk, Loki push, generic aggregators, custom backends.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.HttpJson
+dotnet add package Herald.Sinks.HttpJson
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

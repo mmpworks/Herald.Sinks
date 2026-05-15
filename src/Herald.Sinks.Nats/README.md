@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Nats
+# Herald.Sinks.Nats
 
 > Publishes Herald log events as JSON messages to a NATS subject via NATS.Client.Core (the modern v2 line). Cloud-native messaging with optional JetStream durability handled at the operator side.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Nats
+dotnet add package Herald.Sinks.Nats
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

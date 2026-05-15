@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Sqs
+# Herald.Sinks.Sqs
 
 > SendMessage Herald log events into an AWS SQS queue via AWSSDK.SQS. Drop-in for Serilog.Sinks.AmazonSqs. Chunks batches at 10 messages per request (the SQS SendMessageBatch limit).
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Sqs
+dotnet add package Herald.Sinks.Sqs
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

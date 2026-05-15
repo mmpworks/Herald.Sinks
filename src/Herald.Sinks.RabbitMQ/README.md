@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.RabbitMQ
+# Herald.Sinks.RabbitMQ
 
 > Publishes Herald log events as JSON messages onto a RabbitMQ exchange with a caller-supplied routing key. Downstream consumers (Graylog, Logstash, custom pipelines) decide what to do with them. Persistent messages by default for crash-safety on the broker side.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.RabbitMQ
+dotnet add package Herald.Sinks.RabbitMQ
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

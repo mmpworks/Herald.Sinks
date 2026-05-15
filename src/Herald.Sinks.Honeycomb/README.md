@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Honeycomb
+# Herald.Sinks.Honeycomb
 
 > Posts Herald log events to Honeycomb's batch ingest endpoint. Maps each event onto Honeycomb's flat data-object shape with per-event sample-rate support so aggregates stay correct when an upstream sampler is in play.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Honeycomb
+dotnet add package Herald.Sinks.Honeycomb
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

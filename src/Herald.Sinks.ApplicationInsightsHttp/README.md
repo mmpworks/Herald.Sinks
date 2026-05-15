@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.ApplicationInsightsHttp
+# Herald.Sinks.ApplicationInsightsHttp
 
 > POSTs Herald log events as MessageData telemetry envelopes directly to Azure Application Insights' ingestion endpoint. No Microsoft.ApplicationInsights SDK dependency — just HttpClient. Narrow dependency graph, AOT-friendly. Same destination as Herald.Sinks.ApplicationInsightsSdk, different implementation approach. Pick this for minimal dependencies or AOT-clean publishing; pick the SDK variant for idiomatic AI telemetry types (TraceTelemetry, ExceptionTelemetry) and Serilog drop-in semantics.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.ApplicationInsightsHttp
+dotnet add package Herald.Sinks.ApplicationInsightsHttp
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

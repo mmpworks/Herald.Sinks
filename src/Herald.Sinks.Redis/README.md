@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Redis
+# Herald.Sinks.Redis
 
 > Publishes Herald log events as JSON messages to a Redis PubSub channel via StackExchange.Redis. Drop-in for Serilog.Sinks.Redis (PubSub mode). Pair with Herald.Sinks.RedisList when you need durable delivery (RPUSH into a list consumers drain).
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Redis
+dotnet add package Herald.Sinks.Redis
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

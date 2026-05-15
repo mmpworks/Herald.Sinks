@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.UnityConsole
+# Herald.Sinks.UnityConsole
 
 > Routes Herald log events to Unity's console — Debug.Log, Debug.LogWarning, Debug.LogError. Takes delegates in the constructor so the package itself has no UnityEngine reference; the consumer wires UnityEngine.Debug methods directly. Result: the package is fully trim-clean and IL2CPP / AOT-publish-safe, and the consumer keeps full control over how Unity dispatch is wired (real Debug for editor / standalone, custom logger for tests, no-op for headless CI).
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.UnityConsole
+dotnet add package Herald.Sinks.UnityConsole
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.OtlpGrpc
+# Herald.Sinks.OtlpGrpc
 
 > Exports Herald log events to an OpenTelemetry collector over OTLP/gRPC. Calls opentelemetry.proto.collector.logs.v1.LogsService/Export with the standard ExportLogsServiceRequest payload. Reuses the hand-rolled protobuf writer from Herald.Sinks.Otlp so payload shape stays identical across HTTP and gRPC transports — no proto codegen, no generated message types.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.OtlpGrpc
+dotnet add package Herald.Sinks.OtlpGrpc
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.SignalFx
+# Herald.Sinks.SignalFx
 
 > Posts Herald log events to SignalFx / Splunk Observability Cloud's HTTP log intake. Routes by realm or against a self-hosted Splunk Observability endpoint, with optional low-cardinality dimensions applied to every event for metric correlation.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.SignalFx
+dotnet add package Herald.Sinks.SignalFx
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

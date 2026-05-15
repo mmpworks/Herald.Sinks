@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Debug
+# Herald.Sinks.Debug
 
 > Writes Herald log events to System.Diagnostics.Debug. Events appear in Visual Studio / Rider / VS Code Output windows with a debugger attached, and in any registered DebugListener otherwise. Intended for development-time diagnostic output without touching stdout.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Debug
+dotnet add package Herald.Sinks.Debug
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

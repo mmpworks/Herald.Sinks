@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Email
+# Herald.Sinks.Email
 
 > Sends Herald log events as SMTP email via MailKit. Drop-in for Serilog.Sinks.Email. Sized for high-severity alerts — pair with a warn+ or error+ level filter, otherwise mailbox flooding becomes the bug you're trying to solve.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Email
+dotnet add package Herald.Sinks.Email
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.HelloWorld
+# Herald.Sinks.HelloWorld
 
 > Test-only Herald sink. Registers under kind "hello_world" with a no-op CreateSink so the plugin loader has a concrete provider to discover, hot-add, and hot-remove. The dashboard renders the dashboard_config block here as a sanity check that the manifest pipeline is end-to-end alive — there are no real connection parameters because the sink does nothing.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.HelloWorld
+dotnet add package Herald.Sinks.HelloWorld
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

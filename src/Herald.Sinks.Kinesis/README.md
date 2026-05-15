@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Kinesis
+# Herald.Sinks.Kinesis
 
 > PutRecords Herald log events into an AWS Kinesis Data Stream via AWSSDK.Kinesis. Drop-in for Serilog.Sinks.AmazonKinesis. Defaults to category-based partition keys for shard affinity; chunks batches at 500 records per request.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Kinesis
+dotnet add package Herald.Sinks.Kinesis
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

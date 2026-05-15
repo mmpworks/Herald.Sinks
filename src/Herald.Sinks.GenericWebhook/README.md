@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.GenericWebhook
+# Herald.Sinks.GenericWebhook
 
 > Generic HTTP webhook sink with optional rules engine. POSTs formatted log events to any endpoint. The rules engine supports cooldown, message-pattern matching, property/category conditions, and per-rule payload templates — the feature set that PagerDuty, Opsgenie, and Datadog use for incident routing.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.GenericWebhook
+dotnet add package Herald.Sinks.GenericWebhook
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

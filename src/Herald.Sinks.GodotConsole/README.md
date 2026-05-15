@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.GodotConsole
+# Herald.Sinks.GodotConsole
 
 > Routes Herald log events to Godot 4.x's built-in console output channels. Levels at or above Error use GD.PushError (Errors tab, audible stinger in the editor); Warn uses GD.PushWarning (Warnings tab); everything below uses GD.Print (Output panel). Game-dev counterpart to Herald.Sinks.Debug — registers as a normal Herald sink via QuickLogBuilder, no embedding required.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.GodotConsole
+dotnet add package Herald.Sinks.GodotConsole
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

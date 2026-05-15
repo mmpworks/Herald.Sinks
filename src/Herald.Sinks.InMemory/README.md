@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.InMemory
+# Herald.Sinks.InMemory
 
 > Retains Herald log events in-memory so tests can assert against what the pipeline produced. Not intended for production — a long-running app using this sink will grow the event list unboundedly unless a capacity is set.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.InMemory
+dotnet add package Herald.Sinks.InMemory
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

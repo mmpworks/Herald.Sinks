@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.TextWriter
+# Herald.Sinks.TextWriter
 
 > Writes Herald log events to an arbitrary System.IO.TextWriter. Useful for tests (redirecting into a StringWriter), for memory-stream pipelines, and for custom writer shims that route output somewhere Core's File sinks do not cover.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.TextWriter
+dotnet add package Herald.Sinks.TextWriter
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

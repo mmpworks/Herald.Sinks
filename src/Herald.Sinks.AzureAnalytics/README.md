@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AzureAnalytics
+# Herald.Sinks.AzureAnalytics
 
 > Writes Herald log events to Azure Log Analytics / Azure Monitor via the HTTP Data Collector API. Drop-in for Serilog.Sinks.AzureAnalytics. Pure HTTP — no Azure SDK dependency. HMAC-SHA256 signing per Data Collector API spec.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AzureAnalytics
+dotnet add package Herald.Sinks.AzureAnalytics
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

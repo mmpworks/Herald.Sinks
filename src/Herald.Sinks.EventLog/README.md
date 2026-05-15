@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.EventLog
+# Herald.Sinks.EventLog
 
 > Writes Herald log events to the Windows Event Log. Drop-in for Serilog.Sinks.EventLog — forwards level / category / message through EventLog.WriteEntry with a mapped EventLogEntryType. Windows-only; throws PlatformNotSupportedException on Linux and macOS.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.EventLog
+dotnet add package Herald.Sinks.EventLog
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

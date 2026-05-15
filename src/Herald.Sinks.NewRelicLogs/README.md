@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.NewRelicLogs
+# Herald.Sinks.NewRelicLogs
 
 > Ships Herald log events to the New Relic Logs ingest API. Drop-in for Serilog.Sinks.NewRelic.Logs. Pure HTTP — no New Relic SDK dependency.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.NewRelicLogs
+dotnet add package Herald.Sinks.NewRelicLogs
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Couchbase
+# Herald.Sinks.Couchbase
 
 > Upserts Herald log events as JSON documents into a Couchbase bucket / scope / collection via CouchbaseNetClient. Drop-in for Serilog.Sinks.Couchbase. Composite document key sorts newest-first within a date prefix; N1QL queries land on Level / Category / TimeUtc fields.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Couchbase
+dotnet add package Herald.Sinks.Couchbase
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Graylog
+# Herald.Sinks.Graylog
 
 > Sends Herald log events as GELF 1.1 messages to Graylog over HTTP or TCP. Drop-in for Serilog.Sinks.Graylog / Graylog.Batching. Common target for European enterprise shops and any Graylog-as-central-log- aggregator deployment.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Graylog
+dotnet add package Herald.Sinks.Graylog
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

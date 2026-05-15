@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Loki
+# Herald.Sinks.Loki
 
 > Posts Herald log events to Grafana Loki's push endpoint. Groups events into streams by label set so batches produce the minimum number of Loki streams, and keeps high-cardinality properties out of the label index so an operator misstep cannot explode it.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Loki
+dotnet add package Herald.Sinks.Loki
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AzureCosmosDB
+# Herald.Sinks.AzureCosmosDB
 
 > Writes Herald log events as documents in an Azure Cosmos DB container via the modern Microsoft.Azure.Cosmos v3 SDK. Drop-in for Serilog.Sinks.AzureCosmosDB. Partition-keyed on category by default for query locality.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AzureCosmosDB
+dotnet add package Herald.Sinks.AzureCosmosDB
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

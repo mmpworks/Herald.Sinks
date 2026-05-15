@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.AzureBlobStorage
+# Herald.Sinks.AzureBlobStorage
 
 > Uploads Herald log events as NDJSON blobs to an Azure Blob Storage container. Drop-in for Serilog.Sinks.AzureBlobStorage. Pairs with App Insights / Log Analytics for cheap retention.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.AzureBlobStorage
+dotnet add package Herald.Sinks.AzureBlobStorage
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

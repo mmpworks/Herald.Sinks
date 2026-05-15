@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.PostgreSQL
+# Herald.Sinks.PostgreSQL
 
 > Writes Herald log events as rows in a PostgreSQL table. Drop-in for Serilog.Sinks.PostgreSQL. Parameterized INSERT for single writes, binary COPY for batches (~10x faster than prepared INSERTs), optional auto-create DDL.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.PostgreSQL
+dotnet add package Herald.Sinks.PostgreSQL
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

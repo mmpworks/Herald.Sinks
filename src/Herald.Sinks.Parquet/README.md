@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Parquet
+# Herald.Sinks.Parquet
 
 > Writes Herald log events as Apache Parquet files for long-term analytical storage. One Parquet file per batch, seven-column schema (time_utc, level, category, message, template, exception, properties). Optional Iceberg catalog hook (no-op by default) for future table-format integration.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Parquet
+dotnet add package Herald.Sinks.Parquet
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

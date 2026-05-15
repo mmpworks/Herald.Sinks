@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.UdpJsonLine
+# Herald.Sinks.UdpJsonLine
 
 > Fires Herald log events as newline-delimited JSON datagrams over UDP. One datagram per event, no acknowledgement, no retry. Fits syslog-style collectors and lossy-tolerant pipelines where drop-tolerance is acceptable and latency matters more than durability.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.UdpJsonLine
+dotnet add package Herald.Sinks.UdpJsonLine
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.InfluxDB
+# Herald.Sinks.InfluxDB
 
 > Writes Herald log events to InfluxDB v2 via line protocol over HTTP. No InfluxDB SDK dependency. Tags carry level + category; message rides as a field. Code-first only.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.InfluxDB
+dotnet add package Herald.Sinks.InfluxDB
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

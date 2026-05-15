@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Twilio
+# Herald.Sinks.Twilio
 
 > Sends Herald log events as SMS messages via the Twilio Messages API. HTTP-only — no Twilio SDK. Code-first only because four separate credentials cannot ride safely through declarative configs.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Twilio
+dotnet add package Herald.Sinks.Twilio
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.SumoLogic
+# Herald.Sinks.SumoLogic
 
 > Posts Herald log events to a Sumo Logic HTTP source endpoint. Drop-in for SumoLogic.Logging.Serilog. Auth lives in the source URL itself; optional X-Sumo-* headers tag events for search.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.SumoLogic
+dotnet add package Herald.Sinks.SumoLogic
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

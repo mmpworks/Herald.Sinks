@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.TcpJsonLine
+# Herald.Sinks.TcpJsonLine
 
 > Streams Herald log events as newline-delimited JSON lines over a persistent TCP connection. Reconnects automatically on failure. Plaintext transport — terminate TLS at a sidecar (stunnel, HAProxy, envoy) for anything crossing an untrusted network.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.TcpJsonLine
+dotnet add package Herald.Sinks.TcpJsonLine
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

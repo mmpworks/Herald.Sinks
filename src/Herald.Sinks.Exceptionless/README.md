@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Exceptionless
+# Herald.Sinks.Exceptionless
 
 > Forwards Herald log events to the Exceptionless error-tracking platform via the v2 events API. Drop-in for Serilog.Sinks.Exceptionless.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Exceptionless
+dotnet add package Herald.Sinks.Exceptionless
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

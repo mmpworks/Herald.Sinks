@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.ApplicationInsightsSdk
+# Herald.Sinks.ApplicationInsightsSdk
 
 > Tracks Herald log events as TelemetryClient.TrackTrace and TrackException into Azure Application Insights via the Microsoft.ApplicationInsights SDK. Drop-in for Serilog.Sinks.ApplicationInsights. Events carrying an exception in their context promote to ExceptionTelemetry so AI's exception analytics light up. Pair with Herald.Sinks.ApplicationInsightsHttp if you want the same destination without the SDK dependency.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.ApplicationInsightsSdk
+dotnet add package Herald.Sinks.ApplicationInsightsSdk
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

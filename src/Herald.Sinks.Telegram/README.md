@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Telegram
+# Herald.Sinks.Telegram
 
 > Sends Herald log events to a Telegram chat via the Bot API. HTTP-only; no Telegram.Bot SDK dependency.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Telegram
+dotnet add package Herald.Sinks.Telegram
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

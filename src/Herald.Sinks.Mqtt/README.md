@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.Mqtt
+# Herald.Sinks.Mqtt
 
 > Publishes Herald log events as JSON messages to an MQTT broker via MQTTnet. IoT-flavoured pub/sub against HiveMQ, Mosquitto, EMQX, and the AWS IoT Core / Azure IoT Hub MQTT endpoints.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.Mqtt
+dotnet add package Herald.Sinks.Mqtt
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.

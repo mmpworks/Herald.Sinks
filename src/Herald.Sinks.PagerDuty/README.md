@@ -1,4 +1,4 @@
-# MMP.Herald.Sinks.PagerDuty
+# Herald.Sinks.PagerDuty
 
 > Posts Herald log events to PagerDuty's Events API v2 for incident creation. Designed for high-severity alerting, not general log forwarding — stack behind a Warn-or-above filter so routine info events don't page the on-call rotation.
 
@@ -7,7 +7,7 @@ Part of [Herald](https://github.com/mmpworks/Herald) — high-performance struct
 ## Install
 
 ```bash
-dotnet add package MMP.Herald.Sinks.PagerDuty
+dotnet add package Herald.Sinks.PagerDuty
 ```
 
 The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `With*SinkProviders()` call is required — `dotnet add package` is the whole workflow.
