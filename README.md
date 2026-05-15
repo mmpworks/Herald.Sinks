@@ -12,7 +12,12 @@ Herald.Core ships with the universal sinks every consumer needs: console, null, 
 dotnet add package Herald.Sinks.Datadog
 ```
 
-The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `registry.Register(...)` call is required — `dotnet add package` is the whole workflow. Configure the sink either through `herald.json` (`kind: datadog`) or by constructing it directly and attaching it with `.WithBridge(sink)`. See [`docs/adding-sinks.md`](docs/adding-sinks.md) for the full walkthrough.
+The sink auto-registers into `LogSinkProviderRegistry.Default` via a `[ModuleInitializer]` on assembly load. No manual `RegisterAll(...)` or `registry.Register(...)` call is required — `dotnet add package` is the whole workflow. Configure the sink either through `herald.json` (`kind: datadog`) or by constructing it directly and attaching it with `.WithBridge(sink)`.
+
+Two consumer guides cover the install-and-register procedure end to end:
+
+- [`docs/sink-installation-manual.md`](docs/sink-installation-manual.md) — work-instruction reference: numbered procedure, verification gate at every stage, troubleshooting matrix, AOT publishing rules, full sink catalog.
+- [`docs/adding-sinks.md`](docs/adding-sinks.md) — narrative walkthrough of the same material with a five-minute Seq demo and the runtime CRUD model.
 
 You can also install a curated pack via one of the official Herald metapackages (`MMP.Herald.Business`, `MMP.Herald.Game.Pro`). See [Herald.OSS](https://github.com/mmpworks/Herald.OSS) for the full metapackage list.
 

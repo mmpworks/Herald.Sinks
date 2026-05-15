@@ -3,6 +3,8 @@
 Send your structured logs somewhere useful — Seq, Datadog, Splunk, Loki, your file system, your console. Each destination ships as its own NuGet package. Wiring one up is a one-liner once you know the pattern.
 
 > **Reading this top-to-bottom?** Sections 1 and 2 get you a log line landing in Seq within five minutes. The rest is the longer story for when you want the production wiring or you're chasing a "where did my logs go" mystery.
+>
+> **Want a checklist instead of a walkthrough?** [`sink-installation-manual.md`](sink-installation-manual.md) covers the same material as numbered work instructions with a verification gate at every stage.
 
 ## 1. The five-minute demo
 
