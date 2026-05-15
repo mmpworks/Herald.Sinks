@@ -5,6 +5,12 @@ name: ci-dotnet
 # validates the per-sink shape (PackageId/AssemblyName/namespace alignment,
 # Directory.Build.props conditional Herald.OSS reference); it runs as part
 # of the regular test step.
+#
+# Gated on Herald.OSS availability on nuget.org — every sink depends on
+# it via Directory.Build.props. Until the first Herald.OSS publish lands,
+# the preflight short-circuits the build with a ::warning::, keeping CI
+# visually quiet. Auto-recovers the moment Herald.OSS appears on
+# nuget.org; no file change needed once the package lands.
 
 on:
   push:
@@ -13,7 +19,25 @@ on:
     branches: [main]
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      herald_oss_available: ${{ steps.check.outputs.available }}
+    steps:
+      - name: Check Herald.OSS is on nuget.org
+        id: check
+        run: |
+          if curl -sf https://api.nuget.org/v3-flatcontainer/herald.oss/index.json > /dev/null; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Herald.OSS found on nuget.org — proceeding with build."
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Herald.OSS is not yet on nuget.org. CI build+test skipped until the first Herald.OSS publish. No file change is needed once Herald.OSS lands — the next push will resume normal CI."
+          fi
+
   build-and-test:
+    needs: preflight
+    if: needs.preflight.outputs.herald_oss_available == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
