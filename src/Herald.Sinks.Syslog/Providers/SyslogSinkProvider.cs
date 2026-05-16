@@ -35,6 +35,8 @@ public sealed class SyslogSinkProvider : ILogSinkProvider
     public const string KindKey = "syslog";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

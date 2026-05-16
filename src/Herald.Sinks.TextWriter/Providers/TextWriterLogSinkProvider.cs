@@ -27,6 +27,8 @@ public sealed class TextWriterLogSinkProvider : ILogSinkProvider
     public const string KindKey = "text_writer";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

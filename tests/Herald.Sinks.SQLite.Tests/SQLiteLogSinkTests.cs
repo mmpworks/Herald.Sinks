@@ -7,6 +7,7 @@ using System.Data;
 using FluentAssertions;
 using Herald.Sinks.SQLite;
 using Herald.Sinks.SQLite.Providers;
+using MMP.Herald;
 using MMP.Herald.Levels;
 using MMP.Herald.Tests.Helpers;
 using Microsoft.Data.Sqlite;
@@ -91,4 +92,9 @@ public sealed class SQLiteLogSinkTests
         SQLiteLogSinkProvider.KindKey.Should().Be("sqlite");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new SQLiteLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

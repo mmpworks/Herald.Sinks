@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.RabbitMQ;
 using Herald.Sinks.RabbitMQ.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.RabbitMQ.Tests;
@@ -46,4 +47,9 @@ public sealed class RabbitMQLogSinkTests
         RabbitMQLogSinkProvider.KindKey.Should().Be("rabbitmq");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new RabbitMQLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

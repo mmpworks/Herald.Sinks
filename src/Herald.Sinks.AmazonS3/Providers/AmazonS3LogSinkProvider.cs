@@ -17,6 +17,8 @@ public sealed class AmazonS3LogSinkProvider : ILogSinkProvider
     public const string KindKey = "aws_s3";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

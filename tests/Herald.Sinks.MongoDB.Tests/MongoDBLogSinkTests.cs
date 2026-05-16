@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.MongoDB;
 using Herald.Sinks.MongoDB.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.MongoDB.Tests;
@@ -63,4 +64,9 @@ public sealed class MongoDBLogSinkTests
         MongoDBLogSinkProvider.KindKey.Should().Be("mongodb");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new MongoDBLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

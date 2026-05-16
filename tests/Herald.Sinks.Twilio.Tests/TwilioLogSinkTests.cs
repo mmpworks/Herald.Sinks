@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Twilio;
 using Herald.Sinks.Twilio.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Twilio.Tests;
@@ -24,5 +25,6 @@ public sealed class TwilioLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new TwilioLogSinkProvider().SinkKind.Should().Be("twilio");
+        new TwilioLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

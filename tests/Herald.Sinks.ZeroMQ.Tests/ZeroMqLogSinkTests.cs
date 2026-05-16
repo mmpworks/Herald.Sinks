@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.ZeroMQ;
 using Herald.Sinks.ZeroMQ.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.ZeroMQ.Tests;
@@ -38,6 +39,12 @@ public sealed class ZeroMqLogSinkTests
     {
         new ZeroMqLogSinkProvider().SinkKind.Should().Be("zeromq");
         ZeroMqLogSinkProvider.KindKey.Should().Be("zeromq");
+    }
+
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new ZeroMqLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 
     [Fact]

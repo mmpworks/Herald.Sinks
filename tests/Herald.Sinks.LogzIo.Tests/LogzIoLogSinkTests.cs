@@ -8,6 +8,7 @@ using System.Net.Http;
 using FluentAssertions;
 using Herald.Sinks.LogzIo;
 using Herald.Sinks.LogzIo.Providers;
+using MMP.Herald;
 using MMP.Herald.Tests.Helpers;
 using Xunit;
 
@@ -50,4 +51,9 @@ public sealed class LogzIoLogSinkTests
         LogzIoLogSinkProvider.KindKey.Should().Be("logzio");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new LogzIoLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

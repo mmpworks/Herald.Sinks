@@ -343,7 +343,7 @@ Mirrors the `LoggingRuntimeSinkDefinition` shape Herald uses. Each of `uri`, `ho
 Parallel lists. Together they describe what the sink does and doesn't do. A reader scanning the product sheet scans these two lists first.
 
 ### `minimum_edition`
-Informational. Surfaces in the Dashboard sink-config UI so operators can see which edition a sink targets. The runtime hook on `ILogSinkProvider` was removed in Herald.OSS 0.2.0, so this YAML key is documentation rather than enforcement; the JSON-config layer no longer rejects a sink based on this value.
+Matches `ILogSinkProvider.MinimumEdition`. The JSON-config validation uses this to reject a sink in a Community-edition build.
 
 ### `aot_compatible`
 Must reflect reality. Set to `false` if the sink's dependency graph carries `[RequiresUnreferencedCode]` paths OR native binaries. A misstatement here is what causes AOT-published consumers to ship broken binaries; the monorepo's AOT-publish CI gate verifies the claim on every build.

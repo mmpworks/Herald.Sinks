@@ -25,6 +25,8 @@ public sealed class GodotConsoleLogSinkProvider : ILogSinkProvider
     public const string KindKey = "godot_console";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

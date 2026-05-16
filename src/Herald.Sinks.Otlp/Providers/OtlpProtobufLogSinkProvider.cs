@@ -21,6 +21,8 @@ public sealed class OtlpProtobufLogSinkProvider : ILogSinkProvider
     public const string KindKey = "otlp_protobuf";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

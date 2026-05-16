@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Bugsnag;
 using Herald.Sinks.Bugsnag.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Bugsnag.Tests;
@@ -26,4 +27,8 @@ public sealed class BugsnagLogSinkTests
         new BugsnagLogSinkProvider().SinkKind.Should().Be("bugsnag");
         BugsnagLogSinkProvider.KindKey.Should().Be("bugsnag");
     }
+
+    [Fact]
+    public void Provider_is_community_edition() =>
+        new BugsnagLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

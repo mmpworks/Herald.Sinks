@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Rollbar;
 using Herald.Sinks.Rollbar.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Rollbar.Tests;
@@ -30,4 +31,8 @@ public sealed class RollbarLogSinkTests
         new RollbarLogSinkProvider().SinkKind.Should().Be("rollbar");
         RollbarLogSinkProvider.KindKey.Should().Be("rollbar");
     }
+
+    [Fact]
+    public void Provider_is_community_edition() =>
+        new RollbarLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

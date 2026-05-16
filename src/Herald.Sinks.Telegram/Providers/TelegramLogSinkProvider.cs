@@ -16,6 +16,8 @@ public sealed class TelegramLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "telegram";
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.ClickHouse;
 using Herald.Sinks.ClickHouse.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.ClickHouse.Tests;
@@ -26,4 +27,8 @@ public sealed class ClickHouseLogSinkTests
         new ClickHouseLogSinkProvider().SinkKind.Should().Be("clickhouse");
         ClickHouseLogSinkProvider.KindKey.Should().Be("clickhouse");
     }
+
+    [Fact]
+    public void Provider_is_community_edition() =>
+        new ClickHouseLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

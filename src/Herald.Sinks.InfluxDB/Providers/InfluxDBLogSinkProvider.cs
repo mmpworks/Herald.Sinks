@@ -16,6 +16,8 @@ public sealed class InfluxDBLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "influxdb";
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

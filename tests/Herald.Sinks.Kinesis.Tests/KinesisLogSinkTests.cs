@@ -7,6 +7,7 @@ using Amazon;
 using FluentAssertions;
 using Herald.Sinks.Kinesis;
 using Herald.Sinks.Kinesis.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Kinesis.Tests;
@@ -31,4 +32,8 @@ public sealed class KinesisLogSinkTests
         new KinesisLogSinkProvider().SinkKind.Should().Be("kinesis");
         KinesisLogSinkProvider.KindKey.Should().Be("kinesis");
     }
+
+    [Fact]
+    public void Provider_is_community_edition() =>
+        new KinesisLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

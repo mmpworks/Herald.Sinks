@@ -17,6 +17,8 @@ public sealed class MicrosoftTeamsLogSinkProvider : ILogSinkProvider
     public const string KindKey = "ms_teams";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

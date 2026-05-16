@@ -9,6 +9,7 @@ using System.Text.Json;
 using FluentAssertions;
 using Herald.Sinks.MicrosoftTeams;
 using Herald.Sinks.MicrosoftTeams.Providers;
+using MMP.Herald;
 using MMP.Herald.Levels;
 using MMP.Herald.Tests.Helpers;
 using Xunit;
@@ -50,4 +51,9 @@ public sealed class MicrosoftTeamsLogSinkTests
         MicrosoftTeamsLogSinkProvider.KindKey.Should().Be("ms_teams");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new MicrosoftTeamsLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

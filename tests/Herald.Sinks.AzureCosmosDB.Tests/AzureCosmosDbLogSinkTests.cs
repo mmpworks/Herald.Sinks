@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.AzureCosmosDB;
 using Herald.Sinks.AzureCosmosDB.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.AzureCosmosDB.Tests;
@@ -51,4 +52,9 @@ public sealed class AzureCosmosDbLogSinkTests
         AzureCosmosDbLogSinkProvider.KindKey.Should().Be("azure_cosmosdb");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new AzureCosmosDbLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

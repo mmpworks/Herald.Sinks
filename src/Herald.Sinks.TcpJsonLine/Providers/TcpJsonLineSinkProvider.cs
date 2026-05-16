@@ -24,6 +24,8 @@ public sealed class TcpJsonLineSinkProvider : ILogSinkProvider
     public const string KindKey = "tcp_json_line";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

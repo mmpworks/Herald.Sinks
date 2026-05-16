@@ -21,6 +21,8 @@ public sealed class ProtobufFileLogSinkProvider : ILogSinkProvider
     public const string KindKey = "protobuf_file";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

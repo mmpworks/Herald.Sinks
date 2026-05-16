@@ -91,6 +91,7 @@ That's the whole contract. Everything your sink does happens inside `Log` or `Lo
 public interface ILogSinkProvider
 {
     string SinkKind { get; }                          // "acme" — matches the JSON config
+    HeraldEdition MinimumEdition { get; }             // Community | Pro | Enterprise
     ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
@@ -369,7 +370,7 @@ limitations:
 
 | Property | Values | Purpose |
 | --- | --- | --- |
-| `minimum_edition` | `Community`, `Pro`, `Enterprise` | Informational. Surfaces in the Dashboard sink-config UI. The runtime hook on `ILogSinkProvider` was removed in Herald.OSS 0.2.0; this YAML key is documentation, not enforcement. |
+| `minimum_edition` | `Community`, `Pro`, `Enterprise` | Matches `ILogSinkProvider.MinimumEdition`. JSON-config validation uses this. |
 | `aot_compatible` | `true` or `false` | Whether your sink's dependency graph is AOT-clean. Must reflect reality. |
 | `thread_safety` | one-line text | Threading contract. E.g., "Thread-safe: shared HttpClient, synchronous Send." |
 | `test_coverage` | text | Path to your test file + test count. |
@@ -555,6 +556,9 @@ public sealed class AcmeLogSinkProvider : ILogSinkProvider
 {
     // Match the "kind" string your users put in JSON config.
     public string SinkKind => "acme";
+
+    // Minimum edition of Herald.Core that this sink requires.
+    public HeraldEdition MinimumEdition => HeraldEdition.Enterprise;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

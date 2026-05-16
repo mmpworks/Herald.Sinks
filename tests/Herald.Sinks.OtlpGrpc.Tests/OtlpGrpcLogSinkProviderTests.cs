@@ -5,6 +5,7 @@
 using System;
 using FluentAssertions;
 using Herald.Sinks.OtlpGrpc.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.OtlpGrpc.Tests;
@@ -16,6 +17,9 @@ public sealed class OtlpGrpcLogSinkProviderTests
 
     [Fact] public void Provider_SinkKind_matches_KindKey() =>
         new OtlpGrpcLogSinkProvider().SinkKind.Should().Be(OtlpGrpcLogSinkProvider.KindKey);
+
+    [Fact] public void Provider_minimum_edition_is_Community() =>
+        new OtlpGrpcLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 
     [Fact] public void Provider_throws_on_null_definition() =>
         ((Action)(() => new OtlpGrpcLogSinkProvider().CreateSink(

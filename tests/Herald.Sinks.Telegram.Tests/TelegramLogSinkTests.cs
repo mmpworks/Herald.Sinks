@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Telegram;
 using Herald.Sinks.Telegram.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Telegram.Tests;
@@ -21,5 +22,6 @@ public sealed class TelegramLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new TelegramLogSinkProvider().SinkKind.Should().Be("telegram");
+        new TelegramLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

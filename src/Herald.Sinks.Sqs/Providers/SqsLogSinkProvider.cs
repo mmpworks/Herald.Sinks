@@ -17,6 +17,8 @@ public sealed class SqsLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "sqs";
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

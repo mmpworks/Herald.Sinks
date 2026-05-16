@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Cassandra;
 using Herald.Sinks.Cassandra.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Cassandra.Tests;
@@ -47,4 +48,9 @@ public sealed class CassandraLogSinkTests
         CassandraLogSinkProvider.KindKey.Should().Be("cassandra");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new CassandraLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

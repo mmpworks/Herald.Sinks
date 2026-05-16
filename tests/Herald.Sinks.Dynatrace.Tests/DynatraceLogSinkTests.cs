@@ -10,6 +10,7 @@ using System.Text.Json;
 using FluentAssertions;
 using Herald.Sinks.Dynatrace;
 using Herald.Sinks.Dynatrace.Providers;
+using MMP.Herald;
 using MMP.Herald.Levels;
 using MMP.Herald.Tests.Helpers;
 using Xunit;
@@ -65,4 +66,9 @@ public sealed class DynatraceLogSinkTests
         DynatraceLogSinkProvider.KindKey.Should().Be("dynatrace");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new DynatraceLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

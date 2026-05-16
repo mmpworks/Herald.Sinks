@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.GoogleCloudPubSub;
 using Herald.Sinks.GoogleCloudPubSub.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.GoogleCloudPubSub.Tests;
@@ -22,4 +23,8 @@ public sealed class GoogleCloudPubSubLogSinkTests
         new GoogleCloudPubSubLogSinkProvider().SinkKind.Should().Be("google_pubsub");
         GoogleCloudPubSubLogSinkProvider.KindKey.Should().Be("google_pubsub");
     }
+
+    [Fact]
+    public void Provider_is_community_edition() =>
+        new GoogleCloudPubSubLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

@@ -31,6 +31,8 @@ public sealed class AzureLogAnalyticsDcrLogSinkProvider : ILogSinkProvider
     public const string KindKey = "azure_log_analytics_dcr";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

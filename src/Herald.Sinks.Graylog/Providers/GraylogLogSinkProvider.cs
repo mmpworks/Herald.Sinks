@@ -17,6 +17,8 @@ public sealed class GraylogLogSinkProvider : ILogSinkProvider
     public const string KindKey = "graylog";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

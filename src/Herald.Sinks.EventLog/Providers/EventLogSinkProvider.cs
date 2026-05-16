@@ -34,6 +34,8 @@ public sealed class EventLogSinkProvider : ILogSinkProvider
     public const string KindKey = "event_log";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

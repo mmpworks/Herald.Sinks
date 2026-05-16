@@ -29,6 +29,7 @@ public sealed class GenericWebhookSinkProvider : ILogSinkProvider
     }
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => GenericWebhookLogSink.MinEdition;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

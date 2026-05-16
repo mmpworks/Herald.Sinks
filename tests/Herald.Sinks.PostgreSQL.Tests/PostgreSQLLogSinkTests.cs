@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.PostgreSQL;
 using Herald.Sinks.PostgreSQL.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.PostgreSQL.Tests;
@@ -88,4 +89,9 @@ public sealed class PostgreSQLLogSinkTests
         PostgreSQLLogSinkProvider.KindKey.Should().Be("postgresql");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new PostgreSQLLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

@@ -16,6 +16,8 @@ public sealed class DiscordLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "discord";
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

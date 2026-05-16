@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.BigQuery;
 using Herald.Sinks.BigQuery.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.BigQuery.Tests;
@@ -18,5 +19,6 @@ public sealed class BigQueryLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new BigQueryLogSinkProvider().SinkKind.Should().Be("bigquery");
+        new BigQueryLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

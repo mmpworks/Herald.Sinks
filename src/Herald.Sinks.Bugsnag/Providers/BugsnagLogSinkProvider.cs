@@ -16,6 +16,8 @@ public sealed class BugsnagLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "bugsnag";
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

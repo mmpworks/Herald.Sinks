@@ -16,6 +16,8 @@ public sealed class BigQueryLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "bigquery";
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

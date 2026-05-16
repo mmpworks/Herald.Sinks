@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.ApplicationInsightsSdk;
 using Herald.Sinks.ApplicationInsightsSdk.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.ApplicationInsightsSdk.Tests;
@@ -26,4 +27,8 @@ public sealed class ApplicationInsightsLogSinkTests
         new ApplicationInsightsLogSinkProvider().SinkKind.Should().Be("application_insights_sdk");
         ApplicationInsightsLogSinkProvider.KindKey.Should().Be("application_insights_sdk");
     }
+
+    [Fact]
+    public void Provider_is_community_edition() =>
+        new ApplicationInsightsLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

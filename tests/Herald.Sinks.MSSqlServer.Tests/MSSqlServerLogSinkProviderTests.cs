@@ -4,6 +4,7 @@
 
 using FluentAssertions;
 using Herald.Sinks.MSSqlServer.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.MSSqlServer.Tests;
@@ -17,4 +18,9 @@ public sealed class MSSqlServerLogSinkProviderTests
         MSSqlServerLogSinkProvider.KindKey.Should().Be("mssql");
     }
 
+    [Fact]
+    public void Minimum_edition_is_community()
+    {
+        new MSSqlServerLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }

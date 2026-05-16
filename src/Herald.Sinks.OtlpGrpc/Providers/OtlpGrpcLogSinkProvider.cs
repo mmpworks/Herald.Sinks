@@ -32,6 +32,8 @@ public sealed class OtlpGrpcLogSinkProvider : ILogSinkProvider
     public const string KindKey = "otlp_grpc";
 
     public string SinkKind => KindKey;
+    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

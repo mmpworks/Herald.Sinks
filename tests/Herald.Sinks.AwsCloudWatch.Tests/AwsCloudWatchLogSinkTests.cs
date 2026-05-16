@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.AwsCloudWatch;
 using Herald.Sinks.AwsCloudWatch.Providers;
+using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.AwsCloudWatch.Tests;
@@ -40,4 +41,9 @@ public sealed class AwsCloudWatchLogSinkTests
         AwsCloudWatchLogSinkProvider.KindKey.Should().Be("aws_cloudwatch");
     }
 
+    [Fact]
+    public void Provider_is_community_edition()
+    {
+        new AwsCloudWatchLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
 }
