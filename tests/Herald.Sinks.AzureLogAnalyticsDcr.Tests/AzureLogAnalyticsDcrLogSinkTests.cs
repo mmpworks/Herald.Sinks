@@ -45,9 +45,4 @@ public sealed class AzureLogAnalyticsDcrLogSinkTests
         AzureLogAnalyticsDcrLogSinkProvider.KindKey.Should().Be("azure_log_analytics_dcr");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new AzureLogAnalyticsDcrLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

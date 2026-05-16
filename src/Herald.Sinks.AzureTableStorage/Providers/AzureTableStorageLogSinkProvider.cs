@@ -43,8 +43,6 @@ public sealed class AzureTableStorageLogSinkProvider : ILogSinkProvider
     public const string KindKey = "azure_table_storage";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

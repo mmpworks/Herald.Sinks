@@ -101,9 +101,4 @@ public sealed class AzureAnalyticsLogSinkTests
         AzureAnalyticsLogSinkProvider.KindKey.Should().Be("azure_analytics");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new AzureAnalyticsLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

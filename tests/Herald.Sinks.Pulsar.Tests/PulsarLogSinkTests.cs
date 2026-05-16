@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Pulsar;
 using Herald.Sinks.Pulsar.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Pulsar.Tests;
@@ -31,8 +30,4 @@ public sealed class PulsarLogSinkTests
         new PulsarLogSinkProvider().SinkKind.Should().Be("pulsar");
         PulsarLogSinkProvider.KindKey.Should().Be("pulsar");
     }
-
-    [Fact]
-    public void Provider_is_community_edition() =>
-        new PulsarLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

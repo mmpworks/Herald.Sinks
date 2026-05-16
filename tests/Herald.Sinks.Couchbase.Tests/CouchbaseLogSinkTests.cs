@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Couchbase;
 using Herald.Sinks.Couchbase.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Couchbase.Tests;
@@ -25,12 +24,6 @@ public sealed class CouchbaseLogSinkTests
     {
         new CouchbaseLogSinkProvider().SinkKind.Should().Be("couchbase");
         CouchbaseLogSinkProvider.KindKey.Should().Be("couchbase");
-    }
-
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new CouchbaseLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 
     [Fact]

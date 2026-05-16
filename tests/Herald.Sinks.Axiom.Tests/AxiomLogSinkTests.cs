@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Axiom;
 using Herald.Sinks.Axiom.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Axiom.Tests;
@@ -22,6 +21,5 @@ public sealed class AxiomLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new AxiomLogSinkProvider().SinkKind.Should().Be("axiom");
-        new AxiomLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

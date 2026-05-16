@@ -27,8 +27,6 @@ public sealed class RedisListLogSinkProvider : ILogSinkProvider
     public const string KindKey = "redis_list";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

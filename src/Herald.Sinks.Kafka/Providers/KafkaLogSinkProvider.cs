@@ -27,8 +27,6 @@ public sealed class KafkaLogSinkProvider : ILogSinkProvider
     public const string KindKey = "kafka";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

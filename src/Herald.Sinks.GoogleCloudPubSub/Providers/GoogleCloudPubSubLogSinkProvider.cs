@@ -16,8 +16,6 @@ public sealed class GoogleCloudPubSubLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "google_pubsub";
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

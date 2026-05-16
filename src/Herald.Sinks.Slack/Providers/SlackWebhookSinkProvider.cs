@@ -20,7 +20,6 @@ public sealed class SlackWebhookSinkProvider : ILogSinkProvider
     public const string KindKey = "slack";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => SlackWebhookLogSink.MinEdition;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

@@ -7,7 +7,6 @@ using System.IO;
 using FluentAssertions;
 using Herald.Sinks.TextWriter;
 using Herald.Sinks.TextWriter.Providers;
-using MMP.Herald;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Services;
@@ -129,7 +128,6 @@ public sealed class TextWriterLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new TextWriterLogSinkProvider().SinkKind.Should().Be("text_writer");
-        new TextWriterLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 
     private sealed class FlushCountingWriter : StringWriter

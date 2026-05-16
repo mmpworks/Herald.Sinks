@@ -20,7 +20,6 @@ public sealed class ElasticsearchSinkProvider : ILogSinkProvider
     public const string KindKey = "elasticsearch";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => ElasticsearchLogSink.MinEdition;
 
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,

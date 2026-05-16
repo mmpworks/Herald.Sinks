@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Mqtt;
 using Herald.Sinks.Mqtt.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Mqtt.Tests;
@@ -23,8 +22,4 @@ public sealed class MqttLogSinkTests
         new MqttLogSinkProvider().SinkKind.Should().Be("mqtt");
         MqttLogSinkProvider.KindKey.Should().Be("mqtt");
     }
-
-    [Fact]
-    public void Provider_is_community_edition() =>
-        new MqttLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

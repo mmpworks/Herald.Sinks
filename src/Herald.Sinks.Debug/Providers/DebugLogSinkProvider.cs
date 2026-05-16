@@ -31,8 +31,6 @@ public sealed class DebugLogSinkProvider : ILogSinkProvider
     // Community tier — the sink is a few dozen lines of BCL plumbing
     // with no external dependencies, edition-gating would just hide a
     // zero-cost diagnostic path.
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

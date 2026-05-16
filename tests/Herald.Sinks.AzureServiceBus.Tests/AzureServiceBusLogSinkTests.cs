@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.AzureServiceBus;
 using Herald.Sinks.AzureServiceBus.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.AzureServiceBus.Tests;
@@ -33,8 +32,4 @@ public sealed class AzureServiceBusLogSinkTests
         new AzureServiceBusLogSinkProvider().SinkKind.Should().Be("azure_service_bus");
         AzureServiceBusLogSinkProvider.KindKey.Should().Be("azure_service_bus");
     }
-
-    [Fact]
-    public void Provider_is_community_edition() =>
-        new AzureServiceBusLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.RedisList;
 using Herald.Sinks.RedisList.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.RedisList.Tests;
@@ -41,9 +40,4 @@ public sealed class RedisListLogSinkTests
         RedisListLogSinkProvider.KindKey.Should().Be("redis_list");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new RedisListLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

@@ -17,8 +17,6 @@ public sealed class DynatraceLogSinkProvider : ILogSinkProvider
     public const string KindKey = "dynatrace";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

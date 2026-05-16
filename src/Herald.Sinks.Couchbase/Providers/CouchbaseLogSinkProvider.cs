@@ -30,8 +30,6 @@ public sealed class CouchbaseLogSinkProvider : ILogSinkProvider
     public const string KindKey = "couchbase";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

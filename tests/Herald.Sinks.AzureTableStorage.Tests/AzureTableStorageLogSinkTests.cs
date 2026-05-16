@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.AzureTableStorage;
 using Herald.Sinks.AzureTableStorage.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.AzureTableStorage.Tests;
@@ -49,9 +48,4 @@ public sealed class AzureTableStorageLogSinkTests
         AzureTableStorageLogSinkProvider.KindKey.Should().Be("azure_table_storage");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new AzureTableStorageLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

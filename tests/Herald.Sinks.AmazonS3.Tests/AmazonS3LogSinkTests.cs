@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.AmazonS3;
 using Herald.Sinks.AmazonS3.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.AmazonS3.Tests;
@@ -41,9 +40,4 @@ public sealed class AmazonS3LogSinkTests
         AmazonS3LogSinkProvider.KindKey.Should().Be("aws_s3");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new AmazonS3LogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

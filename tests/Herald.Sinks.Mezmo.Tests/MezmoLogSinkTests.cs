@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Mezmo;
 using Herald.Sinks.Mezmo.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Mezmo.Tests;
@@ -22,6 +21,5 @@ public sealed class MezmoLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new MezmoLogSinkProvider().SinkKind.Should().Be("mezmo");
-        new MezmoLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

@@ -5,7 +5,6 @@
 using System;
 using FluentAssertions;
 using Herald.Sinks.Parquet.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Parquet.Tests;
@@ -17,9 +16,6 @@ public sealed class ParquetLogSinkProviderTests
 
     [Fact] public void Provider_SinkKind_matches_KindKey() =>
         new ParquetLogSinkProvider().SinkKind.Should().Be(ParquetLogSinkProvider.KindKey);
-
-    [Fact] public void Provider_minimum_edition_is_Community() =>
-        new ParquetLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 
     [Fact] public void Provider_throws_on_null_definition() =>
         ((Action)(() => new ParquetLogSinkProvider().CreateSink(

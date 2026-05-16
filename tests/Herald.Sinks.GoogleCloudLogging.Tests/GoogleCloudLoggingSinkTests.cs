@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.GoogleCloudLogging;
 using Herald.Sinks.GoogleCloudLogging.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.GoogleCloudLogging.Tests;
@@ -39,11 +38,5 @@ public sealed class GoogleCloudLoggingSinkTests
     {
         new GoogleCloudLoggingSinkProvider().SinkKind.Should().Be("gcp_logging");
         GoogleCloudLoggingSinkProvider.KindKey.Should().Be("gcp_logging");
-    }
-
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new GoogleCloudLoggingSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

@@ -30,8 +30,6 @@ public sealed class HoneycombLogSinkProvider : ILogSinkProvider
     public const string KindKey = "honeycomb";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

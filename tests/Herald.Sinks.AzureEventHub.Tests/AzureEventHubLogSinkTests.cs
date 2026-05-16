@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.AzureEventHub;
 using Herald.Sinks.AzureEventHub.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.AzureEventHub.Tests;
@@ -44,9 +43,4 @@ public sealed class AzureEventHubLogSinkTests
         AzureEventHubLogSinkProvider.KindKey.Should().Be("azure_event_hub");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new AzureEventHubLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

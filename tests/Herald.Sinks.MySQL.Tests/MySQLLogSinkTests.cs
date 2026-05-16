@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.MySQL;
 using Herald.Sinks.MySQL.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.MySQL.Tests;
@@ -43,9 +42,4 @@ public sealed class MySQLLogSinkTests
         MySQLLogSinkProvider.KindKey.Should().Be("mysql");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new MySQLLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

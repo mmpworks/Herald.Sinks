@@ -24,8 +24,6 @@ public sealed class UdpJsonLineSinkProvider : ILogSinkProvider
     public const string KindKey = "udp_json_line";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

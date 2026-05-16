@@ -186,7 +186,6 @@ public interface ILogger
 public interface ILogSinkProvider
 {
     string SinkKind { get; }
-    HeraldEdition MinimumEdition { get; }
     ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

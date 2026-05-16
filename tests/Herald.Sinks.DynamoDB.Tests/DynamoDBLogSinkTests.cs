@@ -7,7 +7,6 @@ using Amazon;
 using FluentAssertions;
 using Herald.Sinks.DynamoDB;
 using Herald.Sinks.DynamoDB.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.DynamoDB.Tests;
@@ -49,9 +48,4 @@ public sealed class DynamoDBLogSinkTests
         DynamoDBLogSinkProvider.KindKey.Should().Be("dynamodb");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new DynamoDBLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

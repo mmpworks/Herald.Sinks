@@ -7,7 +7,6 @@ using Amazon;
 using FluentAssertions;
 using Herald.Sinks.Sqs;
 using Herald.Sinks.Sqs.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Sqs.Tests;
@@ -32,8 +31,4 @@ public sealed class SqsLogSinkTests
         new SqsLogSinkProvider().SinkKind.Should().Be("sqs");
         SqsLogSinkProvider.KindKey.Should().Be("sqs");
     }
-
-    [Fact]
-    public void Provider_is_community_edition() =>
-        new SqsLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

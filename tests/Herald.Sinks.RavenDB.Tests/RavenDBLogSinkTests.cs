@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.RavenDB;
 using Herald.Sinks.RavenDB.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.RavenDB.Tests;
@@ -48,9 +47,4 @@ public sealed class RavenDBLogSinkTests
         RavenDBLogSinkProvider.KindKey.Should().Be("ravendb");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new RavenDBLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

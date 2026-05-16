@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Nats;
 using Herald.Sinks.Nats.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Nats.Tests;
@@ -27,8 +26,4 @@ public sealed class NatsLogSinkTests
         new NatsLogSinkProvider().SinkKind.Should().Be("nats");
         NatsLogSinkProvider.KindKey.Should().Be("nats");
     }
-
-    [Fact]
-    public void Provider_is_community_edition() =>
-        new NatsLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
 }

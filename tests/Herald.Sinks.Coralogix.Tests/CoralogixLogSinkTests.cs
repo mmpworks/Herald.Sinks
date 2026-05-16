@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Coralogix;
 using Herald.Sinks.Coralogix.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Coralogix.Tests;
@@ -25,6 +24,5 @@ public sealed class CoralogixLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new CoralogixLogSinkProvider().SinkKind.Should().Be("coralogix");
-        new CoralogixLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

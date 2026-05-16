@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.BetterStack;
 using Herald.Sinks.BetterStack.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.BetterStack.Tests;
@@ -22,6 +21,5 @@ public sealed class BetterStackLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new BetterStackLogSinkProvider().SinkKind.Should().Be("betterstack");
-        new BetterStackLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

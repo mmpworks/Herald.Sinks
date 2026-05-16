@@ -17,8 +17,6 @@ public sealed class AzureCosmosDbLogSinkProvider : ILogSinkProvider
     public const string KindKey = "azure_cosmosdb";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

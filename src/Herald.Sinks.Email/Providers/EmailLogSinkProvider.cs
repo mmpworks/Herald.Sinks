@@ -25,8 +25,6 @@ public sealed class EmailLogSinkProvider : ILogSinkProvider
     public const string KindKey = "email";
 
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

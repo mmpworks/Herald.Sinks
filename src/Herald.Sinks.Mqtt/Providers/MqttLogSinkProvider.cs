@@ -16,8 +16,6 @@ public sealed class MqttLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "mqtt";
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

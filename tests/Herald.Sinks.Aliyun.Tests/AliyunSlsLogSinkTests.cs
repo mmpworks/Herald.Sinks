@@ -10,7 +10,6 @@ using System.Text.Json;
 using FluentAssertions;
 using Herald.Sinks.Aliyun;
 using Herald.Sinks.Aliyun.Providers;
-using MMP.Herald;
 using MMP.Herald.Tests.Helpers;
 using Xunit;
 
@@ -90,9 +89,4 @@ public sealed class AliyunSlsLogSinkTests
         AliyunSlsLogSinkProvider.KindKey.Should().Be("aliyun_sls");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new AliyunSlsLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

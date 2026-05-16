@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.Kafka;
 using Herald.Sinks.Kafka.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.Kafka.Tests;
@@ -41,9 +40,4 @@ public sealed class KafkaLogSinkTests
         KafkaLogSinkProvider.KindKey.Should().Be("kafka");
     }
 
-    [Fact]
-    public void Provider_is_community_edition()
-    {
-        new KafkaLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
-    }
 }

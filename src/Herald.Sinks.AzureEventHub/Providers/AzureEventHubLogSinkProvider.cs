@@ -16,8 +16,6 @@ public sealed class AzureEventHubLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "azure_event_hub";
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,

@@ -6,7 +6,6 @@ using System;
 using FluentAssertions;
 using Herald.Sinks.InfluxDB;
 using Herald.Sinks.InfluxDB.Providers;
-using MMP.Herald;
 using Xunit;
 
 namespace Herald.Sinks.InfluxDB.Tests;
@@ -25,6 +24,5 @@ public sealed class InfluxDBLogSinkTests
     [Fact] public void Provider_kind_and_edition()
     {
         new InfluxDBLogSinkProvider().SinkKind.Should().Be("influxdb");
-        new InfluxDBLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
     }
 }

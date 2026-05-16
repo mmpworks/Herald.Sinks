@@ -16,8 +16,6 @@ public sealed class MezmoLogSinkProvider : ILogSinkProvider
 {
     public const string KindKey = "mezmo";
     public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
-
     public ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
