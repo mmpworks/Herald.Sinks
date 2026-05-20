@@ -31,7 +31,7 @@
       ignores the pin. Herald.OSS is the canonical upstream — the
       former Modules/Core route is retired.
     -->
-    <HeraldCoreVersion>0.2.1</HeraldCoreVersion>
+    <HeraldCoreVersion>0.7.0</HeraldCoreVersion>
   </PropertyGroup>
 
   <!--
