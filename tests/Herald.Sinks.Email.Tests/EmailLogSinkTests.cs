@@ -49,11 +49,11 @@ public sealed class EmailLogSinkTests
     }
 
     [Fact]
-    public void Provider_throws_on_create_sink()
+    public void Provider_throws_on_null_definition()
     {
         var provider = new EmailLogSinkProvider();
         Action act = () => provider.CreateSink(null!, null!, null!);
-        act.Should().Throw<NotSupportedException>();
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]

@@ -1,10 +1,38 @@
-# Email sink — no configuration required.
+# Email sink — SMTP via MailKit.
+# Pair with a warn+ or error+ filter to avoid mailbox flooding.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "smtp_host"        = { type: "string",  default: "" },
+    "smtp_port"        = { type: "integer", default: 587 },
+    "from_address"     = { type: "string",  default: "" },
+    "to_addresses"     = { type: "string",  default: "" },
+    "username"         = { type: "string",  default: "" },
+    "password"         = { type: "string",  default: "" },
+    "use_start_tls"    = { type: "boolean", default: true },
+    "subject_template" = { type: "string",  default: "[Herald {level}] log alert" }
+]
+
+tooltips = [
+    "tt-host"     = "SMTP server hostname.",
+    "tt-port"     = "SMTP server port — 587 (STARTTLS), 465 (implicit TLS), 25 (plaintext).",
+    "tt-from"     = "From address — must match an account the SMTP server allows.",
+    "tt-to"       = "Comma-separated list of recipient addresses.",
+    "tt-user"     = "SMTP auth username — leave blank for unauthenticated relays.",
+    "tt-pass"     = "SMTP auth password — masked after save.",
+    "tt-tls"      = "Use STARTTLS — recommended for port 587.",
+    "tt-subject"  = "Subject template — {level} is replaced by the highest-severity level in the batch."
+]
 
 [container("Email sink", "Sends Herald log events as SMTP email via MailKit.")]
 
-  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]
+  - [textfield(12,{smtp_host},tt="tt-host",required=true,placeholder="smtp.example.com")] SMTP host
+  - [number(12,{smtp_port},tt="tt-port",required=true,init=587)] SMTP port
+  - [textfield(12,{from_address},tt="tt-from",required=true,placeholder="alerts@example.com")] From address
+  - [textfield(12,{to_addresses},tt="tt-to",required=true,placeholder="oncall@example.com, ops@example.com")] Recipients
+  - [textfield(12,{username},tt="tt-user")] Username
+  - [secret(12,{password},tt="tt-pass")] Password
+  - [checkbox(12,{use_start_tls},tt="tt-tls",init=true)] Use STARTTLS
+  - [textfield(12,{subject_template},tt="tt-subject",init="[Herald {level}] log alert")] Subject template
