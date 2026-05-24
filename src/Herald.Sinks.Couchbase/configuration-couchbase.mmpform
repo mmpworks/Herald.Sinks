@@ -1,10 +1,31 @@
-# Couchbase sink — no configuration required.
+# Couchbase sink — upsert JSON documents to a bucket / scope / collection.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "connection_string" = { type: "string", default: "" },
+    "username"          = { type: "string", default: "" },
+    "password"          = { type: "string", default: "" },
+    "bucket"            = { type: "string", default: "" },
+    "scope"             = { type: "string", default: "_default" },
+    "collection"        = { type: "string", default: "_default" }
+]
 
-[container("Couchbase sink", "Upserts Herald log events as JSON documents into a Couchbase bucket / scope / collection via CouchbaseNetClient.")]
+tooltips = [
+    "tt-conn"    = "Couchbase connection string — couchbase:// or couchbases://.",
+    "tt-user"    = "Cluster RBAC username.",
+    "tt-pass"    = "Cluster RBAC password — masked after save.",
+    "tt-bucket"  = "Bucket name.",
+    "tt-scope"   = "Scope inside the bucket — defaults to _default.",
+    "tt-coll"    = "Collection inside the scope — defaults to _default."
+]
 
-  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]
+[container("Couchbase sink", "Upserts Herald log events as JSON documents into a Couchbase bucket / scope / collection.")]
+
+  - [url(12,{connection_string},tt="tt-conn",required=true,placeholder="couchbase://cluster.example.com")] Connection string
+  - [textfield(12,{username},tt="tt-user",required=true)] Username
+  - [secret(12,{password},tt="tt-pass",required=true)] Password
+  - [textfield(12,{bucket},tt="tt-bucket",required=true)] Bucket
+  - [textfield(12,{scope},tt="tt-scope",init="_default")] Scope
+  - [textfield(12,{collection},tt="tt-coll",init="_default")] Collection

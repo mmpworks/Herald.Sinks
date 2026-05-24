@@ -34,10 +34,10 @@ public sealed class CouchbaseLogSinkTests
     }
 
     [Fact]
-    public void Provider_throws_on_create_sink()
+    public void Provider_throws_on_null_definition()
     {
         var provider = new CouchbaseLogSinkProvider();
         Action act = () => provider.CreateSink(definition: null!, levelRegistry: null!, transformerRegistry: null!);
-        act.Should().Throw<NotSupportedException>();
+        act.Should().Throw<ArgumentNullException>();
     }
 }
