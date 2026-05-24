@@ -48,31 +48,62 @@ public sealed class FilesManagerPolicyMapperTests
         policy.FileNameTemplate.Should().Be("audit");
     }
 
+    // Pass-4a realignment: the mapper stays pure. Missing required
+    // fields return a Resolved record with the matching field set to
+    // null; validation + the field-named ArgumentException live in
+    // LogSinkFileWriterFactory.Create. These tests pin the new
+    // contract end-to-end — the factory is the surface the provider
+    // calls into, so that is where the operator sees the error.
+
     [Fact]
-    public void Throws_when_directory_is_missing()
+    public void Mapper_returns_null_directory_when_key_missing()
     {
         var bag = new Dictionary<string, object?> { ["logFileTemplate"] = "x" };
-        var act = () => FilesManagerPolicyMapper.From(Definition(bag));
-        act.Should().Throw<System.InvalidOperationException>().WithMessage("*logDirectory*");
+        var resolved = FilesManagerPolicyMapper.From(Definition(bag));
+        resolved.BagPresent.Should().BeTrue();
+        resolved.Directory.Should().BeNull();
+        resolved.FileNameTemplate.Should().Be("x");
     }
 
     [Fact]
-    public void Throws_when_template_is_missing()
+    public void Mapper_returns_null_template_when_key_missing()
     {
         var bag = new Dictionary<string, object?> { ["logDirectory"] = "/x" };
-        var act = () => FilesManagerPolicyMapper.From(Definition(bag));
-        act.Should().Throw<System.InvalidOperationException>().WithMessage("*logFileTemplate*");
+        var resolved = FilesManagerPolicyMapper.From(Definition(bag));
+        resolved.BagPresent.Should().BeTrue();
+        resolved.Directory.Should().Be("/x");
+        resolved.FileNameTemplate.Should().BeNull();
     }
 
     [Fact]
-    public void Throws_when_properties_bag_is_null()
+    public void Mapper_reports_bag_absent_when_properties_is_null()
     {
         var def = new LoggingRuntimeSinkDefinition(
             Name:       "no-bag",
             Kind:       "text_file",
             Properties: null);
-        var act = () => FilesManagerPolicyMapper.From(def);
-        act.Should().Throw<System.InvalidOperationException>().WithMessage("*Properties bag*");
+        var resolved = FilesManagerPolicyMapper.From(def);
+        resolved.BagPresent.Should().BeFalse();
+        resolved.Directory.Should().BeNull();
+        resolved.FileNameTemplate.Should().BeNull();
+    }
+
+    [Fact]
+    public void Factory_throws_ArgumentException_when_directory_is_missing()
+    {
+        var bag = new Dictionary<string, object?> { ["logFileTemplate"] = "x" };
+        var act = () => LogSinkFileWriterFactory.Create(Definition(bag));
+        act.Should().Throw<System.ArgumentException>()
+            .Where(e => e.Message.Contains("logDirectory"));
+    }
+
+    [Fact]
+    public void Factory_throws_ArgumentException_when_template_is_missing()
+    {
+        var bag = new Dictionary<string, object?> { ["logDirectory"] = "/x" };
+        var act = () => LogSinkFileWriterFactory.Create(Definition(bag));
+        act.Should().Throw<System.ArgumentException>()
+            .Where(e => e.Message.Contains("logFileTemplate"));
     }
 
     // ── Extension normalisation ────────────────────────────────────
@@ -398,7 +429,11 @@ public sealed class FilesManagerPolicyMapperTests
             ["locale"]                  = "en-US",
             ["pathTokens"]              = new Dictionary<string, object?> { ["service"] = "api" }
         };
-        var policy = FilesManagerPolicyMapper.From(Definition(bag));
+        // Pass-4a: mapper returns a Resolved record; the policy is
+        // produced via ToPolicy. The reflection-based contract still
+        // applies against FilesManagerPolicy's primary ctor — the
+        // mapper indirectly fills every parameter through ToPolicy.
+        var policy = FilesManagerPolicyMapper.ToPolicy(FilesManagerPolicyMapper.From(Definition(bag)));
 
         // Limit reflection to the record's primary constructor
         // parameters — body-defined properties (RequiresRolling,

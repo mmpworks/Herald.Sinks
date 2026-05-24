@@ -32,6 +32,20 @@ namespace Herald.Sinks.File.Providers;
 /// to the v2 bag-driven path, this branch and the in-Core writers can
 /// retire together.
 /// </para>
+///
+/// <para>
+/// <b>Pass-4a realignment.</b> Required-field validation lives here
+/// (not in the mapper) and throws <see cref="ArgumentException"/> with
+/// the operator-facing field name in the message — matching the shape
+/// the other 16 already-migrated sinks use. Every File call site goes
+/// through QuickLogBuilder, which fills the bag with mmpform defaults
+/// (<c>logDirectory</c> defaults to <c>""</c> and <c>logFileTemplate</c>
+/// to <c>"log-file"</c>); production deployments never see this throw
+/// because the bag arrives populated. The factory enforces the
+/// contract at the point operators most often debug from — a
+/// hand-crafted definition that forgot a required key now fails with
+/// a field name they can match against the mmpform.
+/// </para>
 /// </summary>
 internal static class LogSinkFileWriterFactory
 {
@@ -49,7 +63,25 @@ internal static class LogSinkFileWriterFactory
         // RollingFileLineWriter timing.
         if (definition.Properties is { Count: > 0 })
         {
-            var policy = FilesManagerPolicyMapper.From(definition);
+            var resolved = FilesManagerPolicyMapper.From(definition);
+            if (string.IsNullOrWhiteSpace(resolved.Directory))
+            {
+                throw new ArgumentException(
+                    $"File sink '{definition.Name}' is missing the required 'logDirectory' " +
+                    "property. Set it in configuration-text_file.mmpform / " +
+                    "configuration-json_file.mmpform.",
+                    nameof(definition));
+            }
+            if (string.IsNullOrWhiteSpace(resolved.FileNameTemplate))
+            {
+                throw new ArgumentException(
+                    $"File sink '{definition.Name}' is missing the required 'logFileTemplate' " +
+                    "property. Set it in configuration-text_file.mmpform / " +
+                    "configuration-json_file.mmpform.",
+                    nameof(definition));
+            }
+
+            var policy = FilesManagerPolicyMapper.ToPolicy(resolved);
             return new FilesManagerLineWriter(policy);
         }
 
@@ -57,9 +89,9 @@ internal static class LogSinkFileWriterFactory
         // bag still produce typed Path + RollingPolicy. Route them
         // through the old in-Core writers via FileSinkRuntimeConfig
         // (which collapses to (Path, Rolling) regardless of source).
-        var resolved = FileSinkRuntimeConfig.From(definition);
-        return resolved.Rolling is not null
-            ? new RollingFileLineWriter(resolved.Path, resolved.Rolling, pathResolver)
-            : new FileLineWriter(resolved.Path, pathResolver);
+        var legacy = FileSinkRuntimeConfig.From(definition);
+        return legacy.Rolling is not null
+            ? new RollingFileLineWriter(legacy.Path, legacy.Rolling, pathResolver)
+            : new FileLineWriter(legacy.Path, pathResolver);
     }
 }
