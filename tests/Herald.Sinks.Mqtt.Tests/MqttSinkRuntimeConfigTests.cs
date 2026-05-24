@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Herald.Sinks.Mqtt.Providers;
+using MQTTnet.Protocol;
 using MMP.Herald.Configuration.Runtime;
 using Xunit;
 
@@ -163,5 +164,75 @@ public sealed class MqttSinkRuntimeConfigTests
         resolved.BrokerHost.Should().BeNull();
         resolved.BrokerPort.Should().Be(1883);
         resolved.Topic.Should().Be("herald/logs");
+    }
+
+    // ── Pass-2 expansion: auth + QoS ────────────────────────────────
+
+    [Fact]
+    public void Reads_username_password_and_qos_from_bag()
+    {
+        var def = new LoggingRuntimeSinkDefinition(
+            Name: "mqtt",
+            Kind: "mqtt",
+            Properties: new Dictionary<string, object?>
+            {
+                ["broker"]   = "broker.example.com",
+                ["username"] = "logger",
+                ["password"] = "secret",
+                ["qos"]      = "at_least_once"
+            });
+
+        var resolved = MqttSinkRuntimeConfig.From(def);
+
+        resolved.Username.Should().Be("logger");
+        resolved.Password.Should().Be("secret");
+        resolved.Qos.Should().Be(MqttQualityOfServiceLevel.AtLeastOnce);
+    }
+
+    [Fact]
+    public void Defaults_qos_to_at_most_once_when_unset_or_unknown()
+    {
+        var unsetDef = new LoggingRuntimeSinkDefinition(
+            Name: "mqtt", Kind: "mqtt",
+            Properties: new Dictionary<string, object?> { ["broker"] = "x" });
+        MqttSinkRuntimeConfig.From(unsetDef).Qos.Should().Be(MqttQualityOfServiceLevel.AtMostOnce);
+
+        var unknownDef = new LoggingRuntimeSinkDefinition(
+            Name: "mqtt", Kind: "mqtt",
+            Properties: new Dictionary<string, object?>
+            {
+                ["broker"] = "x",
+                ["qos"]    = "bogus"
+            });
+        MqttSinkRuntimeConfig.From(unknownDef).Qos.Should().Be(MqttQualityOfServiceLevel.AtMostOnce);
+    }
+
+    [Theory]
+    [InlineData("at_most_once",  MqttQualityOfServiceLevel.AtMostOnce)]
+    [InlineData("AT_MOST_ONCE",  MqttQualityOfServiceLevel.AtMostOnce)]
+    [InlineData("at_least_once", MqttQualityOfServiceLevel.AtLeastOnce)]
+    [InlineData("exactly_once",  MqttQualityOfServiceLevel.ExactlyOnce)]
+    public void Parses_qos_vocabulary_case_insensitively(string raw, MqttQualityOfServiceLevel expected)
+    {
+        var def = new LoggingRuntimeSinkDefinition(
+            Name: "mqtt", Kind: "mqtt",
+            Properties: new Dictionary<string, object?>
+            {
+                ["broker"] = "x",
+                ["qos"]    = raw
+            });
+        MqttSinkRuntimeConfig.From(def).Qos.Should().Be(expected);
+    }
+
+    [Fact]
+    public void Username_and_password_default_to_null_when_absent()
+    {
+        var def = new LoggingRuntimeSinkDefinition(
+            Name: "mqtt", Kind: "mqtt",
+            Properties: new Dictionary<string, object?> { ["broker"] = "x" });
+
+        var resolved = MqttSinkRuntimeConfig.From(def);
+        resolved.Username.Should().BeNull();
+        resolved.Password.Should().BeNull();
     }
 }
