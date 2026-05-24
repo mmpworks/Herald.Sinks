@@ -17,9 +17,21 @@ namespace Herald.Sinks.Trace.Providers;
 /// <see cref="LoggingRuntimeSinkDefinition"/>.
 /// </summary>
 /// <remarks>
-/// Wire-up: <c>Alias</c> is forwarded as the
-/// <see cref="TraceLogSink"/>'s category prefix. Leaving it unset
-/// produces un-categorized trace lines.
+/// <para>
+/// Configuration sources, in priority order:
+/// <list type="bullet">
+///   <item><b>v2 property bag</b> (<c>configuration-trace.mmpform</c> → <see cref="LoggingRuntimeSinkDefinition.Properties"/>):
+///     <list type="bullet">
+///       <item><c>category</c> — trace category prefix forwarded to
+///             <see cref="System.Diagnostics.Trace"/> listeners.</item>
+///     </list>
+///   </item>
+///   <item><b>Legacy slot</b> (pre-v2 dashboard JSON): <see cref="LoggingRuntimeSinkDefinition.Alias"/>
+///         carried the same category prefix. Read only when the bag
+///         is absent or empty so existing deployments keep working
+///         without form re-entry.</item>
+/// </list>
+/// </para>
 /// </remarks>
 public sealed class TraceLogSinkProvider : ILogSinkProvider
 {
@@ -34,6 +46,11 @@ public sealed class TraceLogSinkProvider : ILogSinkProvider
         ILogOutputTransformerRegistry transformerRegistry)
     {
         ArgumentNullException.ThrowIfNull(definition);
-        return new TraceLogSink(category: definition.Alias);
+
+        // Bag-first, legacy-fallback resolution kept inside the mapper
+        // so the provider stays a one-line dispatch. Mirrors the
+        // FileSinkRuntimeConfig pattern.
+        var category = TraceSinkRuntimeConfig.ResolveCategory(definition);
+        return new TraceLogSink(category: category);
     }
 }
