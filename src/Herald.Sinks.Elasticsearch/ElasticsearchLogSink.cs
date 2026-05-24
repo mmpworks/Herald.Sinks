@@ -30,13 +30,27 @@ public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
     private readonly string _indexPrefix;
     private readonly ILogLevelRegistry _levelRegistry;
     private readonly HttpClient _httpClient;
+    private readonly string? _authHeaderScheme;
+    private readonly string? _authHeaderValue;
     private readonly bool _ownsClient;
 
+    /// <summary>
+    /// Create an Elasticsearch sink. Two auth modes are supported:
+    /// HTTP Basic (supply <paramref name="username"/> + <paramref name="password"/>)
+    /// or API key (supply <paramref name="apiKey"/>). When both sets are
+    /// present, the API key wins — operators typically rotate one or
+    /// the other, not both, and the precedence keeps the rotation
+    /// predictable. Leaving both unset yields an unauthenticated
+    /// client, which is the prior behaviour.
+    /// </summary>
     public ElasticsearchLogSink(
         string baseUrl,
         ILogLevelRegistry levelRegistry,
         string indexPrefix = "herald-logs",
-        HttpClient? httpClient = null) {
+        HttpClient? httpClient = null,
+        string? username = null,
+        string? password = null,
+        string? apiKey = null) {
         ArgumentException.ThrowIfNullOrWhiteSpace(baseUrl);
         if (!System.Text.RegularExpressions.Regex.IsMatch(indexPrefix, @"^[a-z0-9][a-z0-9_\-\.]{0,127}$"))
             throw new ArgumentException(
@@ -46,6 +60,26 @@ public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
         _indexPrefix = indexPrefix;
         _httpClient = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
         _ownsClient = httpClient is null;
+
+        // Auth resolution: API key beats Basic — the comment on the
+        // ctor explains why. Both null leaves the request unsigned.
+        (_authHeaderScheme, _authHeaderValue) = ResolveAuth(username, password, apiKey);
+    }
+
+    private static (string? Scheme, string? Value) ResolveAuth(
+        string? username, string? password, string? apiKey)
+    {
+        if (!string.IsNullOrWhiteSpace(apiKey))
+        {
+            return ("ApiKey", apiKey);
+        }
+        if (!string.IsNullOrWhiteSpace(username) && password is not null)
+        {
+            var raw = $"{username}:{password}";
+            var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(raw));
+            return ("Basic", encoded);
+        }
+        return (null, null);
     }
 
     public override void Log(LogEvent logEvent) {
@@ -78,6 +112,11 @@ public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
         content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/x-ndjson");
 
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{_baseUrl}/_bulk") { Content = content };
+        if (_authHeaderScheme is not null && _authHeaderValue is not null)
+        {
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
+                _authHeaderScheme, _authHeaderValue);
+        }
         using var response = _httpClient.Send(request);
         response.EnsureSuccessStatusCode();
     }

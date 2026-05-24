@@ -1,10 +1,28 @@
-# Elasticsearch sink — configuration UI placeholder.
+# Elasticsearch sink — Bulk API ingest.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "base_url"     = { type: "string", default: "" },
+    "index_prefix" = { type: "string", default: "herald-logs" },
+    "username"     = { type: "string", default: "" },
+    "password"     = { type: "string", default: "" },
+    "api_key"      = { type: "string", default: "" }
+]
 
-[container("Elasticsearch sink", "Sends Herald log events to Elasticsearch as JSON documents via the Bulk API.")]
+tooltips = [
+    "tt-url"    = "Elasticsearch base URL — http or https.",
+    "tt-prefix" = "Index prefix — daily indices land at {prefix}-yyyy.MM.dd.",
+    "tt-user"   = "Username for HTTP Basic auth — leave blank for unauthenticated clusters.",
+    "tt-pass"   = "Password for HTTP Basic auth — masked after save.",
+    "tt-key"    = "API key for the Authorization: ApiKey header — alternative to username/password."
+]
 
-  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]
+[container("Elasticsearch sink", "Sends Herald log events to Elasticsearch as JSON documents via the Bulk API. Supports HTTP Basic auth or API-key auth.")]
+
+  - [url(12,{base_url},tt="tt-url",required=true,placeholder="https://elasticsearch.example.com:9200")] Base URL
+  - [textfield(12,{index_prefix},tt="tt-prefix",init="herald-logs")] Index prefix
+  - [textfield(12,{username},tt="tt-user")] Username
+  - [secret(12,{password},tt="tt-pass")] Password
+  - [secret(12,{api_key},tt="tt-key")] API key
