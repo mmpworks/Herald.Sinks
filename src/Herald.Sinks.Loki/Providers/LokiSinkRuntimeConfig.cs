@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Loki.Providers;
 
@@ -60,19 +60,7 @@ internal static class LokiSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            Endpoint:    ReadString(bag, KeyEndpoint)    ?? Nullify(definition.Uri),
-            BearerToken: ReadString(bag, KeyBearerToken) ?? Nullify(definition.Alias));
+            Endpoint:    SinkPropertyBag.ReadString(bag, KeyEndpoint)    ?? SinkPropertyBag.Nullify(definition.Uri),
+            BearerToken: SinkPropertyBag.ReadString(bag, KeyBearerToken) ?? SinkPropertyBag.Nullify(definition.Alias));
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

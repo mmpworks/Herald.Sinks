@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Trace.Providers;
 
@@ -26,6 +26,14 @@ namespace Herald.Sinks.Trace.Providers;
 /// override an older dashboard JSON that still carries the value in
 /// <c>Alias</c>, without breaking deployments that have not migrated.
 /// </para>
+///
+/// <para>
+/// Trace is the single-field-mapper reference shape: returns
+/// <see cref="string"/>? directly rather than wrapping in a
+/// <c>Resolved</c> record because there is only one knob to carry.
+/// Multi-field sinks follow the per-sink <c>Resolved</c> shape; this
+/// one stays scalar.
+/// </para>
 /// </summary>
 internal static class TraceSinkRuntimeConfig
 {
@@ -40,25 +48,12 @@ internal static class TraceSinkRuntimeConfig
     {
         ArgumentNullException.ThrowIfNull(definition);
 
-        // Bag wins when present. ReadString returns null for missing
-        // keys and for empty strings, so an empty-string bag entry
-        // falls through to the legacy slot — that matches operator
-        // intent ("blank in the form = leave it alone").
-        var fromBag = ReadString(definition.Properties, KeyCategory);
-        if (fromBag is not null) return fromBag;
-
-        return Nullify(definition.Alias);
+        // Bag wins when present. SinkPropertyBag.ReadString returns
+        // null for missing keys and for empty strings, so an
+        // empty-string bag entry falls through to the legacy slot
+        // — that matches operator intent ("blank in the form =
+        // leave it alone").
+        return SinkPropertyBag.ReadString(definition.Properties, KeyCategory)
+               ?? SinkPropertyBag.Nullify(definition.Alias);
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

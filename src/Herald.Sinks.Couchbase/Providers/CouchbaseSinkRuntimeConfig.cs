@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Couchbase.Providers;
 
@@ -67,25 +67,13 @@ internal static class CouchbaseSinkRuntimeConfig
         // a sensible legacy slot mapping (Uri/Alias/Host →
         // connection_string/password/bucket); username, scope, and
         // collection only ever came from the bag.
-        var connectionString = ReadString(bag, KeyConnectionString) ?? Nullify(definition.Uri);
-        var username = ReadString(bag, KeyUsername);
-        var password = ReadString(bag, KeyPassword) ?? Nullify(definition.Alias);
-        var bucket = ReadString(bag, KeyBucket) ?? Nullify(definition.Host);
-        var scope = ReadString(bag, KeyScope) ?? DefaultScope;
-        var collection = ReadString(bag, KeyCollection) ?? DefaultCollection;
+        var connectionString = SinkPropertyBag.ReadString(bag, KeyConnectionString) ?? SinkPropertyBag.Nullify(definition.Uri);
+        var username = SinkPropertyBag.ReadString(bag, KeyUsername);
+        var password = SinkPropertyBag.ReadString(bag, KeyPassword) ?? SinkPropertyBag.Nullify(definition.Alias);
+        var bucket = SinkPropertyBag.ReadString(bag, KeyBucket) ?? SinkPropertyBag.Nullify(definition.Host);
+        var scope = SinkPropertyBag.ReadString(bag, KeyScope) ?? DefaultScope;
+        var collection = SinkPropertyBag.ReadString(bag, KeyCollection) ?? DefaultCollection;
 
         return new Resolved(connectionString, username, password, bucket, scope, collection);
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

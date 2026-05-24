@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Twilio.Providers;
 
@@ -49,21 +49,9 @@ internal static class TwilioSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            AccountSid: ReadString(bag, KeyAccountSid) ?? Nullify(definition.Uri),
-            AuthToken:  ReadString(bag, KeyAuthToken)  ?? Nullify(definition.Alias),
-            FromNumber: ReadString(bag, KeyFromNumber) ?? Nullify(definition.Host),
-            ToNumber:   ReadString(bag, KeyToNumber));
+            AccountSid: SinkPropertyBag.ReadString(bag, KeyAccountSid) ?? SinkPropertyBag.Nullify(definition.Uri),
+            AuthToken:  SinkPropertyBag.ReadString(bag, KeyAuthToken)  ?? SinkPropertyBag.Nullify(definition.Alias),
+            FromNumber: SinkPropertyBag.ReadString(bag, KeyFromNumber) ?? SinkPropertyBag.Nullify(definition.Host),
+            ToNumber:   SinkPropertyBag.ReadString(bag, KeyToNumber));
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

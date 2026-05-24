@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.InfluxDB.Providers;
 
@@ -49,21 +49,9 @@ internal static class InfluxDBSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            ServerUrl:    ReadString(bag, KeyServerUrl)    ?? Nullify(definition.Uri),
-            Organization: ReadString(bag, KeyOrganization) ?? Nullify(definition.Host),
-            Bucket:       ReadString(bag, KeyBucket),
-            Token:        ReadString(bag, KeyToken)        ?? Nullify(definition.Alias));
+            ServerUrl:    SinkPropertyBag.ReadString(bag, KeyServerUrl)    ?? SinkPropertyBag.Nullify(definition.Uri),
+            Organization: SinkPropertyBag.ReadString(bag, KeyOrganization) ?? SinkPropertyBag.Nullify(definition.Host),
+            Bucket:       SinkPropertyBag.ReadString(bag, KeyBucket),
+            Token:        SinkPropertyBag.ReadString(bag, KeyToken)        ?? SinkPropertyBag.Nullify(definition.Alias));
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

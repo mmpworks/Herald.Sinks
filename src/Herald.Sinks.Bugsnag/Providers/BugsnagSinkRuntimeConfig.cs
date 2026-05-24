@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Bugsnag.Providers;
 
@@ -55,20 +55,8 @@ internal static class BugsnagSinkRuntimeConfig
             // Legacy: api key rode in definition.Uri historically — the
             // sink ctor never accepted endpoint via the slot, only via
             // the keyword arg. So Uri stays the legacy api_key slot.
-            ApiKey:       ReadString(bag, KeyApiKey)       ?? Nullify(definition.Uri),
-            Endpoint:     ReadString(bag, KeyEndpoint),
-            ReleaseStage: ReadString(bag, KeyReleaseStage));
+            ApiKey:       SinkPropertyBag.ReadString(bag, KeyApiKey)       ?? SinkPropertyBag.Nullify(definition.Uri),
+            Endpoint:     SinkPropertyBag.ReadString(bag, KeyEndpoint),
+            ReleaseStage: SinkPropertyBag.ReadString(bag, KeyReleaseStage));
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

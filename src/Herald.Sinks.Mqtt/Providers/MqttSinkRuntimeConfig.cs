@@ -3,10 +3,10 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using MQTTnet.Protocol;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Mqtt.Providers;
 
@@ -80,18 +80,18 @@ internal static class MqttSinkRuntimeConfig
         ArgumentNullException.ThrowIfNull(definition);
 
         var bag = definition.Properties;
-        var brokerRaw = ReadString(bag, KeyBroker) ?? Nullify(definition.Uri);
+        var brokerRaw = SinkPropertyBag.ReadString(bag, KeyBroker) ?? SinkPropertyBag.Nullify(definition.Uri);
 
         // Topic defaults to "herald/logs" when neither source supplies
         // one — matches the mmpform init and the sink's own ctor
         // default. Empty strings (form field left blank) follow the
         // same default to avoid publishing to an empty topic.
-        var topicRaw = ReadString(bag, KeyTopic) ?? Nullify(definition.Host);
+        var topicRaw = SinkPropertyBag.ReadString(bag, KeyTopic) ?? SinkPropertyBag.Nullify(definition.Host);
         var topic = string.IsNullOrWhiteSpace(topicRaw) ? DefaultTopic : topicRaw!;
 
-        var username = ReadString(bag, KeyUsername);
-        var password = ReadString(bag, KeyPassword);
-        var qos = ParseQos(ReadString(bag, KeyQos));
+        var username = SinkPropertyBag.ReadString(bag, KeyUsername);
+        var password = SinkPropertyBag.ReadString(bag, KeyPassword);
+        var qos = ParseQos(SinkPropertyBag.ReadString(bag, KeyQos));
 
         if (brokerRaw is null)
         {
@@ -127,6 +127,12 @@ internal static class MqttSinkRuntimeConfig
     // so the form and the provider agree on the same spelling. Anything
     // else (including null) falls back to AtMostOnce — the safe choice
     // for a logging pipeline that prefers loss over backpressure.
+    // Cannot use SinkPropertyBag.ReadEnum<MqttQualityOfServiceLevel>
+    // because the mmpform vocabulary (at_most_once / at_least_once /
+    // exactly_once) does not match the enum member names
+    // (AtMostOnce / AtLeastOnce / ExactlyOnce) — case-insensitive
+    // parsing alone cannot bridge the underscore-vs-PascalCase gap.
+    // Keeping the local switch is per Richard's Pass-3 recipe step 4.
     private static MqttQualityOfServiceLevel ParseQos(string? raw) =>
         (raw ?? "").Trim().ToLowerInvariant() switch
         {
@@ -134,16 +140,4 @@ internal static class MqttSinkRuntimeConfig
             "exactly_once"  => MqttQualityOfServiceLevel.ExactlyOnce,
             _               => MqttQualityOfServiceLevel.AtMostOnce,
         };
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

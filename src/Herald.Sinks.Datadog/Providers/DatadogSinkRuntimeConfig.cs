@@ -3,8 +3,8 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Datadog.Providers;
 
@@ -56,20 +56,8 @@ internal static class DatadogSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            Endpoint: ReadString(bag, KeyEndpoint) ?? Nullify(definition.Uri),
-            ApiKey:   ReadString(bag, KeyApiKey)   ?? Nullify(definition.Alias),
-            Service:  ReadString(bag, KeyService)  ?? Nullify(definition.Host));
+            Endpoint: SinkPropertyBag.ReadString(bag, KeyEndpoint) ?? SinkPropertyBag.Nullify(definition.Uri),
+            ApiKey:   SinkPropertyBag.ReadString(bag, KeyApiKey)   ?? SinkPropertyBag.Nullify(definition.Alias),
+            Service:  SinkPropertyBag.ReadString(bag, KeyService)  ?? SinkPropertyBag.Nullify(definition.Host));
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

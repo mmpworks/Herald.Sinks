@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Email.Providers;
 
@@ -69,14 +69,14 @@ internal static class EmailSinkRuntimeConfig
 
         var bag = definition.Properties;
 
-        var smtpHost = ReadString(bag, KeySmtpHost) ?? Nullify(definition.Uri);
-        var smtpPort = ReadInt(bag, KeySmtpPort) ?? DefaultSmtpPort;
-        var fromAddress = ReadString(bag, KeyFromAddress) ?? Nullify(definition.Host);
-        var toAddresses = ParseRecipients(ReadString(bag, KeyToAddresses));
-        var username = ReadString(bag, KeyUsername);
-        var password = ReadString(bag, KeyPassword) ?? Nullify(definition.Alias);
-        var useStartTls = ReadBool(bag, KeyUseStartTls) ?? true;
-        var subjectTemplate = ReadString(bag, KeySubjectTemplate) ?? DefaultSubjectTemplate;
+        var smtpHost = SinkPropertyBag.ReadString(bag, KeySmtpHost) ?? SinkPropertyBag.Nullify(definition.Uri);
+        var smtpPort = SinkPropertyBag.ReadInt(bag, KeySmtpPort) ?? DefaultSmtpPort;
+        var fromAddress = SinkPropertyBag.ReadString(bag, KeyFromAddress) ?? SinkPropertyBag.Nullify(definition.Host);
+        var toAddresses = ParseRecipients(SinkPropertyBag.ReadString(bag, KeyToAddresses));
+        var username = SinkPropertyBag.ReadString(bag, KeyUsername);
+        var password = SinkPropertyBag.ReadString(bag, KeyPassword) ?? SinkPropertyBag.Nullify(definition.Alias);
+        var useStartTls = SinkPropertyBag.ReadBool(bag, KeyUseStartTls) ?? true;
+        var subjectTemplate = SinkPropertyBag.ReadString(bag, KeySubjectTemplate) ?? DefaultSubjectTemplate;
 
         return new Resolved(
             smtpHost, smtpPort, fromAddress, toAddresses,
@@ -87,6 +87,12 @@ internal static class EmailSinkRuntimeConfig
     // string because the dashboard's textfield only supports scalars
     // today. Splitting here keeps that contract local — the sink
     // constructor still takes IEnumerable<string>.
+    //
+    // Cannot use SinkPropertyBag.ReadKeyValuePairs because recipients
+    // are bare values without "key=" prefix. Per Richard's Pass-3
+    // recipe step 8, sink-specific parsers (this one, Mqtt's
+    // ParseBroker, Syslog's ParseLegacyAlias) stay local because
+    // they are not duplicated across sinks.
     private static IReadOnlyList<string> ParseRecipients(string? raw)
     {
         if (string.IsNullOrWhiteSpace(raw)) return Array.Empty<string>();
@@ -101,41 +107,4 @@ internal static class EmailSinkRuntimeConfig
         }
         return result;
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static bool? ReadBool(IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        if (raw is bool b) return b;
-        return bool.TryParse(raw.ToString(), out var parsed) ? parsed : (bool?)null;
-    }
-
-    private static int? ReadInt(IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        // Cognitive Complexity note: switch covers the JSON
-        // deserialiser's numeric carriers plus a string fallback.
-        // Matches the FilesManagerPolicyMapper.ReadLong shape.
-        return raw switch
-        {
-            int i => i,
-            long l => (int)l,
-            double d => (int)d,
-            string s when int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) => n,
-            _ => (int?)null
-        };
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

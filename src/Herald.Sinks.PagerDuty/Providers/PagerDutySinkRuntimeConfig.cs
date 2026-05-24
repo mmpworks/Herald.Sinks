@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.PagerDuty.Providers;
 
@@ -67,19 +68,26 @@ internal static class PagerDutySinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            RoutingKey:           ReadString(bag, KeyRoutingKey) ?? Nullify(definition.Alias),
-            Source:               ReadString(bag, KeySource)     ?? Nullify(definition.Host),
-            Component:            ReadString(bag, KeyComponent),
-            Group:                ReadString(bag, KeyGroup),
-            Endpoint:             ReadString(bag, KeyEndpoint)   ?? Nullify(definition.Uri),
-            DedupStrategy:        ParseDedupStrategy(ReadString(bag, KeyDedupStrategy)),
-            CustomDetailsTemplate: ParseTemplatePairs(ReadString(bag, KeyCustomDetailsTpl)));
+            RoutingKey:            SinkPropertyBag.ReadString(bag, KeyRoutingKey) ?? SinkPropertyBag.Nullify(definition.Alias),
+            Source:                SinkPropertyBag.ReadString(bag, KeySource)     ?? SinkPropertyBag.Nullify(definition.Host),
+            Component:             SinkPropertyBag.ReadString(bag, KeyComponent),
+            Group:                 SinkPropertyBag.ReadString(bag, KeyGroup),
+            Endpoint:              SinkPropertyBag.ReadString(bag, KeyEndpoint)   ?? SinkPropertyBag.Nullify(definition.Uri),
+            DedupStrategy:         ParseDedupStrategy(SinkPropertyBag.ReadString(bag, KeyDedupStrategy)),
+            CustomDetailsTemplate: SinkPropertyBag.ReadKeyValuePairs(bag, KeyCustomDetailsTpl));
     }
 
     // Strategy vocabulary mirrors the mmpform tooltip text. Unknown
     // strings fall back to Auto — the safe choice that preserves the
     // pre-strategy behaviour. Operators making a typo in the form get
     // the existing fallback chain rather than a hard failure.
+    //
+    // Cannot use SinkPropertyBag.ReadEnum<PagerDutyDedupStrategy>
+    // because the mmpform's `event_id` token does not match the enum
+    // member `EventId` even with case-insensitive Enum.TryParse —
+    // the underscore-vs-PascalCase gap requires a custom switch.
+    // Per Richard's Pass-3 recipe step 4, keeping the local parser
+    // is the right call when vocabularies diverge like this.
     private static PagerDutyDedupStrategy ParseDedupStrategy(string? raw) =>
         (raw ?? "").Trim().ToLowerInvariant() switch
         {
@@ -89,39 +97,4 @@ internal static class PagerDutySinkRuntimeConfig
             "message"  => PagerDutyDedupStrategy.Message,
             _          => PagerDutyDedupStrategy.Auto,
         };
-
-    // custom_details_template arrives as "k1=v1, k2=v2". Same shape as
-    // the GoogleCloudLogging resource_labels parser — comma-split then
-    // split-on-first-'='. Bad pairs drop silently.
-    private static IReadOnlyDictionary<string, string>? ParseTemplatePairs(string? raw)
-    {
-        if (string.IsNullOrWhiteSpace(raw)) return null;
-
-        var pairs = raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        if (pairs.Length == 0) return null;
-
-        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var pair in pairs)
-        {
-            var eq = pair.IndexOf('=');
-            if (eq <= 0) continue;
-            var key = pair[..eq].Trim();
-            var value = pair[(eq + 1)..].Trim();
-            if (string.IsNullOrEmpty(key)) continue;
-            result[key] = value;
-        }
-        return result.Count == 0 ? null : result;
-    }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

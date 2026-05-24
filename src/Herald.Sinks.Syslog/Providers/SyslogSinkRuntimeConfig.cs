@@ -3,9 +3,9 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.Syslog.Providers;
 
@@ -84,75 +84,34 @@ internal static class SyslogSinkRuntimeConfig
         var bag = definition.Properties;
         var (legacyTransport, legacyFormat) = ParseLegacyAlias(definition.Alias);
 
+        // Transport / Format / Facility all collapse via SinkPropertyBag.ReadEnum<T>:
+        //   - mmpform vocabulary (`udp`, `tcp`, `rfc5424`, `rfc3164`,
+        //     `local0`, `authpriv`, etc.) matches the enum member names
+        //     case-insensitively, which is exactly what
+        //     Enum.TryParse<T>(ignoreCase: true) accepts.
+        //   - Unknown bag values return null; the `??` operator falls
+        //     through to the legacy alias parse (Transport / Format) or
+        //     the User default (Facility), preserving the prior
+        //     "unknown → safe default" semantics.
         return new Resolved(
-            Host:                  ReadString(bag, KeyHost) ?? Nullify(definition.Uri),
-            Port:                  ReadInt(bag, KeyPort) ?? ParseLegacyPort(definition.Host),
-            Transport:             ParseTransport(ReadString(bag, KeyTransport), legacyTransport),
-            Format:                ParseFormat(ReadString(bag, KeyFormat), legacyFormat),
-            Facility:              ParseFacility(ReadString(bag, KeyFacility)),
-            AppName:               ReadString(bag, KeyAppName),
-            ProcessId:             ReadString(bag, KeyProcessId),
-            LogSourceHost:         ReadString(bag, KeyLogSourceHost),
-            StructuredDataId:      ReadString(bag, KeyStructuredDataId) ?? DefaultStructuredDataId,
-            StructuredDataEnabled: ReadBool(bag, KeyStructuredDataEnabled) ?? true);
+            Host:                  SinkPropertyBag.ReadString(bag, KeyHost) ?? SinkPropertyBag.Nullify(definition.Uri),
+            Port:                  SinkPropertyBag.ReadInt(bag, KeyPort) ?? ParseLegacyPort(definition.Host),
+            Transport:             SinkPropertyBag.ReadEnum<SyslogTransport>(bag, KeyTransport) ?? legacyTransport,
+            Format:                SinkPropertyBag.ReadEnum<SyslogFormat>(bag, KeyFormat) ?? legacyFormat,
+            Facility:              SinkPropertyBag.ReadEnum<SyslogFacility>(bag, KeyFacility) ?? SyslogFacility.User,
+            AppName:               SinkPropertyBag.ReadString(bag, KeyAppName),
+            ProcessId:             SinkPropertyBag.ReadString(bag, KeyProcessId),
+            LogSourceHost:         SinkPropertyBag.ReadString(bag, KeyLogSourceHost),
+            StructuredDataId:      SinkPropertyBag.ReadString(bag, KeyStructuredDataId) ?? DefaultStructuredDataId,
+            StructuredDataEnabled: SinkPropertyBag.ReadBool(bag, KeyStructuredDataEnabled) ?? true);
     }
-
-    // Transport parser: bag value wins, then legacy alias token,
-    // then default UDP.
-    private static SyslogTransport ParseTransport(string? raw, SyslogTransport legacy) =>
-        (raw ?? "").Trim().ToLowerInvariant() switch
-        {
-            "tcp" => SyslogTransport.Tcp,
-            "udp" => SyslogTransport.Udp,
-            ""    => legacy,
-            _     => legacy,
-        };
-
-    // Format parser: bag value wins, then legacy alias token, then RFC 5424.
-    private static SyslogFormat ParseFormat(string? raw, SyslogFormat legacy) =>
-        (raw ?? "").Trim().ToLowerInvariant() switch
-        {
-            "rfc5424" => SyslogFormat.Rfc5424,
-            "rfc3164" => SyslogFormat.Rfc3164,
-            ""        => legacy,
-            _         => legacy,
-        };
-
-    // Facility parser: lowercase string → enum value. Unknown values
-    // fall back to User — the default for application logs.
-    private static SyslogFacility ParseFacility(string? raw) =>
-        (raw ?? "").Trim().ToLowerInvariant() switch
-        {
-            "kernel"       => SyslogFacility.Kernel,
-            "user"         => SyslogFacility.User,
-            "mail"         => SyslogFacility.Mail,
-            "daemon"       => SyslogFacility.Daemon,
-            "auth"         => SyslogFacility.Auth,
-            "syslog"       => SyslogFacility.Syslog,
-            "lpr"          => SyslogFacility.Lpr,
-            "news"         => SyslogFacility.News,
-            "uucp"         => SyslogFacility.Uucp,
-            "cron"         => SyslogFacility.Cron,
-            "authpriv"     => SyslogFacility.AuthPriv,
-            "ftp"          => SyslogFacility.Ftp,
-            "ntp"          => SyslogFacility.Ntp,
-            "audit"        => SyslogFacility.Audit,
-            "alert"        => SyslogFacility.Alert,
-            "clockdaemon"  => SyslogFacility.ClockDaemon,
-            "local0"       => SyslogFacility.Local0,
-            "local1"       => SyslogFacility.Local1,
-            "local2"       => SyslogFacility.Local2,
-            "local3"       => SyslogFacility.Local3,
-            "local4"       => SyslogFacility.Local4,
-            "local5"       => SyslogFacility.Local5,
-            "local6"       => SyslogFacility.Local6,
-            "local7"       => SyslogFacility.Local7,
-            _              => SyslogFacility.User,
-        };
 
     // Legacy port lived in definition.Host as an integer string — the
     // old provider parsed it with int.TryParse and fell back to 514.
-    // Keep that semantics for deployments still carrying the old form.
+    // Stays local because it reads from a raw string slot, not from
+    // the bag. SinkPropertyBag has no "parse-string-int-or-default"
+    // primitive (and shouldn't — the bag-vs-slot distinction is the
+    // whole reason Nullify and ReadString are separate primitives).
     private static int ParseLegacyPort(string? raw)
     {
         if (string.IsNullOrWhiteSpace(raw)) return DefaultPort;
@@ -163,7 +122,9 @@ internal static class SyslogSinkRuntimeConfig
 
     // Legacy alias was a pipe-delimited switches string like
     // "udp|rfc5424". Match the old provider's parser shape so legacy
-    // deployments don't break.
+    // deployments don't break. Stays local because it parses two
+    // independent enum values out of one string — no single
+    // SinkPropertyBag primitive fits that shape.
     private static (SyslogTransport Transport, SyslogFormat Format) ParseLegacyAlias(string? alias)
     {
         var transport = SyslogTransport.Udp;
@@ -182,38 +143,4 @@ internal static class SyslogSinkRuntimeConfig
         }
         return (transport, format);
     }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static bool? ReadBool(IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        if (raw is bool b) return b;
-        return bool.TryParse(raw.ToString(), out var parsed) ? parsed : (bool?)null;
-    }
-
-    private static int? ReadInt(IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        return raw switch
-        {
-            int i => i,
-            long l => (int)l,
-            double d => (int)d,
-            string s when int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) => n,
-            _ => (int?)null
-        };
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

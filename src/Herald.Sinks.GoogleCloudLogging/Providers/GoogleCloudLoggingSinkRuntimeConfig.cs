@@ -3,9 +3,9 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using Google.Api;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.GoogleCloudLogging.Providers;
 
@@ -58,53 +58,23 @@ internal static class GoogleCloudLoggingSinkRuntimeConfig
         ArgumentNullException.ThrowIfNull(definition);
 
         var bag = definition.Properties;
-        var projectId    = ReadString(bag, KeyProjectId)    ?? Nullify(definition.Uri);
-        var logId        = ReadString(bag, KeyLogId)        ?? Nullify(definition.Host) ?? DefaultLogId;
-        var resourceType = ReadString(bag, KeyResourceType) ?? DefaultResourceType;
-        var labelsRaw    = ReadString(bag, KeyResourceLabels);
+        var projectId    = SinkPropertyBag.ReadString(bag, KeyProjectId)    ?? SinkPropertyBag.Nullify(definition.Uri);
+        var logId        = SinkPropertyBag.ReadString(bag, KeyLogId)        ?? SinkPropertyBag.Nullify(definition.Host) ?? DefaultLogId;
+        var resourceType = SinkPropertyBag.ReadString(bag, KeyResourceType) ?? DefaultResourceType;
 
         var resource = new MonitoredResource { Type = resourceType };
-        foreach (var (key, value) in ParseLabelPairs(labelsRaw))
+        var labels = SinkPropertyBag.ReadKeyValuePairs(bag, KeyResourceLabels);
+        if (labels is not null)
         {
-            // MonitoredResource.Labels is a protobuf map; duplicate
-            // keys overwrite (last-wins). The parser drops empty keys,
-            // so a stray comma in the operator's input doesn't crash.
-            resource.Labels[key] = value;
+            foreach (var pair in labels)
+            {
+                // MonitoredResource.Labels is a protobuf map; the
+                // parser already dropped blank keys and pairs without
+                // '=', so the loop just forwards what landed.
+                resource.Labels[pair.Key] = pair.Value;
+            }
         }
 
         return new Resolved(projectId, logId, resource);
     }
-
-    // resource_labels arrives as "k1=v1, k2=v2, k3=v3". Splitting on
-    // commas first, then on the first '=' in each pair, keeps the
-    // mapper's contract local. Pairs that are blank or missing '='
-    // silently drop — better than throwing on operator typos that
-    // would have been caught by the form validator.
-    private static IEnumerable<KeyValuePair<string, string>> ParseLabelPairs(string? raw)
-    {
-        if (string.IsNullOrWhiteSpace(raw)) yield break;
-
-        var pairs = raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        foreach (var pair in pairs)
-        {
-            var eq = pair.IndexOf('=');
-            if (eq <= 0) continue;
-            var key = pair[..eq].Trim();
-            var value = pair[(eq + 1)..].Trim();
-            if (string.IsNullOrEmpty(key)) continue;
-            yield return new KeyValuePair<string, string>(key, value);
-        }
-    }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }

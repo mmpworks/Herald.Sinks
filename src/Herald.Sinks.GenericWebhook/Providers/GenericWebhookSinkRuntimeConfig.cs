@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 
 namespace Herald.Sinks.GenericWebhook.Providers;
 
@@ -63,43 +64,8 @@ internal static class GenericWebhookSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            Url:         ReadString(bag, KeyUrl)         ?? Nullify(definition.Uri),
-            Headers:     ParseHeaderPairs(ReadString(bag, KeyHeaders)),
-            ContentType: ReadString(bag, KeyContentType) ?? DefaultContentType);
+            Url:         SinkPropertyBag.ReadString(bag, KeyUrl)         ?? SinkPropertyBag.Nullify(definition.Uri),
+            Headers:     SinkPropertyBag.ReadKeyValuePairs(bag, KeyHeaders),
+            ContentType: SinkPropertyBag.ReadString(bag, KeyContentType) ?? DefaultContentType);
     }
-
-    // Headers arrive as "Name=Value, Name=Value". Same parser shape as
-    // PagerDuty.custom_details_template and GoogleCloudLogging.resource_labels —
-    // split on commas, split on the first '='. Bad pairs drop silently.
-    private static IReadOnlyDictionary<string, string>? ParseHeaderPairs(string? raw)
-    {
-        if (string.IsNullOrWhiteSpace(raw)) return null;
-
-        var pairs = raw.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        if (pairs.Length == 0) return null;
-
-        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var pair in pairs)
-        {
-            var eq = pair.IndexOf('=');
-            if (eq <= 0) continue;
-            var key = pair[..eq].Trim();
-            var value = pair[(eq + 1)..].Trim();
-            if (string.IsNullOrEmpty(key)) continue;
-            result[key] = value;
-        }
-        return result.Count == 0 ? null : result;
-    }
-
-    private static string? ReadString(
-        IReadOnlyDictionary<string, object?>? bag, string key)
-    {
-        if (bag is null) return null;
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        var text = raw.ToString();
-        return string.IsNullOrEmpty(text) ? null : text;
-    }
-
-    private static string? Nullify(string? value) =>
-        string.IsNullOrWhiteSpace(value) ? null : value;
 }
