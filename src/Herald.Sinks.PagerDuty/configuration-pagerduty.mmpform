@@ -1,10 +1,34 @@
-# PagerDuty sink — configuration UI placeholder.
+# PagerDuty sink — Events API v2 incident creation.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "routing_key"            = { type: "string", default: "" },
+    "source"                 = { type: "string", default: "" },
+    "component"              = { type: "string", default: "" },
+    "group"                  = { type: "string", default: "" },
+    "endpoint"               = { type: "string", default: "https://events.pagerduty.com/v2/enqueue" },
+    "dedup_strategy"         = { type: "string", default: "auto" },
+    "custom_details_template" = { type: "string", default: "" }
+]
 
-[container("PagerDuty sink", "Posts Herald log events to PagerDuty's Events API v2 for incident creation.")]
+tooltips = [
+    "tt-routing"  = "PagerDuty integration routing key — masked after save.",
+    "tt-source"  = "PagerDuty source field — defaults to machine name when blank.",
+    "tt-comp"    = "Optional component name (e.g. auth, billing).",
+    "tt-group"   = "Optional group name (e.g. production, staging).",
+    "tt-endpt"   = "Enqueue endpoint — override only when using PagerDuty's regional endpoints.",
+    "tt-dedup"   = "Dedup key strategy: auto, event_id, template, category, or message.",
+    "tt-detail"  = "Optional static fields merged into custom_details — comma-separated key=value pairs (e.g. team=billing, runbook_url=https://runbooks/...)."
+]
 
-  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]
+[container("PagerDuty sink", "Posts Herald log events to PagerDuty's Events API v2 for incident creation. Pair with a level filter so routine info events don't page on-call.")]
+
+  - [secret(12,{routing_key},tt="tt-routing",required=true)] Routing key
+  - [textfield(12,{source},tt="tt-source",placeholder="host.example.com")] Source
+  - [textfield(12,{component},tt="tt-comp")] Component
+  - [textfield(12,{group},tt="tt-group")] Group
+  - [url(12,{endpoint},tt="tt-endpt",init="https://events.pagerduty.com/v2/enqueue")] Enqueue endpoint
+  - [textfield(12,{dedup_strategy},tt="tt-dedup",init="auto",placeholder="auto | event_id | template | category | message")] Dedup strategy
+  - [textfield(12,{custom_details_template},tt="tt-detail",placeholder="team=billing, runbook_url=https://...")] Custom details template

@@ -76,9 +76,34 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
     private readonly string? _component;
     private readonly string? _group;
     private readonly Func<LogEvent, string>? _dedupKeyResolver;
+    private readonly PagerDutyDedupStrategy _dedupStrategy;
+    private readonly IReadOnlyDictionary<string, string>? _customDetailsTemplate;
     private readonly HttpClient _httpClient;
     private readonly bool _ownsHttpClient;
 
+    /// <summary>
+    /// Create a PagerDuty Events API v2 sink.
+    /// </summary>
+    /// <remarks>
+    /// Two new operator-facing knobs land in this ctor:
+    /// <list type="bullet">
+    ///   <item><paramref name="dedupStrategy"/> picks how the sink
+    ///         derives the <c>dedup_key</c>. Defaults to
+    ///         <see cref="PagerDutyDedupStrategy.Auto"/> — the same
+    ///         event-id → template → message fallback chain the
+    ///         sink has always used. Operators who want category- or
+    ///         message-only deduplication can pin the strategy here.</item>
+    ///   <item><paramref name="customDetailsTemplate"/> merges into the
+    ///         outgoing <c>payload.custom_details</c> block before the
+    ///         event's own properties land. Common use: a
+    ///         <c>runbook_url</c> or <c>team</c> tag that every
+    ///         incident from this sink should carry. Event properties
+    ///         win on key collision so per-event data is never masked.</item>
+    /// </list>
+    /// <paramref name="dedupKeyResolver"/> still wins over
+    /// <paramref name="dedupStrategy"/> — code-first callers keep full
+    /// control.
+    /// </remarks>
     public PagerDutyLogSink(
         string routingKey,
         string? source = null,
@@ -86,7 +111,9 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
         string? group = null,
         string? endpoint = null,
         Func<LogEvent, string>? dedupKeyResolver = null,
-        HttpClient? httpClient = null)
+        HttpClient? httpClient = null,
+        PagerDutyDedupStrategy dedupStrategy = PagerDutyDedupStrategy.Auto,
+        IReadOnlyDictionary<string, string>? customDetailsTemplate = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(routingKey);
 
@@ -95,6 +122,10 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
         _component = Nullify(component);
         _group = Nullify(group);
         _dedupKeyResolver = dedupKeyResolver;
+        _dedupStrategy = dedupStrategy;
+        _customDetailsTemplate = customDetailsTemplate is null || customDetailsTemplate.Count == 0
+            ? null
+            : customDetailsTemplate;
         _endpoint = new Uri(string.IsNullOrWhiteSpace(endpoint) ? EnqueueEndpoint : endpoint,
             UriKind.Absolute);
         _ownsHttpClient = httpClient is null;
@@ -144,7 +175,7 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
             if (_component is not null) writer.WriteString("component", _component);
             if (_group is not null) writer.WriteString("group", _group);
 
-            WriteCustomDetails(writer, evt);
+            WriteCustomDetails(writer, evt, _customDetailsTemplate);
 
             writer.WriteEndObject();
             writer.WriteEndObject();
@@ -157,11 +188,26 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
     {
         if (_dedupKeyResolver is not null) return _dedupKeyResolver(evt);
 
-        // Stable derivation when the caller hasn't overridden: prefer the
-        // event id, then the template, then a hash of the message. This
-        // keeps "same sink timed out" rolling into one open incident
-        // while "unique user X failed auth" produces per-user incidents
-        // only when the caller explicitly supplies an id.
+        // Strategy-driven derivation. Auto preserves the original
+        // event-id → template → message fallback chain so deployments
+        // that never picked a strategy keep their existing dedup
+        // behaviour. The other three pin a single shape so an operator
+        // running a per-category alert page can guarantee one open
+        // incident per category regardless of message text.
+        return _dedupStrategy switch
+        {
+            PagerDutyDedupStrategy.EventId  => evt.EventId is { } eid
+                ? $"herald-event-{eid.Id}"
+                : $"herald-template-{StableHash(evt.MessageTemplate)}",
+            PagerDutyDedupStrategy.Template => $"herald-template-{StableHash(evt.MessageTemplate ?? string.Empty)}",
+            PagerDutyDedupStrategy.Category => $"herald-category-{evt.Category.Value}",
+            PagerDutyDedupStrategy.Message  => $"herald-message-{StableHash(evt.Message ?? string.Empty)}",
+            _ => AutoDedupKey(evt),
+        };
+    }
+
+    private static string AutoDedupKey(LogEvent evt)
+    {
         if (evt.EventId is { } eid) return $"herald-event-{eid.Id}";
         if (!string.IsNullOrWhiteSpace(evt.MessageTemplate))
         {
@@ -191,7 +237,10 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
         };
     }
 
-    private static void WriteCustomDetails(Utf8JsonWriter writer, LogEvent evt)
+    private static void WriteCustomDetails(
+        Utf8JsonWriter writer,
+        LogEvent evt,
+        IReadOnlyDictionary<string, string>? template)
     {
         var hasProperties = evt.Properties.Count > 0;
         var hasContext = false;
@@ -200,8 +249,9 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
             if (pair.Key != LogContextKeys.Exception) { hasContext = true; break; }
         }
         var hasException = evt.Context.ContainsKey(LogContextKeys.Exception);
+        var hasTemplate = template is not null && template.Count > 0;
 
-        if (!hasProperties && !hasContext && !hasException) return;
+        if (!hasProperties && !hasContext && !hasException && !hasTemplate) return;
 
         writer.WriteStartObject("custom_details");
         writer.WriteString("messageTemplate", evt.MessageTemplate);
@@ -217,6 +267,11 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
             "messageTemplate", "exception", "exception.type"
         };
 
+        // Event properties + context land first so per-event data
+        // claims its keys before the template tries to fill them in.
+        // The template only fills gaps the event didn't supply — that
+        // matches the ordering operators expect ("runbook URL stays
+        // constant unless this event carries a more specific one").
         foreach (var property in evt.Properties)
         {
             if (seen.Add(property.Name))
@@ -230,6 +285,18 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
             if (seen.Add(pair.Key))
             {
                 WriteValue(writer, pair.Key, pair.Value);
+            }
+        }
+
+        if (template is not null)
+        {
+            foreach (var pair in template)
+            {
+                if (string.IsNullOrEmpty(pair.Key)) continue;
+                if (seen.Add(pair.Key))
+                {
+                    writer.WriteString(pair.Key, pair.Value ?? string.Empty);
+                }
             }
         }
 
