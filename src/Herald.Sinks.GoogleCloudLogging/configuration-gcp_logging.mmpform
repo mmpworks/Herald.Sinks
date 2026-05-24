@@ -1,10 +1,25 @@
-# GoogleCloudLogging sink — configuration UI placeholder.
+# GoogleCloudLogging sink — WriteLogEntries API.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "project_id"       = { type: "string", default: "" },
+    "log_id"           = { type: "string", default: "herald" },
+    "resource_type"    = { type: "string", default: "global" },
+    "resource_labels"  = { type: "string", default: "" }
+]
 
-[container("GoogleCloudLogging sink", "Writes Herald log events to Google Cloud Logging (formerly Stackdriver) via LoggingServiceV2Client.")]
+tooltips = [
+    "tt-project"   = "GCP project id the log entries are written to.",
+    "tt-log-id"    = "Log id within the project — appears as a discrete log in the Cloud Logging viewer.",
+    "tt-res-type"  = "Monitored resource type (global, gce_instance, k8s_container, cloud_run_revision, ...).",
+    "tt-res-labs"  = "Resource labels as comma-separated key=value pairs (e.g. project_id=my-proj, location=us-central1)."
+]
 
-  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]
+[container("GoogleCloudLogging sink", "Writes Herald log events to Google Cloud Logging via LoggingServiceV2Client. Auth uses Application Default Credentials (ADC).")]
+
+  - [textfield(12,{project_id},tt="tt-project",required=true)] GCP project id
+  - [textfield(12,{log_id},tt="tt-log-id",init="herald")] Log id
+  - [textfield(12,{resource_type},tt="tt-res-type",init="global")] Resource type
+  - [textfield(12,{resource_labels},tt="tt-res-labs",placeholder="project_id=my-proj, location=us-central1, instance_id=i-123")] Resource labels

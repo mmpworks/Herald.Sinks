@@ -17,13 +17,34 @@ namespace Herald.Sinks.GoogleCloudLogging.Providers;
 /// from a <see cref="LoggingRuntimeSinkDefinition"/>.
 /// </summary>
 /// <remarks>
-/// Wire-up:
+/// <para>
+/// Configuration sources, in priority order:
 /// <list type="bullet">
-///   <item><c>Uri</c> → GCP project id (required).</item>
-///   <item><c>Host</c> → log id, default <c>herald</c>.</item>
+///   <item><b>v2 property bag</b> (<c>configuration-gcp_logging.mmpform</c> → <see cref="LoggingRuntimeSinkDefinition.Properties"/>):
+///     <list type="bullet">
+///       <item><c>project_id</c> — GCP project id (required).</item>
+///       <item><c>log_id</c> — log id within the project (default <c>herald</c>).</item>
+///       <item><c>resource_type</c> — monitored-resource type (default <c>global</c>).</item>
+///       <item><c>resource_labels</c> — comma-separated <c>key=value</c>
+///             pairs that populate the monitored resource's labels map.</item>
+///     </list>
+///   </item>
+///   <item><b>Legacy slots</b>:
+///     <list type="bullet">
+///       <item><see cref="LoggingRuntimeSinkDefinition.Uri"/> ↔ project_id.</item>
+///       <item><see cref="LoggingRuntimeSinkDefinition.Host"/> ↔ log_id.</item>
+///     </list>
+///     Resource type and labels had no legacy slot — older deployments
+///     had no way to set them and landed under <c>global</c> with no
+///     labels. That's the GCP routing bug Richard's audit calls out as
+///     a BLOCKER.
+///   </item>
 /// </list>
-/// MonitoredResource defaults to <c>global</c> — override via the
-/// code-first ctor for production workloads on GCE / GKE / Cloud Run.
+/// Auth still uses Application Default Credentials (ADC); the sink
+/// builds its own <see cref="Google.Cloud.Logging.V2.LoggingServiceV2Client"/>
+/// at construction. Apps that already own a client use the code-first
+/// overload on <see cref="GoogleCloudLoggingSink"/>.
+/// </para>
 /// </remarks>
 public sealed class GoogleCloudLoggingSinkProvider : ILogSinkProvider
 {
@@ -38,12 +59,20 @@ public sealed class GoogleCloudLoggingSinkProvider : ILogSinkProvider
         ILogOutputTransformerRegistry transformerRegistry)
     {
         ArgumentNullException.ThrowIfNull(definition);
-        ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
-        var logId = string.IsNullOrWhiteSpace(definition.Host) ? "herald" : definition.Host;
+        var resolved = GoogleCloudLoggingSinkRuntimeConfig.From(definition);
+
+        if (string.IsNullOrWhiteSpace(resolved.ProjectId))
+        {
+            throw new ArgumentException(
+                $"GoogleCloudLogging sink '{definition.Name}' is missing the required 'project_id' " +
+                $"property (or legacy Uri). Set it in configuration-gcp_logging.mmpform.",
+                nameof(definition));
+        }
 
         return new GoogleCloudLoggingSink(
-            projectId: definition.Uri,
-            logId: logId);
+            projectId: resolved.ProjectId!,
+            logId: resolved.LogId,
+            resource: resolved.Resource);
     }
 }
