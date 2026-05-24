@@ -1,10 +1,25 @@
-# Twilio sink — no configuration required.
+# Twilio sink — SMS via the Twilio Messages API.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "account_sid" = { type: "string", default: "" },
+    "auth_token"  = { type: "string", default: "" },
+    "from_number" = { type: "string", default: "" },
+    "to_number"   = { type: "string", default: "" }
+]
 
-[container("Twilio sink", "Sends Herald log events as SMS messages via the Twilio Messages API.")]
+tooltips = [
+    "tt-sid"   = "Twilio Account SID — starts with AC...",
+    "tt-token" = "Twilio Auth Token — masked after save.",
+    "tt-from"  = "Twilio-provisioned phone number that sends the SMS (E.164).",
+    "tt-to"    = "Destination phone number that receives the alerts (E.164)."
+]
 
-  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]
+[container("Twilio sink", "Sends Herald log events as SMS messages via the Twilio Messages API. Pair with a warn+ or error+ filter to avoid SMS cost surprises.")]
+
+  - [textfield(12,{account_sid},tt="tt-sid",required=true,placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] Account SID
+  - [secret(12,{auth_token},tt="tt-token",required=true)] Auth token
+  - [textfield(12,{from_number},tt="tt-from",required=true,placeholder="+15551234567")] From number
+  - [textfield(12,{to_number},tt="tt-to",required=true,placeholder="+15559876543")] To number
