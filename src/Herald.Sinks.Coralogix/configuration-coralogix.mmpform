@@ -1,10 +1,25 @@
-# Coralogix sink — no configuration required.
+# Coralogix sink — bulk-logs HTTP intake.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "endpoint"         = { type: "string", default: "https://ingress.coralogix.com/api/v1/logs" },
+    "private_key"      = { type: "string", default: "" },
+    "application_name" = { type: "string", default: "" },
+    "subsystem_name"   = { type: "string", default: "" }
+]
+
+tooltips = [
+    "tt-endpoint"    = "Coralogix bulk-logs URL — defaults to ingress.coralogix.com.",
+    "tt-private-key" = "Coralogix private key — masked after save.",
+    "tt-application" = "Coralogix application name (logical grouping in the UI).",
+    "tt-subsystem"   = "Coralogix subsystem name (component within the application)."
+]
 
 [container("Coralogix sink", "Ships Herald log events to Coralogix via the bulk-logs ingest endpoint.")]
 
-  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]
+  - [url(12,{endpoint},tt="tt-endpoint",init="https://ingress.coralogix.com/api/v1/logs")] Ingest endpoint
+  - [secret(12,{private_key},tt="tt-private-key",required=true)] Private key
+  - [textfield(12,{application_name},tt="tt-application",required=true)] Application name
+  - [textfield(12,{subsystem_name},tt="tt-subsystem",required=true)] Subsystem name

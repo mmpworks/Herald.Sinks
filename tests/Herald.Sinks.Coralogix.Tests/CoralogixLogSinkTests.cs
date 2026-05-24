@@ -19,8 +19,8 @@ public sealed class CoralogixLogSinkTests
     [Fact] public void Constructor_throws_on_null_app() =>
         ((Action)(() => new CoralogixLogSink("k", applicationName: null!, subsystemName: "s"))).Should().Throw<ArgumentException>();
 
-    [Fact] public void Provider_throws_on_create_sink() =>
-        ((Action)(() => new CoralogixLogSinkProvider().CreateSink(definition: null!, levelRegistry: null!, transformerRegistry: null!))).Should().Throw<NotSupportedException>();
+    [Fact] public void Provider_throws_on_null_definition() =>
+        ((Action)(() => new CoralogixLogSinkProvider().CreateSink(definition: null!, levelRegistry: null!, transformerRegistry: null!))).Should().Throw<ArgumentNullException>();
 
     [Fact] public void Provider_kind_and_edition()
     {
