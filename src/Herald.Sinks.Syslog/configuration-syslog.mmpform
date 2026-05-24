@@ -1,10 +1,43 @@
-# Syslog sink — configuration UI placeholder.
+# Syslog sink — RFC 5424 (default) or RFC 3164 over UDP or TCP.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "host"                    = { type: "string",  default: "" },
+    "port"                    = { type: "integer", default: 514 },
+    "transport"               = { type: "string",  default: "udp" },
+    "format"                  = { type: "string",  default: "rfc5424" },
+    "facility"                = { type: "string",  default: "user" },
+    "app_name"                = { type: "string",  default: "" },
+    "process_id"              = { type: "string",  default: "" },
+    "log_source_host"         = { type: "string",  default: "" },
+    "structured_data_id"      = { type: "string",  default: "herald@32473" },
+    "structured_data_enabled" = { type: "boolean", default: true }
+]
 
-[container("Syslog sink", "Emits Herald log events as RFC 5424 or RFC 3164 syslog messages over UDP or TCP.")]
+tooltips = [
+    "tt-host"     = "Syslog collector hostname or IP.",
+    "tt-port"     = "Collector port — 514 default for both UDP and TCP.",
+    "tt-trans"    = "Transport: udp (lossy, traditional) or tcp (octet-counted per RFC 6587).",
+    "tt-format"   = "Wire format: rfc5424 (modern, with structured-data) or rfc3164 (BSD-legacy).",
+    "tt-fac"      = "Syslog facility (user, daemon, local0..local7, auth, ...). Default user.",
+    "tt-app"      = "APP-NAME field — defaults to herald.",
+    "tt-proc"     = "PROCID field — defaults to the host process id.",
+    "tt-source"   = "HOSTNAME field — defaults to the local machine name.",
+    "tt-sd-id"    = "RFC 5424 SD-ID for the structured-data block. Default herald@32473 (IANA example enterprise number).",
+    "tt-sd-on"    = "Emit Herald event properties in the RFC 5424 STRUCTURED-DATA block. Off restores NILVALUE (drops properties on the wire)."
+]
 
-  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]
+[container("Syslog sink", "Emits Herald log events as RFC 5424 or RFC 3164 syslog messages over UDP or TCP. TLS (RFC 5425) is on the Compliance-edition roadmap.")]
+
+  - [textfield(12,{host},tt="tt-host",required=true,placeholder="syslog.example.com")] Host
+  - [number(12,{port},tt="tt-port",init=514)] Port
+  - [textfield(12,{transport},tt="tt-trans",init="udp",placeholder="udp | tcp")] Transport
+  - [textfield(12,{format},tt="tt-format",init="rfc5424",placeholder="rfc5424 | rfc3164")] Format
+  - [textfield(12,{facility},tt="tt-fac",init="user",placeholder="user | daemon | local0 | local7 | auth | ...")] Facility
+  - [textfield(12,{app_name},tt="tt-app",placeholder="herald")] App name
+  - [textfield(12,{process_id},tt="tt-proc")] Process id
+  - [textfield(12,{log_source_host},tt="tt-source")] Log source host
+  - [textfield(12,{structured_data_id},tt="tt-sd-id",init="herald@32473")] Structured-data SD-ID
+  - [checkbox(12,{structured_data_enabled},tt="tt-sd-on",init=true)] Emit structured-data
