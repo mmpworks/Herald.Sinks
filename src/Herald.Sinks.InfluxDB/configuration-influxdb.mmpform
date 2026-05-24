@@ -1,10 +1,25 @@
-# InfluxDB sink — no configuration required.
+# InfluxDB sink — v2 line-protocol write over HTTP.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "server_url"   = { type: "string", default: "" },
+    "organization" = { type: "string", default: "" },
+    "bucket"       = { type: "string", default: "" },
+    "token"        = { type: "string", default: "" }
+]
+
+tooltips = [
+    "tt-server" = "InfluxDB v2 base URL — e.g. https://us-east-1-1.aws.cloud2.influxdata.com.",
+    "tt-org"    = "InfluxDB organization name or ID.",
+    "tt-bucket" = "InfluxDB bucket the events land in.",
+    "tt-token"  = "InfluxDB API token with write permission — masked after save."
+]
 
 [container("InfluxDB sink", "Writes Herald log events to InfluxDB v2 via line protocol over HTTP.")]
 
-  - [label(12, "This sink takes no operator-facing configuration. The runtime wires it without dashboard input.", style=note)]
+  - [url(12,{server_url},tt="tt-server",required=true,placeholder="https://us-east-1-1.aws.cloud2.influxdata.com")] Server URL
+  - [textfield(12,{organization},tt="tt-org",required=true)] Organization
+  - [textfield(12,{bucket},tt="tt-bucket",required=true)] Bucket
+  - [secret(12,{token},tt="tt-token",required=true)] API token
