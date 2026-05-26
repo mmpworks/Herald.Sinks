@@ -138,12 +138,16 @@ public sealed class EmitReferenceConformanceTests
 
     // ── Splunk HEC (doc #10) ─────────────────────────────────────────
 
-    [Fact(Skip = "FAIL (harness/answer-key, NOT S-1): SplunkEnvelope answer key 'time' is 1764081121.123 (2025-11-25) but the canonical instant is 2026-05-25 -> 1779719521.123; and 'sourcetype' _json is expected but the sink only emits sourcetype when constructed with one. Both are envelope-level harness defects outside the S-1 finding. S-1 (event.level lowercase) is fixed and guarded by Splunk_event_body_reserved_level below. Hand back to harness author.")]
+    [Fact]
     public void Splunk_event_body_matches_reserved_fields()
     {
+        // Construct with sourceType "_json" to match the doc's §10 canonical
+        // sample, which carries "sourcetype":"_json". The sink only emits the
+        // reserved sourcetype envelope field when given one, so the test sink
+        // must supply the doc's value for the envelope answer key to hold.
         var body = SinkOutputCapture.CaptureBody(
             client => new SplunkHecLogSink("http://localhost:8088", "splunk-token",
-                host: CanonicalEvent.Host, httpClient: client),
+                host: CanonicalEvent.Host, sourceType: "_json", httpClient: client),
             CanonicalEvent.Build());
 
         // HEC posts JSON objects; parse the first, then navigate into event.

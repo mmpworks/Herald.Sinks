@@ -100,8 +100,12 @@ public sealed class ConformanceAsserterTests
     [Fact]
     public void Number_match_tolerates_decimal_formatting()
     {
-        const string json = """{"time":1764081121.123}""";
-        var key = new[] { ReservedField.Num("time", "1764081121.123") };
+        // The literal is the canonical instant's epoch-seconds form so the
+        // harness carries no stray copy of the old wrong base (1764081121,
+        // which decoded to the wrong month). This test only exercises the
+        // asserter's number machinery; the value's meaning is incidental.
+        const string json = """{"time":1779719521.123}""";
+        var key = new[] { ReservedField.Num("time", "1779719521.123") };
 
         ConformanceAsserter.Assert("t", json, key).Passed.Should().BeTrue();
     }
