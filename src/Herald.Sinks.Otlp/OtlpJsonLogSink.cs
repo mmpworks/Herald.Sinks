@@ -130,12 +130,17 @@ public sealed class OtlpJsonLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
     private void WriteLogRecord(Utf8JsonWriter writer, LogEvent logEvent) {
         writer.WriteStartObject();
 
-        var unixNano = logEvent.TimeUtc.ToUnixTimeMilliseconds() * 1_000_000L;
+        // Full-tick nanos: 1 tick = 100ns. ToUnixTimeMilliseconds() truncated
+        // sub-millisecond precision; the tick-based form preserves precision to
+        // the DateTimeOffset 100ns floor (F2).
+        var unixNano = (logEvent.TimeUtc - DateTimeOffset.UnixEpoch).Ticks * 100L;
         writer.WriteString("timeUnixNano", unixNano.ToString());
 
         var severityNumber = OtlpSeverityMapper.MapSeverityNumber(logEvent.Level, _levelRegistry);
         writer.WriteNumber("severityNumber", severityNumber);
-        writer.WriteString("severityText", logEvent.Level.DisplayName);
+        // Uppercase severity text to match the OTLP convention and Herald's
+        // OSS-side OtelLogRecord encoder (F3).
+        writer.WriteString("severityText", logEvent.Level.DisplayName.ToUpperInvariant());
 
         writer.WriteStartObject("body");
         writer.WriteString("stringValue", logEvent.Message);
@@ -155,7 +160,9 @@ public sealed class OtlpJsonLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
 
         foreach (var property in logEvent.Properties)
         {
-            WriteStringAttribute(writer, property.Name, property.ResolvedValue?.ToString() ?? "null");
+            // Type-dispatch on the resolved value so int/double/bool survive as
+            // their AnyValue kind instead of collapsing to stringValue (F1).
+            WriteAttribute(writer, property.Name, property.ResolvedValue);
         }
 
         foreach (var pair in logEvent.Context)
@@ -165,7 +172,7 @@ public sealed class OtlpJsonLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
                 continue;
             }
 
-            WriteStringAttribute(writer, pair.Key, pair.Value?.ToString() ?? "null");
+            WriteAttribute(writer, pair.Key, pair.Value);
         }
 
         if (logEvent.Context.TryGetValue(LogContextKeys.Exception, out var exceptionValue) && exceptionValue is Exception ex)
@@ -195,6 +202,48 @@ public sealed class OtlpJsonLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
         writer.WriteString("key", key);
         writer.WriteStartObject("value");
         writer.WriteString("stringValue", value);
+        writer.WriteEndObject();
+        writer.WriteEndObject();
+    }
+
+    // Type-dispatching attribute writer: picks the OTLP AnyValue JSON kind from
+    // the runtime type of the value so int/double/bool round-trip as their type
+    // rather than as a string. long/int -> intValue, double/float -> doubleValue,
+    // bool -> boolValue, string -> stringValue, anything else -> stringValue via
+    // ToString(). intValue is emitted as a bare JSON number: the OSS decoder
+    // accepts both bare-number and string forms (OtlpJsonDecoder.ReadAnyValue),
+    // and the bare number matches what Herald's own encoder produces.
+    private static void WriteAttribute(Utf8JsonWriter writer, string key, object? value) {
+        writer.WriteStartObject();
+        writer.WriteString("key", key);
+        writer.WriteStartObject("value");
+        switch (value)
+        {
+            case long l:
+                writer.WriteNumber("intValue", l);
+                break;
+            case int i:
+                writer.WriteNumber("intValue", i);
+                break;
+            case double d:
+                writer.WriteNumber("doubleValue", d);
+                break;
+            case float f:
+                writer.WriteNumber("doubleValue", f);
+                break;
+            case bool b:
+                writer.WriteBoolean("boolValue", b);
+                break;
+            case string s:
+                writer.WriteString("stringValue", s);
+                break;
+            case null:
+                writer.WriteString("stringValue", "null");
+                break;
+            default:
+                writer.WriteString("stringValue", value.ToString() ?? "null");
+                break;
+        }
         writer.WriteEndObject();
         writer.WriteEndObject();
     }
