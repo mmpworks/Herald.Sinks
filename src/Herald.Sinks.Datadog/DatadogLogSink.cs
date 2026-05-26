@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -171,12 +172,37 @@ public sealed class DatadogLogSink : HeraldSinkBase, IBatchedLogSink, IDisposabl
         // accepts them at the root and indexes them as facets.
         writer.WriteString("messageTemplate", evt.MessageTemplate);
         writer.WriteString("category", evt.Category.Value);
-        writer.WriteString("timestamp", evt.TimeUtc.ToUniversalTime().ToString("O"));
+        writer.WriteString("timestamp",
+            evt.TimeUtc.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture));
 
+        WriteReservedUserId(writer, evt);
         WriteException(writer, evt);
         WriteProperties(writer, evt);
 
         writer.WriteEndObject();
+    }
+
+    // Datadog reserves the nested "usr":{"id":...} object for the user
+    // facet. When the event carries a UserId (or user.id) property, mirror
+    // it into that reserved object with its original JSON type preserved —
+    // WriteValue already type-dispatches, so a long stays a number. The
+    // flat property still rides through WriteProperties as a harmless
+    // free-form attribute.
+    private static void WriteReservedUserId(Utf8JsonWriter writer, LogEvent evt)
+    {
+        foreach (var property in evt.Properties)
+        {
+            if (!string.Equals(property.Name, "UserId", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(property.Name, "user.id", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            writer.WriteStartObject("usr");
+            WriteValue(writer, "id", property.ResolvedValue);
+            writer.WriteEndObject();
+            return;
+        }
     }
 
     private string BuildEventTags(LogEvent evt)

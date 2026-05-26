@@ -148,7 +148,7 @@ public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
             writer.WriteStartObject("properties");
             foreach (var prop in logEvent.Properties)
             {
-                writer.WriteString(prop.Name, prop.ResolvedValue?.ToString() ?? "null");
+                WriteValue(writer, prop.Name, prop.ResolvedValue);
             }
             writer.WriteEndObject();
         }
@@ -181,5 +181,28 @@ public sealed class ElasticsearchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
         }
 
         writer.WriteEndObject();
+    }
+
+    // Type-dispatch the same way the Datadog/Splunk/Loki sinks do: a long
+    // stays a JSON number, a bool stays a bool. The prior ToString() path
+    // flattened every property to a string (42L -> "42"), losing the typed
+    // query surface Elasticsearch's numeric mappings key off (F1 defect).
+    private static void WriteValue(Utf8JsonWriter writer, string name, object? value)
+    {
+        switch (value)
+        {
+            case null: writer.WriteNull(name); break;
+            case string s: writer.WriteString(name, s); break;
+            case bool b: writer.WriteBoolean(name, b); break;
+            case int i: writer.WriteNumber(name, i); break;
+            case long l: writer.WriteNumber(name, l); break;
+            case double d: writer.WriteNumber(name, d); break;
+            case float f: writer.WriteNumber(name, f); break;
+            case decimal m: writer.WriteNumber(name, m); break;
+            case DateTime dt: writer.WriteString(name, dt.ToString("O", CultureInfo.InvariantCulture)); break;
+            case DateTimeOffset dto: writer.WriteString(name, dto.ToString("O", CultureInfo.InvariantCulture)); break;
+            case Guid g: writer.WriteString(name, g.ToString("D")); break;
+            default: writer.WriteString(name, value.ToString() ?? ""); break;
+        }
     }
 }

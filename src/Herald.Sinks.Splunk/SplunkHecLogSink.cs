@@ -146,6 +146,11 @@ public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
         writer.WriteStartObject("event");
         writer.WriteString("message", evt.Message);
         writer.WriteString("messageTemplate", evt.MessageTemplate);
+        // "level" is the reserved Splunk event.level field — the lowercase
+        // level key (e.g. "info"), not the uppercase DisplayName. "severity"
+        // stays as a free-form attribute so existing search queries keyed off
+        // SplunkLevelMapper's uppercase form keep working.
+        writer.WriteString("level", evt.Level.Key);
         writer.WriteString("severity", SplunkLevelMapper.MapLevel(evt.Level));
         writer.WriteString("category", evt.Category.Value);
 
@@ -169,7 +174,7 @@ public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
     {
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            "message", "messageTemplate", "severity",
+            "message", "messageTemplate", "level", "severity",
             "category", "exception"
         };
 
