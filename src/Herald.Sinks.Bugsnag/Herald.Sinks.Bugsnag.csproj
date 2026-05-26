@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Bugsnag</RootNamespace>
     <AssemblyName>Herald.Sinks.Bugsnag</AssemblyName>
-    <PackageId>Herald.Sinks.Bugsnag</PackageId>
+    <PackageId>MMP.Herald.Sinks.Bugsnag</PackageId>
     <Version>1.0.0</Version>
     <Description>Reports Herald log events to Bugsnag via the public notify API. Drop-in for Serilog.Sinks.Bugsnag. HTTP-only — no SDK dependency.</Description>
     <PackageTags>herald;logging;sink;bugsnag;errors;crash-reporting</PackageTags>

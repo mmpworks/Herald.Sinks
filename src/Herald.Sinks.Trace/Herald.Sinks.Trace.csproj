@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Trace</RootNamespace>
     <AssemblyName>Herald.Sinks.Trace</AssemblyName>
-    <PackageId>Herald.Sinks.Trace</PackageId>
+    <PackageId>MMP.Herald.Sinks.Trace</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to System.Diagnostics.Trace listeners — a drop-in for Serilog.Sinks.Trace and the Trace.WriteLine diagnostic path.</Description>
     <PackageTags>herald;logging;sink;trace;diagnostics</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.EventLog</RootNamespace>
     <AssemblyName>Herald.Sinks.EventLog</AssemblyName>
-    <PackageId>Herald.Sinks.EventLog</PackageId>
+    <PackageId>MMP.Herald.Sinks.EventLog</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to the Windows Event Log. Drop-in for Serilog.Sinks.EventLog. Windows-only — throws PlatformNotSupportedException elsewhere.</Description>
     <PackageTags>herald;logging;sink;eventlog;windows</PackageTags>

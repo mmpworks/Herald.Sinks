@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AzureBlobStorage</RootNamespace>
     <AssemblyName>Herald.Sinks.AzureBlobStorage</AssemblyName>
-    <PackageId>Herald.Sinks.AzureBlobStorage</PackageId>
+    <PackageId>MMP.Herald.Sinks.AzureBlobStorage</PackageId>
     <Version>1.0.0</Version>
     <Description>Uploads Herald log events as NDJSON blobs to Azure Blob Storage. Drop-in for Serilog.Sinks.AzureBlobStorage.</Description>
     <PackageTags>herald;logging;sink;azure;blob-storage;archive</PackageTags>

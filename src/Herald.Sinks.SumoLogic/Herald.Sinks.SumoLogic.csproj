@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.SumoLogic</RootNamespace>
     <AssemblyName>Herald.Sinks.SumoLogic</AssemblyName>
-    <PackageId>Herald.Sinks.SumoLogic</PackageId>
+    <PackageId>MMP.Herald.Sinks.SumoLogic</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to a Sumo Logic HTTP source endpoint. Drop-in for SumoLogic.Logging.Serilog.</Description>
     <PackageTags>herald;logging;sink;sumologic;observability</PackageTags>

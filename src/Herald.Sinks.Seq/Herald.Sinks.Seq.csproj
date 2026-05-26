@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Seq</RootNamespace>
     <AssemblyName>Herald.Sinks.Seq</AssemblyName>
-    <PackageId>Herald.Sinks.Seq</PackageId>
+    <PackageId>MMP.Herald.Sinks.Seq</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to a Seq server as newline-delimited CLEF over HTTP. Matches the wire format Serilog.Sinks.Seq uses so existing Seq deployments keep working.</Description>
     <PackageTags>herald;logging;sink;seq;clef;structured</PackageTags>

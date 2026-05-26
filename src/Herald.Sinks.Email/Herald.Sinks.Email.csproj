@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Email</RootNamespace>
     <AssemblyName>Herald.Sinks.Email</AssemblyName>
-    <PackageId>Herald.Sinks.Email</PackageId>
+    <PackageId>MMP.Herald.Sinks.Email</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events as SMTP email via MailKit. Drop-in for Serilog.Sinks.Email. Sized for high-severity alerts.</Description>
     <PackageTags>herald;logging;sink;email;smtp;alerting</PackageTags>

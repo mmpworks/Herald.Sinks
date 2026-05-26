@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.GodotConsole</RootNamespace>
     <AssemblyName>Herald.Sinks.GodotConsole</AssemblyName>
-    <PackageId>Herald.Sinks.GodotConsole</PackageId>
+    <PackageId>MMP.Herald.Sinks.GodotConsole</PackageId>
     <Version>1.0.0</Version>
     <Description>Routes Herald log events to Godot 4.x console output channels (GD.Print / GD.PushWarning / GD.PushError). Editor Output panel + Warnings + Errors tabs receive levels appropriately. Game-dev counterpart to Herald.Sinks.Debug.</Description>
     <PackageTags>herald;logging;sink;godot;godot4;game-development;console</PackageTags>

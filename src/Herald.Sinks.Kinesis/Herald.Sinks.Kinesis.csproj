@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Kinesis</RootNamespace>
     <AssemblyName>Herald.Sinks.Kinesis</AssemblyName>
-    <PackageId>Herald.Sinks.Kinesis</PackageId>
+    <PackageId>MMP.Herald.Sinks.Kinesis</PackageId>
     <Version>1.0.0</Version>
     <Description>PutRecords Herald log events into an AWS Kinesis Data Stream via AWSSDK.Kinesis. Drop-in for Serilog.Sinks.AmazonKinesis.</Description>
     <PackageTags>herald;logging;sink;aws;kinesis;streaming</PackageTags>

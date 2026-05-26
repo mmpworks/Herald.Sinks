@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Graylog</RootNamespace>
     <AssemblyName>Herald.Sinks.Graylog</AssemblyName>
-    <PackageId>Herald.Sinks.Graylog</PackageId>
+    <PackageId>MMP.Herald.Sinks.Graylog</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events to Graylog as GELF messages over HTTP or TCP. Drop-in for Serilog.Sinks.Graylog / Graylog.Batching.</Description>
     <PackageTags>herald;logging;sink;graylog;gelf</PackageTags>

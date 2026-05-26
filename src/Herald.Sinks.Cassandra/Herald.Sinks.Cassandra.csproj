@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Cassandra</RootNamespace>
     <AssemblyName>Herald.Sinks.Cassandra</AssemblyName>
-    <PackageId>Herald.Sinks.Cassandra</PackageId>
+    <PackageId>MMP.Herald.Sinks.Cassandra</PackageId>
     <Version>1.0.0</Version>
     <Description>INSERTs Herald log events into a Cassandra table via the DataStax CassandraCSharpDriver. Drop-in for Serilog.Sinks.Cassandra. Works with ScyllaDB and any Cassandra-compatible cluster.</Description>
     <PackageTags>herald;logging;sink;cassandra;scylla;wide-column;nosql</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Twilio</RootNamespace>
     <AssemblyName>Herald.Sinks.Twilio</AssemblyName>
-    <PackageId>Herald.Sinks.Twilio</PackageId>
+    <PackageId>MMP.Herald.Sinks.Twilio</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events as SMS via the Twilio Messages API. HTTP-only — no Twilio SDK.</Description>
     <PackageTags>herald;logging;sink;twilio;sms;alerting</PackageTags>

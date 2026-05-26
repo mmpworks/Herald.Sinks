@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.NewRelicLogs</RootNamespace>
     <AssemblyName>Herald.Sinks.NewRelicLogs</AssemblyName>
-    <PackageId>Herald.Sinks.NewRelicLogs</PackageId>
+    <PackageId>MMP.Herald.Sinks.NewRelicLogs</PackageId>
     <Version>1.0.0</Version>
     <Description>Ships Herald log events to the New Relic Logs ingest API. Drop-in for Serilog.Sinks.NewRelic.Logs.</Description>
     <PackageTags>herald;logging;sink;newrelic;observability</PackageTags>

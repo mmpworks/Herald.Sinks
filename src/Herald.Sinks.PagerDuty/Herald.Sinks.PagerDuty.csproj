@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.PagerDuty</RootNamespace>
     <AssemblyName>Herald.Sinks.PagerDuty</AssemblyName>
-    <PackageId>Herald.Sinks.PagerDuty</PackageId>
+    <PackageId>MMP.Herald.Sinks.PagerDuty</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to PagerDuty's Events API v2 for incident creation. Stable dedup-key derivation collapses repeats into one open alert; stack behind a Warn-or-above filter.</Description>
     <PackageTags>herald;logging;sink;pagerduty;alerting</PackageTags>

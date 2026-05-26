@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Telegram</RootNamespace>
     <AssemblyName>Herald.Sinks.Telegram</AssemblyName>
-    <PackageId>Herald.Sinks.Telegram</PackageId>
+    <PackageId>MMP.Herald.Sinks.Telegram</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events to a Telegram chat via the Bot API. HTTP-only.</Description>
     <PackageTags>herald;logging;sink;telegram;chat</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.HelloWorld</RootNamespace>
     <AssemblyName>Herald.Sinks.HelloWorld</AssemblyName>
-    <PackageId>Herald.Sinks.HelloWorld</PackageId>
+    <PackageId>MMP.Herald.Sinks.HelloWorld</PackageId>
     <Version>1.0.0</Version>
     <Description>
       Test-only Herald sink. Registers under kind "hello_world" with a

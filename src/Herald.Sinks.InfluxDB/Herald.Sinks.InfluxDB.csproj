@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.InfluxDB</RootNamespace>
     <AssemblyName>Herald.Sinks.InfluxDB</AssemblyName>
-    <PackageId>Herald.Sinks.InfluxDB</PackageId>
+    <PackageId>MMP.Herald.Sinks.InfluxDB</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to InfluxDB v2 via line protocol over HTTP. No InfluxDB SDK dependency.</Description>
     <PackageTags>herald;logging;sink;influxdb;timeseries</PackageTags>

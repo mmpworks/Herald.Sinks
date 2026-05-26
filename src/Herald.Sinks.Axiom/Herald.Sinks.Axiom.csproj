@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Axiom</RootNamespace>
     <AssemblyName>Herald.Sinks.Axiom</AssemblyName>
-    <PackageId>Herald.Sinks.Axiom</PackageId>
+    <PackageId>MMP.Herald.Sinks.Axiom</PackageId>
     <Version>1.0.0</Version>
     <Description>Ships Herald log events to Axiom via the public ingest endpoint. HTTP-only.</Description>
     <PackageTags>herald;logging;sink;axiom;observability</PackageTags>

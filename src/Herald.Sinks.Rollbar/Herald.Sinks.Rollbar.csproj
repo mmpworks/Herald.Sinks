@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Rollbar</RootNamespace>
     <AssemblyName>Herald.Sinks.Rollbar</AssemblyName>
-    <PackageId>Herald.Sinks.Rollbar</PackageId>
+    <PackageId>MMP.Herald.Sinks.Rollbar</PackageId>
     <Version>1.0.0</Version>
     <Description>Reports Herald log events to Rollbar via the public Items API. HTTP-only — no SDK dependency.</Description>
     <PackageTags>herald;logging;sink;rollbar;errors</PackageTags>

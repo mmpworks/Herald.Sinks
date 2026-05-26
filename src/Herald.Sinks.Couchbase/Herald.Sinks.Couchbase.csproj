@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Couchbase</RootNamespace>
     <AssemblyName>Herald.Sinks.Couchbase</AssemblyName>
-    <PackageId>Herald.Sinks.Couchbase</PackageId>
+    <PackageId>MMP.Herald.Sinks.Couchbase</PackageId>
     <Version>1.0.0</Version>
     <Description>Upserts Herald log events as documents into a Couchbase collection via CouchbaseNetClient. Drop-in for Serilog.Sinks.Couchbase.</Description>
     <PackageTags>herald;logging;sink;couchbase;document;nosql</PackageTags>
