@@ -68,13 +68,23 @@ public static class CanonicalAnswerKey
     /// lowercase string. These are NOT type-loss bugs — the answer key pins
     /// them as strings on purpose.
     /// </summary>
+    // Full round-trip "O" form of CanonicalEvent.Instant. The ECS sink keeps
+    // full precision on @timestamp (ADR-SINK-001 D-001.6: ES accepts it; the
+    // doc's ms-Z is illustrative, not a ceiling). The doc sample renders
+    // ms-Z for readability, but the wire value Herald emits is the full-tick
+    // "O" string, so the answer key pins what the sink actually puts on the
+    // wire. service.name is OMITTED from the ECS answer key on purpose: the
+    // canonical event carries no service.name/ServiceName property and the ES
+    // sink invents no service-name default (it has no such config), so the
+    // field is correctly absent — pinning it would assert an invented value.
+    public const string TimestampFullIso = "2026-05-25T14:32:01.1234567+00:00";
+
     public static IReadOnlyList<ReservedField> Ecs { get; } = new[]
     {
-        ReservedField.Str("@timestamp", TimestampMillisIso, literalKey: true),
+        ReservedField.Str("@timestamp", TimestampFullIso, literalKey: true),
         ReservedField.Str("log.level", "info", literalKey: true),
         ReservedField.Str("message", CanonicalEvent.Rendered, literalKey: true),
         ReservedField.Str("ecs.version", "8.11.0", literalKey: true),
-        ReservedField.Str("service.name", CanonicalEvent.Service, literalKey: true),
         ReservedField.Str("source.ip", CanonicalEvent.Ip, literalKey: true),
         ReservedField.Str("user.id", "42", literalKey: true), // ECS says string
     };

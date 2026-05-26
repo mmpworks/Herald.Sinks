@@ -20,11 +20,14 @@ Sink kind: `influxdb` (the identifier the Dashboard form and JSON config use to 
 - Token auth (Authorization Token <token>)
 - Tags level + category for cardinality-aware indexing
 - ms-precision timestamps
+- Opt-in PreserveProperties (default off) — carries arbitrary properties as fields (never tags), type-mapped, with a per-event soft cap (preserve_field_limit, default 32)
 
 ## Limitations
 
 - Provider throws — credentials + bucket must be wired via code-first
 - No retention or downsampling helpers (operator responsibility)
+- PreserveProperties ships ALL event properties downstream — ensure your redaction/enrichment pipeline runs before the sink
+- PreserveProperties carries properties as fields — still subject to your schema cardinality budget; InfluxDB pins a field type on first write, so mixed types across events for the same key are an application-discipline concern, not a sink bug
 
 ## Tier & runtime
 

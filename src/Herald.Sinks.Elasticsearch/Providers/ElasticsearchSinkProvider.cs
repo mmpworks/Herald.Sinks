@@ -65,12 +65,50 @@ public sealed class ElasticsearchSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
+        var schema = ResolveSchema(resolved.Schema, definition.Name);
+
         return new ElasticsearchLogSink(
             baseUrl: resolved.BaseUrl!,
             levelRegistry: levelRegistry,
             indexPrefix: resolved.IndexPrefix,
             username: resolved.Username,
             password: resolved.Password,
-            apiKey: resolved.ApiKey);
+            apiKey: resolved.ApiKey,
+            schema: schema,
+            ecsVersion: ValidateEcsVersion(resolved.EcsVersion),
+            eventDataset: resolved.EventDataset);
+    }
+
+    // Map the raw schema token to the enum, case-insensitive. An unknown
+    // value fails with a named exception listing the valid values rather
+    // than silently defaulting — the operator typo surfaces immediately.
+    private static ElasticsearchSchema ResolveSchema(string token, string? sinkName) =>
+        token.Trim().ToLowerInvariant() switch
+        {
+            "native" => ElasticsearchSchema.Native,
+            "ecs" => ElasticsearchSchema.Ecs,
+            _ => throw new ArgumentException(
+                $"Elasticsearch sink '{sinkName}' has an unknown 'schema' value '{token}'. " +
+                $"Valid values are 'native' or 'ecs'.",
+                nameof(token)),
+        };
+
+    // ecs_version must match the ECS template version the cluster runs, so
+    // it stays operator-configured. Validate it LOOKS like a semver but do
+    // NOT hard-fail on a mismatch — the cluster owns template compatibility.
+    // A null/blank value falls through to the sink's default.
+    private static string? ValidateEcsVersion(string? ecsVersion)
+    {
+        if (string.IsNullOrWhiteSpace(ecsVersion)) return null;
+        if (!System.Text.RegularExpressions.Regex.IsMatch(
+                ecsVersion, @"^\d+\.\d+\.\d+"))
+        {
+            // Non-fatal: surface the oddity, keep the configured value.
+            System.Diagnostics.Trace.TraceWarning(
+                "Herald.Sinks.Elasticsearch: ecs_version '{0}' does not look like a semver (major.minor.patch). " +
+                "Using it as-is; ensure it matches your cluster's ECS template version.",
+                ecsVersion);
+        }
+        return ecsVersion;
     }
 }

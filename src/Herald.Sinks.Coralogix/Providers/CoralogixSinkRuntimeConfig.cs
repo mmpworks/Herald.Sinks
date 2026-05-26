@@ -32,22 +32,26 @@ namespace Herald.Sinks.Coralogix.Providers;
 /// </summary>
 internal static class CoralogixSinkRuntimeConfig
 {
-    private const string KeyEndpoint        = "endpoint";
-    private const string KeyPrivateKey      = "private_key";
-    private const string KeyApplicationName = "application_name";
-    private const string KeySubsystemName   = "subsystem_name";
+    private const string KeyEndpoint           = "endpoint";
+    private const string KeyPrivateKey         = "private_key";
+    private const string KeyApplicationName    = "application_name";
+    private const string KeySubsystemName      = "subsystem_name";
+    private const string KeyPreserveProperties = "preserve_properties";
 
     /// <summary>
     /// Resolved Coralogix sink config. Required fields are nullable
     /// here so the provider can produce a single field-named
     /// ArgumentException on missing input; the sink constructor's
     /// own guards run as defence-in-depth.
+    /// <see cref="PreserveProperties"/> defaults false (bare-message
+    /// text, today's behaviour).
     /// </summary>
     public readonly record struct Resolved(
         string? Endpoint,
         string? PrivateKey,
         string? ApplicationName,
-        string? SubsystemName);
+        string? SubsystemName,
+        bool PreserveProperties);
 
     public static Resolved From(LoggingRuntimeSinkDefinition definition)
     {
@@ -55,9 +59,10 @@ internal static class CoralogixSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            Endpoint:        SinkPropertyBag.ReadString(bag, KeyEndpoint)        ?? SinkPropertyBag.Nullify(definition.Uri),
-            PrivateKey:      SinkPropertyBag.ReadString(bag, KeyPrivateKey)      ?? SinkPropertyBag.Nullify(definition.Alias),
-            ApplicationName: SinkPropertyBag.ReadString(bag, KeyApplicationName) ?? SinkPropertyBag.Nullify(definition.Host),
-            SubsystemName:   SinkPropertyBag.ReadString(bag, KeySubsystemName));
+            Endpoint:           SinkPropertyBag.ReadString(bag, KeyEndpoint)        ?? SinkPropertyBag.Nullify(definition.Uri),
+            PrivateKey:         SinkPropertyBag.ReadString(bag, KeyPrivateKey)      ?? SinkPropertyBag.Nullify(definition.Alias),
+            ApplicationName:    SinkPropertyBag.ReadString(bag, KeyApplicationName) ?? SinkPropertyBag.Nullify(definition.Host),
+            SubsystemName:      SinkPropertyBag.ReadString(bag, KeySubsystemName),
+            PreserveProperties: SinkPropertyBag.ReadBool(bag, KeyPreserveProperties) ?? false);
     }
 }

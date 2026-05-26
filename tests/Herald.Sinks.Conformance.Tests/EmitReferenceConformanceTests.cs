@@ -55,11 +55,14 @@ public sealed class EmitReferenceConformanceTests
 
     // ── ECS / Elasticsearch (doc #4) ─────────────────────────────────
 
-    [Fact(Skip = "FAIL E-1..E-4: not ECS-shaped (level/level_key/category/nested properties, no dotted fields); @timestamp is 7-digit+offset not ms-Z; level is 'Info' PascalCase not 'info'; no ecs.version/source.ip/user.id. ECS field-shape pending Richard. (E-5 property-type stringification is fixed and guarded by Ecs_properties_preserve_property_types below.)")]
+    [Fact]
     public void Ecs_matches_reserved_fields()
     {
+        // Construct in ECS mode (schema=ecs) — the default native shape is
+        // pinned byte-for-byte unchanged by Ecs_native_default_is_unchanged.
         var body = SinkOutputCapture.CaptureBody(
-            client => new ElasticsearchLogSink("http://localhost:9200", _registry, httpClient: client),
+            client => new ElasticsearchLogSink("http://localhost:9200", _registry,
+                httpClient: client, schema: ElasticsearchSchema.Ecs),
             CanonicalEvent.Build());
 
         // Elasticsearch bulk body is NDJSON: action line, then document line.
@@ -67,6 +70,30 @@ public sealed class EmitReferenceConformanceTests
 
         var result = ConformanceAsserter.Assert("ecs", documentLine, CanonicalAnswerKey.Ecs);
         result.Passed.Should().BeTrue(result.Describe());
+    }
+
+    [Fact]
+    public void Ecs_native_default_is_unchanged()
+    {
+        // The default (no schema arg) MUST stay the Herald-native shape so a
+        // sink-package upgrade changes nothing for an existing consumer. This
+        // pins the native document keys that the prior shipped sink emitted.
+        var body = SinkOutputCapture.CaptureBody(
+            client => new ElasticsearchLogSink("http://localhost:9200", _registry, httpClient: client),
+            CanonicalEvent.Build());
+
+        var documentLine = body.Split('\n')[1];
+        using var doc = JsonDocument.Parse(documentLine);
+        var root = doc.RootElement;
+
+        // Native shape: level DisplayName (PascalCase, NOT the ECS lowercase
+        // key), category, nested properties — NOT dotted ECS keys.
+        root.GetProperty("level").GetString().Should().Be("Info");
+        root.GetProperty("category").ValueKind.Should().Be(JsonValueKind.String);
+        root.GetProperty("properties").GetProperty("UserId").ValueKind
+            .Should().Be(JsonValueKind.Number);
+        root.TryGetProperty("log.level", out _).Should().BeFalse("native mode emits no dotted ECS keys");
+        root.TryGetProperty("ecs.version", out _).Should().BeFalse("native mode emits no ECS fields");
     }
 
     [Fact]
@@ -160,6 +187,24 @@ public sealed class EmitReferenceConformanceTests
 
         envelope.Passed.Should().BeTrue(envelope.Describe());
         bodyResult.Passed.Should().BeTrue(bodyResult.Describe());
+    }
+
+    [Fact]
+    public void Splunk_time_is_exact_epoch_millis()
+    {
+        // ADR-SINK-003 D-003.1: the HEC "time" field is exact integer-
+        // formatted epoch seconds.millis, not a lossy double division.
+        // It must match the answer key byte-for-byte as a JSON number.
+        var body = SinkOutputCapture.CaptureBody(
+            client => new SplunkHecLogSink("http://localhost:8088", "splunk-token",
+                host: CanonicalEvent.Host, httpClient: client),
+            CanonicalEvent.Build());
+
+        using var doc = JsonDocument.Parse(body.Split('\n')[0]);
+        var time = doc.RootElement.GetProperty("time");
+
+        time.ValueKind.Should().Be(JsonValueKind.Number);
+        time.GetRawText().Should().Be(CanonicalAnswerKey.EpochSecondsMillis); // "1779719521.123"
     }
 
     [Fact]

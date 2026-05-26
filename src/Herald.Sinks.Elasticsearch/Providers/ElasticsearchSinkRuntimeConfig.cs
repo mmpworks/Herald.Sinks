@@ -31,14 +31,20 @@ namespace Herald.Sinks.Elasticsearch.Providers;
 /// </summary>
 internal static class ElasticsearchSinkRuntimeConfig
 {
-    private const string KeyBaseUrl     = "base_url";
-    private const string KeyIndexPrefix = "index_prefix";
-    private const string KeyUsername    = "username";
-    private const string KeyPassword    = "password";
-    private const string KeyApiKey      = "api_key";
+    private const string KeyBaseUrl      = "base_url";
+    private const string KeyIndexPrefix  = "index_prefix";
+    private const string KeyUsername     = "username";
+    private const string KeyPassword     = "password";
+    private const string KeyApiKey       = "api_key";
+    private const string KeySchema       = "schema";
+    private const string KeyEcsVersion   = "ecs_version";
+    private const string KeyEventDataset = "event_dataset";
 
     /// <summary>Default index prefix — matches the sink ctor default.</summary>
     public const string DefaultIndexPrefix = "herald-logs";
+
+    /// <summary>Default schema token — native keeps today's shape.</summary>
+    public const string DefaultSchema = "native";
 
     /// <summary>
     /// Resolved Elasticsearch sink config. <see cref="BaseUrl"/>
@@ -46,13 +52,20 @@ internal static class ElasticsearchSinkRuntimeConfig
     /// ArgumentException; <see cref="IndexPrefix"/> carries its
     /// default. Auth fields are independently nullable; the sink's
     /// own resolver picks API key over Basic when both arrive.
+    /// <see cref="Schema"/> is the raw token (native/ecs) — the provider
+    /// resolves it to the enum so it can throw a named, value-listing
+    /// exception on an unknown value. <see cref="EcsVersion"/> /
+    /// <see cref="EventDataset"/> are used only in ECS mode.
     /// </summary>
     public readonly record struct Resolved(
         string? BaseUrl,
         string IndexPrefix,
         string? Username,
         string? Password,
-        string? ApiKey);
+        string? ApiKey,
+        string Schema,
+        string? EcsVersion,
+        string? EventDataset);
 
     public static Resolved From(LoggingRuntimeSinkDefinition definition)
     {
@@ -60,10 +73,13 @@ internal static class ElasticsearchSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            BaseUrl:     SinkPropertyBag.ReadString(bag, KeyBaseUrl)     ?? SinkPropertyBag.Nullify(definition.Uri),
-            IndexPrefix: SinkPropertyBag.ReadString(bag, KeyIndexPrefix) ?? DefaultIndexPrefix,
-            Username:    SinkPropertyBag.ReadString(bag, KeyUsername),
-            Password:    SinkPropertyBag.ReadString(bag, KeyPassword),
-            ApiKey:      SinkPropertyBag.ReadString(bag, KeyApiKey));
+            BaseUrl:      SinkPropertyBag.ReadString(bag, KeyBaseUrl)     ?? SinkPropertyBag.Nullify(definition.Uri),
+            IndexPrefix:  SinkPropertyBag.ReadString(bag, KeyIndexPrefix) ?? DefaultIndexPrefix,
+            Username:     SinkPropertyBag.ReadString(bag, KeyUsername),
+            Password:     SinkPropertyBag.ReadString(bag, KeyPassword),
+            ApiKey:       SinkPropertyBag.ReadString(bag, KeyApiKey),
+            Schema:       SinkPropertyBag.ReadString(bag, KeySchema) ?? DefaultSchema,
+            EcsVersion:   SinkPropertyBag.ReadString(bag, KeyEcsVersion),
+            EventDataset: SinkPropertyBag.ReadString(bag, KeyEventDataset));
     }
 }

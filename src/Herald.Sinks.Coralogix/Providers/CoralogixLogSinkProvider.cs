@@ -84,6 +84,7 @@ public sealed class CoralogixLogSinkProvider : ILogSinkProvider
             privateKey: resolved.PrivateKey!,
             applicationName: resolved.ApplicationName!,
             subsystemName: resolved.SubsystemName!,
-            endpoint: resolved.Endpoint);
+            endpoint: resolved.Endpoint,
+            preserveProperties: resolved.PreserveProperties);
     }
 }

@@ -89,6 +89,8 @@ public sealed class InfluxDBLogSinkProvider : ILogSinkProvider
             serverUrl: resolved.ServerUrl!,
             organization: resolved.Organization!,
             bucket: resolved.Bucket!,
-            token: resolved.Token!);
+            token: resolved.Token!,
+            preserveProperties: resolved.PreserveProperties,
+            preserveFieldLimit: resolved.PreserveFieldLimit);
     }
 }

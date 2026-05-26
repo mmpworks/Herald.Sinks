@@ -4,17 +4,21 @@
 columns: 12
 
 __properties = [
-    "server_url"   = { type: "string", default: "" },
-    "organization" = { type: "string", default: "" },
-    "bucket"       = { type: "string", default: "" },
-    "token"        = { type: "string", default: "" }
+    "server_url"           = { type: "string", default: "" },
+    "organization"         = { type: "string", default: "" },
+    "bucket"               = { type: "string", default: "" },
+    "token"                = { type: "string", default: "" },
+    "preserve_properties"  = { type: "boolean", default: false },
+    "preserve_field_limit" = { type: "integer", default: 32 }
 ]
 
 tooltips = [
     "tt-server" = "InfluxDB v2 base URL — e.g. https://us-east-1-1.aws.cloud2.influxdata.com.",
     "tt-org"    = "InfluxDB organization name or ID.",
     "tt-bucket" = "InfluxDB bucket the events land in.",
-    "tt-token"  = "InfluxDB API token with write permission — masked after save."
+    "tt-token"  = "InfluxDB API token with write permission — masked after save.",
+    "tt-preserve" = "Carry all event properties as InfluxDB fields (never tags). Security: ships ALL event properties downstream — ensure your redaction/enrichment pipeline runs before the sink. Cardinality: still subject to your schema cardinality budget; InfluxDB pins a field type on first write, so mixed types across events for the same key are an application-discipline concern, not a sink bug.",
+    "tt-field-limit" = "Soft cap on preserved fields per event (default 32). Beyond the cap, extra fields are skipped and a one-time diagnostic is surfaced."
 ]
 
 [container("InfluxDB sink", "Writes Herald log events to InfluxDB v2 via line protocol over HTTP.")]
@@ -23,3 +27,5 @@ tooltips = [
   - [textfield(12,{organization},tt="tt-org",required=true)] Organization
   - [textfield(12,{bucket},tt="tt-bucket",required=true)] Bucket
   - [secret(12,{token},tt="tt-token",required=true)] API token
+  - [checkbox(12,{preserve_properties},tt="tt-preserve")] Preserve properties as fields
+  - [number(12,{preserve_field_limit},tt="tt-field-limit",init=32)] Preserved-field soft cap

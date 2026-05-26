@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -133,10 +134,8 @@ public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
     {
         writer.WriteStartObject();
 
-        // Splunk expects seconds-since-epoch for HEC timestamp. Use
-        // double so sub-second precision survives the wire.
-        writer.WriteNumber("time",
-            evt.TimeUtc.ToUnixTimeMilliseconds() / 1000.0);
+        // Splunk expects seconds-since-epoch for the HEC timestamp.
+        WriteHecTime(writer, evt.TimeUtc, HecTimePrecision.Milliseconds);
 
         if (_host is not null) writer.WriteString("host", _host);
         if (_source is not null) writer.WriteString("source", _source);
@@ -160,6 +159,53 @@ public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
         writer.WriteEndObject(); // event
         writer.WriteEndObject(); // envelope
     }
+
+    // Emit the HEC "time" envelope field as an exact decimal epoch value.
+    //
+    // The prior path computed ToUnixTimeMilliseconds() / 1000.0, a double
+    // division that can introduce float-representation noise in the
+    // fractional digits. This formats whole epoch seconds and the
+    // sub-second remainder as integers, so the wire value is exact and
+    // matches the answer-key shape (e.g. 1779719521.123) byte-for-byte.
+    //
+    // WriteRawValue writes the formatted text as a JSON number (not a
+    // quoted string), which is what HEC expects for "time".
+    //
+    // Precision is wired to Milliseconds. The HecTimePrecision enum and
+    // the per-precision fractional width below are a dormant seam: enabling
+    // microsecond/nanosecond output later is a one-line change at the call
+    // site once Splunk HEC envelope-time wire behaviour beyond 3 fractional
+    // digits is confirmed. The us/ns options are deliberately NOT exposed in
+    // the mmpform yet — no operator can select an unverified-on-the-wire
+    // precision. .NET DateTimeOffset resolution is 100 ns (7 fractional
+    // digits); Nanoseconds would pad the trailing two digits with zeros.
+    private static void WriteHecTime(Utf8JsonWriter writer, DateTimeOffset time, HecTimePrecision precision)
+    {
+        // Work entirely in Unix-epoch ticks so seconds and the sub-second
+        // remainder share one epoch (mixing UtcTicks, which counts from
+        // 0001-01-01, with Unix seconds produces a wrong fraction).
+        long unixTicks = time.UtcTicks - DateTimeOffset.UnixEpoch.UtcTicks;
+        long seconds = unixTicks / TimeSpan.TicksPerSecond;
+        long subSecondTicks = unixTicks % TimeSpan.TicksPerSecond; // 1 tick = 100 ns
+
+        string formatted = precision switch
+        {
+            HecTimePrecision.Milliseconds => FormatEpoch(seconds, subSecondTicks / TimeSpan.TicksPerMillisecond, 3),
+            HecTimePrecision.Microseconds => FormatEpoch(seconds, subSecondTicks / TimeSpan.TicksPerMicrosecond, 6),
+            // 100ns floor (7 digits) padded to 9 — see comment above.
+            HecTimePrecision.Nanoseconds => FormatEpoch(seconds, subSecondTicks * 100L, 9),
+            _ => FormatEpoch(seconds, subSecondTicks / TimeSpan.TicksPerMillisecond, 3),
+        };
+
+        writer.WritePropertyName("time");
+        writer.WriteRawValue(formatted, skipInputValidation: true);
+    }
+
+    private static string FormatEpoch(long seconds, long fraction, int fractionDigits) =>
+        string.Concat(
+            seconds.ToString(CultureInfo.InvariantCulture),
+            ".",
+            fraction.ToString("D" + fractionDigits.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture));
 
     private static void WriteException(Utf8JsonWriter writer, LogEvent evt)
     {
@@ -231,4 +277,30 @@ public sealed class SplunkHecLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
 
     private static string? Nullify(string? value) =>
         string.IsNullOrWhiteSpace(value) ? null : value;
+}
+
+/// <summary>
+/// Fractional precision for the Splunk HEC <c>time</c> envelope field.
+/// </summary>
+/// <remarks>
+/// Only <see cref="Milliseconds"/> is wired today — it is the universally
+/// accepted HEC shape and matches the answer key. <see cref="Microseconds"/>
+/// and <see cref="Nanoseconds"/> exist as a dormant seam: the formatting
+/// helper already honours them, so enabling finer precision is a one-line
+/// change at the call site once Splunk HEC envelope-time wire behaviour
+/// beyond 3 fractional digits is confirmed. They are intentionally NOT
+/// exposed in the mmpform until then. Note .NET <see cref="System.DateTimeOffset"/>
+/// resolution is 100 ns (7 fractional digits); <see cref="Nanoseconds"/>
+/// pads the trailing two digits with zeros.
+/// </remarks>
+public enum HecTimePrecision
+{
+    /// <summary>3 fractional digits — the default, answer-key HEC shape.</summary>
+    Milliseconds = 0,
+
+    /// <summary>6 fractional digits. Dormant — not exposed in the mmpform.</summary>
+    Microseconds = 1,
+
+    /// <summary>9 fractional digits (source caps at 100 ns; last two padded). Dormant.</summary>
+    Nanoseconds = 2,
 }

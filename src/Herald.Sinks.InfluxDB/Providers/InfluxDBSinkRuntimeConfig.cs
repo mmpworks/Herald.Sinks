@@ -27,21 +27,27 @@ namespace Herald.Sinks.InfluxDB.Providers;
 /// </summary>
 internal static class InfluxDBSinkRuntimeConfig
 {
-    private const string KeyServerUrl    = "server_url";
-    private const string KeyOrganization = "organization";
-    private const string KeyBucket       = "bucket";
-    private const string KeyToken        = "token";
+    private const string KeyServerUrl          = "server_url";
+    private const string KeyOrganization       = "organization";
+    private const string KeyBucket             = "bucket";
+    private const string KeyToken              = "token";
+    private const string KeyPreserveProperties = "preserve_properties";
+    private const string KeyPreserveFieldLimit = "preserve_field_limit";
 
     /// <summary>
     /// Resolved InfluxDB sink config. Required fields stay nullable
     /// so the provider can fail with a single field-named
-    /// ArgumentException.
+    /// ArgumentException. <see cref="PreserveProperties"/> defaults
+    /// false (today's lossy-but-cardinality-safe behaviour);
+    /// <see cref="PreserveFieldLimit"/> is the per-event soft cap.
     /// </summary>
     public readonly record struct Resolved(
         string? ServerUrl,
         string? Organization,
         string? Bucket,
-        string? Token);
+        string? Token,
+        bool PreserveProperties,
+        int PreserveFieldLimit);
 
     public static Resolved From(LoggingRuntimeSinkDefinition definition)
     {
@@ -49,9 +55,11 @@ internal static class InfluxDBSinkRuntimeConfig
 
         var bag = definition.Properties;
         return new Resolved(
-            ServerUrl:    SinkPropertyBag.ReadString(bag, KeyServerUrl)    ?? SinkPropertyBag.Nullify(definition.Uri),
-            Organization: SinkPropertyBag.ReadString(bag, KeyOrganization) ?? SinkPropertyBag.Nullify(definition.Host),
-            Bucket:       SinkPropertyBag.ReadString(bag, KeyBucket),
-            Token:        SinkPropertyBag.ReadString(bag, KeyToken)        ?? SinkPropertyBag.Nullify(definition.Alias));
+            ServerUrl:          SinkPropertyBag.ReadString(bag, KeyServerUrl)    ?? SinkPropertyBag.Nullify(definition.Uri),
+            Organization:       SinkPropertyBag.ReadString(bag, KeyOrganization) ?? SinkPropertyBag.Nullify(definition.Host),
+            Bucket:             SinkPropertyBag.ReadString(bag, KeyBucket),
+            Token:              SinkPropertyBag.ReadString(bag, KeyToken)        ?? SinkPropertyBag.Nullify(definition.Alias),
+            PreserveProperties: SinkPropertyBag.ReadBool(bag, KeyPreserveProperties) ?? false,
+            PreserveFieldLimit: SinkPropertyBag.ReadInt(bag, KeyPreserveFieldLimit) ?? InfluxDBLogSink.DefaultPreserveFieldLimit);
     }
 }
