@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Kafka</RootNamespace>
     <AssemblyName>Herald.Sinks.Kafka</AssemblyName>
-    <PackageId>Herald.Sinks.Kafka</PackageId>
+    <PackageId>MMP.Herald.Sinks.Kafka</PackageId>
     <Version>1.0.0</Version>
     <Description>Produces Herald log events to a Kafka topic via Confluent.Kafka. Drop-in for Serilog.Sinks.Kafka. JSON value, optional partition key, batched via the producer's internal queue.</Description>
     <PackageTags>herald;logging;sink;kafka;confluent;streaming</PackageTags>

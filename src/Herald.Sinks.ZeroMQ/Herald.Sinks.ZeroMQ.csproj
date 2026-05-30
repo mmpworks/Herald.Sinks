@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.ZeroMQ</RootNamespace>
     <AssemblyName>Herald.Sinks.ZeroMQ</AssemblyName>
-    <PackageId>Herald.Sinks.ZeroMQ</PackageId>
+    <PackageId>MMP.Herald.Sinks.ZeroMQ</PackageId>
     <Version>1.0.0</Version>
     <Description>Publishes Herald log events to a ZeroMQ socket via NetMQ. Drop-in for Serilog.Sinks.ZeroMQ. Supports PUB (fan-out) and PUSH (work-queue) socket kinds.</Description>
     <PackageTags>herald;logging;sink;zeromq;netmq;transport;pubsub</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Parquet</RootNamespace>
     <AssemblyName>Herald.Sinks.Parquet</AssemblyName>
-    <PackageId>Herald.Sinks.Parquet</PackageId>
+    <PackageId>MMP.Herald.Sinks.Parquet</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as Apache Parquet files. Columnar long-term storage suitable for analytical queries (Spark, DuckDB, Athena, Trino). Optional Iceberg catalog hook (no-op by default).</Description>
     <PackageTags>herald;logging;sink;parquet;analytics;iceberg</PackageTags>

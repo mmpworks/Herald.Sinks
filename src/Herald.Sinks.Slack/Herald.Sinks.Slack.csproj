@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Slack</RootNamespace>
     <AssemblyName>Herald.Sinks.Slack</AssemblyName>
-    <PackageId>Herald.Sinks.Slack</PackageId>
+    <PackageId>MMP.Herald.Sinks.Slack</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events to a Slack webhook as formatted messages with per-level emoji. Best used for high-severity alerts behind a level filter.</Description>
     <PackageTags>herald;logging;sink;slack;alerts</PackageTags>

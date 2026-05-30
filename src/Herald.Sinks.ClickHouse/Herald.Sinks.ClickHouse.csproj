@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.ClickHouse</RootNamespace>
     <AssemblyName>Herald.Sinks.ClickHouse</AssemblyName>
-    <PackageId>Herald.Sinks.ClickHouse</PackageId>
+    <PackageId>MMP.Herald.Sinks.ClickHouse</PackageId>
     <Version>1.0.0</Version>
     <Description>Inserts Herald log events into a ClickHouse table via the ClickHouse.Client driver. Drop-in for Serilog ClickHouse integrations.</Description>
     <PackageTags>herald;logging;sink;clickhouse;analytics;columnar</PackageTags>

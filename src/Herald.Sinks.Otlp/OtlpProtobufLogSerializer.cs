@@ -73,10 +73,15 @@ public sealed class OtlpProtobufLogSerializer : ILogEventSerializer<byte[]>
         // 9: bytes trace_id
         // 10: bytes span_id
 
-        var unixNano = (ulong)(logEvent.TimeUtc.ToUnixTimeMilliseconds() * 1_000_000L);
+        // Full-tick nanos: 1 tick = 100ns. ToUnixTimeMilliseconds() truncated
+        // sub-millisecond precision; the tick-based form preserves precision to
+        // the DateTimeOffset 100ns floor (F2).
+        var unixNano = (ulong)((logEvent.TimeUtc - DateTimeOffset.UnixEpoch).Ticks * 100L);
         writer.WriteFixed64(1, unixNano);
         writer.WriteEnum(2, OtlpSeverityMapper.MapSeverityNumber(logEvent.Level, _levelRegistry));
-        writer.WriteString(3, logEvent.Level.DisplayName);
+        // Uppercase severity text to match the OTLP convention and Herald's
+        // OSS-side OtelLogRecord encoder (F3).
+        writer.WriteString(3, logEvent.Level.DisplayName.ToUpperInvariant());
 
         // Field 5: body (AnyValue with string_value)
         writer.WriteMessage(5, body =>
@@ -90,15 +95,16 @@ public sealed class OtlpProtobufLogSerializer : ILogEventSerializer<byte[]>
 
         foreach (var property in logEvent.Properties)
         {
-            OtlpPayloadBuilder.WriteStringAttribute(writer, 6,
-                property.Name, property.ResolvedValue?.ToString() ?? "null");
+            // Type-dispatch on the resolved value so int/double/bool survive as
+            // their AnyValue kind instead of collapsing to string_value (F1).
+            OtlpPayloadBuilder.WriteAttribute(writer, 6,
+                property.Name, property.ResolvedValue);
         }
 
         foreach (var pair in logEvent.Context)
         {
             if (pair.Key is LogContextKeys.TraceId or LogContextKeys.SpanId or LogContextKeys.Exception) continue;
-            OtlpPayloadBuilder.WriteStringAttribute(writer, 6,
-                pair.Key, pair.Value?.ToString() ?? "null");
+            OtlpPayloadBuilder.WriteAttribute(writer, 6, pair.Key, pair.Value);
         }
 
         // Exception attributes

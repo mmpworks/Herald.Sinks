@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.LogzIo</RootNamespace>
     <AssemblyName>Herald.Sinks.LogzIo</AssemblyName>
-    <PackageId>Herald.Sinks.LogzIo</PackageId>
+    <PackageId>MMP.Herald.Sinks.LogzIo</PackageId>
     <Version>1.0.0</Version>
     <Description>Ships Herald log events to Logz.io via the bulk HTTP listener. Drop-in for Serilog.Sinks.Logz.Io. NDJSON body, token in URL.</Description>
     <PackageTags>herald;logging;sink;logzio;observability</PackageTags>

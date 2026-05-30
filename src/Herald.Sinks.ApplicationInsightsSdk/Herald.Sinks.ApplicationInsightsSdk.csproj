@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.ApplicationInsightsSdk</RootNamespace>
     <AssemblyName>Herald.Sinks.ApplicationInsightsSdk</AssemblyName>
-    <PackageId>Herald.Sinks.ApplicationInsightsSdk</PackageId>
+    <PackageId>MMP.Herald.Sinks.ApplicationInsightsSdk</PackageId>
     <Version>1.0.0</Version>
     <Description>Tracks Herald log events as TelemetryClient.TrackTrace / TrackException calls into Azure Application Insights via the Microsoft.ApplicationInsights SDK. Drop-in for Serilog.Sinks.ApplicationInsights. Pair with Herald.Sinks.ApplicationInsightsHttp if you want the same destination without the SDK dependency.</Description>
     <PackageTags>herald;logging;sink;azure;application-insights;apm;sdk</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.HttpJson</RootNamespace>
     <AssemblyName>Herald.Sinks.HttpJson</AssemblyName>
-    <PackageId>Herald.Sinks.HttpJson</PackageId>
+    <PackageId>MMP.Herald.Sinks.HttpJson</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events as newline-delimited JSON (NDJSON) over HTTP. One event per line, batched when the pipeline supplies multiple.</Description>
     <PackageTags>herald;logging;sink;http;ndjson;json</PackageTags>

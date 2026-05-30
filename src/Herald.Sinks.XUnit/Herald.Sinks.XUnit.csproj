@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.XUnit</RootNamespace>
     <AssemblyName>Herald.Sinks.XUnit</AssemblyName>
-    <PackageId>Herald.Sinks.XUnit</PackageId>
+    <PackageId>MMP.Herald.Sinks.XUnit</PackageId>
     <Version>1.0.0</Version>
     <Description>Routes Herald log events to xUnit's ITestOutputHelper so logs show up in test output. Drop-in equivalent of Serilog.Sinks.XUnit.</Description>
     <PackageTags>herald;logging;sink;xunit;testing</PackageTags>

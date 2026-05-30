@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.SQLite</RootNamespace>
     <AssemblyName>Herald.Sinks.SQLite</AssemblyName>
-    <PackageId>Herald.Sinks.SQLite</PackageId>
+    <PackageId>MMP.Herald.Sinks.SQLite</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to an embedded SQLite database. Drop-in for Serilog.Sinks.SQLite. Single-file, no server, no deps beyond Microsoft.Data.Sqlite.</Description>
     <PackageTags>herald;logging;sink;sqlite;embedded</PackageTags>

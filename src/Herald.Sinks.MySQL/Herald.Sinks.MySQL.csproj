@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.MySQL</RootNamespace>
     <AssemblyName>Herald.Sinks.MySQL</AssemblyName>
-    <PackageId>Herald.Sinks.MySQL</PackageId>
+    <PackageId>MMP.Herald.Sinks.MySQL</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events as rows in a MySQL / MariaDB table via MySqlConnector. Drop-in for Serilog.Sinks.MySQL. Parameterized INSERT with batched transactions.</Description>
     <PackageTags>herald;logging;sink;mysql;mariadb</PackageTags>

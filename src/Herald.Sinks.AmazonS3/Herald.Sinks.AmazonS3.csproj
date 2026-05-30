@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AmazonS3</RootNamespace>
     <AssemblyName>Herald.Sinks.AmazonS3</AssemblyName>
-    <PackageId>Herald.Sinks.AmazonS3</PackageId>
+    <PackageId>MMP.Herald.Sinks.AmazonS3</PackageId>
     <Version>1.0.0</Version>
     <Description>Uploads Herald log events as NDJSON objects to an Amazon S3 bucket. Drop-in for Serilog.Sinks.AmazonS3. Periodic batch upload via IBatchedLogSink.</Description>
     <PackageTags>herald;logging;sink;aws;s3</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.RabbitMQ</RootNamespace>
     <AssemblyName>Herald.Sinks.RabbitMQ</AssemblyName>
-    <PackageId>Herald.Sinks.RabbitMQ</PackageId>
+    <PackageId>MMP.Herald.Sinks.RabbitMQ</PackageId>
     <Version>1.0.0</Version>
     <Description>Publishes Herald log events to a RabbitMQ exchange with a routing key. Drop-in for Serilog.Sinks.RabbitMQ — persistent channel, single publish per event, JSON body.</Description>
     <PackageTags>herald;logging;sink;rabbitmq;amqp;queue</PackageTags>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.TextWriter</RootNamespace>
     <AssemblyName>Herald.Sinks.TextWriter</AssemblyName>
-    <PackageId>Herald.Sinks.TextWriter</PackageId>
+    <PackageId>MMP.Herald.Sinks.TextWriter</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to an arbitrary System.IO.TextWriter — tests, memory streams, custom writers, anything the caller supplies.</Description>
     <PackageTags>herald;logging;sink;textwriter;io</PackageTags>

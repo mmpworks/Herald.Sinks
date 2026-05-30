@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Loki</RootNamespace>
     <AssemblyName>Herald.Sinks.Loki</AssemblyName>
-    <PackageId>Herald.Sinks.Loki</PackageId>
+    <PackageId>MMP.Herald.Sinks.Loki</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to Grafana Loki's push endpoint. Batches events by label set for minimum-stream delivery and keeps high-cardinality properties out of the label index.</Description>
     <PackageTags>herald;logging;sink;loki;grafana</PackageTags>

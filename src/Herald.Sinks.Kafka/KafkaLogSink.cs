@@ -54,7 +54,27 @@ public sealed class KafkaLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable,
     private readonly Func<LogEvent, string?>? _keyAccessor;
     private readonly bool _ownsProducer;
 
-    public KafkaLogSink(string bootstrapServers, string topic, Func<LogEvent, string?>? keyAccessor = null)
+    /// <summary>
+    /// Create a Kafka sink. Pass <paramref name="saslMechanism"/>
+    /// (one of <c>PLAIN</c>, <c>SCRAM-SHA-256</c>, <c>SCRAM-SHA-512</c>)
+    /// plus <paramref name="saslUsername"/> and
+    /// <paramref name="saslPassword"/> to enable SASL_PLAINTEXT auth.
+    /// Leaving the mechanism null produces an unauthenticated client,
+    /// which matches the prior behaviour.
+    /// </summary>
+    /// <remarks>
+    /// SASL_SSL (TLS-wrapped SASL) is intentionally not configurable
+    /// here — that combination belongs to the Compliance-edition TLS
+    /// sub-track and lands when TLS plumbing arrives uniformly across
+    /// the plaintext sinks.
+    /// </remarks>
+    public KafkaLogSink(
+        string bootstrapServers,
+        string topic,
+        Func<LogEvent, string?>? keyAccessor = null,
+        string? saslMechanism = null,
+        string? saslUsername = null,
+        string? saslPassword = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(bootstrapServers);
         ArgumentException.ThrowIfNullOrWhiteSpace(topic);
@@ -67,11 +87,37 @@ public sealed class KafkaLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable,
             CompressionType = CompressionType.Snappy,
         };
 
+        // SASL wiring: only enable when the operator named a mechanism.
+        // Pre-validating the mechanism here gives a clearer message
+        // than rdkafka's connect-time error. SASL_SSL is intentionally
+        // out of scope (see remarks).
+        if (!string.IsNullOrWhiteSpace(saslMechanism))
+        {
+            config.SecurityProtocol = SecurityProtocol.SaslPlaintext;
+            config.SaslMechanism = ParseSaslMechanism(saslMechanism);
+            config.SaslUsername = saslUsername;
+            config.SaslPassword = saslPassword;
+        }
+
         _producer = new ProducerBuilder<string?, string>(config).Build();
         _topic = topic;
         _keyAccessor = keyAccessor;
         _ownsProducer = true;
     }
+
+    // Mechanism strings come from the mmpform as operator-typed values.
+    // Anything we don't recognise becomes ArgumentException — better
+    // than letting rdkafka surface a less obvious error at first send.
+    private static SaslMechanism ParseSaslMechanism(string raw) =>
+        raw.Trim().ToUpperInvariant() switch
+        {
+            "PLAIN"         => SaslMechanism.Plain,
+            "SCRAM-SHA-256" => SaslMechanism.ScramSha256,
+            "SCRAM-SHA-512" => SaslMechanism.ScramSha512,
+            _ => throw new ArgumentException(
+                $"Unknown SASL mechanism '{raw}'. Supported: PLAIN, SCRAM-SHA-256, SCRAM-SHA-512.",
+                nameof(raw)),
+        };
 
     /// <summary>
     /// Code-first overload accepts a pre-built

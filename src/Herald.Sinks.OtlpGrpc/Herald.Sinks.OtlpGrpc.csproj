@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.OtlpGrpc</RootNamespace>
     <AssemblyName>Herald.Sinks.OtlpGrpc</AssemblyName>
-    <PackageId>Herald.Sinks.OtlpGrpc</PackageId>
+    <PackageId>MMP.Herald.Sinks.OtlpGrpc</PackageId>
     <Version>1.0.0</Version>
     <Description>Herald sink for OTLP/gRPC log export. Sends ExportLogsServiceRequest payloads to an OpenTelemetry collector over HTTP/2 + gRPC. Reuses the hand-rolled OtlpProtobufLogSerializer from Herald.Sinks.Otlp so the package stays AOT-clean — no proto codegen, no generated message types.</Description>
     <PackageTags>herald;logging;sink;otlp;grpc;opentelemetry</PackageTags>

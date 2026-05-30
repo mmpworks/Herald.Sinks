@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AzureLogAnalyticsDcr</RootNamespace>
     <AssemblyName>Herald.Sinks.AzureLogAnalyticsDcr</AssemblyName>
-    <PackageId>Herald.Sinks.AzureLogAnalyticsDcr</PackageId>
+    <PackageId>MMP.Herald.Sinks.AzureLogAnalyticsDcr</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to Azure Monitor via the modern DCR-based Log Ingestion API. Successor to Herald.Sinks.AzureAnalytics (legacy Data Collector).</Description>
     <PackageTags>herald;logging;sink;azure;log-analytics;azure-monitor;dcr</PackageTags>

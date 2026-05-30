@@ -36,13 +36,26 @@ public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable, INetworkSink
     private readonly HttpClient _http;
     private readonly string _apiKey;
     private readonly Uri _endpoint;
+    private readonly string? _releaseStage;
     private readonly bool _ownsHttp;
 
-    public BugsnagLogSink(string apiKey, string? endpoint = null, HttpClient? httpClient = null)
+    /// <summary>
+    /// Create a Bugsnag sink. <paramref name="releaseStage"/> populates
+    /// the Bugsnag <c>app.releaseStage</c> field, which drives the
+    /// Bugsnag dashboard's environment filter (production / staging /
+    /// development). Leaving it null skips the field entirely — Bugsnag
+    /// then treats events as belonging to the project's default stage.
+    /// </summary>
+    public BugsnagLogSink(
+        string apiKey,
+        string? endpoint = null,
+        HttpClient? httpClient = null,
+        string? releaseStage = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(apiKey);
         _apiKey = apiKey;
         _endpoint = new Uri(endpoint ?? DefaultEndpoint, UriKind.Absolute);
+        _releaseStage = string.IsNullOrWhiteSpace(releaseStage) ? null : releaseStage;
         _ownsHttp = httpClient is null;
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
     }
@@ -96,6 +109,20 @@ public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable, INetworkSink
             writer.WriteStartArray("events");
             writer.WriteStartObject();
             writer.WriteString("severity", MapSeverity(evt.Level.Key));
+
+            // Bugsnag's payload v5 carries releaseStage under
+            // events[].app.releaseStage. The dashboard filters every
+            // saved view on this field — events that omit it land in
+            // the project's "default stage" bucket and are easy to
+            // miss. Emitting only when the operator set the field
+            // keeps the payload truthful instead of defaulting to a
+            // string like "unknown" that would mask the gap.
+            if (_releaseStage is not null)
+            {
+                writer.WriteStartObject("app");
+                writer.WriteString("releaseStage", _releaseStage);
+                writer.WriteEndObject();
+            }
 
             writer.WriteStartArray("exceptions");
             writer.WriteStartObject();

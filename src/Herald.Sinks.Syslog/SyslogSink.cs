@@ -48,6 +48,8 @@ public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
     private readonly string _logSourceHost;
     private readonly string _appName;
     private readonly string? _processId;
+    private readonly string _structuredDataId;
+    private readonly bool _structuredDataEnabled;
 
     // UDP state — a single socket per sink, bound lazily.
     private UdpClient? _udp;
@@ -58,6 +60,27 @@ public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
     private NetworkStream? _tcpStream;
     private readonly object _tcpSync = new();
 
+    /// <summary>
+    /// Create a Syslog sink.
+    /// </summary>
+    /// <remarks>
+    /// Two new RFC 5424 knobs land in this ctor (RFC 3164 ignores them
+    /// — that format has no structured-data block):
+    /// <list type="bullet">
+    ///   <item><paramref name="structuredDataId"/> is the SD-ID written
+    ///         on the SD-ELEMENT that carries Herald properties.
+    ///         Defaults to <c>herald@32473</c> — the IANA example
+    ///         enterprise number works against any collector without
+    ///         registration. Operators with a real IANA-assigned
+    ///         enterprise number should pin theirs here.</item>
+    ///   <item><paramref name="structuredDataEnabled"/> toggles SD
+    ///         emission. Defaults to true — events with no properties
+    ///         still emit NILVALUE ("-"). Operators on collectors that
+    ///         reject SD frames can flip this off to fall back to the
+    ///         prior "drop everything" behaviour, though that loses
+    ///         structured data on the wire.</item>
+    /// </list>
+    /// </remarks>
     public SyslogSink(
         string host,
         int port = 514,
@@ -66,7 +89,9 @@ public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
         SyslogFacility facility = SyslogFacility.User,
         string? logSourceHost = null,
         string? appName = null,
-        string? processId = null)
+        string? processId = null,
+        string? structuredDataId = null,
+        bool structuredDataEnabled = true)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(host);
         if (port is <= 0 or > 65535)
@@ -80,6 +105,8 @@ public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
         _logSourceHost = logSourceHost ?? Environment.MachineName;
         _appName = appName ?? "herald";
         _processId = processId ?? Environment.ProcessId.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        _structuredDataId = string.IsNullOrWhiteSpace(structuredDataId) ? "herald@32473" : structuredDataId;
+        _structuredDataEnabled = structuredDataEnabled;
     }
 
     public override void Log(LogEvent logEvent)
@@ -87,7 +114,8 @@ public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
         ArgumentNullException.ThrowIfNull(logEvent);
 
         var message = SyslogMessageBuilder.Build(
-            logEvent, _format, _facility, _logSourceHost, _appName, _processId);
+            logEvent, _format, _facility, _logSourceHost, _appName, _processId,
+            _structuredDataId, _structuredDataEnabled);
 
         var bytes = Encoding.UTF8.GetBytes(message);
 

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.RavenDB</RootNamespace>
     <AssemblyName>Herald.Sinks.RavenDB</AssemblyName>
-    <PackageId>Herald.Sinks.RavenDB</PackageId>
+    <PackageId>MMP.Herald.Sinks.RavenDB</PackageId>
     <Version>1.0.0</Version>
     <Description>Stores Herald log events as documents in a RavenDB database via the RavenDB.Client SDK. Drop-in for Serilog.Sinks.RavenDB.</Description>
     <PackageTags>herald;logging;sink;ravendb;document;nosql</PackageTags>

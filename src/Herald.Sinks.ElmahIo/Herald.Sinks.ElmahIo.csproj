@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.ElmahIo</RootNamespace>
     <AssemblyName>Herald.Sinks.ElmahIo</AssemblyName>
-    <PackageId>Herald.Sinks.ElmahIo</PackageId>
+    <PackageId>MMP.Herald.Sinks.ElmahIo</PackageId>
     <Version>1.0.0</Version>
     <Description>Ships Herald log events to elmah.io error tracking. Drop-in for Serilog.Sinks.ElmahIo.</Description>
     <PackageTags>herald;logging;sink;elmahio;error-tracking</PackageTags>

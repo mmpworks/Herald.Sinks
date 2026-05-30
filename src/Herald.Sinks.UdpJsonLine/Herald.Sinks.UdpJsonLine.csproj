@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.UdpJsonLine</RootNamespace>
     <AssemblyName>Herald.Sinks.UdpJsonLine</AssemblyName>
-    <PackageId>Herald.Sinks.UdpJsonLine</PackageId>
+    <PackageId>MMP.Herald.Sinks.UdpJsonLine</PackageId>
     <Version>1.0.0</Version>
     <Description>Fires Herald log events as newline-delimited JSON datagrams over UDP. One datagram per event, no acknowledgement — suited to syslog-style ingest and lossy-tolerant pipelines.</Description>
     <PackageTags>herald;logging;sink;udp;json;syslog</PackageTags>

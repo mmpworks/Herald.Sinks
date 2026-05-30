@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Pulsar</RootNamespace>
     <AssemblyName>Herald.Sinks.Pulsar</AssemblyName>
-    <PackageId>Herald.Sinks.Pulsar</PackageId>
+    <PackageId>MMP.Herald.Sinks.Pulsar</PackageId>
     <Version>1.0.0</Version>
     <Description>Sends Herald log events to an Apache Pulsar topic via DotPulsar. Multi-tenant pub/sub for streaming + queue patterns.</Description>
     <PackageTags>herald;logging;sink;pulsar;streaming</PackageTags>

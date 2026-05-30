@@ -20,10 +20,12 @@ Sink kind: `coralogix` (the identifier the Dashboard form and JSON config use to
 - Severity mapping (Coralogix 1-6 scale)
 - applicationName + subsystemName on every entry for routing rules
 - EU / US / Asia / on-prem endpoint override via the endpoint constructor parameter
+- Opt-in PreserveProperties (default off) — emits the text field as a JSON object (message + each property, type-preserved) so Coralogix auto-extracts structured metadata
 
 ## Limitations
 
 - Provider throws — credentials must be wired via the code-first ctor
+- PreserveProperties ships ALL event properties downstream — ensure your redaction/enrichment pipeline runs before the sink
 
 ## Tier & runtime
 

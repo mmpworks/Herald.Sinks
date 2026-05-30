@@ -3,16 +3,18 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using MMP.Herald.Configuration.Runtime;
+using MMP.Herald.Configuration.Sinks;
 using MMP.RollingFiles;
 
 namespace Herald.Sinks.File.Providers;
 
 /// <summary>
 /// Translates the v2 sink-property bag (mmpform-driven) into a
-/// <see cref="FilesManagerPolicy"/>.
+/// <see cref="Resolved"/> record carrying the values
+/// <see cref="FilesManagerPolicy"/> needs. The factory layer
+/// (<see cref="LogSinkFileWriterFactory"/>) validates required fields
+/// and constructs the policy.
 ///
 /// <para>
 /// The bag's keys mirror <c>configuration-text_file.mmpform</c> /
@@ -32,9 +34,21 @@ namespace Herald.Sinks.File.Providers;
 /// </para>
 ///
 /// <para>
+/// <b>Pass-4a realignment.</b> File now follows the 16-sink shape: the
+/// mapper stays pure (returns a <see cref="Resolved"/> record with
+/// nullable required fields); the factory validates and throws
+/// <see cref="ArgumentException"/> with the operator-facing field name
+/// in the message. The old <see cref="InvalidOperationException"/>
+/// throws moved upstream into the factory so the exception kind
+/// matches the other 16 sinks. Bag-reader primitives come from
+/// <see cref="SinkPropertyBag"/> in Herald.OSS; no per-sink reader
+/// helpers stay here.
+/// </para>
+///
+/// <para>
 /// Stays internal: the bag's interpretation is owned by this package
 /// — Core never reaches into the dictionary. Mirrors the boundary
-/// the legacy <see cref="FileSinkRuntimeConfig"/> helper kept.
+/// the sibling <see cref="FileSinkRuntimeConfig"/> helper kept.
 /// </para>
 /// </summary>
 internal static class FilesManagerPolicyMapper
@@ -63,179 +77,157 @@ internal static class FilesManagerPolicyMapper
     private const string KeyLocale             = "locale";
 
     /// <summary>
-    /// Build a <see cref="FilesManagerPolicy"/> from the sink
-    /// definition's property bag. Throws when the bag is missing
-    /// required keys (<see cref="KeyDirectory"/>,
-    /// <see cref="KeyTemplate"/>) — they are also required by the
-    /// mmpform contract.
+    /// Resolved File-sink config. <see cref="Directory"/> and
+    /// <see cref="FileNameTemplate"/> stay nullable so the factory can
+    /// fail with a field-named <see cref="ArgumentException"/>; every
+    /// other field carries a typed value or null per the policy's own
+    /// default. <see cref="BagPresent"/> tells the factory whether the
+    /// bag had any keys at all — when false, the factory routes the
+    /// definition through the legacy <c>Path</c> + <c>RollingPolicy</c>
+    /// path instead of constructing a <see cref="FilesManagerPolicy"/>.
     /// </summary>
-    public static FilesManagerPolicy From(LoggingRuntimeSinkDefinition definition)
+    public readonly record struct Resolved(
+        bool BagPresent,
+        string? Directory,
+        string? FileNameTemplate,
+        string Extension,
+        string? ActiveFileName,
+        bool RollingEnabled,
+        RollingInterval Interval,
+        long? MaxBytesPerFile,
+        long? MaxMessagesPerFile,
+        int? MaxRetainedFiles,
+        long? TotalSizeCapBytes,
+        int? RetentionDays,
+        CompressionMode Compression,
+        DiskFullStrategy DiskFull,
+        int StartMinute,
+        int CaptureDurationMinutes,
+        string? FileNameSuffix,
+        string? Locale,
+        bool ShareForWriting,
+        bool CleanRollOnStartup,
+        System.Collections.Generic.IReadOnlyDictionary<string, string>? PathTokens);
+
+    /// <summary>
+    /// Read every documented mmpform key into a <see cref="Resolved"/>
+    /// record. Returns a record with <see cref="Resolved.BagPresent"/>
+    /// = <c>false</c> when the definition carries no bag — the factory
+    /// uses that signal to fall through to the legacy path.
+    /// </summary>
+    public static Resolved From(LoggingRuntimeSinkDefinition definition)
     {
         ArgumentNullException.ThrowIfNull(definition);
-        var bag = definition.Properties
-            ?? throw new InvalidOperationException(
-                $"Sink '{definition.Name}' has no Properties bag — cannot build a FilesManagerPolicy.");
 
-        var directory = ReadString(bag, KeyDirectory)
-            ?? throw new InvalidOperationException(
-                $"Sink '{definition.Name}' is missing the required '{KeyDirectory}' property.");
-        var template = ReadString(bag, KeyTemplate)
-            ?? throw new InvalidOperationException(
-                $"Sink '{definition.Name}' is missing the required '{KeyTemplate}' property.");
+        var bag = definition.Properties;
+        if (bag is null)
+        {
+            return new Resolved(
+                BagPresent: false,
+                Directory: null,
+                FileNameTemplate: null,
+                Extension: ".log",
+                ActiveFileName: null,
+                RollingEnabled: false,
+                Interval: RollingInterval.None,
+                MaxBytesPerFile: null,
+                MaxMessagesPerFile: null,
+                MaxRetainedFiles: null,
+                TotalSizeCapBytes: null,
+                RetentionDays: null,
+                Compression: CompressionMode.None,
+                DiskFull: DiskFullStrategy.Stop,
+                StartMinute: 0,
+                CaptureDurationMinutes: 60,
+                FileNameSuffix: null,
+                Locale: null,
+                ShareForWriting: false,
+                CleanRollOnStartup: false,
+                PathTokens: null);
+        }
 
         // Roll-trigger fields only flow through when rolling is on.
         // When the mmpform's rollingLogsEnabled toggle is off, we hand
         // FilesManager an interval/size/count of None so it produces
         // the "single file forever" shape — same as the legacy
         // RollingFileLineWriter behaviour for that toggle state.
-        var rollingOn = ReadBool(bag, KeyRollingEnabled) == true;
+        var rollingOn = SinkPropertyBag.ReadBool(bag, KeyRollingEnabled) == true;
 
-        return new FilesManagerPolicy(
-            Directory: directory,
-            FileNameTemplate: template,
-            Extension: NormaliseExtension(ReadString(bag, KeyExtension)),
-            ActiveFileName: ReadString(bag, KeyActiveFileName),
-            Interval: rollingOn ? ParseInterval(ReadString(bag, KeyRollingInterval)) : RollingInterval.None,
-            MaxBytesPerFile: rollingOn ? ParseHumanByteSize(ReadString(bag, KeyMaxFileSize)) : null,
-            MaxMessagesPerFile: rollingOn ? ReadLong(bag, KeyMaxMessages) : null,
-            MaxRetainedFiles: ReadInt(bag, KeyMaxRetainedFiles),
-            TotalSizeCapBytes: ParseHumanByteSize(ReadString(bag, KeyTotalSizeCap)),
-            RetentionDays: ReadInt(bag, KeyRetentionDays),
-            Compression: ParseCompression(ReadString(bag, KeyCompression)),
-            DiskFull: ParseDiskFull(ReadString(bag, KeyDiskFull)),
-            StartMinute: ReadInt(bag, KeyStartMinute) ?? 0,
-            CaptureDurationMinutes: ReadInt(bag, KeyCaptureDurationMin) ?? 60,
-            FileNameSuffix: PreferredString(bag, KeyNamePattern, KeyNamePatternLegacy),
-            Locale: ReadString(bag, KeyLocale),
-            ShareForWriting: ReadBool(bag, KeyShareForWriting) == true,
+        return new Resolved(
+            BagPresent:             true,
+            Directory:              SinkPropertyBag.ReadString(bag, KeyDirectory),
+            FileNameTemplate:       SinkPropertyBag.ReadString(bag, KeyTemplate),
+            Extension:              NormaliseExtension(SinkPropertyBag.ReadString(bag, KeyExtension)),
+            ActiveFileName:         SinkPropertyBag.ReadString(bag, KeyActiveFileName),
+            RollingEnabled:         rollingOn,
+            Interval:               rollingOn
+                                        ? SinkPropertyBag.ReadEnum<RollingInterval>(bag, KeyRollingInterval) ?? RollingInterval.None
+                                        : RollingInterval.None,
+            MaxBytesPerFile:        rollingOn
+                                        ? SinkPropertyBag.ParseHumanByteSize(SinkPropertyBag.ReadString(bag, KeyMaxFileSize))
+                                        : null,
+            MaxMessagesPerFile:     rollingOn ? SinkPropertyBag.ReadLong(bag, KeyMaxMessages) : null,
+            MaxRetainedFiles:       SinkPropertyBag.ReadInt(bag, KeyMaxRetainedFiles),
+            TotalSizeCapBytes:      SinkPropertyBag.ParseHumanByteSize(SinkPropertyBag.ReadString(bag, KeyTotalSizeCap)),
+            RetentionDays:          SinkPropertyBag.ReadInt(bag, KeyRetentionDays),
+            Compression:            SinkPropertyBag.ReadEnum<CompressionMode>(bag, KeyCompression) ?? CompressionMode.None,
+            DiskFull:               SinkPropertyBag.ReadEnum<DiskFullStrategy>(bag, KeyDiskFull) ?? DiskFullStrategy.Stop,
+            StartMinute:            SinkPropertyBag.ReadInt(bag, KeyStartMinute) ?? 0,
+            CaptureDurationMinutes: SinkPropertyBag.ReadInt(bag, KeyCaptureDurationMin) ?? 60,
+            FileNameSuffix:         SinkPropertyBag.ReadString(bag, KeyNamePattern)
+                                        ?? SinkPropertyBag.ReadString(bag, KeyNamePatternLegacy),
+            Locale:                 SinkPropertyBag.ReadString(bag, KeyLocale),
+            ShareForWriting:        SinkPropertyBag.ReadBool(bag, KeyShareForWriting) == true,
             // Carried through to the policy; the runtime support for
             // CleanRollOnStartup lands in a later FilesManager phase.
             // Keeping it on the policy now means a future runtime
             // upgrade picks it up without a mapper change.
-            CleanRollOnStartup: ReadBool(bag, KeyCleanRollOnStartup) == true,
+            CleanRollOnStartup:     SinkPropertyBag.ReadBool(bag, KeyCleanRollOnStartup) == true,
             // Token values are taken as-is. PathTokens validation
             // (rejecting "/" / ".." / etc.) lives in
             // FilesManagerPolicy / FilesManager at expansion time —
             // the mapper does not duplicate it because a single
             // rejection point keeps the contract auditable.
-            PathTokens: ReadStringMap(bag, KeyPathTokens));
+            PathTokens:             SinkPropertyBag.ReadStringMap(bag, KeyPathTokens));
     }
 
-    // ── Bag readers (tolerant; null / wrong-type → fall through) ──
-
-    private static string? ReadString(IReadOnlyDictionary<string, object?> bag, string key) =>
-        bag.TryGetValue(key, out var raw) && raw is not null ? raw.ToString() : null;
-
-    private static string? PreferredString(
-        IReadOnlyDictionary<string, object?> bag, string primaryKey, string legacyKey)
-    {
-        // Empty pattern means "use the writer's per-interval default" —
-        // matches the mmpform's "blank = …" help text. Coerce empty to
-        // null so the policy hits the default branch instead of an
-        // empty suffix.
-        var primary = ReadString(bag, primaryKey);
-        if (!string.IsNullOrEmpty(primary)) return primary;
-        var legacy = ReadString(bag, legacyKey);
-        return string.IsNullOrEmpty(legacy) ? null : legacy;
-    }
-
-    private static bool? ReadBool(IReadOnlyDictionary<string, object?> bag, string key)
-    {
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        if (raw is bool b) return b;
-        return bool.TryParse(raw.ToString(), out var parsed) ? parsed : (bool?)null;
-    }
-
-    private static long? ReadLong(IReadOnlyDictionary<string, object?> bag, string key)
-    {
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        // Cognitive Complexity note: switch covers the JSON
-        // deserialiser's three numeric carriers (long / int / double)
-        // plus the string fallback. One pass, one return per arm.
-        // Doubles are truncated toward zero — `30.7` becomes 30 — so
-        // a fractional JSON literal lands as the integer floor rather
-        // than null. That mirrors the legacy FileSinkRuntimeConfig
-        // shape and matches operator intent ("about 30 files").
-        return raw switch
-        {
-            long l   => l,
-            int i    => i,
-            double d => (long)d,
-            string s when long.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) => n,
-            _ => (long?)null
-        };
-    }
-
-    private static int? ReadInt(IReadOnlyDictionary<string, object?> bag, string key)
-    {
-        var l = ReadLong(bag, key);
-        return l is null ? null : (int?)Math.Min(int.MaxValue, Math.Max(int.MinValue, l.Value));
-    }
-
-    private static IReadOnlyDictionary<string, string>? ReadStringMap(
-        IReadOnlyDictionary<string, object?> bag, string key)
-    {
-        if (!bag.TryGetValue(key, out var raw) || raw is null) return null;
-        if (raw is not IReadOnlyDictionary<string, object?> nested) return null;
-        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var kv in nested)
-        {
-            if (kv.Value is null) continue;
-            result[kv.Key] = kv.Value.ToString() ?? string.Empty;
-        }
-        return result.Count == 0 ? null : result;
-    }
-
-    // ── Enum parsers ─────────────────────────────────────────────
-
-    private static RollingInterval ParseInterval(string? raw) => (raw ?? "").ToLowerInvariant() switch
-    {
-        "hourly" => RollingInterval.Hourly,
-        "daily"  => RollingInterval.Daily,
-        "custom" => RollingInterval.Custom,
-        _        => RollingInterval.None,
-    };
-
-    private static CompressionMode ParseCompression(string? raw) => (raw ?? "").ToLowerInvariant() switch
-    {
-        "gzip"   => CompressionMode.Gzip,
-        "brotli" => CompressionMode.Brotli,
-        _        => CompressionMode.None,
-    };
-
-    private static DiskFullStrategy ParseDiskFull(string? raw) => (raw ?? "").ToLowerInvariant() switch
-    {
-        "drop"     => DiskFullStrategy.Drop,
-        "fallback" => DiskFullStrategy.Fallback,
-        _          => DiskFullStrategy.Stop,
-    };
-
-    // ── Format helpers ───────────────────────────────────────────
+    /// <summary>
+    /// Project a <see cref="Resolved"/> into a
+    /// <see cref="FilesManagerPolicy"/>. The factory has already
+    /// validated <see cref="Resolved.Directory"/> and
+    /// <see cref="Resolved.FileNameTemplate"/> at this point — the
+    /// non-null assertions here are documentation of that contract.
+    /// </summary>
+    public static FilesManagerPolicy ToPolicy(Resolved resolved) =>
+        new(
+            Directory: resolved.Directory!,
+            FileNameTemplate: resolved.FileNameTemplate!,
+            Extension: resolved.Extension,
+            ActiveFileName: resolved.ActiveFileName,
+            Interval: resolved.Interval,
+            MaxBytesPerFile: resolved.MaxBytesPerFile,
+            MaxMessagesPerFile: resolved.MaxMessagesPerFile,
+            MaxRetainedFiles: resolved.MaxRetainedFiles,
+            TotalSizeCapBytes: resolved.TotalSizeCapBytes,
+            RetentionDays: resolved.RetentionDays,
+            Compression: resolved.Compression,
+            DiskFull: resolved.DiskFull,
+            StartMinute: resolved.StartMinute,
+            CaptureDurationMinutes: resolved.CaptureDurationMinutes,
+            FileNameSuffix: resolved.FileNameSuffix,
+            Locale: resolved.Locale,
+            ShareForWriting: resolved.ShareForWriting,
+            CleanRollOnStartup: resolved.CleanRollOnStartup,
+            PathTokens: resolved.PathTokens);
 
     // The mmpform stores the extension without a leading dot
     // ("log", "ndjson"); FilesManagerPolicy expects ".log" / ".ndjson".
-    // Either form is accepted on the way in.
+    // Either form is accepted on the way in. Stays local because no
+    // other sink shape needs this normalisation — File is the only
+    // consumer of file-system extensions today.
     private static string NormaliseExtension(string? raw)
     {
         if (string.IsNullOrEmpty(raw)) return ".log";
         return raw.StartsWith('.') ? raw : "." + raw;
-    }
-
-    // Parse `10MB`, `1GB`, `500KB`, `0`, `""`. Returns null when the
-    // input is empty or unparsable so the policy treats it as "no
-    // cap" rather than failing the build.
-    private static long? ParseHumanByteSize(string? raw)
-    {
-        if (string.IsNullOrWhiteSpace(raw)) return null;
-        var s = raw.Trim();
-        long multiplier = 1;
-        if (s.EndsWith("GB", StringComparison.OrdinalIgnoreCase)) { multiplier = 1_073_741_824L; s = s[..^2]; }
-        else if (s.EndsWith("MB", StringComparison.OrdinalIgnoreCase)) { multiplier = 1_048_576L;     s = s[..^2]; }
-        else if (s.EndsWith("KB", StringComparison.OrdinalIgnoreCase)) { multiplier = 1_024L;          s = s[..^2]; }
-        else if (s.EndsWith("B",  StringComparison.OrdinalIgnoreCase)) { multiplier = 1L;              s = s[..^1]; }
-
-        if (!double.TryParse(s.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var n)) return null;
-        if (n <= 0) return null;
-        return (long)Math.Round(n * multiplier);
     }
 }

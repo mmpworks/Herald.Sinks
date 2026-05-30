@@ -1,10 +1,28 @@
-# Kafka sink — configuration UI placeholder.
+# Kafka sink — Confluent producer to a topic.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "bootstrap_servers" = { type: "string", default: "" },
+    "topic"             = { type: "string", default: "" },
+    "sasl_mechanism"    = { type: "string", default: "" },
+    "sasl_username"     = { type: "string", default: "" },
+    "sasl_password"     = { type: "string", default: "" }
+]
 
-[container("Kafka sink", "Produces Herald log events as JSON messages to a Kafka topic via Confluent.")]
+tooltips = [
+    "tt-boot"  = "Comma-separated Kafka bootstrap servers (host:port).",
+    "tt-topic" = "Topic events are produced to.",
+    "tt-sasl"  = "SASL mechanism — PLAIN, SCRAM-SHA-256, SCRAM-SHA-512. Leave blank for no SASL.",
+    "tt-user"  = "SASL username — required when sasl_mechanism is set.",
+    "tt-pass"  = "SASL password — masked after save."
+]
 
-  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]
+[container("Kafka sink", "Produces Herald log events as JSON messages to a Kafka topic via Confluent. SASL_PLAINTEXT supported; SASL_SSL is on the Compliance-edition roadmap.")]
+
+  - [textfield(12,{bootstrap_servers},tt="tt-boot",required=true,placeholder="broker1:9092,broker2:9092")] Bootstrap servers
+  - [textfield(12,{topic},tt="tt-topic",required=true)] Topic
+  - [textfield(12,{sasl_mechanism},tt="tt-sasl",placeholder="PLAIN | SCRAM-SHA-256 | SCRAM-SHA-512")] SASL mechanism
+  - [textfield(12,{sasl_username},tt="tt-user")] SASL username
+  - [secret(12,{sasl_password},tt="tt-pass")] SASL password

@@ -1,10 +1,22 @@
-# GenericWebhook sink — configuration UI placeholder.
+# GenericWebhook sink — HTTP POST to any URL with optional headers.
 # Flat form: every field on its own row, no collapsible sections.
 
 columns: 12
 
-__properties = []
+__properties = [
+    "url"          = { type: "string", default: "" },
+    "headers"      = { type: "string", default: "" },
+    "content_type" = { type: "string", default: "application/json" }
+]
 
-[container("GenericWebhook sink", "Generic HTTP webhook sink with optional rules engine.")]
+tooltips = [
+    "tt-url"     = "Webhook URL events POST to.",
+    "tt-headers" = "Custom headers as comma-separated Name=Value pairs (e.g. Authorization=Bearer abc, X-Tenant=acme).",
+    "tt-ctype"   = "Content-Type header for the POST body — defaults to application/json."
+]
 
-  - [label(12, "Configuration UI coming soon. Until then, wire this sink via JSON config — see the per-sink README for the supported keys.", style=note)]
+[container("GenericWebhook sink", "Generic HTTP webhook sink. Custom headers enable Bearer tokens, API keys, tenant tagging, and signed-request schemes.")]
+
+  - [url(12,{url},tt="tt-url",required=true,placeholder="https://hooks.example.com/incoming")] Webhook URL
+  - [textfield(12,{headers},tt="tt-headers",placeholder="Authorization=Bearer abc, X-Tenant=acme")] Headers
+  - [textfield(12,{content_type},tt="tt-ctype",init="application/json")] Content type

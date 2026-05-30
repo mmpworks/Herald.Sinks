@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Nats</RootNamespace>
     <AssemblyName>Herald.Sinks.Nats</AssemblyName>
-    <PackageId>Herald.Sinks.Nats</PackageId>
+    <PackageId>MMP.Herald.Sinks.Nats</PackageId>
     <Version>1.0.0</Version>
     <Description>Publishes Herald log events to a NATS subject via NATS.Client.Core. Cloud-native messaging with JetStream-ready delivery.</Description>
     <PackageTags>herald;logging;sink;nats;messaging</PackageTags>

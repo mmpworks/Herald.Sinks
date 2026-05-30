@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.GoogleCloudLogging</RootNamespace>
     <AssemblyName>Herald.Sinks.GoogleCloudLogging</AssemblyName>
-    <PackageId>Herald.Sinks.GoogleCloudLogging</PackageId>
+    <PackageId>MMP.Herald.Sinks.GoogleCloudLogging</PackageId>
     <Version>1.0.0</Version>
     <Description>Writes Herald log events to Google Cloud Logging via LoggingServiceV2Client.WriteLogEntries. Drop-in for Serilog.Sinks.GoogleCloudLogging.</Description>
     <PackageTags>herald;logging;sink;gcp;google-cloud;stackdriver</PackageTags>

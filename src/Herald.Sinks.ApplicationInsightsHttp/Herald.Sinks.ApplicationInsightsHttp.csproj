@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.ApplicationInsightsHttp</RootNamespace>
     <AssemblyName>Herald.Sinks.ApplicationInsightsHttp</AssemblyName>
-    <PackageId>Herald.Sinks.ApplicationInsightsHttp</PackageId>
+    <PackageId>MMP.Herald.Sinks.ApplicationInsightsHttp</PackageId>
     <Version>1.0.0</Version>
     <Description>POSTs Herald log events as MessageData telemetry envelopes directly to Azure Application Insights' ingestion endpoint. No Microsoft.ApplicationInsights SDK dependency — just HttpClient. Pair with Herald.Sinks.ApplicationInsightsSdk if you want idiomatic AI telemetry types (TraceTelemetry, ExceptionTelemetry).</Description>
     <PackageTags>herald;logging;sink;azure;application-insights;apm;http;aot</PackageTags>

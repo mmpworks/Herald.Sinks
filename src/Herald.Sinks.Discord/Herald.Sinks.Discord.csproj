@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Discord</RootNamespace>
     <AssemblyName>Herald.Sinks.Discord</AssemblyName>
-    <PackageId>Herald.Sinks.Discord</PackageId>
+    <PackageId>MMP.Herald.Sinks.Discord</PackageId>
     <Version>1.0.0</Version>
     <Description>Posts Herald log events to a Discord channel via incoming webhooks. HTTP-only.</Description>
     <PackageTags>herald;logging;sink;discord;chat</PackageTags>

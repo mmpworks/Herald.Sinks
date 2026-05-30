@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.BigQuery</RootNamespace>
     <AssemblyName>Herald.Sinks.BigQuery</AssemblyName>
-    <PackageId>Herald.Sinks.BigQuery</PackageId>
+    <PackageId>MMP.Herald.Sinks.BigQuery</PackageId>
     <Version>1.0.0</Version>
     <Description>Streaming-inserts Herald log events into a Google BigQuery table via Google.Cloud.BigQuery.V2.</Description>
     <PackageTags>herald;logging;sink;bigquery;gcp;analytics</PackageTags>

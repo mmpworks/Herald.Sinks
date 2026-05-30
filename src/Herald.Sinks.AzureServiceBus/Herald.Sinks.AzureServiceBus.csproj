@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.AzureServiceBus</RootNamespace>
     <AssemblyName>Herald.Sinks.AzureServiceBus</AssemblyName>
-    <PackageId>Herald.Sinks.AzureServiceBus</PackageId>
+    <PackageId>MMP.Herald.Sinks.AzureServiceBus</PackageId>
     <Version>1.0.0</Version>
     <Description>SendMessage Herald log events into an Azure Service Bus queue or topic via Azure.Messaging.ServiceBus.</Description>
     <PackageTags>herald;logging;sink;azure;service-bus;queue</PackageTags>

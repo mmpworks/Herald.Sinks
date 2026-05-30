@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Raygun</RootNamespace>
     <AssemblyName>Herald.Sinks.Raygun</AssemblyName>
-    <PackageId>Herald.Sinks.Raygun</PackageId>
+    <PackageId>MMP.Herald.Sinks.Raygun</PackageId>
     <Version>1.0.0</Version>
     <Description>Forwards Herald log events to the Raygun crash-reporting / error-tracking service. Drop-in for Serilog.Sinks.Raygun.</Description>
     <PackageTags>herald;logging;sink;raygun;crash-reporting</PackageTags>

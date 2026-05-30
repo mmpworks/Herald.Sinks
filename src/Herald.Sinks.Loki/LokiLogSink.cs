@@ -178,7 +178,7 @@ public sealed class LokiLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, 
             // string, not a number — a JavaScript i53 would lose the low
             // nanosecond bits. Ticks are 100-ns; multiply by 100 to
             // reach nanoseconds, then emit as decimal string.
-            writer.WriteStringValue((evt.TimeUtc.ToUnixTimeMilliseconds() * 1_000_000L).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            writer.WriteStringValue(((evt.TimeUtc - DateTimeOffset.UnixEpoch).Ticks * 100L).ToString(System.Globalization.CultureInfo.InvariantCulture));
             writer.WriteStringValue(BuildLogLine(evt));
             writer.WriteEndArray();
         }

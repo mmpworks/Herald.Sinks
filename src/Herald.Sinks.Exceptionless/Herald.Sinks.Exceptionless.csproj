@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.Exceptionless</RootNamespace>
     <AssemblyName>Herald.Sinks.Exceptionless</AssemblyName>
-    <PackageId>Herald.Sinks.Exceptionless</PackageId>
+    <PackageId>MMP.Herald.Sinks.Exceptionless</PackageId>
     <Version>1.0.0</Version>
     <Description>Forwards Herald log events to the Exceptionless error-tracking platform. Drop-in for Serilog.Sinks.Exceptionless.</Description>
     <PackageTags>herald;logging;sink;exceptionless;error-tracking</PackageTags>

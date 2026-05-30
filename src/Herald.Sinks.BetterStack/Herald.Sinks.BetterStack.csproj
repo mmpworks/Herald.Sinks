@@ -2,7 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Herald.Sinks.BetterStack</RootNamespace>
     <AssemblyName>Herald.Sinks.BetterStack</AssemblyName>
-    <PackageId>Herald.Sinks.BetterStack</PackageId>
+    <PackageId>MMP.Herald.Sinks.BetterStack</PackageId>
     <Version>1.0.0</Version>
     <Description>Ships Herald log events to Better Stack (Logtail) via the public ingest endpoint. HTTP-only.</Description>
     <PackageTags>herald;logging;sink;betterstack;logtail;observability</PackageTags>

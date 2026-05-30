@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -21,6 +22,20 @@ namespace Herald.Sinks.Coralogix;
 /// Sink that ships log events to Coralogix via the bulk-logs ingest
 /// endpoint. Private-key auth in the body envelope; HTTP-only.
 /// </summary>
+/// <remarks>
+/// <para>
+/// <b>Property preservation (opt-in, default off).</b> When
+/// <c>preserveProperties</c> is true, the per-entry <c>text</c> field is
+/// emitted as a JSON object string carrying the message plus each event
+/// property (type-preserved), instead of the bare message. Coralogix
+/// auto-extracts JSON keys from <c>text</c> into structured metadata, so
+/// this is the Coralogix-idiomatic way to ship richer data. The
+/// timestamp/severity/category envelope fields are unchanged either way.
+/// When false, <c>text</c> stays the plain message — today's behaviour.
+/// Preservation ships ALL event properties downstream — ensure your
+/// redaction/enrichment pipeline runs before the sink.
+/// </para>
+/// </remarks>
 public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://ingress.coralogix.com/api/v1/logs";
@@ -31,9 +46,11 @@ public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
     private readonly string _applicationName;
     private readonly string _subsystemName;
     private readonly bool _ownsHttp;
+    private readonly bool _preserveProperties;
 
     public CoralogixLogSink(string privateKey, string applicationName, string subsystemName,
-        string? endpoint = null, HttpClient? httpClient = null)
+        string? endpoint = null, HttpClient? httpClient = null,
+        bool preserveProperties = false)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(privateKey);
         ArgumentException.ThrowIfNullOrWhiteSpace(applicationName);
@@ -44,6 +61,7 @@ public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
         _endpoint = new Uri(endpoint ?? DefaultEndpoint, UriKind.Absolute);
         _ownsHttp = httpClient is null;
         _http = httpClient ?? new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
+        _preserveProperties = preserveProperties;
     }
 
     public override void Log(LogEvent logEvent) => LogBatch(new[] { logEvent });
@@ -101,13 +119,62 @@ public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
                 writer.WriteNumber("timestamp", evt.TimeUtc.ToUnixTimeMilliseconds());
                 writer.WriteNumber("severity", MapSeverity(evt.Level.Key));
                 writer.WriteString("category", evt.Category.Value);
-                writer.WriteString("text", evt.Message ?? string.Empty);
+                writer.WriteString("text", BuildText(evt));
                 writer.WriteEndObject();
             }
             writer.WriteEndArray();
             writer.WriteEndObject();
         }
         return Encoding.UTF8.GetString(stream.ToArray());
+    }
+
+    // Off: the bare rendered message (today's behaviour). On: a JSON object
+    // string carrying the message plus each property, type-preserved.
+    // Coralogix parses a JSON text field into structured metadata facets.
+    private string BuildText(LogEvent evt)
+    {
+        if (!_preserveProperties)
+        {
+            return evt.Message ?? string.Empty;
+        }
+
+        using var stream = new MemoryStream();
+        using (var writer = new Utf8JsonWriter(stream))
+        {
+            writer.WriteStartObject();
+            writer.WriteString("message", evt.Message ?? string.Empty);
+            foreach (var property in evt.Properties)
+            {
+                // "message" is reserved above; skip a same-named property
+                // (seen-style guard, same pattern as the other sinks).
+                if (string.Equals(property.Name, "message", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+                WriteValue(writer, property.Name, property.ResolvedValue);
+            }
+            writer.WriteEndObject();
+        }
+        return Encoding.UTF8.GetString(stream.ToArray());
+    }
+
+    private static void WriteValue(Utf8JsonWriter writer, string name, object? value)
+    {
+        switch (value)
+        {
+            case null: writer.WriteNull(name); break;
+            case string s: writer.WriteString(name, s); break;
+            case bool b: writer.WriteBoolean(name, b); break;
+            case int i: writer.WriteNumber(name, i); break;
+            case long l: writer.WriteNumber(name, l); break;
+            case double d: writer.WriteNumber(name, d); break;
+            case float f: writer.WriteNumber(name, f); break;
+            case decimal m: writer.WriteNumber(name, m); break;
+            case DateTime dt: writer.WriteString(name, dt.ToString("O", CultureInfo.InvariantCulture)); break;
+            case DateTimeOffset dto: writer.WriteString(name, dto.ToString("O", CultureInfo.InvariantCulture)); break;
+            case Guid g: writer.WriteString(name, g.ToString("D")); break;
+            default: writer.WriteString(name, value.ToString() ?? ""); break;
+        }
     }
 
     private static int MapSeverity(string levelKey) => levelKey switch

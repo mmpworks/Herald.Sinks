@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+      Sink fidelity conformance harness. Unlike Herald.Sinks.Contract.Tests
+      (which reads csproj/yaml files and needs no runtime), this project
+      CONSTRUCTS sinks and LogEvents, so it carries the Herald.OSS runtime
+      reference that Directory.Build.props injects for test projects.
+
+      The harness asserts the standing fidelity bar: on the no-modification
+      path a sink's output preserves every reserved field and every value
+      TYPE of what Herald.OSS received. The answer key is the canonical
+      sample set in docs/log-formats-reference.md (the same samples the Go
+      logcreator tool pins in tools/logcreator/.../conformance_test.go).
+
+      This project references multiple sink packages because it sweeps them
+      all from one place. That is intentional — the harness is the standing
+      build gate across the whole reserved-format surface.
+    -->
+    <RootNamespace>Herald.Sinks.Conformance.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>HERALD004;xUnit1031</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Every reserved-format sink under sweep. Add a line here when a new
+       format-bearing sink joins the answer key. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Herald.Sinks.Otlp\Herald.Sinks.Otlp.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.OtlpGrpc\Herald.Sinks.OtlpGrpc.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Datadog\Herald.Sinks.Datadog.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Elasticsearch\Herald.Sinks.Elasticsearch.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Loki\Herald.Sinks.Loki.csproj" />
+    <ProjectReference Include="..\..\src\Herald.Sinks.Splunk\Herald.Sinks.Splunk.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\_shared\*.cs" LinkBase="_CoreTestHelpers" />
+  </ItemGroup>
+</Project>

@@ -7,16 +7,25 @@
 columns: 12
 
 __properties = [
-    "broker" = { type: "string", default: "" },
-    "topic"  = { type: "string", default: "herald/logs" }
+    "broker"   = { type: "string", default: "" },
+    "topic"    = { type: "string", default: "herald/logs" },
+    "username" = { type: "string", default: "" },
+    "password" = { type: "string", default: "" },
+    "qos"      = { type: "string", default: "at_most_once" }
 ]
 
 tooltips = [
     "tt-broker" = "Broker host[:port] — defaults to port 1883 if no port supplied.",
-    "tt-topic"  = "MQTT topic. Hierarchy supported (e.g. herald/logs/error)."
+    "tt-topic"  = "MQTT topic. Hierarchy supported (e.g. herald/logs/error).",
+    "tt-user"   = "MQTT username — leave blank for anonymous brokers.",
+    "tt-pass"   = "MQTT password — masked after save.",
+    "tt-qos"    = "Quality of service: at_most_once (default, fastest), at_least_once, exactly_once."
 ]
 
-[container("MQTT sink", "Publishes events to an MQTT broker.")]
+[container("MQTT sink", "Publishes events to an MQTT broker. Plaintext MQTT only — MQTTS is on the Compliance-edition roadmap.")]
 
   - [textfield(12,{broker},tt="tt-broker",required=true,placeholder="broker.example.com:1883")] Broker
   - [textfield(12,{topic},tt="tt-topic",init="herald/logs")] Topic
+  - [textfield(12,{username},tt="tt-user")] Username
+  - [secret(12,{password},tt="tt-pass")] Password
+  - [textfield(12,{qos},tt="tt-qos",init="at_most_once",placeholder="at_most_once | at_least_once | exactly_once")] QoS
