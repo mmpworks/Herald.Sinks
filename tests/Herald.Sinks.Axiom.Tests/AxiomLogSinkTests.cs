@@ -7,6 +7,7 @@ using FluentAssertions;
 using Herald.Sinks.Axiom;
 using Herald.Sinks.Axiom.Providers;
 using MMP.Herald;
+using MMP.Herald.Tests.Helpers;
 using Xunit;
 
 namespace Herald.Sinks.Axiom.Tests;
@@ -23,5 +24,24 @@ public sealed class AxiomLogSinkTests
     {
         new AxiomLogSinkProvider().SinkKind.Should().Be("axiom");
         new AxiomLogSinkProvider().MinimumEdition.Should().Be(HeraldEdition.Community);
+    }
+
+    // Regression for the 2026-05-30 sink async audit (F-1, F-2). Axiom is the
+    // batched HTTP representative — its sync LogBatch used to run
+    // `_http.SendAsync(request).GetAwaiter().GetResult()` with no
+    // ConfigureAwait(false). The fix routes the sync path through
+    // `HttpClient.Send`. Proves Log returns under a single-threaded
+    // SynchronizationContext instead of deadlocking.
+    [Fact]
+    public void Log_does_not_deadlock_under_single_thread_sync_context()
+    {
+        using var http = SyncContextDeadlockProbe.YieldingClient();
+        using var sink = new AxiomLogSink("token", "dataset", httpClient: http);
+        var evt = LogEventBuilder.Create().WithMessage("deadlock probe").Build();
+
+        var completed = SyncContextDeadlockProbe.RunUnderSingleThreadContext(() => sink.Log(evt));
+
+        completed.Should().BeTrue(
+            "the sync LogBatch path must use HttpClient.Send and carry no captured-context dependency");
     }
 }

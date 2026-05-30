@@ -91,8 +91,8 @@ public sealed class ParquetLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSi
             _outputDirectory,
             $"{_filePrefix}_{DateTime.UtcNow:yyyyMMddTHHmmssfffZ}.parquet");
 
-        WriteFileAsync(filePath, events).GetAwaiter().GetResult();
-        _catalog.CommitFileAsync(filePath, events.Count, CancellationToken.None).GetAwaiter().GetResult();
+        WriteFileAsync(filePath, events).ConfigureAwait(false).GetAwaiter().GetResult();
+        _catalog.CommitFileAsync(filePath, events.Count, CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     private async System.Threading.Tasks.Task WriteFileAsync(

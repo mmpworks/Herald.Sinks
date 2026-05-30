@@ -75,7 +75,7 @@ public sealed class DynamoDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var request = new PutItemRequest(_tableName, BuildItem(logEvent));
-        _client.PutItemAsync(request).GetAwaiter().GetResult();
+        _client.PutItemAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
@@ -93,7 +93,7 @@ public sealed class DynamoDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
                 slice.Add(new WriteRequest(new PutRequest(BuildItem(events[i]))));
             }
             var request = new BatchWriteItemRequest(new Dictionary<string, List<WriteRequest>> { [_tableName] = slice });
-            _client.BatchWriteItemAsync(request).GetAwaiter().GetResult();
+            _client.BatchWriteItemAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 

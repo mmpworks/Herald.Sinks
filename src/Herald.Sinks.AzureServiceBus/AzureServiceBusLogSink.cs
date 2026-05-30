@@ -54,7 +54,7 @@ public sealed class AzureServiceBusLogSink : HeraldSinkBase, IBatchedLogSink, ID
             ContentType = "application/json",
             Subject = logEvent.Level.Key,
         };
-        _sender.SendMessageAsync(message).GetAwaiter().GetResult();
+        _sender.SendMessageAsync(message).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
@@ -71,15 +71,15 @@ public sealed class AzureServiceBusLogSink : HeraldSinkBase, IBatchedLogSink, ID
                 Subject = evt.Level.Key,
             });
         }
-        _sender.SendMessagesAsync(batch).GetAwaiter().GetResult();
+        _sender.SendMessagesAsync(batch).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose()
     {
         if (_ownedClient is not null)
         {
-            _sender.DisposeAsync().AsTask().GetAwaiter().GetResult();
-            _ownedClient.DisposeAsync().AsTask().GetAwaiter().GetResult();
+            _sender.DisposeAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+            _ownedClient.DisposeAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 

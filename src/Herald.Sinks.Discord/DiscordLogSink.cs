@@ -7,6 +7,8 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
@@ -38,11 +40,25 @@ public sealed class DiscordLogSink : HeraldSinkBase, IDisposable, INetworkSink
     public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
-
-        var body = BuildBody(logEvent);
-        using var content = new StringContent(body, Encoding.UTF8, "application/json");
-        using var response = _http.PostAsync(_webhook, content).GetAwaiter().GetResult();
+        using var request = BuildRequest(logEvent);
+        // True synchronous send — no captured-context dependency, so this is
+        // deadlock-safe on a SynchronizationContext-bearing thread.
+        using var response = _http.Send(request, CancellationToken.None);
         response.EnsureSuccessStatusCode();
+    }
+
+    public async ValueTask LogAsync(LogEvent logEvent, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(logEvent);
+        using var request = BuildRequest(logEvent);
+        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+    }
+
+    private HttpRequestMessage BuildRequest(LogEvent logEvent)
+    {
+        var content = new StringContent(BuildBody(logEvent), Encoding.UTF8, "application/json");
+        return new HttpRequestMessage(HttpMethod.Post, _webhook) { Content = content };
     }
 
     public void Dispose()

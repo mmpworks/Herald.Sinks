@@ -92,7 +92,7 @@ public sealed class OtlpGrpcLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
         // Block on completion; ILogger.Log / IBatchedLogSink.LogBatch are
         // sync. The HTTP-OTLP sibling (OtlpProtobufLogSink) bridges the
         // same way via HttpClient.Send.
-        _ = call.ResponseAsync.GetAwaiter().GetResult();
+        _ = call.ResponseAsync.ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose() => _channel.Dispose();

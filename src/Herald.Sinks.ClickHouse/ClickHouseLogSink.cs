@@ -103,8 +103,8 @@ public sealed class ClickHouseLogSink : HeraldSinkBase, IBatchedLogSink, IDispos
             });
         }
 
-        bulk.InitAsync().GetAwaiter().GetResult();
-        bulk.WriteToServerAsync(rows).GetAwaiter().GetResult();
+        bulk.InitAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        bulk.WriteToServerAsync(rows).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose() { /* nothing owned */ }

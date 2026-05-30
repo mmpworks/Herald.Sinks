@@ -101,7 +101,7 @@ public sealed class ZeroMqLogSink : HeraldSinkBase, IDisposable, INetworkSink
         ArgumentNullException.ThrowIfNull(logEvent);
         // Wait for the socket to come online on first use; subsequent
         // calls hit the already-completed task and are effectively free.
-        _socketReady.Task.GetAwaiter().GetResult();
+        _socketReady.Task.ConfigureAwait(false).GetAwaiter().GetResult();
         _queue.Enqueue(SerializeEvent(logEvent));
     }
 

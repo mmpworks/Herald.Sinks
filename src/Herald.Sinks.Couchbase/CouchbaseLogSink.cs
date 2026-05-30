@@ -62,10 +62,10 @@ public sealed class CouchbaseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
         // so we wrap with GetAwaiter().GetResult — acceptable on a
         // one-shot startup path.
         var cluster = Cluster.ConnectAsync(connectionString, username, password)
-            .GetAwaiter().GetResult();
-        var bucket = cluster.BucketAsync(bucketName).GetAwaiter().GetResult();
-        var scope = bucket.ScopeAsync(scopeName).GetAwaiter().GetResult();
-        _collection = scope.CollectionAsync(collectionName).GetAwaiter().GetResult();
+            .ConfigureAwait(false).GetAwaiter().GetResult();
+        var bucket = cluster.BucketAsync(bucketName).ConfigureAwait(false).GetAwaiter().GetResult();
+        var scope = bucket.ScopeAsync(scopeName).ConfigureAwait(false).GetAwaiter().GetResult();
+        _collection = scope.CollectionAsync(collectionName).ConfigureAwait(false).GetAwaiter().GetResult();
         _ownedCluster = cluster;
     }
 
@@ -85,7 +85,7 @@ public sealed class CouchbaseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var (key, document) = BuildDocument(logEvent);
-        _collection.UpsertAsync(key, document).GetAwaiter().GetResult();
+        _collection.UpsertAsync(key, document).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
@@ -101,7 +101,7 @@ public sealed class CouchbaseLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
             var (key, document) = BuildDocument(evt);
             tasks.Add(_collection.UpsertAsync(key, document));
         }
-        System.Threading.Tasks.Task.WhenAll(tasks).GetAwaiter().GetResult();
+        System.Threading.Tasks.Task.WhenAll(tasks).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose()

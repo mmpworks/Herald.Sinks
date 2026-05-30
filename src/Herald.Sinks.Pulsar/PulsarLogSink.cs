@@ -50,7 +50,7 @@ public sealed class PulsarLogSink : HeraldSinkBase, IAsyncDisposable, INetworkSi
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var payload = Encoding.UTF8.GetBytes(SerializeEvent(logEvent));
-        _producer.Send(payload).AsTask().GetAwaiter().GetResult();
+        _producer.Send(payload).AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public async ValueTask DisposeAsync()

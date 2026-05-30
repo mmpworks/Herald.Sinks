@@ -50,7 +50,7 @@ public sealed class NatsLogSink : HeraldSinkBase, IAsyncDisposable, INetworkSink
     {
         ArgumentNullException.ThrowIfNull(logEvent);
         var payload = SerializeEvent(logEvent);
-        _connection.PublishAsync(_subject, payload).GetAwaiter().GetResult();
+        _connection.PublishAsync(_subject, payload).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public async ValueTask DisposeAsync()

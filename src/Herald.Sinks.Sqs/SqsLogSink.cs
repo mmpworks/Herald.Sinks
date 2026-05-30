@@ -61,7 +61,7 @@ public sealed class SqsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, I
             QueueUrl = _queueUrl,
             MessageBody = SerializeEvent(logEvent),
         };
-        _client.SendMessageAsync(request).GetAwaiter().GetResult();
+        _client.SendMessageAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
@@ -85,7 +85,7 @@ public sealed class SqsLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable, I
             {
                 QueueUrl = _queueUrl,
                 Entries = entries,
-            }).GetAwaiter().GetResult();
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 

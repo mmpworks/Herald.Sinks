@@ -56,7 +56,7 @@ public sealed class GoogleCloudPubSubLogSink : HeraldSinkBase, IBatchedLogSink, 
         };
         message.Attributes["level"] = logEvent.Level.Key;
         message.Attributes["category"] = logEvent.Category.Value;
-        _publisher.PublishAsync(message).GetAwaiter().GetResult();
+        _publisher.PublishAsync(message).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
@@ -79,7 +79,7 @@ public sealed class GoogleCloudPubSubLogSink : HeraldSinkBase, IBatchedLogSink, 
             message.Attributes["category"] = evt.Category.Value;
             tasks.Add(_publisher.PublishAsync(message));
         }
-        System.Threading.Tasks.Task.WhenAll(tasks).GetAwaiter().GetResult();
+        System.Threading.Tasks.Task.WhenAll(tasks).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose()
@@ -88,7 +88,7 @@ public sealed class GoogleCloudPubSubLogSink : HeraldSinkBase, IBatchedLogSink, 
         {
             // ShutdownAsync flushes pending publish requests with a 30s
             // window before tearing down channels.
-            try { _publisher.ShutdownAsync(TimeSpan.FromSeconds(5)).GetAwaiter().GetResult(); }
+            try { _publisher.ShutdownAsync(TimeSpan.FromSeconds(5)).ConfigureAwait(false).GetAwaiter().GetResult(); }
             catch (Exception) { /* best-effort on shutdown */ }
         }
     }

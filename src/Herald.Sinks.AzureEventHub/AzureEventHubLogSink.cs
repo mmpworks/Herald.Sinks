@@ -92,7 +92,7 @@ public sealed class AzureEventHubLogSink : HeraldSinkBase, IBatchedLogSink, IDis
         // batch at 1 MB and TryAdd returns false when adding would
         // overflow. We send the partial batch and start a new one
         // rather than dropping the rest.
-        var batch = _producer.CreateBatchAsync().GetAwaiter().GetResult();
+        var batch = _producer.CreateBatchAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
         foreach (var evt in events)
         {
@@ -105,9 +105,9 @@ public sealed class AzureEventHubLogSink : HeraldSinkBase, IBatchedLogSink, IDis
 
             if (!batch.TryAdd(data))
             {
-                _producer.SendAsync(batch).GetAwaiter().GetResult();
+                _producer.SendAsync(batch).ConfigureAwait(false).GetAwaiter().GetResult();
                 batch.Dispose();
-                batch = _producer.CreateBatchAsync().GetAwaiter().GetResult();
+                batch = _producer.CreateBatchAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 if (!batch.TryAdd(data))
                 {
                     // Single oversize event — skip it rather than fail
@@ -119,14 +119,14 @@ public sealed class AzureEventHubLogSink : HeraldSinkBase, IBatchedLogSink, IDis
 
         if (batch.Count > 0)
         {
-            _producer.SendAsync(batch).GetAwaiter().GetResult();
+            _producer.SendAsync(batch).ConfigureAwait(false).GetAwaiter().GetResult();
         }
         batch.Dispose();
     }
 
     public void Dispose()
     {
-        if (_ownsProducer) _producer.DisposeAsync().AsTask().GetAwaiter().GetResult();
+        if (_ownsProducer) _producer.DisposeAsync().AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     private static byte[] BuildBody(LogEvent evt)

@@ -56,13 +56,17 @@ public sealed class MqttLogSink : HeraldSinkBase, IDisposable, INetworkSink
         ArgumentException.ThrowIfNullOrWhiteSpace(topic);
 
         _client = new MqttFactory().CreateMqttClient();
+        // Union of two reconciled changes: the conformance lineage added MQTT
+        // user-property credential auth; the deadlock fix added ConfigureAwait(false)
+        // so this blocking connect can't deadlock on a SynchronizationContext-bearing
+        // thread. Both intents are kept — dropping either is a regression.
         var optionsBuilder = new MqttClientOptionsBuilder()
             .WithTcpServer(brokerHost, brokerPort);
         if (!string.IsNullOrWhiteSpace(username))
         {
             optionsBuilder = optionsBuilder.WithCredentials(username, password);
         }
-        _client.ConnectAsync(optionsBuilder.Build()).GetAwaiter().GetResult();
+        _client.ConnectAsync(optionsBuilder.Build()).ConfigureAwait(false).GetAwaiter().GetResult();
         _topic = topic;
         _qos = qos;
         _ownsClient = true;
@@ -88,14 +92,14 @@ public sealed class MqttLogSink : HeraldSinkBase, IDisposable, INetworkSink
             .WithPayload(SerializeEvent(logEvent))
             .WithQualityOfServiceLevel(_qos)
             .Build();
-        _client.PublishAsync(message).GetAwaiter().GetResult();
+        _client.PublishAsync(message).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose()
     {
         if (_ownsClient)
         {
-            try { _client.DisconnectAsync().GetAwaiter().GetResult(); }
+            try { _client.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult(); }
             catch { /* best-effort on shutdown */ }
             _client.Dispose();
         }

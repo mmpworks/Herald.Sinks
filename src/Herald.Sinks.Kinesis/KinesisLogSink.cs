@@ -75,7 +75,7 @@ public sealed class KinesisLogSink : HeraldSinkBase, IBatchedLogSink, IDisposabl
             PartitionKey = ResolveKey(logEvent),
             Data = new MemoryStream(Encoding.UTF8.GetBytes(data)),
         };
-        _client.PutRecordAsync(request).GetAwaiter().GetResult();
+        _client.PutRecordAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void LogBatch(IReadOnlyList<LogEvent> events)
@@ -96,7 +96,7 @@ public sealed class KinesisLogSink : HeraldSinkBase, IBatchedLogSink, IDisposabl
                 });
             }
             _client.PutRecordsAsync(new PutRecordsRequest { StreamName = _streamName, Records = slice })
-                   .GetAwaiter().GetResult();
+                   .ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 
