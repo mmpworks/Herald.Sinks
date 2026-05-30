@@ -104,7 +104,7 @@ public sealed class AzureCosmosDbLogSink : HeraldSinkBase, IBatchedLogSink, IDis
         foreach (var evt in events)
         {
             var (doc, partitionKey) = BuildDocument(evt);
-            _container.CreateItemAsync(doc, partitionKey).GetAwaiter().GetResult();
+            _container.CreateItemAsync(doc, partitionKey).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 

@@ -106,7 +106,7 @@ public sealed class AmazonS3LogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
             ContentType = "application/x-ndjson",
         };
 
-        _client.PutObjectAsync(request).GetAwaiter().GetResult();
+        _client.PutObjectAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose()

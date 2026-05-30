@@ -37,7 +37,7 @@ public sealed class MqttLogSink : HeraldSinkBase, IDisposable, INetworkSink
         var options = new MqttClientOptionsBuilder()
             .WithTcpServer(brokerHost, brokerPort)
             .Build();
-        _client.ConnectAsync(options).GetAwaiter().GetResult();
+        _client.ConnectAsync(options).ConfigureAwait(false).GetAwaiter().GetResult();
         _topic = topic;
         _qos = MqttQualityOfServiceLevel.AtMostOnce;
         _ownsClient = true;
@@ -63,14 +63,14 @@ public sealed class MqttLogSink : HeraldSinkBase, IDisposable, INetworkSink
             .WithPayload(SerializeEvent(logEvent))
             .WithQualityOfServiceLevel(_qos)
             .Build();
-        _client.PublishAsync(message).GetAwaiter().GetResult();
+        _client.PublishAsync(message).ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     public void Dispose()
     {
         if (_ownsClient)
         {
-            try { _client.DisconnectAsync().GetAwaiter().GetResult(); }
+            try { _client.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult(); }
             catch { /* best-effort on shutdown */ }
             _client.Dispose();
         }

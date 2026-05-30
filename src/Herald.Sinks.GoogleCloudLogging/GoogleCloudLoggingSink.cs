@@ -107,7 +107,7 @@ public sealed class GoogleCloudLoggingSink : HeraldSinkBase, IBatchedLogSink, IN
         // unset. Saves payload size on the common case where every
         // event targets the same log.
         _client.WriteLogEntriesAsync(_logName, _resource, labels: null, entries: entries)
-            .GetAwaiter().GetResult();
+            .ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     private LogEntry BuildEntry(LogEvent evt)

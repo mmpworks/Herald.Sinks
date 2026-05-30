@@ -8,6 +8,8 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
@@ -51,10 +53,30 @@ public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
         ArgumentNullException.ThrowIfNull(events);
         if (events.Count == 0) return;
 
-        var body = BuildBody(events);
-        using var content = new StringContent(body, Encoding.UTF8, "application/json");
-        using var response = _http.PostAsync(_endpoint, content).GetAwaiter().GetResult();
+        using var request = BuildRequest(events);
+        // True synchronous send — no captured-context dependency, so this is
+        // deadlock-safe on a SynchronizationContext-bearing thread.
+        using var response = _http.Send(request, CancellationToken.None);
         response.EnsureSuccessStatusCode();
+    }
+
+    public ValueTask LogAsync(LogEvent logEvent, CancellationToken cancellationToken = default) =>
+        LogBatchAsync(new[] { logEvent }, cancellationToken);
+
+    public async ValueTask LogBatchAsync(IReadOnlyList<LogEvent> events, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(events);
+        if (events.Count == 0) return;
+
+        using var request = BuildRequest(events);
+        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+    }
+
+    private HttpRequestMessage BuildRequest(IReadOnlyList<LogEvent> events)
+    {
+        var content = new StringContent(BuildBody(events), Encoding.UTF8, "application/json");
+        return new HttpRequestMessage(HttpMethod.Post, _endpoint) { Content = content };
     }
 
     public void Dispose()

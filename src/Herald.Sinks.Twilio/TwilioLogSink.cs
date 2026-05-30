@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
@@ -48,7 +50,23 @@ public sealed class TwilioLogSink : HeraldSinkBase, IDisposable, INetworkSink
     public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
+        using var request = BuildRequest(logEvent);
+        // True synchronous send — no captured-context dependency, so this is
+        // deadlock-safe on a SynchronizationContext-bearing thread.
+        using var response = _http.Send(request, CancellationToken.None);
+        response.EnsureSuccessStatusCode();
+    }
 
+    public async ValueTask LogAsync(LogEvent logEvent, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(logEvent);
+        using var request = BuildRequest(logEvent);
+        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+    }
+
+    private HttpRequestMessage BuildRequest(LogEvent logEvent)
+    {
         var text = $"[{logEvent.Level.Key.ToUpperInvariant()}] {logEvent.Category.Value}: {logEvent.Message}";
         if (text.Length > SmsMaxLength) text = text[..SmsMaxLength] + "…";
 
@@ -58,8 +76,7 @@ public sealed class TwilioLogSink : HeraldSinkBase, IDisposable, INetworkSink
             new KeyValuePair<string, string>("To", _to),
             new KeyValuePair<string, string>("Body", text),
         });
-        using var response = _http.PostAsync(_endpoint, form).GetAwaiter().GetResult();
-        response.EnsureSuccessStatusCode();
+        return new HttpRequestMessage(HttpMethod.Post, _endpoint) { Content = form };
     }
 
     public void Dispose()

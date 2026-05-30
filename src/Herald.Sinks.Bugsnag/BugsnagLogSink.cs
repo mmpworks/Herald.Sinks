@@ -7,6 +7,8 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
@@ -48,12 +50,27 @@ public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable, INetworkSink
     public override void Log(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
-        var body = BuildBody(logEvent);
-        using var content = new StringContent(body, Encoding.UTF8, "application/json");
+        using var request = BuildRequest(logEvent);
+        // True synchronous send — no captured-context dependency, so this is
+        // deadlock-safe on a SynchronizationContext-bearing thread.
+        using var response = _http.Send(request, CancellationToken.None);
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async ValueTask LogAsync(LogEvent logEvent, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(logEvent);
+        using var request = BuildRequest(logEvent);
+        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+    }
+
+    private HttpRequestMessage BuildRequest(LogEvent logEvent)
+    {
+        var content = new StringContent(BuildBody(logEvent), Encoding.UTF8, "application/json");
         content.Headers.Add("Bugsnag-Api-Key", _apiKey);
         content.Headers.Add("Bugsnag-Payload-Version", "5");
-        using var response = _http.PostAsync(_endpoint, content).GetAwaiter().GetResult();
-        response.EnsureSuccessStatusCode();
+        return new HttpRequestMessage(HttpMethod.Post, _endpoint) { Content = content };
     }
 
     public void Dispose()

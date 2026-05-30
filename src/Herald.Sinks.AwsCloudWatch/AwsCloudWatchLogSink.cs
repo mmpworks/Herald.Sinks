@@ -143,7 +143,7 @@ public sealed class AwsCloudWatchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
                 LogEvents = inputEvents,
             };
 
-            _client.PutLogEventsAsync(request).GetAwaiter().GetResult();
+            _client.PutLogEventsAsync(request).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 
@@ -212,7 +212,7 @@ public sealed class AwsCloudWatchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
             try
             {
                 _client.CreateLogGroupAsync(new CreateLogGroupRequest { LogGroupName = _logGroupName })
-                    .GetAwaiter().GetResult();
+                    .ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (ResourceAlreadyExistsException)
             {
@@ -228,7 +228,7 @@ public sealed class AwsCloudWatchLogSink : HeraldSinkBase, IBatchedLogSink, IDis
                 {
                     LogGroupName = _logGroupName,
                     LogStreamName = _logStreamName,
-                }).GetAwaiter().GetResult();
+                }).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (ResourceAlreadyExistsException)
             {

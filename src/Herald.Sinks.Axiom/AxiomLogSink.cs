@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
@@ -47,17 +49,38 @@ public sealed class AxiomLogSink : HeraldSinkBase, IBatchedLogSink, IDisposable,
         ArgumentNullException.ThrowIfNull(events);
         if (events.Count == 0) return;
 
-        var body = BuildBody(events);
-        using var content = new StringContent(body, Encoding.UTF8, "application/json");
-        using var request = new HttpRequestMessage(HttpMethod.Post, _endpoint) { Content = content };
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-        using var response = _http.SendAsync(request).GetAwaiter().GetResult();
+        using var request = BuildRequest(events);
+        // True synchronous send — no task, no continuation, no captured-context
+        // dependency. Safe to call from a SynchronizationContext-bearing thread
+        // (legacy ASP.NET / WPF / WinForms) without deadlock.
+        using var response = _http.Send(request, CancellationToken.None);
+        response.EnsureSuccessStatusCode();
+    }
+
+    public ValueTask LogAsync(LogEvent logEvent, CancellationToken cancellationToken = default) =>
+        LogBatchAsync(new[] { logEvent }, cancellationToken);
+
+    public async ValueTask LogBatchAsync(IReadOnlyList<LogEvent> events, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(events);
+        if (events.Count == 0) return;
+
+        using var request = BuildRequest(events);
+        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
     }
 
     public void Dispose()
     {
         if (_ownsHttp) _http.Dispose();
+    }
+
+    private HttpRequestMessage BuildRequest(IReadOnlyList<LogEvent> events)
+    {
+        var content = new StringContent(BuildBody(events), Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage(HttpMethod.Post, _endpoint) { Content = content };
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        return request;
     }
 
     private static string BuildBody(IReadOnlyList<LogEvent> events)

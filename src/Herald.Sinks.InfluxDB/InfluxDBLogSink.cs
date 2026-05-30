@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
 using MMP.Herald.Pipeline;
@@ -52,12 +54,32 @@ public sealed class InfluxDBLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
         ArgumentNullException.ThrowIfNull(events);
         if (events.Count == 0) return;
 
-        var body = BuildLineProtocol(events);
-        using var content = new StringContent(body, Encoding.UTF8, "text/plain");
-        using var request = new HttpRequestMessage(HttpMethod.Post, _writeEndpoint) { Content = content };
-        request.Headers.Authorization = new AuthenticationHeaderValue("Token", _token);
-        using var response = _http.SendAsync(request).GetAwaiter().GetResult();
+        using var request = BuildRequest(events);
+        // True synchronous send — no captured-context dependency, so this is
+        // deadlock-safe on a SynchronizationContext-bearing thread.
+        using var response = _http.Send(request, CancellationToken.None);
         response.EnsureSuccessStatusCode();
+    }
+
+    public ValueTask LogAsync(LogEvent logEvent, CancellationToken cancellationToken = default) =>
+        LogBatchAsync(new[] { logEvent }, cancellationToken);
+
+    public async ValueTask LogBatchAsync(IReadOnlyList<LogEvent> events, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(events);
+        if (events.Count == 0) return;
+
+        using var request = BuildRequest(events);
+        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+    }
+
+    private HttpRequestMessage BuildRequest(IReadOnlyList<LogEvent> events)
+    {
+        var content = new StringContent(BuildLineProtocol(events), Encoding.UTF8, "text/plain");
+        var request = new HttpRequestMessage(HttpMethod.Post, _writeEndpoint) { Content = content };
+        request.Headers.Authorization = new AuthenticationHeaderValue("Token", _token);
+        return request;
     }
 
     public void Dispose()
