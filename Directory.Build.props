@@ -144,7 +144,11 @@
        generator dll out of the sink's runtime closure. The generator
        lives in Herald.OSS so the entire sink ecosystem references a
        single upstream artifact. -->
-  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\generators\MMP.Herald.OSS.Generators.csproj')">
+  <!-- In forced-package mode the generator comes from the Herald.OSS package's
+       own analyzers/dotnet/cs/ payload (released bits), so the sibling generator
+       ProjectReference is skipped — running both would load the same generator
+       twice and double-emit __SinkAutoRegistration__ (CS0101/CS0111). -->
+  <ItemGroup Condition="'$(HeraldSinkForcePackageRef)' != 'true' AND Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\generators\MMP.Herald.OSS.Generators.csproj')">
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\generators\MMP.Herald.OSS.Generators.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -182,11 +186,35 @@
     csproj and supplies its own reference; both ItemGroups below
     short-circuit on that flag.
   -->
+  <!--
+    Forced-package escape (2026-05-30, Max). A consumer that builds these sinks
+    inside a repo where the Herald.OSS sibling EXISTS but must bind the RELEASED
+    package instead (e.g. the Herald.DemoApp release pack — the published tool has
+    to carry released Herald.OSS bits, not an in-progress sibling working tree)
+    sets HeraldSinkForcePackageRef=true and supplies HeraldSinkForcePackageVersion.
+    When set, every sibling-source branch below short-circuits and the sink binds
+    the Herald.OSS package at that version. This keeps the sink's compiled
+    Herald.OSS assembly version identical to the package the host bundles, so a
+    self-contained tool publish (no binding redirects) loads cleanly. Off by
+    default — local dev keeps the live sibling ProjectReference. -->
+  <!-- VersionOverride (not Version) so this stays valid under Central Package
+       Management: the umbrella's Directory.Packages.props pins a Herald.OSS
+       PackageVersion, and VersionOverride is the CPM-sanctioned per-project
+       override that the forced-package consumer supplies. -->
+  <!-- The Herald.OSS package ships the sink-auto-registration generator under
+       analyzers/dotnet/cs/, so the forced-package ref both compiles the sink
+       against released Herald.OSS AND supplies the generator. The sibling
+       generator ProjectReference is skipped in this mode (see the generator
+       ItemGroup guard above), so the generator runs exactly once. -->
+  <ItemGroup Condition="'$(HeraldSinkForcePackageRef)' == 'true' AND '$(HeraldSinkCustomCoreRef)' != 'true'">
+    <PackageReference Include="Herald.OSS" VersionOverride="$(HeraldSinkForcePackageVersion)" />
+  </ItemGroup>
+
   <!-- Sink-package branch: Private=false + ExcludeAssets=runtime is the
        plugin-packaging shape. The sink's .nupkg stays small, and at runtime
        Herald.Server / the host has Herald.OSS loaded — the plugin's
        AssemblyLoadContext resolves Herald.OSS to the host's copy. -->
-  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' != 'true'">
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkForcePackageRef)' != 'true' AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' != 'true'">
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
@@ -196,11 +224,11 @@
   <!-- Test-project branch: standard reference. Herald.OSS.dll flows into
        the test bin\ so xunit can load the assembly and discover tests.
        There is no plugin host loading Herald.OSS for us in a test process. -->
-  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' == 'true'">
+  <ItemGroup Condition="Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkForcePackageRef)' != 'true' AND '$(HeraldSinkCustomCoreRef)' != 'true' AND '$(IsTestProject)' == 'true'">
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkCustomCoreRef)' != 'true'">
+  <ItemGroup Condition="!Exists('$(MSBuildThisFileDirectory)..\..\..\Herald.OSS\Herald.OSS.csproj') AND '$(HeraldSinkForcePackageRef)' != 'true' AND '$(HeraldSinkCustomCoreRef)' != 'true'">
     <!--
       Standalone PackageReference: NO PrivateAssets / ExcludeAssets.
       A consumer doing `dotnet add package Herald.Sinks.Datadog` to a
