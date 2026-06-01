@@ -36,7 +36,7 @@ public sealed class SlackWebhookLogSinkTests
         using var sink = new SlackWebhookLogSink(WebhookUrl, _registry, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("Slow query on {table}", "Slow query on users")
             .Build();
 

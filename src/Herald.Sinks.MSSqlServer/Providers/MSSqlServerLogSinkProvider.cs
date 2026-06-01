@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.MSSqlServer.Providers;
 
@@ -47,11 +48,13 @@ public sealed class MSSqlServerLogSinkProvider : ILogSinkProvider
         var (schema, table) = ParseHost(definition.Host);
         var autoCreate = string.Equals(definition.Alias, "auto-create", StringComparison.OrdinalIgnoreCase);
 
-        return new MSSqlServerLogSink(
+        var sink = new MSSqlServerLogSink(
             connectionString: definition.Uri,
             tableName: table,
             schemaName: schema,
             autoCreateTable: autoCreate);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     private static (string Schema, string Table) ParseHost(string? host)

@@ -29,7 +29,7 @@ public sealed class DatadogLogSinkTests
         using var sink = new DatadogLogSink(ApiKey, Service, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("Low disk on {host}", "Low disk on nodeA")
             .Build();
 
@@ -134,11 +134,10 @@ public sealed class DatadogLogSinkTests
     }
 
     [Theory]
-    [InlineData("trace", "debug")]
-    [InlineData("info", "info")]
-    [InlineData("warn", "warn")]
+    [InlineData("verbose", "debug")]
+    [InlineData("information", "info")]
+    [InlineData("warning", "warn")]
     [InlineData("error", "error")]
-    [InlineData("critical", "critical")]
     [InlineData("fatal", "emergency")]
     public void Status_maps_herald_levels_to_datadog_vocabulary(string heraldKey, string expected)
     {

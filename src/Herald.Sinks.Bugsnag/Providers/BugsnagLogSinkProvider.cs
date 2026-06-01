@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Bugsnag.Providers;
 
@@ -61,9 +62,11 @@ public sealed class BugsnagLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new BugsnagLogSink(
+        var sink = new BugsnagLogSink(
             apiKey: resolved.ApiKey!,
             endpoint: resolved.Endpoint,
             releaseStage: resolved.ReleaseStage);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

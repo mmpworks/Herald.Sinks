@@ -26,14 +26,14 @@ public sealed class XUnitLogSinkTests
         var sink = new XUnitLogSink(output);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("user {Name} signed in", "user Alice signed in")
             .Build();
 
         sink.Log(evt);
 
         output.Lines.Should().HaveCount(1);
-        output.Lines[0].Should().Contain("[warn]");
+        output.Lines[0].Should().Contain("[warning]");
         output.Lines[0].Should().Contain("user Alice signed in");
     }
 

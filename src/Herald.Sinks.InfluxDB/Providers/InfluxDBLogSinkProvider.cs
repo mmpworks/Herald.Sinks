@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.InfluxDB.Providers;
 
@@ -85,12 +86,14 @@ public sealed class InfluxDBLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new InfluxDBLogSink(
+        var sink = new InfluxDBLogSink(
             serverUrl: resolved.ServerUrl!,
             organization: resolved.Organization!,
             bucket: resolved.Bucket!,
             token: resolved.Token!,
             preserveProperties: resolved.PreserveProperties,
             preserveFieldLimit: resolved.PreserveFieldLimit);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

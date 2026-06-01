@@ -28,7 +28,7 @@ public sealed class LokiLogSinkTests
         using var sink = new LokiLogSink(Endpoint, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("payload", "payload")
             .Build();
 
@@ -42,7 +42,7 @@ public sealed class LokiLogSinkTests
 
         var stream = streams[0];
         var labels = stream.GetProperty("stream");
-        labels.GetProperty("level").GetString().Should().Be("warn");
+        labels.GetProperty("level").GetString().Should().Be("warning");
         labels.GetProperty("category").GetString().Should().NotBeNullOrWhiteSpace();
 
         var values = stream.GetProperty("values");
@@ -145,9 +145,9 @@ public sealed class LokiLogSinkTests
 
         var events = new[]
         {
-            LogEventBuilder.Create().WithLevel(KnownLogLevels.Info).Build(),
-            LogEventBuilder.Create().WithLevel(KnownLogLevels.Warn).Build(),
-            LogEventBuilder.Create().WithLevel(KnownLogLevels.Info).Build(),
+            LogEventBuilder.Create().WithLevel(KnownLogLevels.Information).Build(),
+            LogEventBuilder.Create().WithLevel(KnownLogLevels.Warning).Build(),
+            LogEventBuilder.Create().WithLevel(KnownLogLevels.Information).Build(),
         };
 
         sink.LogBatch(events);

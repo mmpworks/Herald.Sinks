@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Aliyun.Providers;
 
@@ -50,11 +51,13 @@ public sealed class AliyunSlsLogSinkProvider : ILogSinkProvider
         var keyId = definition.Alias[..colon];
         var keySecret = definition.Alias[(colon + 1)..];
 
-        return new AliyunSlsLogSink(
+        var sink = new AliyunSlsLogSink(
             endpoint: definition.Uri,
             projectName: project,
             logstoreName: logstore,
             accessKeyId: keyId,
             accessKeySecret: keySecret);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

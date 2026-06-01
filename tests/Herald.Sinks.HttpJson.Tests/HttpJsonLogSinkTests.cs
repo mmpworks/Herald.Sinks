@@ -26,7 +26,7 @@ public sealed class HttpJsonLogSinkTests
         var client = new HttpClient(handler);
         var sink = new HttpJsonLogSink("http://localhost:9200/logs", _registry, httpClient: client);
 
-        var evt = LogEventBuilder.Create().WithLevel(KnownLogLevels.Info).WithMessage("Test log").Build();
+        var evt = LogEventBuilder.Create().WithLevel(KnownLogLevels.Information).WithMessage("Test log").Build();
         sink.Log(evt);
 
         handler.RequestCount.Should().Be(1);

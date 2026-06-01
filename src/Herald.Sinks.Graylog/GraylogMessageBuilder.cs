@@ -68,12 +68,12 @@ internal static class GraylogMessageBuilder
     // Maps Herald level → syslog severity 0-7 per GELF spec.
     private static int MapSyslogSeverity(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => 7,
-        "info" => 6,
+        "verbose" or "debug" => 7,
+        "information" => 6,
         "notice" or "success" => 5,
-        "warn" => 4,
+        "warning" => 4,
         "error" => 3,
-        "critical" => 2,
+        "fatal" => 2,
         "security" => 1,
         _ => 6,
     };

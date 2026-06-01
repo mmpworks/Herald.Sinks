@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.TcpJsonLine.Providers;
 
@@ -39,6 +40,8 @@ public sealed class TcpJsonLineSinkProvider : ILogSinkProvider
                 $"Sink '{definition.Name}' requires a numeric port for kind '{definition.Kind}'.");
         }
 
-        return new TcpJsonLineLogSink(definition.Host, definition.Port.Value, levelRegistry);
+        var sink = new TcpJsonLineLogSink(definition.Host, definition.Port.Value, levelRegistry);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

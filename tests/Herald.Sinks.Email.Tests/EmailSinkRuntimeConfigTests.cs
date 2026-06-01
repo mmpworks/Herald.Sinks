@@ -149,7 +149,10 @@ public sealed class EmailSinkRuntimeConfigTests
             {
                 ["smtp_host"]    = "smtp.example.com",
                 ["from_address"] = "alerts@example.com",
-                ["to_addresses"] = "oncall@example.com"
+                ["to_addresses"] = "oncall@example.com",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]   = 1
             });
 
         var sink = new EmailLogSinkProvider().CreateSink(def, null!, null!);

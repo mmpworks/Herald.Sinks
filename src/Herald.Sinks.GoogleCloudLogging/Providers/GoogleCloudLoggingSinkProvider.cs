@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.GoogleCloudLogging.Providers;
 
@@ -70,9 +71,11 @@ public sealed class GoogleCloudLoggingSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new GoogleCloudLoggingSink(
+        var sink = new GoogleCloudLoggingSink(
             projectId: resolved.ProjectId!,
             logId: resolved.LogId,
             resource: resolved.Resource);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

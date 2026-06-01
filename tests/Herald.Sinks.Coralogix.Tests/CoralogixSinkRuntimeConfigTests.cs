@@ -104,7 +104,10 @@ public sealed class CoralogixSinkRuntimeConfigTests
                 ["endpoint"]         = "https://bag.example.com",
                 ["private_key"]      = "bag-key",
                 ["application_name"] = "bag-app",
-                ["subsystem_name"]   = "bag-sub"
+                ["subsystem_name"]   = "bag-sub",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]       = 1
             });
 
         var sink = new CoralogixLogSinkProvider().CreateSink(def, null!, null!);

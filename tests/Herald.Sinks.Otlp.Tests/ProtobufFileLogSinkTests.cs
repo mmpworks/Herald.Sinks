@@ -12,6 +12,9 @@ using MMP.Herald.Levels;
 using MMP.Herald.Tests.Helpers;
 using Xunit;
 
+// This test lives under the Herald.Sinks namespace, so the sibling
+// Herald.Sinks.File namespace shadows a bare `File`. Every System.IO.File
+// call below is fully qualified to pin the BCL type unambiguously.
 namespace Herald.Sinks.Otlp.Tests;
 
 public sealed class ProtobufFileLogSinkTests
@@ -40,7 +43,7 @@ public sealed class ProtobufFileLogSinkTests
         }
         finally
         {
-            File.Delete(path);
+            System.IO.File.Delete(path);
         }
     }
 
@@ -52,14 +55,14 @@ public sealed class ProtobufFileLogSinkTests
             using (var sink = new ProtobufFileLogSink(path, _registry))
             {
                 var evt = LogEventBuilder.Create()
-                    .WithLevel(KnownLogLevels.Info)
+                    .WithLevel(KnownLogLevels.Information)
                     .WithMessage("test record")
                     .Build();
 
                 sink.Log(evt);
             }
 
-            var bytes = File.ReadAllBytes(path);
+            var bytes = System.IO.File.ReadAllBytes(path);
 
             // Must have at least 4-byte length prefix plus some payload
             bytes.Length.Should().BeGreaterThan(4);
@@ -71,7 +74,7 @@ public sealed class ProtobufFileLogSinkTests
         }
         finally
         {
-            File.Delete(path);
+            System.IO.File.Delete(path);
         }
     }
 
@@ -86,7 +89,7 @@ public sealed class ProtobufFileLogSinkTests
             using (var sink = new ProtobufFileLogSink(path, _registry))
             {
                 sink.Log(LogEventBuilder.Create()
-                    .WithLevel(KnownLogLevels.Info)
+                    .WithLevel(KnownLogLevels.Information)
                     .WithMessage("single")
                     .Build());
             }
@@ -94,7 +97,7 @@ public sealed class ProtobufFileLogSinkTests
             singleSize = new FileInfo(path).Length;
 
             // Overwrite with a batch of 3
-            File.Delete(path);
+            System.IO.File.Delete(path);
             using (var sink = new ProtobufFileLogSink(path, _registry))
             {
                 var events = new List<LogEvent>
@@ -111,7 +114,7 @@ public sealed class ProtobufFileLogSinkTests
         }
         finally
         {
-            File.Delete(path);
+            System.IO.File.Delete(path);
         }
     }
 
@@ -130,7 +133,7 @@ public sealed class ProtobufFileLogSinkTests
         }
         finally
         {
-            File.Delete(path);
+            System.IO.File.Delete(path);
         }
     }
 
@@ -144,13 +147,13 @@ public sealed class ProtobufFileLogSinkTests
             sink.Dispose();
 
             // After dispose, the file should exist and be fully readable
-            File.Exists(path).Should().BeTrue();
-            var bytes = File.ReadAllBytes(path);
+            System.IO.File.Exists(path).Should().BeTrue();
+            var bytes = System.IO.File.ReadAllBytes(path);
             bytes.Length.Should().BeGreaterThan(0);
         }
         finally
         {
-            File.Delete(path);
+            System.IO.File.Delete(path);
         }
     }
 
@@ -196,7 +199,7 @@ public sealed class ProtobufFileLogSinkTests
         }
         finally
         {
-            File.Delete(path);
+            System.IO.File.Delete(path);
         }
     }
 }

@@ -99,7 +99,10 @@ public sealed class ParquetLogSink : HeraldSinkBase, IBatchedLogSink, INetworkSi
         string filePath,
         IReadOnlyList<LogEvent> events)
     {
-        await using var stream = File.Create(filePath);
+        // Fully qualified: this sink lives under the Herald.Sinks namespace,
+        // so the sibling Herald.Sinks.File namespace shadows a bare `File`.
+        // System.IO.File pins the BCL type unambiguously.
+        await using var stream = System.IO.File.Create(filePath);
         using var writer = await ParquetWriter.CreateAsync(_schema, stream).ConfigureAwait(false);
         using var rowGroup = writer.CreateRowGroup();
 

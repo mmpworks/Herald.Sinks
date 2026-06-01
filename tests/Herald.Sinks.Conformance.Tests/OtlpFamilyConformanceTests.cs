@@ -103,6 +103,6 @@ public sealed class OtlpFamilyConformanceTests
 
         // F3: severity text is uppercase per OTLP convention. The decoder maps
         // it back through the registry; the level round-trips to Info.
-        decoded.Level.Key.Should().Be(KnownLogLevels.Info.Key);
+        decoded.Level.Key.Should().Be(KnownLogLevels.Information.Key);
     }
 }

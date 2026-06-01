@@ -42,7 +42,7 @@ public sealed class CoralogixLogSinkTests
             httpClient: client, preserveProperties: preserveProperties);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("hello", "hello")
             .WithProperty("UserId", 42L)
             .WithProperty("Region", "eastus")

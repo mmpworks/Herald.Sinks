@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Mqtt.Providers;
 
@@ -68,12 +69,14 @@ public sealed class MqttLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new MqttLogSink(
+        var sink = new MqttLogSink(
             brokerHost: resolved.BrokerHost!,
             brokerPort: resolved.BrokerPort,
             topic: resolved.Topic,
             username: resolved.Username,
             password: resolved.Password,
             qos: resolved.Qos);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

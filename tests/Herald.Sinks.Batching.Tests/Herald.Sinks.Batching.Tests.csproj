@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Herald.Sinks.Batching.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>HERALD004;xUnit1031</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Herald.Sinks.Batching\Herald.Sinks.Batching.csproj" />
+    <!-- Loki is a real IBatchedLogSink + INetworkSink with HttpClient
+         injection — used by the live-listener regression test to prove an
+         end-to-end logged-event reaches an actual HTTP endpoint in batches. -->
+    <ProjectReference Include="..\..\src\Herald.Sinks.Loki\Herald.Sinks.Loki.csproj" />
+  </ItemGroup>
+
+  <!-- This suite is intentionally self-contained: it builds LogEvents
+       through a small local factory (TestEvents) rather than the repo-shared
+       LogEventBuilder, so it stays green independent of the wider _shared
+       test-helper state. -->
+</Project>

@@ -177,7 +177,10 @@ public sealed class SyslogSinkRuntimeConfigTests
             Kind: "syslog",
             Properties: new Dictionary<string, object?>
             {
-                ["host"] = "collector.example.com"
+                ["host"] = "collector.example.com",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"] = 1
             });
 
         var sink = new SyslogSinkProvider().CreateSink(def, null!, null!);
@@ -187,12 +190,19 @@ public sealed class SyslogSinkRuntimeConfigTests
     [Fact]
     public void Provider_creates_sink_from_legacy_only_definition()
     {
+        // Legacy Uri/Host/Alias slots still carry the connection config; the
+        // batch_size=1 bag only pins the orthogonal batching knob to the
+        // pass-through path so the assertion sees the bare SyslogSink.
         var def = new LoggingRuntimeSinkDefinition(
             Name: "syslog",
             Kind: "syslog",
             Uri:   "collector.legacy.example.com",
             Host:  "514",
-            Alias: "udp|rfc5424");
+            Alias: "udp|rfc5424",
+            Properties: new Dictionary<string, object?>
+            {
+                ["batch_size"] = 1
+            });
 
         var sink = new SyslogSinkProvider().CreateSink(def, null!, null!);
         sink.Should().BeOfType<SyslogSink>();
@@ -218,7 +228,7 @@ public sealed class SyslogSinkRuntimeConfigTests
         // SD-ID.
         var evt = LogEventBuilder.Create()
             .WithTime(FixedTime)
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("payment posted")
             .WithProperty("tenant", "acme")
             .WithProperty("amount", 4200)
@@ -340,7 +350,10 @@ public sealed class SyslogSinkRuntimeConfigTests
             Properties: new Dictionary<string, object?>
             {
                 ["host"]               = "collector.example.com",
-                ["structured_data_id"] = "billing@99999"
+                ["structured_data_id"] = "billing@99999",
+                // batch_size=1 keeps CreateSink on the pass-through path so the
+                // closing assertion sees the bare SyslogSink, not the wrapper.
+                ["batch_size"]         = 1
             });
 
         // The provider builds the sink; we can't observe the wire

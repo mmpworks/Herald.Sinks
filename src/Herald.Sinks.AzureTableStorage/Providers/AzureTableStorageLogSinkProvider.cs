@@ -11,6 +11,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AzureTableStorage.Providers;
 
@@ -57,9 +58,11 @@ public sealed class AzureTableStorageLogSinkProvider : ILogSinkProvider
         var strategy = ParseStrategy(definition.Alias);
         var tableClient = BuildTableClient(definition.Uri!, tableName);
 
-        return new AzureTableStorageLogSink(
+        var sink = new AzureTableStorageLogSink(
             tableClient: tableClient,
             partitionStrategy: strategy);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     // Pick the auth path from the shape of the Uri field. A URL

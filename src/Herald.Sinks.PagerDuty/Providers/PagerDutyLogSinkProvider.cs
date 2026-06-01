@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.PagerDuty.Providers;
 
@@ -71,7 +72,7 @@ public sealed class PagerDutyLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new PagerDutyLogSink(
+        var sink = new PagerDutyLogSink(
             routingKey: resolved.RoutingKey!,
             source: resolved.Source,
             component: resolved.Component,
@@ -79,5 +80,7 @@ public sealed class PagerDutyLogSinkProvider : ILogSinkProvider
             endpoint: resolved.Endpoint,
             dedupStrategy: resolved.DedupStrategy,
             customDetailsTemplate: resolved.CustomDetailsTemplate);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

@@ -10,6 +10,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.GenericWebhook.Providers;
 
@@ -70,11 +71,13 @@ public sealed class GenericWebhookSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new GenericWebhookLogSink(
+        var sink = new GenericWebhookLogSink(
             url: resolved.Url!,
             levelRegistry: levelRegistry,
             headers: resolved.Headers,
             contentType: resolved.ContentType,
             rules: _rules);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

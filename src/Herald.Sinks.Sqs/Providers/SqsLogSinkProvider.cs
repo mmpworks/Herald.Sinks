@@ -10,6 +10,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Sqs.Providers;
 
@@ -27,6 +28,8 @@ public sealed class SqsLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
-        return new SqsLogSink(definition.Host, RegionEndpoint.GetBySystemName(definition.Uri));
+        var sink = new SqsLogSink(definition.Host, RegionEndpoint.GetBySystemName(definition.Uri));
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

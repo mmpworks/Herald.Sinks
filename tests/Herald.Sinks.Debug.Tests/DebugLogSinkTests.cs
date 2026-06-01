@@ -43,13 +43,13 @@ public sealed class DebugLogSinkTests : IDisposable
     {
         var sink = new DebugLogSink();
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("user {Name} signed in", "user Alice signed in")
             .Build();
 
         sink.Log(evt);
 
-        _listener.LastLine.Should().Contain("[warn]");
+        _listener.LastLine.Should().Contain("[warning]");
         _listener.LastLine.Should().Contain("user Alice signed in");
     }
 

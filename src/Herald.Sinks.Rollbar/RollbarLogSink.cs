@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -20,7 +21,7 @@ namespace Herald.Sinks.Rollbar;
 /// Sink that reports log events to Rollbar via the public Items API.
 /// HTTP-only — no Rollbar SDK dependency.
 /// </summary>
-public sealed class RollbarLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class RollbarLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://api.rollbar.com/api/1/item/";
 
@@ -101,11 +102,11 @@ public sealed class RollbarLogSink : HeraldSinkBase, IDisposable, INetworkSink
 
     private static string MapLevel(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => "debug",
-        "info" or "notice" => "info",
-        "warn" => "warning",
+        "verbose" or "debug" => "debug",
+        "information" or "notice" => "info",
+        "warning" => "warning",
         "error" => "error",
-        "critical" or "security" => "critical",
+        "fatal" or "security" => "critical",
         _ => "info",
     };
 }

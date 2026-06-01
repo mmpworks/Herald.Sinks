@@ -25,16 +25,15 @@ internal static class SeqLevelMapper
     {
         return level.Key.ToLowerInvariant() switch
         {
-            "trace" => "Verbose",
+            "verbose" => "Verbose",
             "debug" => "Debug",
-            "info" => null,          // CLEF default
+            "information" => null,    // CLEF default
             "notice" => null,
             "metric" => null,
             "success" => null,
-            "warn" => "Warning",
+            "warning" => "Warning",
             "error" => "Error",
             "security" => "Error",
-            "critical" => "Fatal",
             "fatal" => "Fatal",
             _ => level.DisplayName
         };

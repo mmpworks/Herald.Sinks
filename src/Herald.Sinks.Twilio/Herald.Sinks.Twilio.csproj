@@ -15,4 +15,11 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Herald.Sinks.Twilio.Tests" />
   </ItemGroup>
+
+  <!-- Batching decorator: the provider wraps its sink with
+       BatchingLogSinkDecorator.Wrap so the producer never blocks on
+       delivery. Shared utility package, referenced like Herald.OSS. -->
+  <ItemGroup>
+    <ProjectReference Include="../Herald.Sinks.Batching/Herald.Sinks.Batching.csproj" />
+  </ItemGroup>
 </Project>

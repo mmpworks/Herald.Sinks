@@ -8,6 +8,7 @@ using System.IO;
 using System.Text.Json;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using StackExchange.Redis;
@@ -39,7 +40,7 @@ namespace Herald.Sinks.Redis;
 /// share the multiplexer's connection pool.
 /// </para>
 /// </remarks>
-public sealed class RedisLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class RedisLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly ISubscriber _subscriber;
     private readonly RedisChannel _channel;

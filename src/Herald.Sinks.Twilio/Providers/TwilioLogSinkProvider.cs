@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Twilio.Providers;
 
@@ -85,10 +86,12 @@ public sealed class TwilioLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new TwilioLogSink(
+        var sink = new TwilioLogSink(
             accountSid: resolved.AccountSid!,
             authToken: resolved.AuthToken!,
             fromNumber: resolved.FromNumber!,
             toNumber: resolved.ToNumber!);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

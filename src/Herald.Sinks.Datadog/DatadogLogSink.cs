@@ -220,14 +220,12 @@ public sealed class DatadogLogSink : HeraldSinkBase, IBatchedLogSink, IDisposabl
         // Datadog's known log statuses; unknowns fall to "info" silently.
         return level.Key.ToLowerInvariant() switch
         {
-            "trace" => "debug",
+            "verbose" => "debug",
             "debug" => "debug",
-            "info" => "info",
+            "information" => "info",
             "notice" => "notice",
-            "warn" => "warn",
             "warning" => "warn",
             "error" => "error",
-            "critical" => "critical",
             "alert" => "alert",
             "fatal" => "emergency",
             "emergency" => "emergency",

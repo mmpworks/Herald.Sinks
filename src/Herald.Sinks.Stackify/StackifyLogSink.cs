@@ -144,11 +144,11 @@ public sealed class StackifyLogSink : HeraldSinkBase, IBatchedLogSink, IDisposab
 
     private static string MapLevel(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => "DEBUG",
-        "info" or "notice" or "success" => "INFO",
-        "warn" => "WARN",
+        "verbose" or "debug" => "DEBUG",
+        "information" or "notice" or "success" => "INFO",
+        "warning" => "WARN",
         "error" => "ERROR",
-        "critical" or "security" => "FATAL",
+        "fatal" or "security" => "FATAL",
         _ => "INFO",
     };
 }

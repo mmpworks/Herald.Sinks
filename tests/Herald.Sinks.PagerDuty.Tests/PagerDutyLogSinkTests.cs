@@ -27,7 +27,7 @@ public sealed class PagerDutyLogSinkTests
         using var sink = new PagerDutyLogSink(RoutingKey, source: "node-a", httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Critical)
+            .WithLevel(KnownLogLevels.Fatal)
             .WithMessage("Database offline", "Database offline")
             .Build();
 
@@ -59,11 +59,10 @@ public sealed class PagerDutyLogSinkTests
     }
 
     [Theory]
-    [InlineData("trace", "info")]
-    [InlineData("info", "info")]
-    [InlineData("warn", "warning")]
+    [InlineData("verbose", "info")]
+    [InlineData("information", "info")]
+    [InlineData("warning", "warning")]
     [InlineData("error", "error")]
-    [InlineData("critical", "critical")]
     [InlineData("fatal", "critical")]
     public void Severity_maps_herald_levels_to_pagerduty_values(string heraldKey, string expected)
     {

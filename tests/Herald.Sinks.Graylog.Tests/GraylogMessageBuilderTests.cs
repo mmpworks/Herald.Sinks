@@ -20,7 +20,7 @@ public sealed class GraylogMessageBuilderTests
     public void Builds_gelf_1_1_envelope_with_required_fields()
     {
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("hi there")
             .Build();
 
@@ -47,13 +47,13 @@ public sealed class GraylogMessageBuilderTests
     {
         var level = levelKey switch
         {
-            "trace" => KnownLogLevels.Trace,
+            "trace" => KnownLogLevels.Verbose,
             "debug" => KnownLogLevels.Debug,
-            "info" => KnownLogLevels.Info,
+            "info" => KnownLogLevels.Information,
             "notice" => KnownLogLevels.Notice,
-            "warn" => KnownLogLevels.Warn,
+            "warn" => KnownLogLevels.Warning,
             "error" => KnownLogLevels.Error,
-            "critical" => KnownLogLevels.Critical,
+            "critical" => KnownLogLevels.Fatal,
             "security" => KnownLogLevels.Security,
             _ => throw new InvalidOperationException(),
         };

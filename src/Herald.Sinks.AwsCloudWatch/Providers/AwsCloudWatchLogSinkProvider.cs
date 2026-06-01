@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AwsCloudWatch.Providers;
 
@@ -45,12 +46,14 @@ public sealed class AwsCloudWatchLogSinkProvider : ILogSinkProvider
         var (group, stream) = ParseUri(definition.Uri);
         var autoCreate = string.Equals(definition.Alias, "auto-create", StringComparison.OrdinalIgnoreCase);
 
-        return new AwsCloudWatchLogSink(
+        var sink = new AwsCloudWatchLogSink(
             logGroupName: group,
             logStreamName: stream,
             regionSystemName: definition.Host,
             autoCreateLogGroup: autoCreate,
             autoCreateLogStream: autoCreate);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     private static (string Group, string Stream) ParseUri(string uri)

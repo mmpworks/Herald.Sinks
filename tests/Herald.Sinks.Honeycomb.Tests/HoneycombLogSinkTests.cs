@@ -28,7 +28,7 @@ public sealed class HoneycombLogSinkTests
         using var sink = new HoneycombLogSink(ApiKey, Dataset, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("Low disk on {host}", "Low disk on nodeA")
             .Build();
 
@@ -46,7 +46,7 @@ public sealed class HoneycombLogSinkTests
         var data = entry.GetProperty("data");
         data.GetProperty("message").GetString().Should().Be("Low disk on nodeA");
         data.GetProperty("messageTemplate").GetString().Should().Be("Low disk on {host}");
-        data.GetProperty("level").GetString().Should().Be("warn");
+        data.GetProperty("level").GetString().Should().Be("warning");
         data.GetProperty("category").GetString().Should().NotBeNullOrWhiteSpace();
     }
 

@@ -53,7 +53,7 @@ public sealed class UnityConsoleLogSinkTests
     {
         var sink = CreateSink();
         sink.Log(LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("hello unity")
             .Build());
 
@@ -77,7 +77,7 @@ public sealed class UnityConsoleLogSinkTests
     public void Warn_level_routes_to_warn()
     {
         var sink = CreateSink();
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warn).Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warning).Build());
 
         _log.Should().BeEmpty();
         _warn.Should().ContainSingle();
@@ -99,7 +99,7 @@ public sealed class UnityConsoleLogSinkTests
     public void Critical_level_routes_to_error()
     {
         var sink = CreateSink();
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Critical).Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Fatal).Build());
 
         _error.Should().ContainSingle();
     }
@@ -109,7 +109,7 @@ public sealed class UnityConsoleLogSinkTests
     {
         var sink = CreateSink(category: "GameLoop");
         sink.Log(LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("frame done")
             .Build());
 

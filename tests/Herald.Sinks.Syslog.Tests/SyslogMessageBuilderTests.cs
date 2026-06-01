@@ -27,7 +27,7 @@ public sealed class SyslogMessageBuilderTests
     [Fact]
     public void Rfc5424_emits_version_1_and_priority()
     {
-        var evt = LogEventBuilder.Create().WithTime(FixedTime).WithLevel(KnownLogLevels.Info).Build();
+        var evt = LogEventBuilder.Create().WithTime(FixedTime).WithLevel(KnownLogLevels.Information).Build();
 
         var line = SyslogMessageBuilder.Build(
             evt, SyslogFormat.Rfc5424, SyslogFacility.User,
@@ -102,13 +102,13 @@ public sealed class SyslogMessageBuilderTests
     {
         var level = levelKey switch
         {
-            "trace" => KnownLogLevels.Trace,
+            "trace" => KnownLogLevels.Verbose,
             "debug" => KnownLogLevels.Debug,
-            "info" => KnownLogLevels.Info,
+            "info" => KnownLogLevels.Information,
             "notice" => KnownLogLevels.Notice,
-            "warn" => KnownLogLevels.Warn,
+            "warn" => KnownLogLevels.Warning,
             "error" => KnownLogLevels.Error,
-            "critical" => KnownLogLevels.Critical,
+            "critical" => KnownLogLevels.Fatal,
             "security" => KnownLogLevels.Security,
             _ => throw new InvalidOperationException("unexpected level key"),
         };
@@ -129,7 +129,7 @@ public sealed class SyslogMessageBuilderTests
     [Fact]
     public void Facility_is_used_in_priority_calculation()
     {
-        var evt = LogEventBuilder.Create().WithTime(FixedTime).WithLevel(KnownLogLevels.Info).Build();
+        var evt = LogEventBuilder.Create().WithTime(FixedTime).WithLevel(KnownLogLevels.Information).Build();
 
         var local3 = SyslogMessageBuilder.Build(
             evt, SyslogFormat.Rfc5424, SyslogFacility.Local3,

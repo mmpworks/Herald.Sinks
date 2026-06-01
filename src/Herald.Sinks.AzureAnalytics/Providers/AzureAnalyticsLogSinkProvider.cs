@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AzureAnalytics.Providers;
 
@@ -42,9 +43,11 @@ public sealed class AzureAnalyticsLogSinkProvider : ILogSinkProvider
 
         var logType = string.IsNullOrWhiteSpace(definition.Host) ? "HeraldLog" : definition.Host;
 
-        return new AzureAnalyticsLogSink(
+        var sink = new AzureAnalyticsLogSink(
             workspaceId: definition.Uri,
             workspaceKey: definition.Alias,
             logType: logType);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Levels;
 using MMP.Herald.Pipeline;
@@ -20,7 +21,7 @@ namespace Herald.Sinks.Slack;
 /// Best used for high-severity alerts (Error, Critical) rather than all events.
 /// Combine with a LevelFilter or predicate to limit volume.
 /// </summary>
-public sealed class SlackWebhookLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class SlackWebhookLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     internal static readonly HeraldEdition MinEdition = HeraldEdition.Community;
 
@@ -75,12 +76,12 @@ public sealed class SlackWebhookLogSink : HeraldSinkBase, IDisposable, INetworkS
     private static string MapLevelToEmoji(LogLevel level) {
         return level.Key.ToLowerInvariant() switch
         {
-            "trace" or "debug" => ":mag:",
-            "info" or "notice" => ":information_source:",
+            "verbose" or "debug" => ":mag:",
+            "information" or "notice" => ":information_source:",
             "success" => ":white_check_mark:",
-            "warn" => ":warning:",
+            "warning" => ":warning:",
             "error" => ":x:",
-            "critical" or "fatal" => ":fire:",
+            "fatal" => ":fire:",
             "security" => ":lock:",
             _ => ":speech_balloon:"
         };

@@ -76,16 +76,15 @@ public sealed class ApplicationInsightsConnectionStringTests
 public sealed class ApplicationInsightsSeverityMapperTests
 {
     [Theory]
-    [InlineData("trace", ApplicationInsightsSeverityMapper.Verbose)]
+    [InlineData("verbose", ApplicationInsightsSeverityMapper.Verbose)]
     [InlineData("debug", ApplicationInsightsSeverityMapper.Verbose)]
-    [InlineData("info", ApplicationInsightsSeverityMapper.Information)]
+    [InlineData("information", ApplicationInsightsSeverityMapper.Information)]
     [InlineData("notice", ApplicationInsightsSeverityMapper.Information)]
     [InlineData("metric", ApplicationInsightsSeverityMapper.Information)]
     [InlineData("success", ApplicationInsightsSeverityMapper.Information)]
-    [InlineData("warn", ApplicationInsightsSeverityMapper.Warning)]
+    [InlineData("warning", ApplicationInsightsSeverityMapper.Warning)]
     [InlineData("error", ApplicationInsightsSeverityMapper.Error)]
     [InlineData("security", ApplicationInsightsSeverityMapper.Error)]
-    [InlineData("critical", ApplicationInsightsSeverityMapper.Critical)]
     [InlineData("fatal", ApplicationInsightsSeverityMapper.Critical)]
     public void MapSeverityLevel_projects_each_canonical_level(string key, int expected)
     {
@@ -118,7 +117,7 @@ public sealed class ApplicationInsightsLogSinkTests
         using var sink = new ApplicationInsightsLogSink(ConnectionString, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("User {Name} signed in", "User Alice signed in")
             .Build();
 

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.BetterStack.Providers;
 
@@ -25,6 +26,8 @@ public sealed class BetterStackLogSinkProvider : ILogSinkProvider
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
-        return new BetterStackLogSink(definition.Uri);
+        var sink = new BetterStackLogSink(definition.Uri);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

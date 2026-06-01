@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Mezmo.Providers;
 
@@ -26,6 +27,8 @@ public sealed class MezmoLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
-        return new MezmoLogSink(definition.Uri, definition.Host);
+        var sink = new MezmoLogSink(definition.Uri, definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

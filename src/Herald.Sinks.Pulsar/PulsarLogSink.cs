@@ -12,6 +12,7 @@ using DotPulsar.Abstractions;
 using DotPulsar.Extensions;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -22,7 +23,7 @@ namespace Herald.Sinks.Pulsar;
 /// topic via DotPulsar. Supports persistent and non-persistent topics
 /// with the same code path; the topic URL determines durability.
 /// </summary>
-public sealed class PulsarLogSink : HeraldSinkBase, IAsyncDisposable, INetworkSink
+public sealed class PulsarLogSink : BatchingNetworkSinkBase, IAsyncDisposable, INetworkSink
 {
     private readonly IPulsarClient _client;
     private readonly IProducer<byte[]> _producer;

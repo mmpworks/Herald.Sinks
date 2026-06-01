@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.SQLite.Providers;
 
@@ -27,8 +28,10 @@ public sealed class SQLiteLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
-        return new SQLiteLogSink(
+        var sink = new SQLiteLogSink(
             connectionString: definition.Uri,
             tableName: string.IsNullOrWhiteSpace(definition.Host) ? "logs" : definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

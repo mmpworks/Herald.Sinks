@@ -50,7 +50,7 @@ public static class CanonicalEvent
 
     public static LogEvent Build() =>
         LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage(Template, Rendered)
             .WithTime(Instant)
             .WithProperty("UserId", UserId)

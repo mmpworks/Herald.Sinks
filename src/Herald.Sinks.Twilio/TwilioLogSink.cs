@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -21,7 +22,7 @@ namespace Herald.Sinks.Twilio;
 /// API. Use only for paging-grade events — SMS costs and character
 /// limits make this unfit for normal log volume.
 /// </summary>
-public sealed class TwilioLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class TwilioLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private const int SmsMaxLength = 1500;
 

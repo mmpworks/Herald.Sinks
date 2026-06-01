@@ -44,7 +44,7 @@ public sealed class DynatraceLogSinkTests
         var client = new HttpClient(handler);
         using var sink = new DynatraceLogSink(EnvUrl, Token, client);
 
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warn).WithMessage("hi").Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warning).WithMessage("hi").Build());
 
         handler.RequestCount.Should().Be(1);
         var req = handler.Requests[0];

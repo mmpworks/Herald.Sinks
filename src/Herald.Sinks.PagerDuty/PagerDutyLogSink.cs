@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -66,7 +67,7 @@ namespace Herald.Sinks.PagerDuty;
 /// reaching this sink, but the mapping keeps the payload valid.
 /// </para>
 /// </remarks>
-public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class PagerDutyLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     public const string EnqueueEndpoint = "https://events.pagerduty.com/v2/enqueue";
 
@@ -230,9 +231,9 @@ public sealed class PagerDutyLogSink : HeraldSinkBase, IDisposable, INetworkSink
     {
         return heraldKey.ToLowerInvariant() switch
         {
-            "critical" or "fatal" or "emergency" or "alert" => "critical",
+            "fatal" or "emergency" or "alert" => "critical",
             "error" or "security" => "error",
-            "warn" or "warning" => "warning",
+            "warning" => "warning",
             _ => "info",
         };
     }

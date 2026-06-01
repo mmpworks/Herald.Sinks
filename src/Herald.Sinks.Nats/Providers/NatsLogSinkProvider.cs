@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Nats.Providers;
 
@@ -26,6 +27,7 @@ public sealed class NatsLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         var subject = string.IsNullOrWhiteSpace(definition.Host) ? "herald.logs" : definition.Host;
-        return new NatsLogSink(definition.Uri, subject);
+        var sink = new NatsLogSink(definition.Uri, subject);
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

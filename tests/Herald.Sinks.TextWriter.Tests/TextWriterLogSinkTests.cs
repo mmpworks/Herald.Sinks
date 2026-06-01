@@ -25,14 +25,14 @@ public sealed class TextWriterLogSinkTests
         using var sink = new TextWriterLogSink(writer);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("user {Name} signed in", "user Alice signed in")
             .Build();
 
         sink.Log(evt);
 
         var output = writer.ToString();
-        output.Should().Contain("[warn]");
+        output.Should().Contain("[warning]");
         output.Should().Contain("user Alice signed in");
         output.Should().EndWith(Environment.NewLine);
     }

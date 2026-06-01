@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Email.Providers;
 
@@ -85,7 +86,7 @@ public sealed class EmailLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new EmailLogSink(
+        var sink = new EmailLogSink(
             smtpHost: resolved.SmtpHost!,
             smtpPort: resolved.SmtpPort,
             fromAddress: resolved.FromAddress!,
@@ -94,5 +95,7 @@ public sealed class EmailLogSinkProvider : ILogSinkProvider
             password: resolved.Password,
             useStartTls: resolved.UseStartTls,
             subjectTemplate: resolved.SubjectTemplate);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

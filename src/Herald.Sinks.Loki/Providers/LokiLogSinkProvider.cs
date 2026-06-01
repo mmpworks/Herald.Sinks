@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Loki.Providers;
 
@@ -66,8 +67,10 @@ public sealed class LokiLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new LokiLogSink(
+        var sink = new LokiLogSink(
             endpoint: resolved.Endpoint!,
             bearerToken: resolved.BearerToken);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

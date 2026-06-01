@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -21,7 +22,7 @@ namespace Herald.Sinks.Telegram;
 /// One sendMessage per event; truncates content at Telegram's 4000-char
 /// safe ceiling (the hard limit is 4096).
 /// </summary>
-public sealed class TelegramLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class TelegramLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private const int TelegramMaxLength = 4000;
 

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Splunk.Providers;
 
@@ -43,9 +44,11 @@ public sealed class SplunkHecLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
 
-        return new SplunkHecLogSink(
+        var sink = new SplunkHecLogSink(
             hecUrl: definition.Uri,
             token: definition.Alias,
             host: definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

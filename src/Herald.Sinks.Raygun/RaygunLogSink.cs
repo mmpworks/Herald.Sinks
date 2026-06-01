@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 
@@ -30,7 +31,7 @@ namespace Herald.Sinks.Raygun;
 /// bag.
 /// </para>
 /// </remarks>
-public sealed class RaygunLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class RaygunLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private static readonly Uri Endpoint = new("https://api.raygun.com/entries");
 

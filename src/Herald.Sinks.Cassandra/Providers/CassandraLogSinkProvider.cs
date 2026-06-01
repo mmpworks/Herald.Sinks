@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Cassandra.Providers;
 
@@ -39,7 +40,9 @@ public sealed class CassandraLogSinkProvider : ILogSinkProvider
 
         var contactPoints = definition.Uri.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var (keyspace, table) = ParseHost(definition.Host);
-        return new CassandraLogSink(contactPoints, keyspace, table);
+        var sink = new CassandraLogSink(contactPoints, keyspace, table);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     private static (string Keyspace, string Table) ParseHost(string? host)

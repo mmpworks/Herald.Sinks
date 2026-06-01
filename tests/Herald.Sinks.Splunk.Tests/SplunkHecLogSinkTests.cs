@@ -18,12 +18,11 @@ namespace Herald.Sinks.Splunk.Tests;
 public sealed class SplunkLevelMapperTests
 {
     [Theory]
-    [InlineData("trace", "TRACE")]
+    [InlineData("verbose", "TRACE")]
     [InlineData("debug", "DEBUG")]
-    [InlineData("info", "INFO")]
-    [InlineData("warn", "WARN")]
+    [InlineData("information", "INFO")]
+    [InlineData("warning", "WARN")]
     [InlineData("error", "ERROR")]
-    [InlineData("critical", "FATAL")]
     [InlineData("fatal", "FATAL")]
     public void MapLevel_projects_canonical_levels(string key, string expected)
     {
@@ -45,7 +44,7 @@ public sealed class SplunkHecLogSinkTests
         using var sink = new SplunkHecLogSink(HecUrl, Token, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("Low disk on {host}", "Low disk on nodeA")
             .Build();
 

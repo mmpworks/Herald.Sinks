@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Rollbar.Providers;
 
@@ -26,6 +27,7 @@ public sealed class RollbarLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         var environment = string.IsNullOrWhiteSpace(definition.Host) ? "production" : definition.Host;
-        return new RollbarLogSink(definition.Uri, environment);
+        var sink = new RollbarLogSink(definition.Uri, environment);
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

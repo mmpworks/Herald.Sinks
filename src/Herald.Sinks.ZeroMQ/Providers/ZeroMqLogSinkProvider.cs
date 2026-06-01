@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.ZeroMQ.Providers;
 
@@ -43,6 +44,7 @@ public sealed class ZeroMqLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
         var topic = string.IsNullOrWhiteSpace(definition.Host) ? "herald-logs" : definition.Host;
-        return new ZeroMqLogSink(definition.Uri, topic);
+        var sink = new ZeroMqLogSink(definition.Uri, topic);
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

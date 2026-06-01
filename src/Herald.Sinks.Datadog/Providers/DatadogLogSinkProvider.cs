@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Datadog.Providers;
 
@@ -75,9 +76,11 @@ public sealed class DatadogLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new DatadogLogSink(
+        var sink = new DatadogLogSink(
             apiKey: resolved.ApiKey!,
             service: resolved.Service!,
             endpoint: resolved.Endpoint);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

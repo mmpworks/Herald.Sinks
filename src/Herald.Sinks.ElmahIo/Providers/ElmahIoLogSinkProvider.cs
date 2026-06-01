@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.ElmahIo.Providers;
 
@@ -26,6 +27,8 @@ public sealed class ElmahIoLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
-        return new ElmahIoLogSink(apiKey: definition.Alias, logId: definition.Host);
+        var sink = new ElmahIoLogSink(apiKey: definition.Alias, logId: definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

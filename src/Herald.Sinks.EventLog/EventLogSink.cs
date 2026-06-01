@@ -123,8 +123,8 @@ public sealed class EventLogSink : HeraldSinkBase
         // conservative default that won't trigger Event Log's alert rules.
         return level.Key switch
         {
-            "error" or "critical" or "security" => SysEntryType.Error,
-            "warn" => SysEntryType.Warning,
+            "error" or "fatal" or "security" => SysEntryType.Error,
+            "warning" => SysEntryType.Warning,
             _ => SysEntryType.Information,
         };
     }

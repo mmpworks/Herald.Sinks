@@ -175,7 +175,10 @@ public sealed class ElasticsearchSinkRuntimeConfigTests
             {
                 ["base_url"] = "http://es:9200",
                 ["username"] = "u",
-                ["password"] = "p"
+                ["password"] = "p",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // the cast below sees the bare sink, not the batching wrapper.
+                ["batch_size"] = 1
             });
         var sink = (ElasticsearchLogSink)new ElasticsearchSinkProvider().CreateSink(def, _registry, null!);
 

@@ -142,7 +142,10 @@ public sealed class PagerDutySinkRuntimeConfigTests
             Name: "pd", Kind: "pagerduty",
             Properties: new Dictionary<string, object?>
             {
-                ["routing_key"] = "r"
+                ["routing_key"] = "r",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]  = 1
             });
         var sink = new PagerDutyLogSinkProvider().CreateSink(def, null!, null!);
         sink.Should().BeOfType<PagerDutyLogSink>();

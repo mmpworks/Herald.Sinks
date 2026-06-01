@@ -41,7 +41,7 @@ public sealed class ElasticsearchLogSinkTests
         using var sink = new ElasticsearchLogSink("http://localhost:9200", _registry, httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("payload", "payload")
             .Build();
 

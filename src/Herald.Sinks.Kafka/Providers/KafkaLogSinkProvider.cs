@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Kafka.Providers;
 
@@ -88,12 +89,14 @@ public sealed class KafkaLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new KafkaLogSink(
+        var sink = new KafkaLogSink(
             bootstrapServers: resolved.BootstrapServers!,
             topic: resolved.Topic!,
             keyAccessor: null,
             saslMechanism: resolved.SaslMechanism,
             saslUsername: resolved.SaslUsername,
             saslPassword: resolved.SaslPassword);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Coralogix.Providers;
 
@@ -80,11 +81,13 @@ public sealed class CoralogixLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new CoralogixLogSink(
+        var sink = new CoralogixLogSink(
             privateKey: resolved.PrivateKey!,
             applicationName: resolved.ApplicationName!,
             subsystemName: resolved.SubsystemName!,
             endpoint: resolved.Endpoint,
             preserveProperties: resolved.PreserveProperties);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

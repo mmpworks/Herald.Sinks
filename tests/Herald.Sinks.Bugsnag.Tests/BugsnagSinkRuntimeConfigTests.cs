@@ -88,7 +88,10 @@ public sealed class BugsnagSinkRuntimeConfigTests
             Properties: new Dictionary<string, object?>
             {
                 ["api_key"]       = "bs-key",
-                ["release_stage"] = "production"
+                ["release_stage"] = "production",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]    = 1
             });
 
         var sink = new BugsnagLogSinkProvider().CreateSink(def, null!, null!);
@@ -155,7 +158,10 @@ public sealed class BugsnagSinkRuntimeConfigTests
             Properties: new Dictionary<string, object?>
             {
                 ["api_key"]       = "bs-key",
-                ["release_stage"] = "production"
+                ["release_stage"] = "production",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]    = 1
             });
 
         // CreateSink builds its own HttpClient when not supplied; the

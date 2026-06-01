@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using NetMQ;
 using NetMQ.Sockets;
@@ -61,7 +62,7 @@ public enum ZeroMqSocketKind
 /// for durability under load.
 /// </para>
 /// </remarks>
-public sealed class ZeroMqLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class ZeroMqLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly NetMQQueue<string> _queue;
     private readonly NetMQPoller _poller;

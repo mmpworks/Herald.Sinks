@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.NewRelicLogs.Providers;
 
@@ -27,10 +28,12 @@ public sealed class NewRelicLogsLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
 
-        return new NewRelicLogsLogSink(
+        var sink = new NewRelicLogsLogSink(
             licenseKey: definition.Alias,
             endpoint: string.IsNullOrWhiteSpace(definition.Uri)
                 ? "https://log-api.newrelic.com/log/v1"
                 : definition.Uri);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

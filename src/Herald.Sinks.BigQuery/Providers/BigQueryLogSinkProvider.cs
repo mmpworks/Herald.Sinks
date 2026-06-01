@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.BigQuery.Providers;
 
@@ -28,7 +29,9 @@ public sealed class BigQueryLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
 
         var (dataset, table) = ParseHost(definition.Host);
-        return new BigQueryLogSink(definition.Uri, dataset, table);
+        var sink = new BigQueryLogSink(definition.Uri, dataset, table);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     private static (string Dataset, string Table) ParseHost(string host)

@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -29,7 +30,7 @@ namespace Herald.Sinks.Bugsnag;
 /// rate-limited by Bugsnag itself.
 /// </para>
 /// </remarks>
-public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class BugsnagLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private const string DefaultEndpoint = "https://notify.bugsnag.com/";
 
@@ -149,8 +150,8 @@ public sealed class BugsnagLogSink : HeraldSinkBase, IDisposable, INetworkSink
 
     private static string MapSeverity(string levelKey) => levelKey switch
     {
-        "error" or "critical" or "security" => "error",
-        "warn" => "warning",
+        "error" or "fatal" or "security" => "error",
+        "warning" => "warning",
         _ => "info",
     };
 }

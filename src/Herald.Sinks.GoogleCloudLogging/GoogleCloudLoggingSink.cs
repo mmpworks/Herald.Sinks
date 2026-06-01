@@ -150,12 +150,12 @@ public sealed class GoogleCloudLoggingSink : HeraldSinkBase, IBatchedLogSink, IN
 
     private static LogSeverity MapSeverity(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => LogSeverity.Debug,
-        "info" => LogSeverity.Info,
+        "verbose" or "debug" => LogSeverity.Debug,
+        "information" => LogSeverity.Info,
         "notice" or "success" => LogSeverity.Notice,
-        "warn" => LogSeverity.Warning,
+        "warning" => LogSeverity.Warning,
         "error" => LogSeverity.Error,
-        "critical" => LogSeverity.Critical,
+        "fatal" => LogSeverity.Critical,
         "security" => LogSeverity.Alert,
         _ => LogSeverity.Default,
     };

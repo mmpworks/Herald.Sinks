@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Syslog.Providers;
 
@@ -83,7 +84,7 @@ public sealed class SyslogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new SyslogSink(
+        var sink = new SyslogSink(
             host: resolved.Host!,
             port: resolved.Port,
             format: resolved.Format,
@@ -94,5 +95,7 @@ public sealed class SyslogSinkProvider : ILogSinkProvider
             processId: resolved.ProcessId,
             structuredDataId: resolved.StructuredDataId,
             structuredDataEnabled: resolved.StructuredDataEnabled);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Raygun.Providers;
 
@@ -25,6 +26,7 @@ public sealed class RaygunLogSinkProvider : ILogSinkProvider
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
-        return new RaygunLogSink(apiKey: definition.Alias, appVersion: definition.Host);
+        var sink = new RaygunLogSink(apiKey: definition.Alias, appVersion: definition.Host);
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

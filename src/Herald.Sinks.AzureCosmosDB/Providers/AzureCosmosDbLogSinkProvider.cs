@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AzureCosmosDB.Providers;
 
@@ -40,10 +41,12 @@ public sealed class AzureCosmosDbLogSinkProvider : ILogSinkProvider
         var db = definition.Host[..slash].Trim();
         var container = definition.Host[(slash + 1)..].Trim();
 
-        return new AzureCosmosDbLogSink(
+        var sink = new AzureCosmosDbLogSink(
             endpoint: definition.Uri,
             authKey: definition.Alias,
             databaseName: db,
             containerName: container);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

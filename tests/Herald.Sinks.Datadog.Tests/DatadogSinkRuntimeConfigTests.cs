@@ -133,7 +133,10 @@ public sealed class DatadogSinkRuntimeConfigTests
             {
                 ["endpoint"] = "https://bag.example.com",
                 ["api_key"]  = "bag-key",
-                ["service"]  = "bag-service"
+                ["service"]  = "bag-service",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"] = 1
             });
 
         var sink = new DatadogLogSinkProvider().CreateSink(def, null!, null!);

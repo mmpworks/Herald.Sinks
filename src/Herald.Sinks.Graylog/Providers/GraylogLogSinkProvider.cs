@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Graylog.Providers;
 
@@ -31,9 +32,11 @@ public sealed class GraylogLogSinkProvider : ILogSinkProvider
             ? GraylogTransport.Tcp
             : GraylogTransport.Http;
 
-        return new GraylogLogSink(
+        var sink = new GraylogLogSink(
             endpoint: definition.Uri,
             transport: transport,
             sourceHost: definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

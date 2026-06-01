@@ -18,12 +18,11 @@ namespace Herald.Sinks.Seq.Tests;
 public sealed class SeqLevelMapperTests
 {
     [Theory]
-    [InlineData("trace", "Verbose")]
+    [InlineData("verbose", "Verbose")]
     [InlineData("debug", "Debug")]
-    [InlineData("warn", "Warning")]
+    [InlineData("warning", "Warning")]
     [InlineData("error", "Error")]
     [InlineData("security", "Error")]
-    [InlineData("critical", "Fatal")]
     [InlineData("fatal", "Fatal")]
     public void MapLevel_projects_each_canonical_level(string key, string expected)
     {
@@ -32,7 +31,7 @@ public sealed class SeqLevelMapperTests
     }
 
     [Theory]
-    [InlineData("info")]
+    [InlineData("information")]
     [InlineData("notice")]
     [InlineData("metric")]
     [InlineData("success")]
@@ -82,7 +81,7 @@ public sealed class SeqLogSinkTests
         var client = new HttpClient(handler);
         using var sink = new SeqLogSink(Server, httpClient: client);
 
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Info).Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Information).Build());
 
         var body = handler.LastRequestBodyString!.TrimEnd('\n');
         var doc = JsonDocument.Parse(body);

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Elasticsearch.Providers;
 
@@ -67,7 +68,7 @@ public sealed class ElasticsearchSinkProvider : ILogSinkProvider
 
         var schema = ResolveSchema(resolved.Schema, definition.Name);
 
-        return new ElasticsearchLogSink(
+        var sink = new ElasticsearchLogSink(
             baseUrl: resolved.BaseUrl!,
             levelRegistry: levelRegistry,
             indexPrefix: resolved.IndexPrefix,
@@ -77,6 +78,8 @@ public sealed class ElasticsearchSinkProvider : ILogSinkProvider
             schema: schema,
             ecsVersion: ValidateEcsVersion(resolved.EcsVersion),
             eventDataset: resolved.EventDataset);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     // Map the raw schema token to the enum, case-insensitive. An unknown

@@ -179,11 +179,11 @@ public sealed class CoralogixLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
 
     private static int MapSeverity(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => 1,
-        "info" or "notice" => 3,
-        "warn" => 4,
+        "verbose" or "debug" => 1,
+        "information" or "notice" => 3,
+        "warning" => 4,
         "error" => 5,
-        "critical" or "security" => 6,
+        "fatal" or "security" => 6,
         _ => 3,
     };
 }

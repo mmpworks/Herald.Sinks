@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Couchbase.Providers;
 
@@ -91,12 +92,14 @@ public sealed class CouchbaseLogSinkProvider : ILogSinkProvider
                 nameof(definition));
         }
 
-        return new CouchbaseLogSink(
+        var sink = new CouchbaseLogSink(
             connectionString: resolved.ConnectionString!,
             username: resolved.Username!,
             password: resolved.Password!,
             bucketName: resolved.Bucket!,
             scopeName: resolved.Scope,
             collectionName: resolved.Collection);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

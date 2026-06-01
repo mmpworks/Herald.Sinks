@@ -105,7 +105,10 @@ public sealed class InfluxDBSinkRuntimeConfigTests
                 ["server_url"]   = "https://influx.example.com",
                 ["organization"] = "acme",
                 ["bucket"]       = "logs",
-                ["token"]        = "tok"
+                ["token"]        = "tok",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]   = 1
             });
 
         var sink = new InfluxDBLogSinkProvider().CreateSink(def, null!, null!);

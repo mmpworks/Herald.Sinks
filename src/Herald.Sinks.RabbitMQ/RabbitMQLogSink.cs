@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 using RabbitMQ.Client;
@@ -42,7 +43,7 @@ namespace Herald.Sinks.RabbitMQ;
 /// events to every bound queue.
 /// </para>
 /// </remarks>
-public sealed class RabbitMQLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class RabbitMQLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly string _exchange;
     private readonly string _routingKey;

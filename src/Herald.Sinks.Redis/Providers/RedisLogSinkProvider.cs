@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Redis.Providers;
 
@@ -38,6 +39,7 @@ public sealed class RedisLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
         var channel = string.IsNullOrWhiteSpace(definition.Host) ? "herald-logs" : definition.Host;
-        return new RedisLogSink(definition.Uri, channel);
+        var sink = new RedisLogSink(definition.Uri, channel);
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

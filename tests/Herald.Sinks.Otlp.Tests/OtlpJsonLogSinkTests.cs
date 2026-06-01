@@ -30,7 +30,7 @@ public sealed class OtlpJsonLogSinkTests
             httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("OTLP test")
             .Build();
 

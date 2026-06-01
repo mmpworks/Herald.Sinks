@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Stackify.Providers;
 
@@ -25,9 +26,11 @@ public sealed class StackifyLogSinkProvider : ILogSinkProvider
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
-        return new StackifyLogSink(
+        var sink = new StackifyLogSink(
             apiKey: definition.Alias,
             appName: string.IsNullOrWhiteSpace(definition.Host) ? "herald" : definition.Host,
             environmentName: string.IsNullOrWhiteSpace(definition.Uri) ? "production" : definition.Uri);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

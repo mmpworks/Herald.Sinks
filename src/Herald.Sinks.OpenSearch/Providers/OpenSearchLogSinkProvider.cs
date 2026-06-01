@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.OpenSearch.Providers;
 
@@ -27,12 +28,14 @@ public sealed class OpenSearchLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
-        return new OpenSearchLogSink(
+        var sink = new OpenSearchLogSink(
             endpoint: definition.Uri,
             indexNameTemplate: string.IsNullOrWhiteSpace(definition.Host)
                 ? "herald-logs-{0:yyyy-MM-dd}"
                 : definition.Host,
             username: definition.Alias,
             password: null);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

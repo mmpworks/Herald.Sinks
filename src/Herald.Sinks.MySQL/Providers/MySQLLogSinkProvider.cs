@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.MySQL.Providers;
 
@@ -29,9 +30,11 @@ public sealed class MySQLLogSinkProvider : ILogSinkProvider
 
         var autoCreate = string.Equals(definition.Alias, "auto-create", StringComparison.OrdinalIgnoreCase);
 
-        return new MySQLLogSink(
+        var sink = new MySQLLogSink(
             connectionString: definition.Uri,
             tableName: string.IsNullOrWhiteSpace(definition.Host) ? "logs" : definition.Host,
             autoCreateTable: autoCreate);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

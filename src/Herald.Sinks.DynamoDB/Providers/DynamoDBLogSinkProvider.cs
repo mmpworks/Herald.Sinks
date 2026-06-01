@@ -10,6 +10,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.DynamoDB.Providers;
 
@@ -40,6 +41,8 @@ public sealed class DynamoDBLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
 
         var region = RegionEndpoint.GetBySystemName(definition.Uri);
-        return new DynamoDBLogSink(definition.Host, region);
+        var sink = new DynamoDBLogSink(definition.Host, region);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

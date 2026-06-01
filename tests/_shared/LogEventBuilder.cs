@@ -16,7 +16,7 @@ namespace MMP.Herald.Tests.Helpers;
 public sealed class LogEventBuilder
 {
     private DateTimeOffset _time = new(2025, 1, 15, 12, 0, 0, TimeSpan.Zero);
-    private LogLevel _level = KnownLogLevels.Info;
+    private LogLevel _level = KnownLogLevels.Information;
     private LogCategory _category = LogCategory.App;
     private string _messageTemplate = "Test message";
     private string _message = "Test message";

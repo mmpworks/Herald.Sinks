@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Services;
@@ -51,7 +52,7 @@ namespace Herald.Sinks.Sentry;
 /// different host — pass the full DSN and everything else works as-is.
 /// </para>
 /// </remarks>
-public sealed class SentryLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class SentryLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly Uri _storeEndpoint;
     private readonly string _authHeader;
@@ -243,11 +244,11 @@ public sealed class SentryLogSink : HeraldSinkBase, IDisposable, INetworkSink
         // Sentry accepts debug / info / warning / error / fatal.
         return heraldKey.ToLowerInvariant() switch
         {
-            "trace" or "debug" => "debug",
-            "info" or "notice" or "success" or "metric" => "info",
-            "warn" or "warning" => "warning",
+            "verbose" or "debug" => "debug",
+            "information" or "notice" or "success" or "metric" => "info",
+            "warning" => "warning",
             "error" or "security" => "error",
-            "critical" or "fatal" or "alert" or "emergency" => "fatal",
+            "fatal" or "alert" or "emergency" => "fatal",
             _ => "info",
         };
     }

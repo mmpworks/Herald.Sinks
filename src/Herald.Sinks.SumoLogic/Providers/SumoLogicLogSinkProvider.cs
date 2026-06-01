@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.SumoLogic.Providers;
 
@@ -25,9 +26,11 @@ public sealed class SumoLogicLogSinkProvider : ILogSinkProvider
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
-        return new SumoLogicLogSink(
+        var sink = new SumoLogicLogSink(
             sourceUrl: definition.Uri,
             sourceCategory: definition.Alias,
             sourceHost: definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

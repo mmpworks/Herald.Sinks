@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.OtlpGrpc.Providers;
 
@@ -41,6 +42,8 @@ public sealed class OtlpGrpcLogSinkProvider : ILogSinkProvider
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
-        return new OtlpGrpcLogSink(definition.Uri, levelRegistry);
+        var sink = new OtlpGrpcLogSink(definition.Uri, levelRegistry);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.MongoDB.Providers;
 
@@ -41,7 +42,9 @@ public sealed class MongoDBLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
         var (database, collection) = ParseHost(definition.Host);
-        return new MongoDBLogSink(definition.Uri, database, collection);
+        var sink = new MongoDBLogSink(definition.Uri, database, collection);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     private static (string Database, string Collection) ParseHost(string? host)

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.RabbitMQ.Providers;
 
@@ -45,11 +46,13 @@ public sealed class RabbitMQLogSinkProvider : ILogSinkProvider
         var (exchange, routingKey) = ParseHost(definition.Host);
         var persistent = !string.Equals(definition.Alias, "transient", StringComparison.OrdinalIgnoreCase);
 
-        return new RabbitMQLogSink(
+        var sink = new RabbitMQLogSink(
             amqpUri: definition.Uri,
             exchange: exchange,
             routingKey: routingKey,
             persistent: persistent);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 
     private static (string Exchange, string RoutingKey) ParseHost(string? host)

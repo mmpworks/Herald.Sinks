@@ -104,7 +104,10 @@ public sealed class TwilioSinkRuntimeConfigTests
                 ["account_sid"] = "AC123",
                 ["auth_token"]  = "tok",
                 ["from_number"] = "+15551234567",
-                ["to_number"]   = "+15559876543"
+                ["to_number"]   = "+15559876543",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]  = 1
             });
 
         var sink = new TwilioLogSinkProvider().CreateSink(def, null!, null!);

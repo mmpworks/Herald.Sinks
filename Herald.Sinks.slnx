@@ -13,6 +13,7 @@
     <Project Path="src/Herald.Sinks.AzureLogAnalyticsDcr/Herald.Sinks.AzureLogAnalyticsDcr.csproj" />
     <Project Path="src/Herald.Sinks.AzureServiceBus/Herald.Sinks.AzureServiceBus.csproj" />
     <Project Path="src/Herald.Sinks.AzureTableStorage/Herald.Sinks.AzureTableStorage.csproj" />
+    <Project Path="src/Herald.Sinks.Batching/Herald.Sinks.Batching.csproj" />
     <Project Path="src/Herald.Sinks.BetterStack/Herald.Sinks.BetterStack.csproj" />
     <Project Path="src/Herald.Sinks.BigQuery/Herald.Sinks.BigQuery.csproj" />
     <Project Path="src/Herald.Sinks.Bugsnag/Herald.Sinks.Bugsnag.csproj" />
@@ -123,7 +124,6 @@
     <Project Path="tests/Herald.Sinks.Email.Tests/Herald.Sinks.Email.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.EventLog.Tests/Herald.Sinks.EventLog.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Exceptionless.Tests/Herald.Sinks.Exceptionless.Tests.csproj" />
-    <Project Path="tests/Herald.Sinks.File.Tests/Herald.Sinks.File.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GenericWebhook.Tests/Herald.Sinks.GenericWebhook.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GodotConsole.Tests/Herald.Sinks.GodotConsole.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.GoogleCloudLogging.Tests/Herald.Sinks.GoogleCloudLogging.Tests.csproj" />
@@ -137,6 +137,7 @@
     <Project Path="tests/Herald.Sinks.Kinesis.Tests/Herald.Sinks.Kinesis.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loggly.Tests/Herald.Sinks.Loggly.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.LogzIo.Tests/Herald.Sinks.LogzIo.Tests.csproj" />
+    <Project Path="tests/Herald.Sinks.Batching.Tests/Herald.Sinks.Batching.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Loki.Tests/Herald.Sinks.Loki.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.MSSqlServer.Tests/Herald.Sinks.MSSqlServer.Tests.csproj" />
     <Project Path="tests/Herald.Sinks.Mezmo.Tests/Herald.Sinks.Mezmo.Tests.csproj" />

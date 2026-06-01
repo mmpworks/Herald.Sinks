@@ -45,7 +45,7 @@ public sealed class InfluxDBLogSinkTests
             preserveFieldLimit: fieldLimit);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("hello", "hello")
             .WithProperty("UserId", 42L)
             .WithProperty("IP", "10.0.0.1")

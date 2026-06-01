@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Parquet.Providers;
 
@@ -43,6 +44,8 @@ public sealed class ParquetLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
         var prefix = string.IsNullOrWhiteSpace(definition.Host) ? "herald-logs" : definition.Host;
-        return new ParquetLogSink(outputDirectory: definition.Uri, filePrefix: prefix);
+        var sink = new ParquetLogSink(outputDirectory: definition.Uri, filePrefix: prefix);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

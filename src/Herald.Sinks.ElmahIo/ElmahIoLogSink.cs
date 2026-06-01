@@ -119,11 +119,11 @@ public sealed class ElmahIoLogSink : HeraldSinkBase, IBatchedLogSink, IDisposabl
 
     private static string MapSeverity(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => "Debug",
-        "info" or "notice" or "success" => "Information",
-        "warn" => "Warning",
+        "verbose" or "debug" => "Debug",
+        "information" or "notice" or "success" => "Information",
+        "warning" => "Warning",
         "error" => "Error",
-        "critical" or "security" => "Fatal",
+        "fatal" or "security" => "Fatal",
         _ => "Information",
     };
 }

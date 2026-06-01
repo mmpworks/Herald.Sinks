@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using NATS.Client.Core;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -19,7 +20,7 @@ namespace Herald.Sinks.Nats;
 /// via NATS.Client.Core (the modern v2 line). Connects on construction
 /// and shares the connection across all calls.
 /// </summary>
-public sealed class NatsLogSink : HeraldSinkBase, IAsyncDisposable, INetworkSink
+public sealed class NatsLogSink : BatchingNetworkSinkBase, IAsyncDisposable, INetworkSink
 {
     private readonly NatsConnection _connection;
     private readonly string _subject;

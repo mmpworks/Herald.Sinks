@@ -30,7 +30,7 @@ public sealed class OtlpProtobufLogSinkTests
             httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("Protobuf test")
             .Build();
 

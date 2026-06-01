@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.MicrosoftTeams.Providers;
 
@@ -27,8 +28,10 @@ public sealed class MicrosoftTeamsLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
-        return new MicrosoftTeamsLogSink(
+        var sink = new MicrosoftTeamsLogSink(
             webhookUrl: definition.Uri,
             titleOverride: definition.Alias);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

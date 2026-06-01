@@ -106,9 +106,9 @@ public sealed class SentryLogSinkTests
     }
 
     [Theory]
-    [InlineData("trace", "debug")]
-    [InlineData("info", "info")]
-    [InlineData("warn", "warning")]
+    [InlineData("verbose", "debug")]
+    [InlineData("information", "info")]
+    [InlineData("warning", "warning")]
     [InlineData("error", "error")]
     [InlineData("fatal", "fatal")]
     public void Level_mapping_uses_sentry_vocabulary(string heraldKey, string expected)

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.ClickHouse.Providers;
 
@@ -26,6 +27,8 @@ public sealed class ClickHouseLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         var table = string.IsNullOrWhiteSpace(definition.Host) ? "herald_logs" : definition.Host;
-        return new ClickHouseLogSink(definition.Uri, table);
+        var sink = new ClickHouseLogSink(definition.Uri, table);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

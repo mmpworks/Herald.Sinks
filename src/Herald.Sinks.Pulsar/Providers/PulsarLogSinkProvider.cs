@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Pulsar.Providers;
 
@@ -26,6 +27,7 @@ public sealed class PulsarLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
-        return new PulsarLogSink(definition.Uri, definition.Host);
+        var sink = new PulsarLogSink(definition.Uri, definition.Host);
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

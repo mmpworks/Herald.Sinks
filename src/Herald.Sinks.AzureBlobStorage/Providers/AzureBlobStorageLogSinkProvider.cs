@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AzureBlobStorage.Providers;
 
@@ -27,9 +28,11 @@ public sealed class AzureBlobStorageLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
 
-        return new AzureBlobStorageLogSink(
+        var sink = new AzureBlobStorageLogSink(
             connectionString: definition.Uri,
             containerName: definition.Host,
             keyPrefix: string.IsNullOrWhiteSpace(definition.Alias) ? "logs" : definition.Alias);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

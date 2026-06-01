@@ -72,7 +72,7 @@ public sealed class AzureAnalyticsLogSinkTests
             logType: "HeraldLog",
             httpClient: client);
 
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warn).WithMessage("hi").Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warning).WithMessage("hi").Build());
 
         handler.RequestCount.Should().Be(1);
         var req = handler.Requests[0];
@@ -90,7 +90,7 @@ public sealed class AzureAnalyticsLogSinkTests
         using var doc = JsonDocument.Parse(body);
         doc.RootElement.ValueKind.Should().Be(JsonValueKind.Array);
         var first = doc.RootElement[0];
-        first.GetProperty("level").GetString().Should().Be("warn");
+        first.GetProperty("level").GetString().Should().Be("warning");
         first.GetProperty("message").GetString().Should().Be("hi");
     }
 

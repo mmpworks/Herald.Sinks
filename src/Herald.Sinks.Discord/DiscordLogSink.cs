@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Pipeline;
 using LogEvent = MMP.Herald.Events.LogEvent;
 
@@ -21,7 +22,7 @@ namespace Herald.Sinks.Discord;
 /// webhook. One message per event with category prefix and content
 /// truncated to Discord's 2000-character message ceiling.
 /// </summary>
-public sealed class DiscordLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class DiscordLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private const int DiscordMaxLength = 1900; // leave room for prefix
 
@@ -70,8 +71,8 @@ public sealed class DiscordLogSink : HeraldSinkBase, IDisposable, INetworkSink
     {
         var prefix = evt.Level.Key switch
         {
-            "error" or "critical" or "security" => ":rotating_light:",
-            "warn" => ":warning:",
+            "error" or "fatal" or "security" => ":rotating_light:",
+            "warning" => ":warning:",
             _ => ":speech_balloon:",
         };
         var message = $"{prefix} **[{evt.Level.Key}]** `{evt.Category.Value}` — {evt.Message}";

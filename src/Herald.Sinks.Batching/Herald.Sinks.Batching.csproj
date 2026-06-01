@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>MMP.Herald.Sinks.Batching</RootNamespace>
+    <AssemblyName>Herald.Sinks.Batching</AssemblyName>
+    <PackageId>Herald.Sinks.Batching</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Shared batching decorator for Herald network sinks. Wraps an IBatchedLogSink so the producer never blocks on delivery: events ride a bounded channel and a background drain forwards them to the inner sink in size- or time-bounded batches.</Description>
+    <PackageTags>herald;logging;sink;batching;async</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefaultItemExcludes>$(DefaultItemExcludes);tests\**;docs\**;build\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <!--
+    Shared utility package, not a sink. No ILogSinkProvider, no
+    CAPABILITY.yaml, no configuration*.mmpform. The Herald.OSS reference
+    (and the sink-auto-registration generator) come from Directory.Build.props
+    the same way every sink in this repo picks them up. The generator scans
+    for public ILogSinkProvider implementations; this package has none, so
+    it emits an empty registration and adds nothing to the runtime closure.
+  -->
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Herald.Sinks.Batching.Tests" />
+  </ItemGroup>
+</Project>

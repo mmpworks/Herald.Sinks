@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 
 namespace Herald.Sinks.Graylog;
@@ -33,7 +34,7 @@ namespace Herald.Sinks.Graylog;
 /// name is ephemeral.
 /// </para>
 /// </remarks>
-public sealed class GraylogLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class GraylogLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly GraylogTransport _transport;
     private readonly string _sourceHost;

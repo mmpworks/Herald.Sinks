@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AzureLogAnalyticsDcr.Providers;
 
@@ -43,9 +44,11 @@ public sealed class AzureLogAnalyticsDcrLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
 
-        return new AzureLogAnalyticsDcrLogSink(
+        var sink = new AzureLogAnalyticsDcrLogSink(
             endpoint: definition.Uri,
             ruleId: definition.Alias,
             streamName: definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

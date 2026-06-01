@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Exceptionless.Providers;
 
@@ -25,8 +26,10 @@ public sealed class ExceptionlessLogSinkProvider : ILogSinkProvider
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
-        return new ExceptionlessLogSink(
+        var sink = new ExceptionlessLogSink(
             apiKey: definition.Alias,
             serverUrl: string.IsNullOrWhiteSpace(definition.Uri) ? "https://collector.exceptionless.io" : definition.Uri);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

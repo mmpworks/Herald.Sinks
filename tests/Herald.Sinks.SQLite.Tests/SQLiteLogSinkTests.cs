@@ -39,7 +39,7 @@ public sealed class SQLiteLogSinkTests
         using var sink = new SQLiteLogSink(MemoryConn);
 
         sink.Log(LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("hi")
             .Build());
 

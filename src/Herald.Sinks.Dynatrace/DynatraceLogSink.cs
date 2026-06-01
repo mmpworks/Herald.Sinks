@@ -133,11 +133,11 @@ public sealed class DynatraceLogSink : HeraldSinkBase, IBatchedLogSink, IDisposa
     // closest DT severity so the log viewer colour-codes consistently.
     private static string MapSeverity(string levelKey) => levelKey switch
     {
-        "trace" or "debug" => "DEBUG",
-        "info" or "notice" or "success" => "INFO",
-        "warn" => "WARN",
+        "verbose" or "debug" => "DEBUG",
+        "information" or "notice" or "success" => "INFO",
+        "warning" => "WARN",
         "error" => "ERROR",
-        "critical" or "security" => "CRITICAL",
+        "fatal" or "security" => "CRITICAL",
         _ => "INFO",
     };
 }

@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Otlp.Providers;
 
@@ -32,9 +33,11 @@ public sealed class ProtobufFileLogSinkProvider : ILogSinkProvider
 
         var maxSize = definition.RollingPolicy?.MaxBytes ?? 0;
 
-        return new ProtobufFileLogSink(
+        var sink = new ProtobufFileLogSink(
             definition.Path,
             levelRegistry,
             maxFileSizeBytes: maxSize);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

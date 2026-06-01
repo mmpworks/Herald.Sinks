@@ -15,11 +15,15 @@ namespace Herald.Sinks.Contract.Tests;
 /// <summary>
 /// Repo-wide naming-contract invariants. Reads every Herald.Sinks csproj
 /// and CAPABILITY.yaml on disk and asserts the shape that the Herald.OSS
-/// 1.0 distribution is committed to:
+/// 1.0 distribution actually ships:
 ///
-///   * PackageId == AssemblyName == namespace root (no MMP. prefix)
-///   * Sink PackageIds start with Herald.Sinks.
-///   * CAPABILITY.yaml's package_id mirrors its csproj's PackageId
+///   * PackageId is the published name and carries the MMP. vendor prefix:
+///     MMP.Herald.Sinks.&lt;Name&gt;. AssemblyName / namespace root stay
+///     unprefixed (Herald.Sinks.&lt;Name&gt;) — the assembly identity the
+///     runtime loads against.
+///   * Sink PackageIds start with MMP.Herald.Sinks.
+///   * CAPABILITY.yaml's package_id mirrors the csproj's AssemblyName
+///     (the unprefixed assembly identity), not the MMP.-prefixed PackageId.
 ///   * Per-sink csprojs do NOT redeclare a Herald.Core reference —
 ///     Directory.Build.props owns the conditional ProjectReference /
 ///     PackageReference pair.
@@ -63,9 +67,19 @@ public sealed class NamingContractTests
             "the Herald.Sinks repo must ship at least one sink");
     }
 
-    /// <summary>Every sink csproj declares PackageId, AssemblyName, and they match.</summary>
+    /// <summary>
+    /// Every sink csproj declares PackageId and AssemblyName, and the PackageId is
+    /// the MMP.-prefixed publish name over the unprefixed AssemblyName identity.
+    /// </summary>
+    /// <remarks>
+    /// The shipped contract keeps two names per package: the AssemblyName / namespace
+    /// root stays <c>Herald.Sinks.&lt;Name&gt;</c> (what the runtime loads), and the
+    /// published PackageId is <c>MMP.Herald.Sinks.&lt;Name&gt;</c> (the vendor-prefixed
+    /// name on NuGet). The exception is the shared <c>Herald.Sinks.Batching</c> utility
+    /// package, which keeps PackageId == AssemblyName with no vendor prefix.
+    /// </remarks>
     [Fact]
-    public void Every_sink_PackageId_equals_AssemblyName()
+    public void Every_sink_PackageId_is_MMP_prefixed_AssemblyName()
     {
         foreach (var csproj in SinkCsprojs())
         {
@@ -78,14 +92,29 @@ public sealed class NamingContractTests
                 $"{relPath} must declare <PackageId>");
             assemblyName.Should().NotBeNullOrEmpty(
                 $"{relPath} must declare <AssemblyName>");
-            packageId.Should().Be(assemblyName,
-                $"{relPath}: PackageId and AssemblyName must match per the 1.0 naming contract");
+
+            // Batching is the shared utility package, not a sink: it keeps an
+            // unprefixed PackageId equal to its AssemblyName.
+            if (packageId == "Herald.Sinks.Batching")
+            {
+                packageId.Should().Be(assemblyName,
+                    $"{relPath}: the shared Batching utility keeps PackageId == AssemblyName");
+                continue;
+            }
+
+            packageId.Should().Be($"MMP.{assemblyName}",
+                $"{relPath}: PackageId is the published vendor name MMP.<AssemblyName>; " +
+                "AssemblyName stays the unprefixed Herald.Sinks.<Name> identity the runtime loads");
         }
     }
 
-    /// <summary>Every sink PackageId starts with Herald.Sinks. — no MMP. prefix.</summary>
+    /// <summary>Every sink PackageId starts with MMP.Herald.Sinks. — the vendor-prefixed publish name.</summary>
+    /// <remarks>
+    /// The shared <c>Herald.Sinks.Batching</c> utility package is exempt: it ships an
+    /// unprefixed PackageId because it is a decorator library, not a destination sink.
+    /// </remarks>
     [Fact]
-    public void Every_sink_PackageId_starts_with_Herald_Sinks_prefix()
+    public void Every_sink_PackageId_starts_with_MMP_Herald_Sinks_prefix()
     {
         foreach (var csproj in SinkCsprojs())
         {
@@ -93,10 +122,14 @@ public sealed class NamingContractTests
             var packageId = doc.Descendants("PackageId").FirstOrDefault()?.Value ?? string.Empty;
             var relPath = Path.GetRelativePath(RepoRoot, csproj);
 
-            packageId.Should().StartWith("Herald.Sinks.",
-                $"{relPath}: 1.0 contract drops the MMP. prefix from public-facing names");
-            packageId.Should().NotStartWith("MMP.",
-                $"{relPath}: the MMP. vendor prefix lives in metadata (NOTICE + Copyright), not in PackageId");
+            // Batching is the shared utility package, not a sink — unprefixed by design.
+            if (packageId == "Herald.Sinks.Batching")
+            {
+                continue;
+            }
+
+            packageId.Should().StartWith("MMP.Herald.Sinks.",
+                $"{relPath}: the 1.0 publish contract ships sinks under the MMP. vendor prefix");
         }
     }
 
@@ -129,9 +162,12 @@ public sealed class NamingContractTests
         }
     }
 
-    /// <summary>Every CAPABILITY.yaml's package_id mirrors its csproj's PackageId.</summary>
+    /// <summary>
+    /// Every CAPABILITY.yaml's package_id mirrors its csproj's AssemblyName — the
+    /// unprefixed assembly identity, not the MMP.-prefixed published PackageId.
+    /// </summary>
     [Fact]
-    public void Every_capability_yaml_package_id_mirrors_csproj()
+    public void Every_capability_yaml_package_id_mirrors_csproj_AssemblyName()
     {
         foreach (var yamlPath in CapabilityYamls())
         {
@@ -151,13 +187,15 @@ public sealed class NamingContractTests
             if (manifestPkgId is null) continue; // migration-guides + null entries
 
             var doc = XDocument.Load(csprojPath);
-            var csprojPkgId = doc.Descendants("PackageId").FirstOrDefault()?.Value;
+            var csprojAssemblyName = doc.Descendants("AssemblyName").FirstOrDefault()?.Value;
             var relYaml = Path.GetRelativePath(RepoRoot, yamlPath);
 
-            csprojPkgId.Should().NotBeNullOrEmpty(
-                $"{relYaml}: companion csproj must declare PackageId");
-            manifestPkgId.Should().Be(csprojPkgId,
-                $"{relYaml}: package_id must mirror the csproj's <PackageId>");
+            csprojAssemblyName.Should().NotBeNullOrEmpty(
+                $"{relYaml}: companion csproj must declare AssemblyName");
+            manifestPkgId.Should().Be(csprojAssemblyName,
+                $"{relYaml}: package_id must mirror the csproj's <AssemblyName> " +
+                "(the unprefixed Herald.Sinks.<Name> identity); the MMP. vendor prefix " +
+                "lives only on the published <PackageId>");
         }
     }
 

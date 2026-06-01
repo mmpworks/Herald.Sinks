@@ -39,7 +39,7 @@ public sealed class OtlpRoundTripConformanceTests
 
     private static LogEvent BuildTypedEvent() =>
         LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("round-trip")
             .WithTime(SubMsTime)
             .WithProperty("count", 42L)

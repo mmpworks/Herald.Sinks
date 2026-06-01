@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 using MMP.Herald.Services;
 
@@ -33,7 +34,7 @@ namespace Herald.Sinks.MicrosoftTeams;
 /// everything else → blue.
 /// </para>
 /// </remarks>
-public sealed class MicrosoftTeamsLogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class MicrosoftTeamsLogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly Uri _webhookUrl;
     private readonly string? _titleOverride;
@@ -129,8 +130,8 @@ public sealed class MicrosoftTeamsLogSink : HeraldSinkBase, IDisposable, INetwor
     // Hex colours (no '#') for MessageCard themeColor.
     private static string MapColor(string levelKey) => levelKey switch
     {
-        "warn" => "D29922",           // amber
-        "error" or "critical" or "security" => "D73A49",  // red
+        "warning" => "D29922",           // amber
+        "error" or "fatal" or "security" => "D73A49",  // red
         _ => "2188FF",                // blue
     };
 }

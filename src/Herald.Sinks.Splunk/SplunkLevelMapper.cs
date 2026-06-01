@@ -18,16 +18,15 @@ internal static class SplunkLevelMapper
     {
         return level.Key.ToLowerInvariant() switch
         {
-            "trace" => "TRACE",
+            "verbose" => "TRACE",
             "debug" => "DEBUG",
-            "info" => "INFO",
+            "information" => "INFO",
             "notice" => "INFO",
             "metric" => "INFO",
             "success" => "INFO",
-            "warn" => "WARN",
+            "warning" => "WARN",
             "error" => "ERROR",
             "security" => "ERROR",
-            "critical" => "FATAL",
             "fatal" => "FATAL",
             _ => level.DisplayName.ToUpperInvariant()
         };

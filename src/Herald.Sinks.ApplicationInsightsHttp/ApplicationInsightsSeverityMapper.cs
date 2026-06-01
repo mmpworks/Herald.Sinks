@@ -36,16 +36,15 @@ internal static class ApplicationInsightsSeverityMapper
     {
         return level.Key.ToLowerInvariant() switch
         {
-            "trace" => Verbose,
+            "verbose" => Verbose,
             "debug" => Verbose,
-            "info" => Information,
+            "information" => Information,
             "notice" => Information,
             "metric" => Information,
             "success" => Information,
-            "warn" => Warning,
+            "warning" => Warning,
             "error" => Error,
             "security" => Error,
-            "critical" => Critical,
             "fatal" => Critical,
             _ => Information
         };

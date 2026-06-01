@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.ApplicationInsightsHttp.Providers;
 
@@ -42,8 +43,10 @@ public sealed class ApplicationInsightsLogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
-        return new ApplicationInsightsLogSink(
+        var sink = new ApplicationInsightsLogSink(
             connectionString: definition.Uri,
             roleName: definition.Alias);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

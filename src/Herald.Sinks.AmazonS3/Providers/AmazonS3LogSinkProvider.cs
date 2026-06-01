@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AmazonS3.Providers;
 
@@ -27,9 +28,11 @@ public sealed class AmazonS3LogSinkProvider : ILogSinkProvider
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
 
-        return new AmazonS3LogSink(
+        var sink = new AmazonS3LogSink(
             bucketName: definition.Uri,
             keyPrefix: string.IsNullOrWhiteSpace(definition.Alias) ? "logs" : definition.Alias,
             regionSystemName: definition.Host);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

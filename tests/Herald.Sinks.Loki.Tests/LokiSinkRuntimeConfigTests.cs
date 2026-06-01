@@ -124,7 +124,10 @@ public sealed class LokiSinkRuntimeConfigTests
             Properties: new Dictionary<string, object?>
             {
                 ["endpoint"]     = "https://bag.example.com",
-                ["bearer_token"] = "bag-token"
+                ["bearer_token"] = "bag-token",
+                // batch_size=1 keeps the provider on the pass-through path so
+                // this wiring test sees the bare sink, not the batching wrapper.
+                ["batch_size"]   = 1
             });
 
         var sink = new LokiLogSinkProvider().CreateSink(def, null!, null!);

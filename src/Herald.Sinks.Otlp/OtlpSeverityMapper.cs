@@ -17,15 +17,14 @@ internal static class OtlpSeverityMapper
     public static int MapSeverityNumber(LogLevel level, ILogLevelRegistry levelRegistry) {
         return level.Key.ToLowerInvariant() switch
         {
-            "trace" => 1,
+            "verbose" => 1,
             "debug" => 5,
-            "info" => 9,
+            "information" => 9,
             "notice" => 10,
             "metric" => 9,
             "success" => 9,
-            "warn" => 13,
+            "warning" => 13,
             "error" => 17,
-            "critical" => 21,
             "security" => 17,
             "fatal" => 21,
             _ => Math.Clamp(levelRegistry.GetRank(level) * 4 + 1, 1, 24)

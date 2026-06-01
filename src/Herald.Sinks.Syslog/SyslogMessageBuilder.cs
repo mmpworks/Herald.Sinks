@@ -75,12 +75,12 @@ internal static class SyslogMessageBuilder
 
     private static int MapSeverity(LogLevel level) => level.Key switch
     {
-        "trace" or "debug" => SeverityDebug,
-        "info" => SeverityInformational,
+        "verbose" or "debug" => SeverityDebug,
+        "information" => SeverityInformational,
         "notice" or "success" => SeverityNotice,
-        "warn" => SeverityWarning,
+        "warning" => SeverityWarning,
         "error" => SeverityError,
-        "critical" => SeverityCritical,
+        "fatal" => SeverityCritical,
         "security" => SeverityAlert,
         _ => SeverityInformational,
     };

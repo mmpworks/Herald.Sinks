@@ -102,13 +102,13 @@ public sealed class ApplicationInsightsLogSink : HeraldSinkBase, IBatchedLogSink
 
     private static SeverityLevel MapSeverity(string levelKey) => levelKey switch
     {
-        "trace" => SeverityLevel.Verbose,
+        "verbose" => SeverityLevel.Verbose,
         "debug" => SeverityLevel.Verbose,
-        "info" => SeverityLevel.Information,
+        "information" => SeverityLevel.Information,
         "notice" => SeverityLevel.Information,
-        "warn" => SeverityLevel.Warning,
+        "warning" => SeverityLevel.Warning,
         "error" => SeverityLevel.Error,
-        "critical" => SeverityLevel.Critical,
+        "fatal" => SeverityLevel.Critical,
         "security" => SeverityLevel.Critical,
         _ => SeverityLevel.Information,
     };

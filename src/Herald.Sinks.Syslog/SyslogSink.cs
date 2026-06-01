@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using MMP.Herald;
 using MMP.Herald.Sinks;
+using MMP.Herald.Sinks.Batching;
 using MMP.Herald.Events;
 
 namespace Herald.Sinks.Syslog;
@@ -38,7 +39,7 @@ namespace Herald.Sinks.Syslog;
 /// concurrent events do not interleave frames on the same connection.
 /// </para>
 /// </remarks>
-public sealed class SyslogSink : HeraldSinkBase, IDisposable, INetworkSink
+public sealed class SyslogSink : BatchingNetworkSinkBase, IDisposable, INetworkSink
 {
     private readonly string _host;
     private readonly int _port;

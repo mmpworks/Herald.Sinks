@@ -87,8 +87,8 @@ public sealed class UnityConsoleLogSink : HeraldSinkBase
 
     private Action<string> SelectDispatch(string levelKey) => levelKey switch
     {
-        LogLevelKeys.Error or LogLevelKeys.Critical or LogLevelKeys.Security => _error,
-        LogLevelKeys.Warn                                                     => _warn,
+        LogLevelKeys.Error or LogLevelKeys.Fatal or LogLevelKeys.Security => _error,
+        LogLevelKeys.Warning                                                     => _warn,
         _                                                                     => _log,
     };
 

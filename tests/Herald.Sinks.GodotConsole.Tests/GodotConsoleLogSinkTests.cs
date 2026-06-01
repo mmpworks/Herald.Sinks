@@ -32,7 +32,7 @@ public sealed class GodotConsoleLogSinkTests
     {
         var sink = CreateSink();
         sink.Log(LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("hello world")
             .Build());
 
@@ -56,7 +56,7 @@ public sealed class GodotConsoleLogSinkTests
     public void Warn_level_routes_to_warn()
     {
         var sink = CreateSink();
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warn).Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Warning).Build());
 
         _print.Should().BeEmpty();
         _warn.Should().ContainSingle();
@@ -78,7 +78,7 @@ public sealed class GodotConsoleLogSinkTests
     public void Critical_level_routes_to_error()
     {
         var sink = CreateSink();
-        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Critical).Build());
+        sink.Log(LogEventBuilder.Create().WithLevel(KnownLogLevels.Fatal).Build());
 
         _error.Should().ContainSingle();
     }
@@ -88,7 +88,7 @@ public sealed class GodotConsoleLogSinkTests
     {
         var sink = CreateSink(category: "Combat");
         sink.Log(LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Info)
+            .WithLevel(KnownLogLevels.Information)
             .WithMessage("hit")
             .Build());
 

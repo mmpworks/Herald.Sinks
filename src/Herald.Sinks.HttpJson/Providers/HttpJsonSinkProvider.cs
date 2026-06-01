@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.HttpJson.Providers;
 
@@ -32,6 +33,8 @@ public sealed class HttpJsonSinkProvider : ILogSinkProvider
         ILogOutputTransformerRegistry transformerRegistry)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Uri);
-        return new HttpJsonLogSink(definition.Uri, levelRegistry);
+        var sink = new HttpJsonLogSink(definition.Uri, levelRegistry);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

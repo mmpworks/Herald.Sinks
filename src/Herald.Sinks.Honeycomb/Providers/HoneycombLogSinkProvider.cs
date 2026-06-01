@@ -9,6 +9,7 @@ using MMP.Herald.Levels;
 using MMP.Herald.Output.Rendering;
 using MMP.Herald.Pipeline;
 using MMP.Herald.Routing;
+using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Honeycomb.Providers;
 
@@ -41,9 +42,11 @@ public sealed class HoneycombLogSinkProvider : ILogSinkProvider
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Alias);
         ArgumentException.ThrowIfNullOrWhiteSpace(definition.Host);
 
-        return new HoneycombLogSink(
+        var sink = new HoneycombLogSink(
             apiKey: definition.Alias,
             dataset: definition.Host,
             endpoint: definition.Uri);
+
+        return BatchingLogSinkDecorator.Wrap(sink, BatchingOptions.From(definition));
     }
 }

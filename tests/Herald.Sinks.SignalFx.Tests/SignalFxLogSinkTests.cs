@@ -28,7 +28,7 @@ public sealed class SignalFxLogSinkTests
         using var sink = new SignalFxLogSink(AccessToken, realm: "us1", httpClient: client);
 
         var evt = LogEventBuilder.Create()
-            .WithLevel(KnownLogLevels.Warn)
+            .WithLevel(KnownLogLevels.Warning)
             .WithMessage("Template with {x}", "Template with 42")
             .Build();
 
@@ -40,7 +40,7 @@ public sealed class SignalFxLogSinkTests
         var entry = doc.RootElement[0];
         entry.GetProperty("timestamp").GetInt64().Should().BeGreaterThan(0);
         entry.GetProperty("message").GetString().Should().Be("Template with 42");
-        entry.GetProperty("level").GetString().Should().Be("warn");
+        entry.GetProperty("level").GetString().Should().Be("warning");
     }
 
     [Fact]
