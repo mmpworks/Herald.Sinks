@@ -13,14 +13,14 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.MicrosoftTeams.Providers;
 
-public sealed class MicrosoftTeamsLogSinkProvider : ILogSinkProvider
+public sealed class MicrosoftTeamsLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "ms_teams";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

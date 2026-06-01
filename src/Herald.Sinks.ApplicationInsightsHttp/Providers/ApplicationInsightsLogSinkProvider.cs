@@ -29,13 +29,13 @@ namespace Herald.Sinks.ApplicationInsightsHttp.Providers;
 ///     when set; when absent the tag is omitted.</item>
 /// </list>
 /// </remarks>
-public sealed class ApplicationInsightsLogSinkProvider : ILogSinkProvider
+public sealed class ApplicationInsightsLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "application_insights_http";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

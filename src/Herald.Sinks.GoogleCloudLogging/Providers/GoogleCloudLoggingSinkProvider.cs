@@ -47,14 +47,14 @@ namespace Herald.Sinks.GoogleCloudLogging.Providers;
 /// overload on <see cref="GoogleCloudLoggingSink"/>.
 /// </para>
 /// </remarks>
-public sealed class GoogleCloudLoggingSinkProvider : ILogSinkProvider
+public sealed class GoogleCloudLoggingSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "gcp_logging";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

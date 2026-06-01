@@ -41,14 +41,14 @@ namespace Herald.Sinks.Datadog.Providers;
 /// </list>
 /// </para>
 /// </remarks>
-public sealed class DatadogLogSinkProvider : ILogSinkProvider
+public sealed class DatadogLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "datadog";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

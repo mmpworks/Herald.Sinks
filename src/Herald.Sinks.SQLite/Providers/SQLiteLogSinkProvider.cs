@@ -13,14 +13,14 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.SQLite.Providers;
 
-public sealed class SQLiteLogSinkProvider : ILogSinkProvider
+public sealed class SQLiteLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "sqlite";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

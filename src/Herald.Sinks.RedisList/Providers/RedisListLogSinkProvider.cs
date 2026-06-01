@@ -23,14 +23,14 @@ namespace Herald.Sinks.RedisList.Providers;
 ///   <item><c>Host</c> → list key (default <c>herald-logs</c>).</item>
 /// </list>
 /// </remarks>
-public sealed class RedisListLogSinkProvider : ILogSinkProvider
+public sealed class RedisListLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "redis_list";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

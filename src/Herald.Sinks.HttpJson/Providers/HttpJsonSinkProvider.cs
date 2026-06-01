@@ -16,7 +16,7 @@ namespace Herald.Sinks.HttpJson.Providers;
 /// <summary>
 /// Sink provider for HTTP JSON (NDJSON) delivery.
 /// </summary>
-public sealed class HttpJsonSinkProvider : ILogSinkProvider
+public sealed class HttpJsonSinkProvider : BatchingSinkProviderBase
 {
     /// <summary>
     /// The sink-kind string that identifies this provider in JSON config.
@@ -24,10 +24,10 @@ public sealed class HttpJsonSinkProvider : ILogSinkProvider
     /// </summary>
     public const string KindKey = "http_json";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

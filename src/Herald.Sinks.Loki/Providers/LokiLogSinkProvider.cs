@@ -43,14 +43,14 @@ namespace Herald.Sinks.Loki.Providers;
 /// the sinks-config audit (Pass-2 Step 4).
 /// </para>
 /// </remarks>
-public sealed class LokiLogSinkProvider : ILogSinkProvider
+public sealed class LokiLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "loki";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

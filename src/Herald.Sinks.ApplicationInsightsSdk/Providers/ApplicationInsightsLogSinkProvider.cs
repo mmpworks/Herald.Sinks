@@ -19,13 +19,13 @@ namespace Herald.Sinks.ApplicationInsightsSdk.Providers;
 /// HTTP-flavoured variant (<see cref="Herald.Sinks.ApplicationInsightsHttp" />)
 /// in JSON config and in dashboard catalog listings.
 /// </summary>
-public sealed class ApplicationInsightsLogSinkProvider : ILogSinkProvider
+public sealed class ApplicationInsightsLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "application_insights_sdk";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

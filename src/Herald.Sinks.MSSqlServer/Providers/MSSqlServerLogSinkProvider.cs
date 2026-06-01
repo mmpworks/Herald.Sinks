@@ -30,14 +30,14 @@ namespace Herald.Sinks.MSSqlServer.Providers;
 /// Custom column names require a code-first ctor with
 /// <see cref="MSSqlServerColumnOptions"/>.
 /// </remarks>
-public sealed class MSSqlServerLogSinkProvider : ILogSinkProvider
+public sealed class MSSqlServerLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "mssql";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

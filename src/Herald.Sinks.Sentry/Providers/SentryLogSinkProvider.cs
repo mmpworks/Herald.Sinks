@@ -17,14 +17,14 @@ namespace Herald.Sinks.Sentry.Providers;
 /// Sink provider that instantiates <see cref="SentryLogSink"/> from a
 /// <see cref="LoggingRuntimeSinkDefinition"/>.
 /// </summary>
-public sealed class SentryLogSinkProvider : ILogSinkProvider
+public sealed class SentryLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "sentry";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

@@ -26,14 +26,14 @@ namespace Herald.Sinks.MongoDB.Providers;
 ///   under the <c>herald</c> database.</item>
 /// </list>
 /// </remarks>
-public sealed class MongoDBLogSinkProvider : ILogSinkProvider
+public sealed class MongoDBLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "mongodb";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

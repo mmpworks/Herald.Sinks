@@ -13,13 +13,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.BetterStack.Providers;
 
-public sealed class BetterStackLogSinkProvider : ILogSinkProvider
+public sealed class BetterStackLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "betterstack";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

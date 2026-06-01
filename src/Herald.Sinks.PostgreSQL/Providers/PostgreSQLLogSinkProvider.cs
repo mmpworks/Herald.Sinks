@@ -26,14 +26,14 @@ namespace Herald.Sinks.PostgreSQL.Providers;
 ///   NOT EXISTS DDL on first write.</item>
 /// </list>
 /// </remarks>
-public sealed class PostgreSQLLogSinkProvider : ILogSinkProvider
+public sealed class PostgreSQLLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "postgresql";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

@@ -23,14 +23,14 @@ namespace Herald.Sinks.Cassandra.Providers;
 ///   <item><c>Host</c> → <c>keyspace.table</c> (default <c>herald.herald_logs</c>).</item>
 /// </list>
 /// </remarks>
-public sealed class CassandraLogSinkProvider : ILogSinkProvider
+public sealed class CassandraLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "cassandra";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

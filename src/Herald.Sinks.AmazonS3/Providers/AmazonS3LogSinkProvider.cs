@@ -13,14 +13,14 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AmazonS3.Providers;
 
-public sealed class AmazonS3LogSinkProvider : ILogSinkProvider
+public sealed class AmazonS3LogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "aws_s3";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

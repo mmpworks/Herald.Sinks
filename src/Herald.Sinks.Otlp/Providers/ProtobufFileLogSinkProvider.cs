@@ -17,14 +17,14 @@ namespace Herald.Sinks.Otlp.Providers;
 /// Sink provider for protobuf file output.
 /// Writes length-delimited OTLP protobuf records to .pb files.
 /// </summary>
-public sealed class ProtobufFileLogSinkProvider : ILogSinkProvider
+public sealed class ProtobufFileLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "protobuf_file";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

@@ -14,13 +14,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Kinesis.Providers;
 
-public sealed class KinesisLogSinkProvider : ILogSinkProvider
+public sealed class KinesisLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "kinesis";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

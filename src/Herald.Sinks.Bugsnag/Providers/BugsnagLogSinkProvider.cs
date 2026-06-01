@@ -39,13 +39,13 @@ namespace Herald.Sinks.Bugsnag.Providers;
 /// </list>
 /// </para>
 /// </remarks>
-public sealed class BugsnagLogSinkProvider : ILogSinkProvider
+public sealed class BugsnagLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "bugsnag";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

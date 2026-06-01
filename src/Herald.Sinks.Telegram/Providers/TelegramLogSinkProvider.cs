@@ -13,13 +13,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Telegram.Providers;
 
-public sealed class TelegramLogSinkProvider : ILogSinkProvider
+public sealed class TelegramLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "telegram";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

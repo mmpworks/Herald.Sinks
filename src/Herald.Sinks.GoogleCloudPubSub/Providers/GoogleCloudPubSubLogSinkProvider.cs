@@ -13,13 +13,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.GoogleCloudPubSub.Providers;
 
-public sealed class GoogleCloudPubSubLogSinkProvider : ILogSinkProvider
+public sealed class GoogleCloudPubSubLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "google_pubsub";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

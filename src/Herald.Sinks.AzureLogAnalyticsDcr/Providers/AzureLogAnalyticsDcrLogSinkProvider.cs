@@ -27,14 +27,14 @@ namespace Herald.Sinks.AzureLogAnalyticsDcr.Providers;
 /// need explicit credentials construct the sink via the code-first
 /// ctor.
 /// </remarks>
-public sealed class AzureLogAnalyticsDcrLogSinkProvider : ILogSinkProvider
+public sealed class AzureLogAnalyticsDcrLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "azure_log_analytics_dcr";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

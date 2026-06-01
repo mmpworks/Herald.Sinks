@@ -44,13 +44,13 @@ namespace Herald.Sinks.Coralogix.Providers;
 /// their own named field with secret-store handling on the form side.
 /// </para>
 /// </remarks>
-public sealed class CoralogixLogSinkProvider : ILogSinkProvider
+public sealed class CoralogixLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "coralogix";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

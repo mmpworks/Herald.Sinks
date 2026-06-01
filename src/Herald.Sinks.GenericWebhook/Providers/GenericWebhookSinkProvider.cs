@@ -40,7 +40,7 @@ namespace Herald.Sinks.GenericWebhook.Providers;
 /// nested-array form-shape the dashboard doesn't render yet.
 /// </para>
 /// </remarks>
-public sealed class GenericWebhookSinkProvider : ILogSinkProvider
+public sealed class GenericWebhookSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "webhook";
 
@@ -51,10 +51,10 @@ public sealed class GenericWebhookSinkProvider : ILogSinkProvider
         _rules = rules;
     }
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => GenericWebhookLogSink.MinEdition;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => GenericWebhookLogSink.MinEdition;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

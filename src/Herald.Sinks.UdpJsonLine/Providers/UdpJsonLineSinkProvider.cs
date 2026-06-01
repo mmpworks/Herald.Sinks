@@ -17,17 +17,17 @@ namespace Herald.Sinks.UdpJsonLine.Providers;
 /// Sink provider for UDP JSON-line delivery. Mirrors the TCP provider's
 /// shape; callers give host + port, receive a fire-and-forget datagram sink.
 /// </summary>
-public sealed class UdpJsonLineSinkProvider : ILogSinkProvider
+public sealed class UdpJsonLineSinkProvider : BatchingSinkProviderBase
 {
     /// <summary>
     /// The sink-kind string that identifies this provider in JSON config.
     /// </summary>
     public const string KindKey = "udp_json_line";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

@@ -13,13 +13,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.ElmahIo.Providers;
 
-public sealed class ElmahIoLogSinkProvider : ILogSinkProvider
+public sealed class ElmahIoLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "elmahio";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

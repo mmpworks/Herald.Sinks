@@ -11,12 +11,15 @@
   </PropertyGroup>
 
   <!--
-    Shared utility package, not a sink. No ILogSinkProvider, no
-    CAPABILITY.yaml, no configuration*.mmpform. The Herald.OSS reference
-    (and the sink-auto-registration generator) come from Directory.Build.props
-    the same way every sink in this repo picks them up. The generator scans
-    for public ILogSinkProvider implementations; this package has none, so
-    it emits an empty registration and adds nothing to the runtime closure.
+    Shared utility package, not a sink. It carries the abstract
+    BatchingSinkProviderBase (an ILogSinkProvider base class) but no
+    concrete sink, no CAPABILITY.yaml, no configuration*.mmpform. The
+    Herald.OSS reference (and the sink-auto-registration generator) come
+    from Directory.Build.props the same way every sink in this repo picks
+    them up. The generator scans for concrete public ILogSinkProvider
+    implementations; an abstract base is not instantiable, so this package
+    still emits an empty registration and adds nothing to the runtime
+    closure.
   -->
 
   <ItemGroup>

@@ -13,13 +13,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Rollbar.Providers;
 
-public sealed class RollbarLogSinkProvider : ILogSinkProvider
+public sealed class RollbarLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "rollbar";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

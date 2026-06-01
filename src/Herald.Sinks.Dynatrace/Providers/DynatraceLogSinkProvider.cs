@@ -13,14 +13,14 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.Dynatrace.Providers;
 
-public sealed class DynatraceLogSinkProvider : ILogSinkProvider
+public sealed class DynatraceLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "dynatrace";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

@@ -26,17 +26,17 @@ namespace Herald.Sinks.Seq.Providers;
 ///     <c>X-Seq-ApiKey</c> header).</item>
 /// </list>
 /// </remarks>
-public sealed class SeqLogSinkProvider : ILogSinkProvider
+public sealed class SeqLogSinkProvider : BatchingSinkProviderBase
 {
     /// <summary>
     /// The sink-kind string that identifies this provider in JSON config.
     /// </summary>
     public const string KindKey = "seq";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

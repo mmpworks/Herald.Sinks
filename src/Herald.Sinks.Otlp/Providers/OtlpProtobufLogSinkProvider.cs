@@ -17,14 +17,14 @@ namespace Herald.Sinks.Otlp.Providers;
 /// Sink provider for OpenTelemetry Protocol (OTLP) protobuf export.
 /// Posts log events as application/x-protobuf to an OTEL collector endpoint.
 /// </summary>
-public sealed class OtlpProtobufLogSinkProvider : ILogSinkProvider
+public sealed class OtlpProtobufLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "otlp_protobuf";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

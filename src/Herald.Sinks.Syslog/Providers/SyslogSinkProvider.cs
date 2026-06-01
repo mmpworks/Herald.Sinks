@@ -60,14 +60,14 @@ namespace Herald.Sinks.Syslog.Providers;
 /// TLS sub-track and is intentionally not configured here.
 /// </para>
 /// </remarks>
-public sealed class SyslogSinkProvider : ILogSinkProvider
+public sealed class SyslogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "syslog";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

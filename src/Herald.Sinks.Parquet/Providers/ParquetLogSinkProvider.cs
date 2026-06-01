@@ -28,14 +28,14 @@ namespace Herald.Sinks.Parquet.Providers;
 /// <see cref="ParquetLogSink"/> directly and registering with
 /// <c>WithCustomSinkProvider</c>.
 /// </remarks>
-public sealed class ParquetLogSinkProvider : ILogSinkProvider
+public sealed class ParquetLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "parquet";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

@@ -39,14 +39,14 @@ namespace Herald.Sinks.AzureTableStorage.Providers;
 ///     <c>"fixed"</c>.</item>
 /// </list>
 /// </remarks>
-public sealed class AzureTableStorageLogSinkProvider : ILogSinkProvider
+public sealed class AzureTableStorageLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "azure_table_storage";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

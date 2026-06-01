@@ -28,14 +28,14 @@ namespace Herald.Sinks.OtlpGrpc.Providers;
 /// <see cref="OtlpGrpcLogSink"/> directly and register via
 /// <c>WithCustomSinkProvider</c> if you need either.
 /// </remarks>
-public sealed class OtlpGrpcLogSinkProvider : ILogSinkProvider
+public sealed class OtlpGrpcLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "otlp_grpc";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

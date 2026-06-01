@@ -17,14 +17,14 @@ namespace Herald.Sinks.Otlp.Providers;
 /// Sink provider for OpenTelemetry Protocol (OTLP) JSON export.
 /// Posts log events to an OTEL collector endpoint.
 /// </summary>
-public sealed class OtlpJsonLogSinkProvider : ILogSinkProvider
+public sealed class OtlpJsonLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "otlp_json";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

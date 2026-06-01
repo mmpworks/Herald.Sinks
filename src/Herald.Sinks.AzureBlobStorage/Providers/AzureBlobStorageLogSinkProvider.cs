@@ -13,13 +13,13 @@ using MMP.Herald.Sinks.Batching;
 
 namespace Herald.Sinks.AzureBlobStorage.Providers;
 
-public sealed class AzureBlobStorageLogSinkProvider : ILogSinkProvider
+public sealed class AzureBlobStorageLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "azure_blob";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

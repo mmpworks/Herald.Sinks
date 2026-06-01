@@ -16,14 +16,14 @@ namespace Herald.Sinks.Slack.Providers;
 /// <summary>
 /// Sink provider for Slack incoming webhooks.
 /// </summary>
-public sealed class SlackWebhookSinkProvider : ILogSinkProvider
+public sealed class SlackWebhookSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "slack";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => SlackWebhookLogSink.MinEdition;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => SlackWebhookLogSink.MinEdition;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

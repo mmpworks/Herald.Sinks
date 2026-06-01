@@ -42,14 +42,14 @@ namespace Herald.Sinks.Elasticsearch.Providers;
 /// API key beats Basic when both are populated.
 /// </para>
 /// </remarks>
-public sealed class ElasticsearchSinkProvider : ILogSinkProvider
+public sealed class ElasticsearchSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "elasticsearch";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => ElasticsearchLogSink.MinEdition;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => ElasticsearchLogSink.MinEdition;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

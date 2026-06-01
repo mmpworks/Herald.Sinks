@@ -42,13 +42,13 @@ namespace Herald.Sinks.Twilio.Providers;
 /// </list>
 /// </para>
 /// </remarks>
-public sealed class TwilioLogSinkProvider : ILogSinkProvider
+public sealed class TwilioLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "twilio";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

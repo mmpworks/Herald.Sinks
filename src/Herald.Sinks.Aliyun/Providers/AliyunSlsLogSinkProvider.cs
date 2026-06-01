@@ -17,14 +17,14 @@ namespace Herald.Sinks.Aliyun.Providers;
 /// Wire-up: Uri=endpoint host (e.g. https://cn-hangzhou.log.aliyuncs.com),
 /// Host="{project}/{logstore}", Alias="{accessKeyId}:{accessKeySecret}".
 /// </summary>
-public sealed class AliyunSlsLogSinkProvider : ILogSinkProvider
+public sealed class AliyunSlsLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "aliyun_sls";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

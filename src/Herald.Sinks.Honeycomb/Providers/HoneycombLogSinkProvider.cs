@@ -26,14 +26,14 @@ namespace Herald.Sinks.Honeycomb.Providers;
 ///   to target Refinery proxies or self-hosted Honeycomb Enterprise.</item>
 /// </list>
 /// </remarks>
-public sealed class HoneycombLogSinkProvider : ILogSinkProvider
+public sealed class HoneycombLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "honeycomb";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

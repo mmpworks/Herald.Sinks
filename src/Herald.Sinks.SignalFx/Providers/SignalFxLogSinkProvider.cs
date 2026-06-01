@@ -29,7 +29,7 @@ namespace Herald.Sinks.SignalFx.Providers;
 /// callers that need them pass a pre-built <see cref="SignalFxLogSink"/>
 /// via <c>WithCustomSinkProvider</c>.
 /// </remarks>
-public sealed class SignalFxLogSinkProvider : ILogSinkProvider
+public sealed class SignalFxLogSinkProvider : BatchingSinkProviderBase
 {
     /// <summary>
     /// The sink-kind string that identifies this provider in JSON config.
@@ -39,10 +39,10 @@ public sealed class SignalFxLogSinkProvider : ILogSinkProvider
     /// </summary>
     public const string KindKey = "signalfx";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

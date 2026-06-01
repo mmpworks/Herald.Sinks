@@ -47,14 +47,14 @@ namespace Herald.Sinks.Couchbase.Providers;
 /// legacy string slots. The v2 bag fixes that.
 /// </para>
 /// </remarks>
-public sealed class CouchbaseLogSinkProvider : ILogSinkProvider
+public sealed class CouchbaseLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "couchbase";
 
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)

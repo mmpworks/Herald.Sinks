@@ -42,13 +42,13 @@ namespace Herald.Sinks.InfluxDB.Providers;
 /// </list>
 /// </para>
 /// </remarks>
-public sealed class InfluxDBLogSinkProvider : ILogSinkProvider
+public sealed class InfluxDBLogSinkProvider : BatchingSinkProviderBase
 {
     public const string KindKey = "influxdb";
-    public string SinkKind => KindKey;
-    public HeraldEdition MinimumEdition => HeraldEdition.Community;
+    public override string SinkKind => KindKey;
+    public override HeraldEdition MinimumEdition => HeraldEdition.Community;
 
-    public ILogger CreateSink(
+    public override ILogger CreateSink(
         LoggingRuntimeSinkDefinition definition,
         ILogLevelRegistry levelRegistry,
         ILogOutputTransformerRegistry transformerRegistry)
