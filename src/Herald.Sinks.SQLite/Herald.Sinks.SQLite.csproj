@@ -11,6 +11,10 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" />
+    <!-- Top-of-graph override: Microsoft.Data.Sqlite 8.0.x pins the
+         vulnerable SQLitePCLRaw 2.1.6 bundle (GHSA-2m69-gcr7-jv3q).
+         Version comes from Directory.Packages.props. -->
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CAPABILITY.yaml" Pack="true" PackagePath="\" />
